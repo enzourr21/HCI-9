@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="enroll.css">
+    <link rel="stylesheet" href="landingPage.css">
+</head>
+<body style="background-color: #f5f5f5;">
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="hat.png" alt="logo" class="logo-img">
+            <span class="name" style="color: black;">WMSU-Ease</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="landingPage.html">Back to Home</a></li>
+        </ul>
+    </nav>
+
+    <!-- ── PAGE HEADER ── -->
+    <section>
+    <div class="container1">
+        <p class="text">Start Your Enrollment</p>
+        <p class="text-desc">Complete the form below to begin your application process</p>
+    </div>
+    </section>
+
+    <section id="enroll">
+        <div class="containerEnroll">
+
+            <div class="step-header">
+                <div class="step-circle">1</div>
+                <p class="text2">Personal Information</p>
+            </div>
+
+            <form class="enroll-form">
+                <label>Surname / Last Name</label>
+                <input type="text" placeholder="Enter your last name">
+
+                <label>First Name</label>
+                <input type="text" placeholder="Enter your first name">
+
+                <label>Middle Name</label>
+                <input type="text" placeholder="Enter your middle name">
+
+                <label>CET ID</label>
+                <input type="text" placeholder="Enter your CET ID">
+            </form>
+            
+            <br></br>
+
+            <div class="step-header">
+                <div class="step-circle">2</div>
+                <p class="text2">Required Documents</p>
+            </div>
+
+            <form class="enroll-form">
+                <label>Upload Birth Certificate</label>
+                <input type="file" accept=".pdf, image/*" placeholder="Click to upload birth certificate">
+
+                <label> CET Result</label>
+                <input type="file" accept=".pdf, image/*" placeholder="Click to upload CET result">
+            </form>
+
+            <br></br>
+
+            <div class="step-header">
+                <div class="step-circle">3</div>
+                <p class="text2">College of Choice</p>
+            </div>
+
+            <form class="enroll-form">
+                <label for="college">Select College to be Admitted</label>
+                <select name="college" id="college">
+                    <option>-- Select a College --</option>
+                    <option>College of Architecture</option>
+                    <option>College of Agriculture</option>
+                    <option>College of Computing Studies</option>
+                    <option>College of Criminal Justice Education</option>
+                    <option>College of Teacher Education</option>
+                    <option>College of Engineering</option>
+                    <option>College of Social Works and Community Development</option>
+                    <option>College of Nursing</option>
+                    <option>College of Asian and Islamic Studies</option>
+                    <option>College of Sports Science and Physical Education</option>
+                    <option>College of Liberal Arts</option>
+                    <option>College of Public Administration and Development Studies</option>
+                    <option>College of Science and Mathematics</option>
+                    <option>College of Home Economics</option>
+                    <option>College of Forestry and Environmental Studies</option>
+                    <option>College of Medicine</option>
+                    <option>College of Law</option>
+                </select>
+            </form>
+
+            <br></br>
+
+            <div class="step-header">
+                <div class="step-circle">4</div>
+                <p class="text2">Contact Information</p>
+            </div>
+
+            <form class="enroll-form">
+                <label>Personal Email Address</label>
+                <input type="email" placeholder="example@email.com">
+
+                <label>Phone Number</label>
+                <input type="tel" placeholder="0912 345 6789">
+            </form>
+
+            <!-- ── SUBMIT BUTTON ── -->
+            <hr class="divider">
+            <div class="submit-section">
+                <button class="btn-submit">Submit Enrollment Application</button>
+                <p class="submit-note">By submitting this form, you agree to the terms and conditions of WMSU enrollment process.</p>
+            </div>
+    </div>
+</section>
