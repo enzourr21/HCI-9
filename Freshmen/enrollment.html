@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="enroll.css">          
+    <link rel="stylesheet" href="../landingPage.css">
+</head>
+<body style="background-color: #f5f5f5;">
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../photos/hat.png" alt="logo" class="logo-img">
+            <span class="name" style="color: black;">WMSU-Ease</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Back to Home</a></li>
+        </ul>
+    </nav>
+
+    <!-- ── PAGE HEADER ── -->
+    <section>
+        <div class="container1">
+            <p class="text">Start Your Enrollment</p>
+            <p class="text-desc">Complete the form below to begin your application process</p>
+        </div>
+    </section>
+
+    <section id="enroll">
+        <div class="containerEnroll">
+
+            <!-- ── STEP 1: PERSONAL INFORMATION ── -->
+            <div class="step-header">
+                <div class="step-circle">1</div>
+                <p class="text2">Personal Information</p>
+            </div>
+
+            <form class="enroll-form">
+
+                <!-- Name -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Surname / Last Name <span class="required">*</span></label>
+                        <input type="text" placeholder="Enter your last name">
+                    </div>
+                    <div class="form-group">
+                        <label>First Name <span class="required">*</span></label>
+                        <input type="text" placeholder="Enter your first name">
+                    </div>
+                    <div class="form-group">
+                        <label>Middle Name</label>
+                        <input type="text" placeholder="Enter your middle name">
+                    </div>
+                    <div class="form-group form-group-small">
+                        <label>Suffix</label>
+                        <select>
+                            <option value="">None</option>
+                            <option>Jr.</option>
+                            <option>Sr.</option>
+                            <option>II</option>
+                            <option>III</option>
+                            <option>IV</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Birth Info -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date of Birth <span class="required">*</span></label>
+                        <input type="date">
+                    </div>
+                    <div class="form-group">
+                        <label>Place of Birth <span class="required">*</span></label>
+                        <input type="text" placeholder="City/Municipality">
+                    </div>
+                    <div class="form-group">
+                        <label>Age <span class="required">*</span></label>
+                        <input type="text" placeholder="Enter your age" maxlength="3" inputmode="numeric">
+                    </div>
+                </div>
+
+                <!-- Gender, Civil Status, Nationality -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sex / Gender <span class="required">*</span></label>
+                        <select>
+                            <option value="">-- Select --</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Civil Status <span class="required">*</span></label>
+                        <select>
+                            <option value="">-- Select --</option>
+                            <option>Single</option>
+                            <option>Married</option>
+                            <option>Widowed</option>
+                            <option>Separated</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nationality <span class="required">*</span></label>
+                        <input type="text" placeholder="e.g. Filipino">
+                    </div>
+                </div>
+
+                <!-- Religion -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Religion</label>
+                        <select>
+                            <option value="">-- Select --</option>
+                            <option>Roman Catholic</option>
+                            <option>Islam</option>
+                            <option>Iglesia ni Cristo</option>
+                            <option>Born Again Christian</option>
+                            <option>Seventh Day Adventist</option>
+                            <option>Protestant</option>
+                            <option>Jehovah's Witness</option>
+                            <option>Buddhism</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>CET ID <span class="required">*</span></label>
+                        <input type="text" placeholder="XXXX-XXXXX" maxlength="9"
+                            pattern="[0-9]{4}-[0-9]{4}" inputmode="numeric">
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Street / Purok</label>
+                        <input type="text" placeholder="Street or Purok">
+                    </div>
+                    <div class="form-group">
+                        <label>Barangay <span class="required">*</span></label>
+                        <input type="text" placeholder="Barangay">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City / Municipality <span class="required">*</span></label>
+                        <input type="text" placeholder="City or Municipality">
+                    </div>
+                    <div class="form-group">
+                        <label>Province <span class="required">*</span></label>
+                        <input type="text" placeholder="Province">
+                    </div>
+                    <div class="form-group form-group-small">
+                        <label>Zip Code</label>
+                        <input type="text" placeholder="0000" maxlength="4" inputmode="numeric">
+                    </div>
+                </div>
+
+            </form>
+
+            <br>
+
+            <!-- ── STEP 2: FAMILY BACKGROUND ── -->
+            <div class="step-header">
+                <div class="step-circle">2</div>
+                <p class="text2">Family Background</p>
+            </div>
+
+            <form class="enroll-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Father's Full Name</label>
+                        <input type="text" placeholder="Enter father's full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Father's Occupation</label>
+                        <input type="text" placeholder="Enter occupation">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Mother's Full Name</label>
+                        <input type="text" placeholder="Enter mother's full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Mother's Occupation</label>
+                        <input type="text" placeholder="Enter occupation">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Guardian's Full Name</label>
+                        <input type="text" placeholder="Enter guardian's full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Guardian's Contact Number</label>
+                        <input type="tel" placeholder="09XXXXXXXXX" maxlength="11" inputmode="numeric">
+                    </div>
+                </div>
+            </form>
+
+            <br>
+
+            <!-- ── STEP 3: ACADEMIC BACKGROUND ── -->
+            <div class="step-header">
+                <div class="step-circle">3</div>
+                <p class="text2">Academic Background</p>
+            </div>
+
+            <form class="enroll-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Last School Attended <span class="required">*</span></label>
+                        <input type="text" placeholder="Enter school name">
+                    </div>
+                    <div class="form-group">
+                        <label>School Address</label>
+                        <input type="text" placeholder="Enter school address">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Year Graduated <span class="required">*</span></label>
+                        <input type="text" placeholder="e.g. 2024" maxlength="4" inputmode="numeric">
+                    </div>
+                    <div class="form-group">
+                        <label>General Weighted Average (GWA)</label>
+                        <input type="text" placeholder="e.g. 90.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Track / Strand</label>
+                        <select>
+                            <option value="">-- Select --</option>
+                            <option>STEM</option>
+                            <option>ABM</option>
+                            <option>HUMSS</option>
+                            <option>TVL</option>
+                            <option>GAS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Student Type <span class="required">*</span></label>
+                        <select>
+                            <option value="">-- Select --</option>
+                            <option>Freshman</option>
+                            <option>Transferee</option>
+                            <option>Returnee</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <br>
+
+            <!-- ── STEP 4: REQUIRED DOCUMENTS ── -->
+            <div class="step-header">
+                <div class="step-circle">4</div>
+                <p class="text2">Required Documents</p>
+            </div>
+
+            <div class="enroll-form">
+                <label>Birth Certificate (PSA) <span class="required">*</span></label>
+                <label class="upload-box" for="birth-cert">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload birth certificate</p>
+                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
+                    <input type="file" id="birth-cert" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
+                </label>
+
+                <label>CET Result <span class="required">*</span></label>
+                <label class="upload-box" for="cet-result">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload CET result</p>
+                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
+                    <input type="file" id="cet-result" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
+                </label>
+
+                <label>Form 138 / Report Card <span class="required">*</span></label>
+                <label class="upload-box" for="form138">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload Form 138</p>
+                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
+                    <input type="file" id="form138" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
+                </label>
+
+                <label>Good Moral Certificate <span class="required">*</span></label>
+                <label class="upload-box" for="good-moral">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload Good Moral Certificate</p>
+                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
+                    <input type="file" id="good-moral" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
+                </label>
+
+                <label>2x2 ID Picture <span class="required">*</span></label>
+                <label class="upload-box" for="id-pic">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload 2x2 ID Picture</p>
+                    <p class="upload-sub">Supported: JPG, PNG (Max 5MB)</p>
+                    <input type="file" id="id-pic" accept=".jpg,.jpeg,.png" hidden>
+                </label>
+            </div>
+
+            <br>
+
+            <!-- ── STEP 5: COLLEGE OF CHOICE ── -->
+            <div class="step-header">
+                <div class="step-circle">5</div>
+                <p class="text2">College of Choice</p>
+            </div>
+
+            <form class="enroll-form">
+                <label for="college">Select College to be Admitted <span class="required">*</span></label>
+                <select name="college" id="college">
+                    <option value="">-- Select a College --</option>
+                    <option>College of Architecture</option>
+                    <option>College of Agriculture</option>
+                    <option>College of Computing Studies</option>
+                    <option>College of Criminal Justice Education</option>
+                    <option>College of Teacher Education</option>
+                    <option>College of Engineering</option>
+                    <option>College of Social Works and Community Development</option>
+                    <option>College of Nursing</option>
+                    <option>College of Asian and Islamic Studies</option>
+                    <option>College of Sports Science and Physical Education</option>
+                    <option>College of Liberal Arts</option>
+                    <option>College of Public Administration and Development Studies</option>
+                    <option>College of Science and Mathematics</option>
+                    <option>College of Home Economics</option>
+                    <option>College of Forestry and Environmental Studies</option>
+                    <option>College of Medicine</option>
+                    <option>College of Law</option>
+                </select>
+            </form>
+
+            <br>
+
+            <!-- ── STEP 6: CONTACT INFORMATION ── -->
+            <div class="step-header">
+                <div class="step-circle">6</div>
+                <p class="text2">Contact Information</p>
+            </div>
+
+            <form class="enroll-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Personal Email Address <span class="required">*</span></label>
+                        <input type="email" placeholder="example@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input type="tel" placeholder="09XXXXXXXXX" maxlength="11" inputmode="numeric">
+                    </div>
+                </div>
+            </form>
+
+            <!-- ── SUBMIT ── -->
+            <hr class="divider">
+            <div class="submit-section">
+                <button class="btn-submit">Submit Enrollment Application</button>
+                <p class="submit-note">By submitting this form, you agree to the terms and conditions of WMSU enrollment process.</p>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

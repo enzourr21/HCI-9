@@ -27,14 +27,13 @@
     align-items: flex-start;
     min-height: 100vh;
     background-color: #f5f5f5;
-    padding: 0 0;
+    padding: 30px 0;
 }
 
 /* ─── ENROLLMENT BOX ─────────────────────────────── */
 .containerEnroll {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-start;
     background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -50,7 +49,12 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
+    margin-top: 30px;
     width: 100%;
+}
+
+.step-header:first-child {
+    margin-top: 0;
 }
 
 .step-circle {
@@ -73,7 +77,6 @@
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    margin-top: 20px;
 }
 
 .enroll-form label {
@@ -82,47 +85,72 @@
     color: #333;
 }
 
-.enroll-form input {
-    padding: 10px 14px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 15px;
-    outline: none;
-    margin-bottom: 10px;
-    transition: border-color 0.2s;
-}
-
-.enroll-form input[type="file"] {
-    padding: 10px 14px;
-    border: 1px dashed #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #f9f9f9;
-    width: 100%;
-    height: 30vh;
-    transition: border-color 0.2s;
-}
-
-.enroll-form input[type="file"]:hover {
-    border-color: crimson;
-}
-
-.enroll-form input:focus {
-    border-color: crimson;
-}
-
-/* ─── SELECT DROPDOWN ────────────────────────────── */
+.enroll-form input,
 .enroll-form select {
     padding: 10px 14px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 15px;
-    width: 100%;
     outline: none;
+    width: 100%;
     background-color: white;
     color: #333;
+    transition: border-color 0.2s;
+    margin-bottom: 10px;
+}
+
+.enroll-form input:focus,
+.enroll-form select:focus {
+    border-color: crimson;
+}
+
+/* ─── SELECT DROPDOWN ────────────────────────────── */
+.enroll-form select {
     cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+/* ─── FORM ROW (side by side) ────────────────────── */
+.form-row {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 180px;
+}
+
+.form-group-small {
+    flex: 0.4;
+    min-width: 100px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    width: 100%;
+    background-color: white;
+    color: #333;
     transition: border-color 0.2s;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -130,15 +158,70 @@
     background-position: right 14px center;
 }
 
-.enroll-form select:focus {
+.form-group input {
+    background-image: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
     border-color: crimson;
 }
 
-.enroll-form select option:first-child {
-    color: #aaa;
+/* ─── REQUIRED STAR ──────────────────────────────── */
+.required {
+    color: crimson;
+    margin-left: 2px;
 }
 
-/* ─── SUBMIT SECTION ─────────────────────────────── */
+/* ─── UPLOAD BOX ─────────────────────────────────── */
+.upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 40px 20px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #fafafa;
+    transition: border-color 0.2s, background-color 0.2s;
+    margin-bottom: 16px;
+    gap: 6px;
+}
+
+.upload-box:hover {
+    border-color: crimson;
+    background-color: #fff5f5;
+}
+
+.upload-icon {
+    font-size: 36px;
+    color: #aaa;
+    line-height: 1;
+}
+
+.upload-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+}
+
+.upload-sub {
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+}
+
+/* ─── HIDE NUMBER SPINNERS ───────────────────────── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ─── DIVIDER ────────────────────────────────────── */
 .divider {
     width: 100%;
     border: none;
@@ -146,6 +229,7 @@
     margin: 24px 0;
 }
 
+/* ─── SUBMIT SECTION ─────────────────────────────── */
 .submit-section {
     display: flex;
     flex-direction: column;

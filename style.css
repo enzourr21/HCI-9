@@ -25,20 +25,3 @@ html {
 body {
     background-color: var(--white);
 }
-
-/* ─── RESPONSIVE ─────────────────────────────────── */
-@media (max-width: 768px) {
-    .big-text { font-size: 36px; }
-    .medium-text { font-size: 28px; }
-    .small-text { font-size: 16px; }
-    .why-grid { grid-template-columns: repeat(2, 1fr); }
-    .btn { width: auto; font-size: 16px; }
-    .navbar { padding: 0 20px; }
-    .infos { flex-direction: column; }
-}
-
-@media (max-width: 480px) {
-    .why-grid { grid-template-columns: 1fr; }
-    .log { flex-direction: column; align-items: center; }
-    .why2 { width: 100%; }
-}
