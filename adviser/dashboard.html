@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMSU-Ease | Adviser Dashboard</title>
+    <link rel="stylesheet" href="../style.css"> 
+    <link rel="stylesheet" href="adviser.css">
+</head>
+<body>
+    <div class="adviser-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="../hat.png" alt="WMSU Logo" class="logo-img">
+                <span>WMSU-Ease</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item active">My Students</a>
+                <a href="assessment.html" class="nav-item">Assessment</a>
+                <a href="submitted.html" class="nav-item">Submitted</a>
+            </nav>
+            <div class="quick-stats">
+                <h4>Quick Stats</h4>
+                <p>Total Students: 7</p>
+                <p>Overloaded: 2</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="top-bar">
+                <h2>My Advisees</h2>
+                <div class="profile-info">
+                    <p>Prof. Adviser Name</p>
+                    <a href="../login.html">Logout</a>
+                </div>
+            </header>
+
+            <section class="filter-section">
+                <select class="section-select">
+                    <option>Section: All</option>
+                    <option>CS-1A</option>
+                </select>
+                <div class="pills">
+                    <button class="pill active">Pending (4)</button>
+                    <button class="pill">Action Required (2)</button>
+                </div>
+            </section>
+
+            <div id="student-list">
+                <div class="student-card">
+    <div class="card-header">
+        <div class="profile-row">
+            <div class="avatar">JDC</div>
+            <div class="name-container">
+                <div class="name-line">
+                    <h3 class="student-name">Juan Dela Cruz</h3>
+                    <span class="badge regular">Regular</span> </div>
+                <p class="student-id">2024-001234</p>
+                <p class="student-meta">Year 1 • CS-1A</p>
+            </div>
+            <div class="status-pill pending">Pending</div>
+        </div>
+        <p class="submission-date">Submitted: 2026-02-23</p>
+    </div>
+
+    <div class="card-body">
+        <h4 class="enrolled-title">Enrolled Subjects (27.00 / 30.00 units)</h4>
+        <div class="subject-list">
+            <div class="subject-row">
+                <span>CS 101 - Introduction to Computing</span>
+                <span class="units">3.00 units</span>
+            </div>
+            <div class="subject-row">
+                <span>CS 101L - Introduction to Computing Lab</span>
+                <span class="units">1.00 units</span>
+            </div>
+            </div>
+    </div>
+
+    <div class="card-actions">
+        <button class="btn btn-review">
+            <img src="../edit-icon.png" alt=""> Review & Edit
+        </button>
+        <button class="btn btn-reject">
+            <img src="../reject-icon.png" alt=""> Reject
+        </button>
+    </div>
+</div>
+                </div>
+        </main>
+    </div>
+</body>
+</html>

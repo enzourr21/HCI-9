@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMSU-Ease | Assessment Queue</title>
+    <link rel="stylesheet" href="../style.css"> 
+    <link rel="stylesheet" href="adviser.css">
+</head>
+<body>
+    <div class="adviser-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="../hat.png" alt="WMSU Logo" class="logo-img">
+                <span>WMSU-Ease</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">My Students</a>
+                <a href="assessment.html" class="nav-item active">Assessment</a>
+                <a href="submitted.html" class="nav-item">Submitted</a>
+            </nav>
+            <div class="quick-stats">
+                <h4>Quick Stats</h4>
+                <p>Total Students: 7</p>
+                <p>Overloaded: 2</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="top-bar">
+        <div class="header-text">
+            <h2>Assessment Queue</h2>
+            <p>Review and confirm student units for final submission.</p>
+        </div>
+        <div class="profile-info">
+            <span>Prof. Adviser Name</span>
+            <img src="../logo.png" alt="Profile" class="profile-icon">
+        </div>
+    </header>
+
+            <section class="assessment-container">
+                <div class="student-card">
+                    <div class="card-header-flex" style="display: flex; align-items: center; gap: 15px;">
+                        <div class="avatar-circle" style="background: #D32F2F; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">MS</div>
+                            <div class="student-basic-info">
+                                <h3 style="margin: 0;">Maria Santos <span class="badge regular">Regular</span></h3>
+                                <p style="margin: 0; color: #666; font-size: 14px;">2024-001235 • Year 2 • CS-2A</p>
+                            </div>
+                        </div>
+
+                        <div class="unit-summary-box">
+                            <div class="unit-stat">
+                                <span>Academic Units</span>
+                                <strong>23.00</strong>
+                            </div>
+                            <div class="unit-stat">
+                                <span>Non-Academic</span>
+                                <strong>2.00</strong>
+                            </div>
+                            <div class="unit-stat grand-total">
+                                <span>Grand Total</span>
+                                <strong>25.00</strong>
+                            </div>
+                        </div>
+
+        <div class="card-actions">
+            <button class="btn btn-primary">✔ Submit Assessment</button>
+            <button class="btn btn-outline">👁 View Subjects</button>
+        </div>
+    </div>
+    <div class="student-card status-irregular">
+    <div class="card-header-flex" style="display: flex; align-items: center; gap: 15px;">
+        <div class="avatar-circle" style="background: #B71C1C; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">EM</div>
+            <div class="student-basic-info">
+                <h3 style="margin: 0;">Enzo Siguiente Machutes <span class="badge irregular">Irregular</span></h3>
+                <p style="margin: 0; color: #666; font-size: 14px;">2024-009876 • Year 1 • CS-1B</p>
+            </div>
+    </div>
+
+    <div class="unit-summary-box">
+        <div class="unit-stat">
+            <span>Academic Units</span>
+            <strong>25.00</strong>
+        </div>
+        <div class="unit-stat">
+            <span>Non-Academic</span>
+            <strong style="color: #D32F2F;">2.00</strong> </div>
+        <div class="unit-stat grand-total">
+            <span>Grand Total</span>
+            <strong style="color: #D32F2F;">27.00</strong> </div>
+    </div>
+
+    <p style="color: #B71C1C; font-size: 13px; font-weight: bold; margin: 10px 0; text-align: center;">
+        ⚠️ Unit Discrepancy: Expected 4.00 Non-Academic units for this section.
+    </p>
+
+    <div class="card-actions">
+        <button class="btn btn-primary">✔ Submit Assessment</button>
+        <button class="btn btn-outline">👁 View Subjects</button>
+    </div>
+</div>
+</section>
+
+</main>
+    </div>
+</body>
+</html>
