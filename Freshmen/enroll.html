@@ -13,7 +13,7 @@
     <!-- ── NAVBAR ── -->
     <nav class="navbar">
         <div class="logo">
-            <img src="../photos/hat.png" alt="logo" class="logo-img">
+            <img src="../logo.png" alt="logo" class="logo-img">
             <span class="name" style="color: black;">WMSU-Ease</span>
         </div>
         <ul class="nav-links">
@@ -258,30 +258,25 @@
 
             <br>
 
-            <!-- ── STEP 4: REQUIRED DOCUMENTS ── -->
+         <!-- ── STEP 4: REQUIRED DOCUMENTS ── -->
             <div class="step-header">
                 <div class="step-circle">4</div>
                 <p class="text2">Required Documents</p>
             </div>
 
             <div class="enroll-form">
-                <label>Birth Certificate (PSA) <span class="required">*</span></label>
+
+                <!-- 1. PSA Birth Certificate -->
+                <label>1. Birth Certificate (PSA) <span class="required">*</span></label>
                 <label class="upload-box" for="birth-cert">
                     <div class="upload-icon">&#8679;</div>
-                    <p class="upload-title">Click to upload birth certificate</p>
+                    <p class="upload-title">Click to upload Birth Certificate</p>
                     <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
                     <input type="file" id="birth-cert" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
                 </label>
 
-                <label>CET Result <span class="required">*</span></label>
-                <label class="upload-box" for="cet-result">
-                    <div class="upload-icon">&#8679;</div>
-                    <p class="upload-title">Click to upload CET result</p>
-                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
-                    <input type="file" id="cet-result" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
-                </label>
-
-                <label>Form 138 / Report Card <span class="required">*</span></label>
+                <!-- 2. Form 138 -->
+                <label>2. Form 138 / Report Card <span class="required">*</span></label>
                 <label class="upload-box" for="form138">
                     <div class="upload-icon">&#8679;</div>
                     <p class="upload-title">Click to upload Form 138</p>
@@ -289,7 +284,8 @@
                     <input type="file" id="form138" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
                 </label>
 
-                <label>Good Moral Certificate <span class="required">*</span></label>
+                <!-- 3. Good Moral Certificate -->
+                <label>3. Good Moral Certificate <span class="required">*</span></label>
                 <label class="upload-box" for="good-moral">
                     <div class="upload-icon">&#8679;</div>
                     <p class="upload-title">Click to upload Good Moral Certificate</p>
@@ -297,16 +293,53 @@
                     <input type="file" id="good-moral" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
                 </label>
 
-                <label>2x2 ID Picture <span class="required">*</span></label>
+                <!-- 4. CET Result -->
+                <label>4. CET Result <span class="required">*</span></label>
+                <label class="upload-box" for="cet-result">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload CET Result</p>
+                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
+                    <input type="file" id="cet-result" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
+                </label>
+
+                <!-- 5. Medical Certificate -->
+                <label>5. Medical Certificate <span class="required">*</span></label>
+                <p class="upload-note">To be issued by WMSU's University Health Services Center</p>
+                <label class="upload-box" for="medical-cert">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload Medical Certificate</p>
+                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
+                    <input type="file" id="medical-cert" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
+                </label>
+
+                <!-- 6. 2x2 ID Picture -->
+                <label>6. 2x2 ID Picture<span class="required">*</span></label>
+                <p class="upload-note">With name tag and white background</p>
                 <label class="upload-box" for="id-pic">
                     <div class="upload-icon">&#8679;</div>
                     <p class="upload-title">Click to upload 2x2 ID Picture</p>
                     <p class="upload-sub">Supported: JPG, PNG (Max 5MB)</p>
                     <input type="file" id="id-pic" accept=".jpg,.jpeg,.png" hidden>
                 </label>
-            </div>
 
-            <br>
+                <!-- 7. Parent's Financial Document (select type) -->
+                <label>7. Parent's Financial Document <span class="required">*</span></label>
+                <p class="upload-note">Select and upload ONE of the following documents</p>
+                <select class="doc-select" name="parent-doc-type">
+                    <option value="">-- Select Document Type --</option>
+                    <option>Income Tax Return (ITR)</option>
+                    <option>Certificate of Tax Exemption</option>
+                    <option>Affidavit of No Income</option>
+                    <option>Certificate of Indigency</option>
+                </select>
+                <label class="upload-box" for="parent-doc">
+                    <div class="upload-icon">&#8679;</div>
+                    <p class="upload-title">Click to upload Parent's Financial Document</p>
+                    <p class="upload-sub">Supported: JPG, PNG, GIF, PDF (Max 5MB)</p>
+                    <input type="file" id="parent-doc" accept=".jpg,.jpeg,.png,.gif,.pdf" hidden>
+                </label>
+
+            </div>
 
             <!-- ── STEP 5: COLLEGE OF CHOICE ── -->
             <div class="step-header">

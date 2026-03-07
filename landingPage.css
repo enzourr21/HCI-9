@@ -93,7 +93,8 @@
 }
 
 #login:hover {
-    background-color: var(--crimson);
+    background-color: var(--crimson-dark);
+    border-color: var(--crimson-dark);
     color: var(--white);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(192, 25, 43, 0.25);
