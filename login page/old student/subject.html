@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects - WMSU-Ease</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="subject.css">
+    <link rel="stylesheet" href="../../landingPage.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../logo.png" alt="logo" class="logo-img">
+            <span class="name" style="color: black;">WMSU-Ease</span>
+        </div>
+        <div class="navbar-right">
+            <div class="user-info">
+                <span class="user-name">Juan Dela Cruz</span>
+                <span class="user-id">2024-001234</span>
+            </div>
+            <a href="../login.html" class="logout-btn">&#x2192; Logout</a>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar">
+            <ul class="sidebar-links">
+                <li><a href="profile.html">&#128100; Profile</a></li>
+                <li><a href="subject.html" class="active">&#128214; Subjects</a></li>
+                <li><a href="assessment.html">&#128462; Assessment</a></li>
+                <li><a href="schedule.html">&#128197; Schedule</a></li>
+                <li><a href="payment.html">&#128179; Payment</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- ── ENROLLMENT PROGRESS ── -->
+            <div class="card">
+                <h3 class="card-title">Enrollment Progress</h3>
+                <div class="progress-track">
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128065;</div>
+                        <div class="step-line"></div>
+                        <p class="step-label">Form Reviewing</p>
+                        <span class="badge green">Completed</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128100;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Advising</p>
+                        <span class="badge yellow">In Progress</span>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#128462;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Assessment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#80;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Payment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#10003;</div>
+                        <p class="step-label">Enlistment</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── STATS ── -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">Total Units</p>
+                    <p class="stat-value black">14</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Approved</p>
+                    <p class="stat-value green">3</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Pending</p>
+                    <p class="stat-value orange">2</p>
+                </div>
+            </div>
+
+            <!-- ── SUBJECTS TABLE ── -->
+            <div class="card">
+                <div class="section-header">
+                    <h3 class="card-title" style="margin-bottom: 0;">&#128214; Enrolled Subjects</h3>
+                    <button class="btn-add">+ Add Subject</button>
+                </div>
+                <br>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Description</th>
+                                <th>Units</th>
+                                <th>Instructor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CS 101</td>
+                                <td>Introduction to Computing</td>
+                                <td>3</td>
+                                <td>Prof. Reyes</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>CS 102</td>
+                                <td>Computer Programming 1</td>
+                                <td>3</td>
+                                <td>Prof. Santos</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>MATH 101</td>
+                                <td>College Algebra</td>
+                                <td>3</td>
+                                <td>Prof. Garcia</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>ENG 101</td>
+                                <td>Communication Skills 1</td>
+                                <td>3</td>
+                                <td>Prof. Cruz</td>
+                                <td><span class="badge yellow">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>PE 101</td>
+                                <td>Physical Education 1</td>
+                                <td>2</td>
+                                <td>Prof. Mendoza</td>
+                                <td><span class="badge yellow">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

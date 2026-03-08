@@ -1,0 +1,19 @@
+/* ─── ADD SUBJECT BUTTON ─────────────────────────── */
+.btn-add {
+    background-color: crimson;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.btn-add:hover {
+    background-color: darkred;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 20, 60, 0.25);
+}

@@ -1,0 +1,89 @@
+/* ─── DAY BADGES ─────────────────────────────────── */
+.day-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 2px;
+}
+
+.day-badge.mon { background-color: #fde8ea; color: crimson; }
+.day-badge.tue { background-color: #e8f4fd; color: #2980b9; }
+.day-badge.wed { background-color: #e8fdf0; color: #27ae60; }
+.day-badge.thu { background-color: #fef9e7; color: #f39c12; }
+.day-badge.fri { background-color: #f3e8fd; color: #8e44ad; }
+
+/* ─── WEEKLY GRID ────────────────────────────────── */
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.day-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.day-header {
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mon-h { background-color: #fde8ea; color: crimson; }
+.tue-h { background-color: #e8f4fd; color: #2980b9; }
+.wed-h { background-color: #e8fdf0; color: #27ae60; }
+.thu-h { background-color: #fef9e7; color: #f39c12; }
+.fri-h { background-color: #f3e8fd; color: #8e44ad; }
+
+/* ─── DAY SLOT ───────────────────────────────────── */
+.day-slot {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px;
+    border-left: 3px solid crimson;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.day-slot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.slot-code {
+    font-size: 13px;
+    font-weight: 700;
+    color: crimson;
+    margin-bottom: 2px;
+}
+
+.slot-time {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.slot-room {
+    font-size: 12px;
+    color: #888;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+    .week-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .week-grid {
+        grid-template-columns: 1fr;
+    }
+}

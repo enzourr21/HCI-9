@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - WMSU-Ease</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="../../landingPage.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../logo.png" alt="logo" class="logo-img">
+            <span class="name" style="color: black;">WMSU-Ease</span>
+        </div>
+        <div class="navbar-right">
+            <div class="user-info">
+                <span class="user-name">Juan Dela Cruz</span>
+                <span class="user-id">2024-001234</span>
+            </div>
+            <a href="../login.html" class="logout-btn">&#x2192; Logout</a>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar">
+            <ul class="sidebar-links">
+                <li><a href="profile.html" class="active">&#128100; Profile</a></li>
+                <li><a href="subject.html">&#128214; Subjects</a></li>
+                <li><a href="assessment.html">&#128462; Assessment</a></li>
+                <li><a href="schedule.html">&#128197; Schedule</a></li>
+                <li><a href="payment.html">&#128179; Payment</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- ── ENROLLMENT PROGRESS ── -->
+            <div class="card">
+                <h3 class="card-title">Enrollment Progress</h3>
+                <div class="progress-track">
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128065;</div>
+                        <div class="step-line"></div>
+                        <p class="step-label">Form Reviewing</p>
+                        <span class="badge green">Completed</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128100;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Advising</p>
+                        <span class="badge yellow">In Progress</span>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#128462;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Assessment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#80;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Payment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#10003;</div>
+                        <p class="step-label">Enlistment</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── PROFILE HEADER ── -->
+            <div class="card">
+                <div class="profile-header">
+                    <div class="profile-avatar">JD</div>
+                    <div class="profile-meta">
+                        <h2 class="profile-name">Juan Dela Cruz</h2>
+                        <p class="profile-sub">2024-001234 &bull; Freshman &bull; College of Computing Studies</p>
+                        <span class="badge green">Enrolled</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── PERSONAL INFO ── -->
+            <div class="card">
+                <h3 class="card-title">&#128100; Personal Information</h3>
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <p class="field-label">Last Name</p>
+                        <p class="field-value">Dela Cruz</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">First Name</p>
+                        <p class="field-value">Juan</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Middle Name</p>
+                        <p class="field-value">Santos</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Suffix</p>
+                        <p class="field-value">Jr.</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Date of Birth</p>
+                        <p class="field-value">January 15, 2005</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Place of Birth</p>
+                        <p class="field-value">Zamboanga City</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Age</p>
+                        <p class="field-value">19</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Sex / Gender</p>
+                        <p class="field-value">Male</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Civil Status</p>
+                        <p class="field-value">Single</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Nationality</p>
+                        <p class="field-value">Filipino</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Religion</p>
+                        <p class="field-value">Roman Catholic</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">CET ID</p>
+                        <p class="field-value">2324-01234</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ADDRESS ── -->
+            <div class="card">
+                <h3 class="card-title">&#127968; Address</h3>
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <p class="field-label">Street / Purok</p>
+                        <p class="field-value">Purok 3, Rizal Street</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Barangay</p>
+                        <p class="field-value">Barangay Putik</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">City / Municipality</p>
+                        <p class="field-value">Zamboanga City</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Province</p>
+                        <p class="field-value">Zamboanga del Sur</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Zip Code</p>
+                        <p class="field-value">7000</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── FAMILY BACKGROUND ── -->
+            <div class="card">
+                <h3 class="card-title">&#128106; Family Background</h3>
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <p class="field-label">Father's Name</p>
+                        <p class="field-value">Pedro Dela Cruz</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Father's Occupation</p>
+                        <p class="field-value">Engineer</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Mother's Name</p>
+                        <p class="field-value">Maria Santos Dela Cruz</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Mother's Occupation</p>
+                        <p class="field-value">Teacher</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Guardian's Name</p>
+                        <p class="field-value">Pedro Dela Cruz</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Guardian's Contact</p>
+                        <p class="field-value">09123456789</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ACADEMIC BACKGROUND ── -->
+            <div class="card">
+                <h3 class="card-title">&#127979; Academic Background</h3>
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <p class="field-label">Last School Attended</p>
+                        <p class="field-value">Zamboanga City High School</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">School Address</p>
+                        <p class="field-value">Mayor Jaldon St., Zamboanga City</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Year Graduated</p>
+                        <p class="field-value">2024</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">GWA</p>
+                        <p class="field-value">92.5</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Track / Strand</p>
+                        <p class="field-value">STEM</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Student Type</p>
+                        <p class="field-value">Freshman</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── COLLEGE & CONTACT ── -->
+            <div class="card">
+                <h3 class="card-title">&#127979; College & Contact Information</h3>
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <p class="field-label">College</p>
+                        <p class="field-value">College of Computing Studies</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Email Address</p>
+                        <p class="field-value">juandelacruz@wmsu.edu.ph</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Phone Number</p>
+                        <p class="field-value">09123456789</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
