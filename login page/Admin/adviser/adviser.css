@@ -1,0 +1,224 @@
+/* adviser/adviser.css */
+.adviser-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    width: 260px;
+    background: white;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Red buttons and active states to match WMSU */
+.nav-item {
+    display: block;      /* Makes the whole row clickable */
+    text-decoration: none; /* Removes the underline */
+    color: #333;         /* Sets a neutral default color */
+    margin-bottom: 5px;  /* Adds space between sidebar buttons */
+    padding: 10px 15px;  /* Gives the button some "body" */
+    border-radius: 8px;  /* Matches your active state shape */
+    position: relative;
+    transition: 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #fce8e6; /* Very light red */
+    color: #D32F2F;
+    padding-left: 20px; /* Subtle "slide" effect */
+}
+
+.nav-item:hover::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: #D32F2F;
+}
+
+.nav-item.active {
+    background-color: #d32f2f;
+    color: white;
+    border-radius: 8px;
+}
+
+/* Card Container */
+.student-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-5px); /* Lifts the card up slightly */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* Adds a deeper shadow */
+}
+
+.student-card.status-irregular:hover {
+    border-color: #b71c1c; /* Darker red on hover */
+    background-color: #fff0f0; /* Slightly deeper tint */
+}
+
+/* Header & Badges */
+.name-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.regular { background: #E6F4EA; color: #1E7E34; }
+.irregular { background: #FFF4E5; color: #B05D00; }
+
+.status-pill.pending {
+    background: #FFF9C4;
+    color: #827717;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* Subject List Area */
+.subject-list {
+    max-height: 150px;
+    overflow-y: auto;
+    background: #F8F9FA;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+.subject-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #edf0f2;
+    font-size: 14px;
+}
+
+/* Buttons */
+.card-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+/* Submit Assessment) */
+.btn-primary {
+    background-color: #D32F2F;
+    color: white;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #B71C1C; /* Darker red */
+    filter: brightness(90%);
+}
+
+/* Secondary Button (View Subjects / Recall) */
+.btn-outline {
+    border: 2px solid #D32F2F;
+    color: #D32F2F;
+    background: transparent;
+}
+
+.btn-outline:hover {
+    background-color: #D32F2F;
+    color: white;
+}
+
+.btn-review {
+    color: #D32F2F;
+    border-color: #D32F2F;
+    background: white;
+}
+
+.btn-review:hover { background: #D32F2F; color: white; }
+
+.btn-reject {
+    color: #D32F2F;
+    background: #FFEBEE;
+}
+
+/*i Image size */
+.logo-img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+/* Table Styles for History */
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.history-table th, .history-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.history-table th {
+    background-color: #f8f9fa;
+    color: #666;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+/* The Recall Button */
+.btn-recall {
+    background-color: #fff3f3;
+    color: #D32F2F;
+    border: 1px solid #D32F2F;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-recall:hover {
+    background-color: #D32F2F;
+    color: white;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
+}

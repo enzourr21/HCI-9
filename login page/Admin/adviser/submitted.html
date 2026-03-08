@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMSU-Ease | Submitted History</title>
+    <link rel="stylesheet" href="../../style.css"> <link rel="stylesheet" href="adviser.css">
+</head>
+<body>
+    <div class="adviser-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="../../hat.png" alt="WMSU Logo" class="logo-img">
+                <span>WMSU-Ease</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">My Students</a>
+                <a href="assessment.html" class="nav-item">Assessment</a>
+                <a href="submitted.html" class="nav-item active">Submitted</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header class="top-bar">
+                <div class="header-text">
+                    <h2>Submission History</h2>
+                    <p>Track students forwarded to the Assessment Office.</p>
+                </div>
+                <div class="search-container">
+                    <input type="text" placeholder="Search name or ID..." class="search-input">
+                </div>
+            </header>
+
+            <section class="submitted-table-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>ID Number</th>
+                            <th>Date Submitted</th>
+                            <th>Total Units</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Maria Santos</td>
+                            <td>2024-001235</td>
+                            <td>March 8, 2026</td>
+                            <td>25.00</td>
+                            <td>
+                                <button class="btn-recall">↺ Recall</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
