@@ -1,0 +1,297 @@
+/* ─── HEADER TEXT ────────────────────────────────── */
+.text {
+    font-size: 35px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.text-desc {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+    margin-top: 0;
+}
+
+.text2 {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+}
+
+/* ─── ENROLLMENT SECTION ─────────────────────────── */
+#enroll {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 30px 0;
+}
+
+/* ─── ENROLLMENT BOX ─────────────────────────────── */
+.containerEnroll {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    width: 65%;
+    height: auto;
+    padding: 40px;
+}
+
+/* ─── STEP HEADER ────────────────────────────────── */
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.step-header:first-child {
+    margin-top: 0;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: crimson;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ─── ENROLLMENT FORM ────────────────────────────── */
+.enroll-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.enroll-form label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.enroll-form input,
+.enroll-form select {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    width: 100%;
+    background-color: white;
+    color: #333;
+    transition: border-color 0.2s;
+    margin-bottom: 10px;
+}
+
+.enroll-form input:focus,
+.enroll-form select:focus {
+    border-color: crimson;
+}
+
+/* ─── SELECT DROPDOWN ────────────────────────────── */
+.enroll-form select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+/* ─── FORM ROW (side by side) ────────────────────── */
+.form-row {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 180px;
+}
+
+.form-group-small {
+    flex: 0.4;
+    min-width: 100px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    width: 100%;
+    background-color: white;
+    color: #333;
+    transition: border-color 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+.form-group input {
+    background-image: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: crimson;
+}
+
+/* ─── REQUIRED STAR ──────────────────────────────── */
+.required {
+    color: crimson;
+    margin-left: 2px;
+}
+
+/* ─── UPLOAD BOX ─────────────────────────────────── */
+.upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 40px 20px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #fafafa;
+    transition: border-color 0.2s, background-color 0.2s;
+    margin-bottom: 16px;
+    gap: 6px;
+}
+
+.upload-box:hover {
+    border-color: crimson;
+    background-color: #fff5f5;
+}
+
+.upload-icon {
+    font-size: 36px;
+    color: #aaa;
+    line-height: 1;
+}
+
+.upload-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+}
+
+.upload-sub {
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+}
+
+/* ─── UPLOAD NOTE ────────────────────────────────── */
+.upload-note {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 6px;
+    font-style: italic;
+}
+
+/* ─── DOCUMENT SELECT ────────────────────────────── */
+.doc-select {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    width: 100%;
+    outline: none;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    margin-bottom: 10px;
+}
+
+.doc-select:focus {
+    border-color: crimson;
+}
+
+/* ─── HIDE NUMBER SPINNERS ───────────────────────── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ─── DIVIDER ────────────────────────────────────── */
+.divider {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 24px 0;
+}
+
+/* ─── SUBMIT SECTION ─────────────────────────────── */
+.submit-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 18px;
+    background-color: crimson;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s;
+}
+
+.btn-submit:hover {
+    background-color: darkred;
+    transform: translateY(-2px);
+}
+
+.submit-note {
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    max-width: 500px;
+    line-height: 1.6;
+}

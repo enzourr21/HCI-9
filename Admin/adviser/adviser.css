@@ -171,7 +171,54 @@
 
 /*i Image size */
 .logo-img {
-    width: 40px; /* Adjust based on your Figma logo size */
+    width: 40px;
     height: auto;
     margin-right: 10px;
+}
+
+/* Table Styles for History */
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.history-table th, .history-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.history-table th {
+    background-color: #f8f9fa;
+    color: #666;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+/* The Recall Button */
+.btn-recall {
+    background-color: #fff3f3;
+    color: #D32F2F;
+    border: 1px solid #D32F2F;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-recall:hover {
+    background-color: #D32F2F;
+    color: white;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
 }

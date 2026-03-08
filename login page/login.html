@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Login</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../landingPage.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../logo.png" alt="logo" class="logo-img">
+            <span class="name" style="color: black;">WMSU-Ease</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Back to Home</a></li>
+        </ul>
+    </nav>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h1>Welcome Back</h1>
+            <p class="subtitle">Sign in to continue your enrollment</p>
+
+            <!-- ── RADIO TABS ── -->
+            <input type="radio" name="role" id="tab-student" checked hidden>
+            <input type="radio" name="role" id="tab-admin" hidden>
+
+            <div class="role-switch">
+                <label for="tab-student">Student</label>
+                <label for="tab-admin">Admin</label>
+            </div>
+
+            <div class="forms">
+
+                <!-- ── STUDENT FORM ── -->
+                <form id="studentForm">
+                    <label>Student Email</label>
+                    <input type="email" placeholder="example@wmsu.edu.ph"
+                        pattern="[a-zA-Z0-9._%+\-]+@wmsu\.edu\.ph"
+                        title="Please use your WMSU email (@wmsu.edu.ph)">
+
+                    <label>Password</label>
+                    <div class="password-box">
+                        <input type="password" placeholder="Enter password">
+                    </div>
+
+                    <div class="options">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#" class="forgot">Forgot Password?</a>
+                    </div>
+
+                    <a href="student.html" class="login-btn">Sign In</a>
+                </form>
+
+                <!-- ── ADMIN FORM ── -->
+                <form id="adminForm">
+                    <label>Select Role</label>
+                    <select>
+                        <option>-- Role --</option>
+                        <option>Registrar</option>
+                        <option>College Dean</option>
+                        <option>Department Admin</option>
+                        <option>Secretary</option>
+                        <option>Adviser</option>
+                    </select>
+
+                    <label>Admin Email</label>
+                    <input type="email" placeholder="example@wmsu.edu.ph"
+                        pattern="[a-zA-Z0-9._%+\-]+@wmsu\.edu\.ph"
+                        title="Please use your WMSU email (@wmsu.edu.ph)">
+
+                    <label>Password</label>
+                    <div class="password-box">
+                        <input type="password" placeholder="Enter password">
+                    </div>
+
+                    <div class="options">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#" class="forgot">Forgot Password?</a>
+                    </div>
+
+                    <a href="admin.html" class="login-btn">Sign In</a>
+                </form>
+
+            </div>
+
+            <p class="register">
+                Don't have an account? <a href="#">Contact Registrar</a>
+            </p>
+
+        </div>
+    </div>
+
+</body>
+</html>

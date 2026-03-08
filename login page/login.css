@@ -1,0 +1,172 @@
+/* ─── LOGIN WRAPPER ──────────────────────────────── */
+.login-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f3f3f3;
+}
+
+/* ─── LOGIN CARD ─────────────────────────────────── */
+.login-card {
+    background: white;
+    width: 420px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.login-card h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+/* ─── SUBTITLE ───────────────────────────────────── */
+.subtitle {
+    color: gray;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+/* ─── ROLE SWITCH ────────────────────────────────── */
+.role-switch {
+    display: flex;
+    background: #eaeaea;
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 25px;
+}
+
+.role-switch label {
+    flex: 1;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    transition: background 0.2s, color 0.2s;
+}
+
+/* ─── ACTIVE TAB ─────────────────────────────────── */
+#tab-student:checked ~ .forms #studentForm,
+#tab-admin:checked ~ .forms #adminForm {
+    display: block;
+}
+
+#tab-student:checked ~ .role-switch label[for="tab-student"],
+#tab-admin:checked ~ .role-switch label[for="tab-admin"] {
+    background: crimson;
+    color: white;
+}
+
+/* ─── FORMS ──────────────────────────────────────── */
+.forms form {
+    display: none;
+    text-align: left;
+}
+
+.forms form label {
+    font-size: 14px;
+    margin-top: 10px;
+    display: block;
+    font-weight: 600;
+    color: #333;
+}
+
+.forms form input,
+.forms form select {
+    width: 100%;
+    padding: 11px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.forms form input:focus,
+.forms form select:focus {
+    border-color: crimson;
+}
+
+/* ─── PASSWORD BOX ───────────────────────────────── */
+.password-box {
+    position: relative;
+}
+
+/* ─── OPTIONS ────────────────────────────────────── */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 400 !important;
+    margin-top: 0 !important;
+    cursor: pointer;
+}
+
+.options input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    accent-color: crimson;
+}
+
+.options a {
+    color: crimson;
+}
+
+.options a:hover {
+    color: darkred;
+    text-decoration: underline;
+}
+
+/* ─── LOGIN BUTTON ───────────────────────────────── */
+.login-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: crimson;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: block;
+    text-align: center;
+}
+
+.login-btn:hover {
+    background: darkred;
+    transform: translateY(-2px);
+}
+
+/* ─── REGISTER LINK ──────────────────────────────── */
+.register {
+    margin-top: 20px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.register a {
+    color: crimson;
+    font-weight: 600;
+}
+
+.register a:hover {
+    color: darkred;
+    text-decoration: underline;
+}
