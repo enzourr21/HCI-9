@@ -4,89 +4,200 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMSU-Ease | Adviser Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../../style.css"> 
     <link rel="stylesheet" href="adviser.css">
 </head>
 <body>
+
+    <header class="top-nav">
+        <div class="brand">
+            <img src="../../../logo.png" alt="WMSU Logo" class="logo-img">
+            <div class="brand-text">
+                <span class="brand-name">WMSU-Ease</span>
+                <span class="brand-sub">Adviser Portal</span>
+            </div>
+        </div>
+
+        <div class="user-profile-top">
+            <div class="profile-text">
+                <span class="prof-name">Prof. Adviser Name</span>
+                <span class="prof-dept">Computer Science Adviser</span>
+            </div>
+            <a href="../../login.html" class="logout-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </header>
+
     <div class="adviser-layout">
         <aside class="sidebar">
-            <div class="brand">
-                <img src="../../../logo.png" alt="WMSU Logo" class="logo-img">
-                <span>WMSU-Ease</span>
-            </div>
             <nav class="nav-menu">
-                <a href="dashboard.html" class="nav-item active">My Students</a>
-                <a href="assessment.html" class="nav-item">Assessment</a>
-                <a href="submitted.html" class="nav-item">Submitted</a>
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-users"></i> My Students
+                </a>
+                <a href="assessment.html" class="nav-item">
+                    <i class="fas fa-file-invoice"></i> Assessment
+                </a>
+                <a href="submitted.html" class="nav-item">
+                    <i class="fas fa-check-circle"></i> Submitted
+                </a>
             </nav>
+
             <div class="quick-stats">
                 <h4>Quick Stats</h4>
-                <p>Total Students: 7</p>
-                <p>Overloaded: 2</p>
+                <div class="stat-item"><span>Total Students:</span> <strong>7</strong></div>
+                <div class="stat-item"><span>Pending Review:</span> <strong>6</strong></div>
+                <div class="stat-item"><span>Overloaded:</span> <strong>2</strong></div>
+                <div class="stat-item"><span>Approved:</span> <strong>1</strong></div>
             </div>
         </aside>
 
         <main class="content">
-            <header class="top-bar">
+            <div class="content-header">
+                <div class="header-left">
                 <h2>My Advisees</h2>
-                <div class="profile-info">
-                    <p>Prof. Adviser Name</p>
-                    <a href="../../login.html">Logout</a>
+        
+                <div class="section-row">
+                    <span class="label">Section:</span>
+                    <select class="section-select">
+                        <option>All</option>
+                        <option>CS-1A</option>
+                        <option>CS-3A</option>
+                    </select>
                 </div>
-            </header>
-
-            <section class="filter-section">
-                <select class="section-select">
-                    <option>Section: All</option>
-                    <option>CS-1A</option>
-                </select>
-                <div class="pills">
-                    <button class="pill active">Pending (4)</button>
-                    <button class="pill">Action Required (2)</button>
+            </div>
+                
+                <div class="header-right">
+                    <div class="control-group">
+                        <span class="label">Filter:</span>
+                        <div class="pills">
+                            <button class="filter-btn">All</button>
+                            <button class="filter-btn active">Pending (4)</button>
+                            <button class="filter-btn">Action Required (2)</button>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </div>
 
             <div id="student-list">
                 <div class="student-card">
-    <div class="card-header">
-        <div class="profile-row">
-            <div class="avatar">JDC</div>
-            <div class="name-container">
-                <div class="name-line">
-                    <h3 class="student-name">Juan Dela Cruz</h3>
-                    <span class="badge regular">Regular</span> </div>
-                <p class="student-id">2024-001234</p>
-                <p class="student-meta">Year 1 • CS-1A</p>
-            </div>
-            <div class="status-pill pending">Pending</div>
-        </div>
-        <p class="submission-date">Submitted: 2026-02-23</p>
-    </div>
+                    <div class="card-header">
+                        <div class="profile-row">
+                            <div class="avatar">JDC</div>
+                            <div class="name-container">
+                                <div class="name-line">
+                                    <h3 class="student-name">Juan Dela Cruz</h3>
+                                    <span class="badge regular">Regular</span>
+                                </div>
+                                <p class="student-id">2024-001234</p>
+                                <p class="student-meta">Year 3 • CS-3B</p>
+                            </div>
+                            <div class="status-pill pending">Pending</div>
+                        </div>
+                        <p class="submission-date">Submitted: 2026-02-23</p>
+                    </div>
 
-    <div class="card-body">
-        <h4 class="enrolled-title">Enrolled Subjects (27.00 / 30.00 units)</h4>
-        <div class="subject-list">
-            <div class="subject-row">
-                <span>CS 101 - Introduction to Computing</span>
-                <span class="units">3.00 units</span>
-            </div>
-            <div class="subject-row">
-                <span>CS 101L - Introduction to Computing Lab</span>
-                <span class="units">1.00 units</span>
-            </div>
-            </div>
-    </div>
+                    <div class="card-body">
+                        <h4 class="enrolled-title">Enrolled Subjects (20.00 / 20.00 units)</h4>
+                        <div class="subject-list">
+                            <div class="subject-row">
+                                <span>DS 131 - Discrete Structures 3</span>
+                                <span class="units">3.00 units</span>
+                            </div>
+                            <div class="subject-row">
+                                <span>CS 106 - Cyber Security</span>
+                                <span class="units">5.00 units</span>
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="card-actions">
-        <button class="btn btn-review">
-            <img src="../edit-icon.png" alt=""> Review & Edit
-        </button>
-        <button class="btn btn-reject">
-            <img src="../reject-icon.png" alt=""> Reject
-        </button>
-    </div>
-</div>
+                    <div class="card-btns">
+                        <button class="btn btn-review">Review & Edit</button>
+                        <button class="btn btn-proceed">
+                        <i class="fas fa-check-circle"></i> Proceed
+                        </button>
+                    </div>
                 </div>
+
+                <div class="student-card">
+                    <div class="card-header">
+                        <div class="profile-row">
+                            <div class="avatar">CH</div>
+                            <div class="name-container">
+                                <div class="name-line">
+                                    <h3 class="student-name">Cassidy Himodo</h3>
+                                    <span class="badge regular">Regular</span>
+                                </div>
+                                <p class="student-id">2025-001234</p>
+                                <p class="student-meta">Year 2 • CS-2A</p>
+                            </div>
+                            <div class="status-pill pending">Pending</div>
+                        </div>
+                        <p class="submission-date">Submitted: 2026-02-23</p>
+                    </div>
+
+                    <div class="card-body">
+                        <h4 class="enrolled-title">Enrolled Subjects (22.00 / 22.00 units)</h4>
+                        <div class="subject-list">
+                            <div class="subject-row">
+                                <span>CS 103 - Introduction to Computing</span>
+                                <span class="units">3.00 units</span>
+                            </div>
+                            <div class="subject-row">
+                                <span>CC 104 - Data Structures & Algorithms</span>
+                                <span class="units">3.00 units</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-btns">
+                        <button class="btn btn-review">Review & Edit</button>
+                        <button class="btn btn-proceed">
+                        <i class="fas fa-check-circle"></i> Proceed
+                        </button>
+                    </div>
+                </div>
+
+                <div class="student-card">
+                    <div class="card-header">
+                        <div class="profile-row">
+                            <div class="avatar">JDC</div>
+                            <div class="name-container">
+                                <div class="name-line">
+                                    <h3 class="student-name">Enzo Machutes</h3>
+                                    <span class="badge regular">Regular</span>
+                                </div>
+                                <p class="student-id">2026-000497</p>
+                                <p class="student-meta">Year 1 • CS-1A</p>
+                            </div>
+                            <div class="status-pill pending">Pending</div>
+                        </div>
+                        <p class="submission-date">Submitted: 2026-02-29</p>
+                    </div>
+
+                    <div class="card-body">
+                        <h4 class="enrolled-title">Enrolled Subjects (27.00 / 30.00 units)</h4>
+                        <div class="subject-list">
+                            <div class="subject-row">
+                                <span>CS 101 - Introduction to Computing</span>
+                                <span class="units">3.00 units</span>
+                            </div>
+                            <div class="subject-row">
+                                <span>CS 101L - Introduction to Computing Lab</span>
+                                <span class="units">1.00 units</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-btns">
+                        <button class="btn btn-review">Review & Edit</button>
+                        <button class="btn btn-proceed">
+                        <i class="fas fa-check-circle"></i> Proceed
+                        </button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </body>
