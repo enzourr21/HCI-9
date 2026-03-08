@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - WMSU-Ease</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="schedule.css">
+    <link rel="stylesheet" href="../../landingPage.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../logo.png" alt="logo" class="logo-img">
+            <span class="name" style="color: black;">WMSU-Ease</span>
+        </div>
+        <div class="navbar-right">
+            <div class="user-info">
+                <span class="user-name">Juan Dela Cruz</span>
+                <span class="user-id">2024-001234</span>
+            </div>
+            <a href="../login.html" class="logout-btn">&#x2192; Logout</a>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar">
+            <ul class="sidebar-links">
+                <li><a href="profile.html">&#128100; Profile</a></li>
+                <li><a href="subject.html">&#128214; Subjects</a></li>
+                <li><a href="assessment.html">&#128462; Assessment</a></li>
+                <li><a href="schedule.html" class="active">&#128197; Schedule</a></li>
+                <li><a href="payment.html">&#128179; Payment</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- ── ENROLLMENT PROGRESS ── -->
+            <div class="card">
+                <h3 class="card-title">Enrollment Progress</h3>
+                <div class="progress-track">
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128065;</div>
+                        <div class="step-line"></div>
+                        <p class="step-label">Form Reviewing</p>
+                        <span class="badge green">Completed</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128100;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Advising</p>
+                        <span class="badge yellow">In Progress</span>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#128462;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Assessment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#80;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Payment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#10003;</div>
+                        <p class="step-label">Enlistment</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SCHEDULE SUMMARY ── -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">Total Subjects</p>
+                    <p class="stat-value black">5</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Total Units</p>
+                    <p class="stat-value green">14</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Days with Class</p>
+                    <p class="stat-value orange">5</p>
+                </div>
+            </div>
+
+            <!-- ── SCHEDULE TABLE ── -->
+            <div class="card">
+                <h3 class="card-title">&#128197; Class Schedule — 1st Semester 2025-2026</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Description</th>
+                                <th>Units</th>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th>Room</th>
+                                <th>Instructor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CS 101</td>
+                                <td>Introduction to Computing</td>
+                                <td>3</td>
+                                <td><span class="day-badge mon">Mon</span></td>
+                                <td>7:30 AM – 9:00 AM</td>
+                                <td>CCS Lab 1</td>
+                                <td>Prof. Reyes</td>
+                            </tr>
+                            <tr>
+                                <td>CS 102</td>
+                                <td>Computer Programming 1</td>
+                                <td>3</td>
+                                <td><span class="day-badge tue">Tue</span> <span class="day-badge thu">Thu</span></td>
+                                <td>10:30 AM – 12:00 PM</td>
+                                <td>CCS Lab 2</td>
+                                <td>Prof. Santos</td>
+                            </tr>
+                            <tr>
+                                <td>MATH 101</td>
+                                <td>College Algebra</td>
+                                <td>3</td>
+                                <td><span class="day-badge wed">Wed</span> <span class="day-badge fri">Fri</span></td>
+                                <td>8:00 AM – 9:30 AM</td>
+                                <td>Room 204</td>
+                                <td>Prof. Garcia</td>
+                            </tr>
+                            <tr>
+                                <td>ENG 101</td>
+                                <td>Communication Skills 1</td>
+                                <td>3</td>
+                                <td><span class="day-badge mon">Mon</span> <span class="day-badge wed">Wed</span></td>
+                                <td>1:00 PM – 2:30 PM</td>
+                                <td>Room 105</td>
+                                <td>Prof. Cruz</td>
+                            </tr>
+                            <tr>
+                                <td>PE 101</td>
+                                <td>Physical Education 1</td>
+                                <td>2</td>
+                                <td><span class="day-badge fri">Fri</span></td>
+                                <td>3:00 PM – 5:00 PM</td>
+                                <td>Gymnasium</td>
+                                <td>Prof. Mendoza</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ── WEEKLY VIEW ── -->
+            <div class="card">
+                <h3 class="card-title">&#128197; Weekly Overview</h3>
+                <div class="week-grid">
+                    <div class="day-col">
+                        <div class="day-header mon-h">Monday</div>
+                        <div class="day-slot">
+                            <p class="slot-code">CS 101</p>
+                            <p class="slot-time">7:30 – 9:00 AM</p>
+                            <p class="slot-room">CCS Lab 1</p>
+                        </div>
+                        <div class="day-slot">
+                            <p class="slot-code">ENG 101</p>
+                            <p class="slot-time">1:00 – 2:30 PM</p>
+                            <p class="slot-room">Room 105</p>
+                        </div>
+                    </div>
+                    <div class="day-col">
+                        <div class="day-header tue-h">Tuesday</div>
+                        <div class="day-slot">
+                            <p class="slot-code">CS 102</p>
+                            <p class="slot-time">10:30 AM – 12:00 PM</p>
+                            <p class="slot-room">CCS Lab 2</p>
+                        </div>
+                    </div>
+                    <div class="day-col">
+                        <div class="day-header wed-h">Wednesday</div>
+                        <div class="day-slot">
+                            <p class="slot-code">MATH 101</p>
+                            <p class="slot-time">8:00 – 9:30 AM</p>
+                            <p class="slot-room">Room 204</p>
+                        </div>
+                        <div class="day-slot">
+                            <p class="slot-code">ENG 101</p>
+                            <p class="slot-time">1:00 – 2:30 PM</p>
+                            <p class="slot-room">Room 105</p>
+                        </div>
+                    </div>
+                    <div class="day-col">
+                        <div class="day-header thu-h">Thursday</div>
+                        <div class="day-slot">
+                            <p class="slot-code">CS 102</p>
+                            <p class="slot-time">10:30 AM – 12:00 PM</p>
+                            <p class="slot-room">CCS Lab 2</p>
+                        </div>
+                    </div>
+                    <div class="day-col">
+                        <div class="day-header fri-h">Friday</div>
+                        <div class="day-slot">
+                            <p class="slot-code">MATH 101</p>
+                            <p class="slot-time">8:00 – 9:30 AM</p>
+                            <p class="slot-room">Room 204</p>
+                        </div>
+                        <div class="day-slot">
+                            <p class="slot-code">PE 101</p>
+                            <p class="slot-time">3:00 – 5:00 PM</p>
+                            <p class="slot-room">Gymnasium</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

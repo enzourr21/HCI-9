@@ -1,0 +1,16 @@
+/* ─── TOTAL ROW ──────────────────────────────────── */
+.total-row {
+    background-color: #fff5f5;
+    border-top: 2px solid crimson !important;
+}
+
+.total-row td {
+    font-weight: 700;
+    font-size: 15px;
+    color: #111;
+}
+
+/* ─── STAT VALUE SMALL ───────────────────────────── */
+.stat-value {
+    font-size: 28px;
+}

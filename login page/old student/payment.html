@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - WMSU-Ease</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="payment.css">
+    <link rel="stylesheet" href="../../landingPage.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../logo.png" alt="logo" class="logo-img">
+            <span class="name" style="color: black;">WMSU-Ease</span>
+        </div>
+        <div class="navbar-right">
+            <div class="user-info">
+                <span class="user-name">Juan Dela Cruz</span>
+                <span class="user-id">2024-001234</span>
+            </div>
+            <a href="../login.html" class="logout-btn">&#x2192; Logout</a>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar">
+            <ul class="sidebar-links">
+                <li><a href="profile.html">&#128100; Profile</a></li>
+                <li><a href="subject.html">&#128214; Subjects</a></li>
+                <li><a href="assessment.html">&#128462; Assessment</a></li>
+                <li><a href="schedule.html">&#128197; Schedule</a></li>
+                <li><a href="payment.html" class="active">&#128179; Payment</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- ── ENROLLMENT PROGRESS ── -->
+            <div class="card">
+                <h3 class="card-title">Enrollment Progress</h3>
+                <div class="progress-track">
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128065;</div>
+                        <div class="step-line"></div>
+                        <p class="step-label">Form Reviewing</p>
+                        <span class="badge green">Completed</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">&#128100;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Advising</p>
+                        <span class="badge yellow">In Progress</span>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#128462;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Assessment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#80;</div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Payment</p>
+                    </div>
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">&#10003;</div>
+                        <p class="step-label">Enlistment</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── PAYMENT SUMMARY ── -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">Total Amount</p>
+                    <p class="stat-value black">&#8369;12,500</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Amount Paid</p>
+                    <p class="stat-value green">&#8369;0</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Balance</p>
+                    <p class="stat-value orange">&#8369;12,500</p>
+                </div>
+            </div>
+
+            <!-- ── PAYMENT STATUS ── -->
+            <div class="card">
+                <h3 class="card-title">&#128179; Payment Status</h3>
+                <div class="payment-status-box">
+                    <div class="payment-status-icon">&#9888;</div>
+                    <div class="payment-status-info">
+                        <p class="payment-status-title">Payment Pending</p>
+                        <p class="payment-status-desc">Your payment has not been received yet. Please proceed to the Cashier's Office or pay via the available payment channels below.</p>
+                    </div>
+                    <span class="badge yellow">Unpaid</span>
+                </div>
+            </div>
+
+            <!-- ── HOW TO PAY ── -->
+            <div class="card">
+                <h3 class="card-title">&#128218; How to Pay</h3>
+                <div class="payment-channels">
+
+                    <div class="channel-card">
+                        <div class="channel-icon">&#127978;</div>
+                        <div class="channel-info">
+                            <p class="channel-title">Cashier's Office</p>
+                            <p class="channel-desc">Pay in person at the WMSU Cashier's Office, Main Building, Ground Floor.</p>
+                            <p class="channel-hours">&#128336; Mon – Fri, 8:00 AM – 5:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="channel-card">
+                        <div class="channel-icon">&#127968;</div>
+                        <div class="channel-info">
+                            <p class="channel-title">Land Bank of the Philippines</p>
+                            <p class="channel-desc">Pay over the counter or via LBP iAccess online banking.</p>
+                            <p class="channel-detail">Account Name: <strong>WMSU</strong></p>
+                            <p class="channel-detail">Account No: <strong>1234-5678-90</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="channel-card">
+                        <div class="channel-icon">&#128241;</div>
+                        <div class="channel-info">
+                            <p class="channel-title">GCash</p>
+                            <p class="channel-desc">Send payment via GCash and submit proof of payment to the Cashier's Office.</p>
+                            <p class="channel-detail">GCash No: <strong>0917-XXX-XXXX</strong></p>
+                            <p class="channel-detail">Account Name: <strong>WMSU Cashier</strong></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── PAYMENT HISTORY ── -->
+            <div class="card">
+                <h3 class="card-title">&#128203; Payment History</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Reference No.</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="empty-row">No payment records found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ── SUBMIT PROOF ── -->
+            <div class="card">
+                <h3 class="card-title">&#128196; Submit Proof of Payment</h3>
+                <p class="payment-note">After paying, upload your proof of payment below for verification.</p>
+                <br>
+                <label class="upload-label">Reference Number</label>
+                <input type="text" class="payment-input" placeholder="Enter reference number">
+                <label class="upload-label">Payment Channel</label>
+                <select class="payment-select">
+                    <option value="">-- Select Payment Channel --</option>
+                    <option>Cashier's Office</option>
+                    <option>Land Bank of the Philippines</option>
+                    <option>GCash</option>
+                </select>
+                <label class="upload-label">Proof of Payment</label>
+                <label class="upload-box-payment" for="proof-upload">
+                    <div class="upload-icon-pay">&#8679;</div>
+                    <p class="upload-title-pay">Click to upload proof of payment</p>
+                    <p class="upload-sub-pay">Supported: JPG, PNG, PDF (Max 5MB)</p>
+                    <input type="file" id="proof-upload" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                </label>
+                <button class="btn-submit-pay">Submit Proof of Payment</button>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
