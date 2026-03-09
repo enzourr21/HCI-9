@@ -59,33 +59,33 @@
 
                 <!-- ── ADMIN FORM ── -->
                 <form id="adminForm">
-                    <label>Select Role</label>
-                    <select>
-                        <option>-- Role --</option>
-                        <option>Registrar</option>
-                        <option>College Dean</option>
-                        <option>Department Admin</option>
-                        <option>Secretary</option>
-                        <option>Adviser</option>
+                <label>Select Role</label>
+                    <select id="adminRole">
+                        <option value="">-- Role --</option>
+                        <option value="misto">MISTO</option>
+                        <option value="dean">College Dean</option>
+                        <option value="dept-admin">Department Admin</option>
+                        <option value="secretary">Secretary</option>
+                        <option value="adviser">Adviser</option>
                     </select>
 
-                    <label>Admin Email</label>
-                    <input type="email" placeholder="example@wmsu.edu.ph"
-                        pattern="[a-zA-Z0-9._%+\-]+@wmsu\.edu\.ph"
-                        title="Please use your WMSU email (@wmsu.edu.ph)">
+    <label>Admin Email</label>
+    <input type="email" placeholder="example@wmsu.edu.ph"
+        pattern="[a-zA-Z0-9._%+\-]+@wmsu\.edu\.ph"
+        title="Please use your WMSU email (@wmsu.edu.ph)">
 
-                    <label>Password</label>
-                    <div class="password-box">
-                        <input type="password" placeholder="Enter password">
-                    </div>
+    <label>Password</label>
+    <div class="password-box">
+        <input type="password" placeholder="Enter password">
+    </div>
 
-                    <div class="options">
-                        <label><input type="checkbox"> Remember me</label>
-                        <a href="#" class="forgot">Forgot Password?</a>
-                    </div>
+    <div class="options">
+        <label><input type="checkbox"> Remember me</label>
+        <a href="#" class="forgot">Forgot Password?</a>
+    </div>
 
-                    <a href="admin.html" class="login-btn">Sign In</a>
-                </form>
+    <button type="button" class="login-btn" onclick="handleAdminLogin()">Sign In</button>
+</form>
 
             </div>
 
@@ -95,6 +95,30 @@
 
         </div>
     </div>
+
+    <script>
+    function handleAdminLogin() {
+        const role = document.getElementById('adminRole').value;
+        
+        // Base path is the "Admin" folder relative to this login.html
+        const adminPath = "Admin/";
+
+        if (!role || role === "") {
+            alert("Please select an admin role first.");
+            return;
+        }
+
+        switch(role) {
+            case 'adviser':
+                window.location.href = adminPath + "adviser/dashboard.html";
+                break;
+            default:
+                // For roles not yet built, you can send them to a generic dashboard or an alert
+                alert("This portal is currently under maintenance. Please contact MISTO.");
+                break;
+        }
+    }
+    </script>
 
 </body>
 </html>
