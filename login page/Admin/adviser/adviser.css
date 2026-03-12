@@ -194,12 +194,12 @@
 
 /* Red buttons and active states to match WMSU */
 .nav-item {
-    display: block;      /* Makes the whole row clickable */
-    text-decoration: none; /* Removes the underline */
-    color: #333;         /* Sets a neutral default color */
-    margin-bottom: 5px;  /* Adds space between sidebar buttons */
-    padding: 10px 15px;  /* Gives the button some "body" */
-    border-radius: 8px;  /* Matches your active state shape */
+    display: block;
+    text-decoration: none;
+    color: #333; 
+    margin-bottom: 5px;
+    padding: 10px 15px;  
+    border-radius: 8px;  
     position: relative;
     transition: 0.3s;
 }
@@ -220,7 +220,7 @@
     background-color: #D32F2F;
 }
 .nav-item::before {
-    content: ''; /* If you aren't using FontAwesome yet, use this space for icons */
+    content: '';
     display: inline-block;
     width: 20px;
     height: 20px;
