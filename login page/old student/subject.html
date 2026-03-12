@@ -19,7 +19,7 @@
                 <path d="M6 12v5c3 3 9 3 12 0v-5"/>
             </svg>
             <span class="name" style="color: black;">WMSU-Ease</span>
-            </div>
+        </div>
         <div class="navbar-right">
             <div class="user-info">
                 <span class="user-name">Juan Dela Cruz</span>
@@ -81,22 +81,22 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <p class="stat-label">Total Units</p>
-                    <p class="stat-value black">14</p>
+                    <p class="stat-value black">30</p>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-label">Approved</p>
-                    <p class="stat-value green">3</p>
+                    <p class="stat-label">Major Subjects</p>
+                    <p class="stat-value green">8</p>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-label">Pending</p>
-                    <p class="stat-value orange">2</p>
+                    <p class="stat-label">Minor Subjects</p>
+                    <p class="stat-value orange">4</p>
                 </div>
             </div>
 
             <!-- ── SUBJECTS TABLE ── -->
             <div class="card">
                 <div class="section-header">
-                    <h3 class="card-title" style="margin-bottom: 0;">&#128214; Enrolled Subjects</h3>
+                    <h3 class="card-title" style="margin-bottom: 0;">&#128214; Enrolled Subjects — 2nd Semester 2024-2025</h3>
                     <button class="btn-add">+ Add Subject</button>
                 </div>
                 <br>
@@ -106,47 +106,120 @@
                             <tr>
                                 <th>Subject Code</th>
                                 <th>Description</th>
+                                <th>Type</th>
                                 <th>Units</th>
                                 <th>Instructor</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
+
+                            <!-- MAJOR -->
                             <tr>
-                                <td>CS 101</td>
-                                <td>Introduction to Computing</td>
+                                <td>CC 102</td>
+                                <td>Computer Programming <span class="type-tag lec">Lec</span></td>
+                                <td><span class="subject-type major">Major</span></td>
                                 <td>3</td>
                                 <td>Prof. Reyes</td>
                                 <td><span class="badge green">Approved</span></td>
                             </tr>
                             <tr>
-                                <td>CS 102</td>
-                                <td>Computer Programming 1</td>
+                                <td>CC 102L</td>
+                                <td>Computer Programming <span class="type-tag lab">Lab</span></td>
+                                <td><span class="subject-type major">Major</span></td>
+                                <td>3</td>
+                                <td>Prof. Reyes</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>OOP 112</td>
+                                <td>Object Oriented Programming <span class="type-tag lec">Lec</span></td>
+                                <td><span class="subject-type major">Major</span></td>
                                 <td>3</td>
                                 <td>Prof. Santos</td>
                                 <td><span class="badge green">Approved</span></td>
                             </tr>
                             <tr>
-                                <td>MATH 101</td>
-                                <td>College Algebra</td>
+                                <td>OOP 112L</td>
+                                <td>Object Oriented Programming <span class="type-tag lab">Lab</span></td>
+                                <td><span class="subject-type major">Major</span></td>
                                 <td>3</td>
                                 <td>Prof. Garcia</td>
                                 <td><span class="badge green">Approved</span></td>
                             </tr>
                             <tr>
-                                <td>ENG 101</td>
-                                <td>Communication Skills 1</td>
+                                <td>WD 114</td>
+                                <td>Web Development 1 <span class="type-tag lec">Lec</span></td>
+                                <td><span class="subject-type major">Major</span></td>
                                 <td>3</td>
                                 <td>Prof. Cruz</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>WD 114L</td>
+                                <td>Web Development 1 <span class="type-tag lab">Lab</span></td>
+                                <td><span class="subject-type major">Major</span></td>
+                                <td>3</td>
+                                <td>Prof. Cruz</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>DS 118</td>
+                                <td>Discrete Structures 2</td>
+                                <td><span class="subject-type major">Major</span></td>
+                                <td>3</td>
+                                <td>Prof. Lim</td>
                                 <td><span class="badge yellow">Pending</span></td>
                             </tr>
                             <tr>
-                                <td>PE 101</td>
-                                <td>Physical Education 1</td>
-                                <td>2</td>
-                                <td>Prof. Mendoza</td>
+                                <td>HCI 116</td>
+                                <td>Human Computer Interaction</td>
+                                <td><span class="subject-type major">Major</span></td>
+                                <td>3</td>
+                                <td>Prof. Dela Rosa</td>
                                 <td><span class="badge yellow">Pending</span></td>
                             </tr>
+
+                            <!-- MINOR -->
+                            <tr>
+                                <td>PATHFIT 2</td>
+                                <td>Exercise-Based Fitness Training</td>
+                                <td><span class="subject-type minor">Minor</span></td>
+                                <td>2</td>
+                                <td>Prof. Mendoza</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>STS 100</td>
+                                <td>Science, Technology & Society</td>
+                                <td><span class="subject-type minor">Minor</span></td>
+                                <td>3</td>
+                                <td>Prof. Aquino</td>
+                                <td><span class="badge green">Approved</span></td>
+                            </tr>
+                            <tr>
+                                <td>EPIC 2</td>
+                                <td>EPIC-START 2-A</td>
+                                <td><span class="subject-type minor">Minor</span></td>
+                                <td>3</td>
+                                <td>Prof. Torres</td>
+                                <td><span class="badge yellow">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>CWTS 2</td>
+                                <td>Civil Welfare Training Service 2</td>
+                                <td><span class="subject-type minor">Minor</span></td>
+                                <td>3</td>
+                                <td>Prof. Ramos</td>
+                                <td><span class="badge yellow">Pending</span></td>
+                            </tr>
+
+                            <tr class="total-row">
+                                <td colspan="3"><strong>Total</strong></td>
+                                <td><strong>30</strong></td>
+                                <td colspan="2"></td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

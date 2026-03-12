@@ -76,6 +76,83 @@
     font-weight: 500;
 }
 
+/* ─── SEMESTER TAG ───────────────────────────────── */
+.sem-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.sem-tag.done {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.sem-tag.current {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+/* ─── SUBJECT TYPE BADGE ─────────────────────────── */
+.subject-type {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.subject-type.major {
+    background-color: #fff0f0;
+    color: crimson;
+    border: 1px solid rgba(220, 20, 60, 0.2);
+}
+
+.subject-type.minor {
+    background-color: #f0f4ff;
+    color: #3a5bd9;
+    border: 1px solid rgba(58, 91, 217, 0.2);
+}
+
+/* ─── LEC / LAB TAG ──────────────────────────────── */
+.type-tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.type-tag.lec {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.type-tag.lab {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+/* ─── TOTAL ROW ──────────────────────────────────── */
+.total-row {
+    background-color: #fff5f5;
+    border-top: 2px solid crimson !important;
+}
+
+.total-row td {
+    font-weight: 700;
+    font-size: 15px;
+    color: #111;
+}
+
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 768px) {
     .profile-grid {

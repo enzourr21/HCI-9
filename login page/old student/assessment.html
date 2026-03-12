@@ -14,11 +14,11 @@
     <!-- ── NAVBAR ── -->
     <nav class="navbar">
         <div class="logo">
-           <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-        </svg>
-        <span class="name" style="color: black;">WMSU-Ease</span>
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="name" style="color: black;">WMSU-Ease</span>
         </div>
         <div class="navbar-right">
             <div class="user-info">
@@ -80,16 +80,16 @@
             <!-- ── ASSESSMENT SUMMARY ── -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <p class="stat-label">Total Fees</p>
-                    <p class="stat-value black">&#8369;12,500</p>
+                    <p class="stat-label">Total Amount Due</p>
+                    <p class="stat-value black">&#8369;360</p>
                 </div>
                 <div class="stat-card">
                     <p class="stat-label">Amount Paid</p>
-                    <p class="stat-value green">&#8369;0</p>
+                    <p class="stat-value green">&#8369;100</p>
                 </div>
                 <div class="stat-card">
                     <p class="stat-label">Balance</p>
-                    <p class="stat-value orange">&#8369;12,500</p>
+                    <p class="stat-value orange">&#8369;260</p>
                 </div>
             </div>
 
@@ -102,79 +102,53 @@
                             <tr>
                                 <th>Fee Description</th>
                                 <th>Amount</th>
+                                <th>Frequency</th>
+                                <th>Where to Pay</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Tuition Fee (14 units x &#8369;300)</td>
-                                <td>&#8369;4,200.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Miscellaneous Fee</td>
-                                <td>&#8369;1,500.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Laboratory Fee</td>
-                                <td>&#8369;2,000.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Library Fee</td>
-                                <td>&#8369;500.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Student Development Fee</td>
-                                <td>&#8369;300.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Athletic Fee</td>
+                                <td>CSC Fee</td>
                                 <td>&#8369;200.00</td>
+                                <td>Per Semester</td>
+                                <td>CSC Office</td>
                                 <td><span class="badge yellow">Unpaid</span></td>
                             </tr>
                             <tr>
-                                <td>Medical & Dental Fee</td>
-                                <td>&#8369;300.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
+                                <td>Gender Fee</td>
+                                <td>&#8369;50.00</td>
+                                <td>Per School Year</td>
+                                <td>CSC Office</td>
+                                <td><span class="badge green">Paid</span></td>
                             </tr>
                             <tr>
-                                <td>Cultural Fee</td>
-                                <td>&#8369;200.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
+                                <td>Insurance</td>
+                                <td>&#8369;50.00</td>
+                                <td>Per School Year</td>
+                                <td>CSC Office</td>
+                                <td><span class="badge green">Paid</span></td>
+                            </tr>
+                            <tr class="fee-row-disabled">
+                                <td>MSA Fee <span class="fee-note">(Muslim Students Only)</span></td>
+                                <td>&#8369;50.00</td>
+                                <td>Per School Year</td>
+                                <td>CSC Office</td>
+                                <td><span class="badge gray">Not Applicable</span></td>
                             </tr>
                             <tr>
-                                <td>Guidance Fee</td>
-                                <td>&#8369;200.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>ID Fee</td>
-                                <td>&#8369;150.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Insurance Fee</td>
-                                <td>&#8369;150.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Registration Fee</td>
-                                <td>&#8369;500.00</td>
-                                <td><span class="badge yellow">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <td>Computer Fee</td>
-                                <td>&#8369;2,000.00</td>
+                                <td>Booklet</td>
+                                <td>&#8369;60.00</td>
+                                <td>Per Semester</td>
+                                <td>Dean's Office</td>
                                 <td><span class="badge yellow">Unpaid</span></td>
                             </tr>
                             <tr class="total-row">
                                 <td><strong>Total</strong></td>
-                                <td><strong>&#8369;12,500.00</strong></td>
-                                <td><span class="badge red">Unpaid</span></td>
+                                <td><strong>&#8369;360.00</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="badge yellow">Partial</span></td>
                             </tr>
                         </tbody>
                     </table>

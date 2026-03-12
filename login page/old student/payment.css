@@ -84,6 +84,23 @@
     margin-top: 2px;
 }
 
+/* ─── FEE TABLE DISABLED ROW ─────────────────────── */
+.fee-row-disabled td {
+    color: #bbb;
+}
+
+.fee-note {
+    font-size: 11px;
+    color: #aaa;
+    font-weight: 400;
+}
+
+/* ─── GRAY BADGE ─────────────────────────────────── */
+.badge.gray {
+    background-color: #e0e0e0;
+    color: #888;
+}
+
 /* ─── EMPTY ROW ──────────────────────────────────── */
 .empty-row {
     text-align: center;
