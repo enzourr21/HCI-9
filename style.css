@@ -33,6 +33,13 @@ body {
     line-height: 1.6;
 }
 
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    color: crimson;
+    flex-shrink: 0;
+}
+
 /* ─── SCROLLBAR ──────────────────────────────────── */
 ::-webkit-scrollbar {
     width: 8px;
