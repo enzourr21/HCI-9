@@ -1,20 +1,195 @@
 /* adviser/adviser.css */
 .adviser-layout {
     display: flex;
-    min-height: 100vh;
+    min-height: calc(100vh - 70px);
     background-color: #f8f9fa;
+}
+
+/* Making it Sticky and Full Width */
+.top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background: white;
+    border-bottom: 1px solid #eee;
+    height: 70px;
+}
+
+.brand{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand-text {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1a1a1a;   
+    line-height: 1;
+}
+
+.brand-sub {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #718096;   /* Muted grey color */
+    margin-top: 2px;
+}
+
+/* Fixing the Profile Text Stack */
+.profile-text {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.profile-row {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Creates the space between the circle and the text */
+    width: 100%;
+    position: relative;
+}
+
+.prof-name {
+    font-size: 16px;     
+    font-weight: 700;    
+    color: #333;
+    line-height: 1.2;
+}
+
+.prof-dept {
+    font-size: 12px;   
+    color: #666;
+}
+
+/* Logout Alignment and Sizing */
+.user-profile-top {
+    display: flex;
+    align-items: center; 
+}
+
+.logout-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px; /* Matches icon size */
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.logout-icon {
+    font-size: 15px; /* Ensures icon is same size as text */
 }
 
 .sidebar {
     width: 260px;
-    background: white;
+    background: #fff;
+    border-right: 1px solid #eee;
     padding: 20px;
-    border-right: 1px solid #e0e0e0;
+    /* This ensures the sidebar doesn't scroll with the content */
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
 }
-
 .content {
     flex: 1;
     padding: 30px;
+    background-color: #f9f9f9;
+}
+
+.content-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left:auto;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 15px;
+}
+
+.section-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between; /* Pushes Title to left, Profile to right */
+    align-items: center;
+    width: 100%;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between; /* Pushes name/logout to the far right */
+    align-items: center;
+    padding: 20px 40px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    background-color: #d32f2f;
+    color: white;
+    border-radius: 50%; /* Makes it a circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.section-select {
+    padding: 6px 30px 6px 12px; /* Extra right padding for the arrow */
+    border: 1.5px solid #d32f2f; /* Consistent theme red */
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    /* Customizing the dropdown arrow slightly */
+    appearance: none; 
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d32f2f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 14px;
 }
 
 /* Red buttons and active states to match WMSU */
@@ -44,6 +219,13 @@
     width: 4px;
     background-color: #D32F2F;
 }
+.nav-item::before {
+    content: ''; /* If you aren't using FontAwesome yet, use this space for icons */
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+}
 
 .nav-item.active {
     background-color: #d32f2f;
@@ -52,14 +234,31 @@
 }
 
 /* Card Container */
+.card-header {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0; /* Light line to separate name from units */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#student-list {
+    margin-top: 40px; /* This prevents the cards from sticking to the filters */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .student-card {
     background: white;
     border-radius: 12px;
     padding: 20px;
-    margin-bottom: 20px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     border: 1px solid #eee;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    flex: 0 1 calc(33.33% - 14px);
+    min-width: 300px;
 }
 
 .student-card:hover {
@@ -72,11 +271,22 @@
     background-color: #fff0f0; /* Slightly deeper tint */
 }
 
-/* Header & Badges */
+.name-container {
+    display: flex;
+    flex-direction: column; /* Stacks name, ID, and Meta vertically */
+    gap: 2px;
+}
+
 .name-line {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.student-meta {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
 }
 
 .badge {
@@ -90,12 +300,19 @@
 .regular { background: #E6F4EA; color: #1E7E34; }
 .irregular { background: #FFF4E5; color: #B05D00; }
 
+.status-pill {
+position: absolute;
+top: 0;
+right: 0;
+padding: 4px 12px;
+border-radius: 20px;
+font-size: 0.75rem;
+font-weight: 600;
+}
+
 .status-pill.pending {
     background: #FFF9C4;
     color: #827717;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 13px;
 }
 
 /* Subject List Area */
@@ -131,6 +348,17 @@
     border: 2px solid transparent;
     transition: 0.3s;
 }
+/* Filter buttons */
+.filter-btn {
+    border-radius: 50px; 
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+.filter-btn.active {
+    background-color: #d32f2f;
+    color: white;
+}
 
 /* Submit Assessment) */
 .btn-primary {
@@ -152,7 +380,7 @@
 }
 
 .btn-outline:hover {
-    background-color: #D32F2F;
+    background-color: #fce8e6;
     color: white;
 }
 
@@ -162,18 +390,44 @@
     background: white;
 }
 
-.btn-review:hover { background: #D32F2F; color: white; }
+.btn-proceed {
+    background-color: #2e7d32; /* Forest Green */
+    color: #ffffff !important;
+    border: none;
+    transition: background-color 0.3s ease;
+}
 
-.btn-reject {
-    color: #D32F2F;
-    background: #FFEBEE;
+.btn-proceed:hover {
+    background-color: #1b5e20; /* Darker green on hover */
+}
+
+.card-btns {
+    display: flex;
+    gap: 8px; 
+    margin-top: auto;
+    width: 100%;
+}
+
+.card-btns .btn {
+    flex: 1;
+    padding: 10px 5px; 
+    font-size: 0.85rem; /* Smaller text to ensure it stays on one line */
+    border-radius: 6px;
+    white-space: nowrap; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.card-btns .btn i {
+    font-size: 0.7rem;
 }
 
 /*i Image size */
 .logo-img {
-    width: 40px;
-    height: auto;
-    margin-right: 10px;
+    height: 45px;
+    width: auto;
 }
 
 /* Table Styles for History */
@@ -221,4 +475,85 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 250px;
+}
+
+/* Sidebar Icon Spacing */
+.nav-item i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Quick Stats Row Styling */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Assessment Card Grid */
+.assessment-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to move to the next line */
+    gap: 20px; /* Space between cards */
+    padding: 10px 0;
+    width: 100%;
+}
+
+.unit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid #eee;
+}
+
+.unit-item {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+}
+
+.unit-item strong {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.unit-item.error strong {
+    color: #B71C1C;
+}
+
+.discrepancy-notice {
+    background: #fff5f5;
+    color: #B71C1C;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    border: 1px solid #ffcccc;
+}
+
+/* FORCED GREY SCROLLBAR */
+::-webkit-scrollbar {
+    width: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1; /* Creates a small gap around the bar */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }

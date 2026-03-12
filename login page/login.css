@@ -132,6 +132,22 @@
     text-decoration: underline;
 }
 
+.role-dropdown {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    background-color: white;
+    cursor: pointer;
+}
+
+.role-dropdown:focus {
+    border-color: #d32f2f; /* WMSU Red */
+    outline: none;
+}
+
 /* ─── LOGIN BUTTON ───────────────────────────────── */
 .login-btn {
     width: 100%;
