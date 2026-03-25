@@ -18,6 +18,14 @@
         </svg>
         <span class="name">WMSU-Ease</span>
     </div>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
+
     <ul class="nav-links">
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
@@ -28,39 +36,68 @@
 </nav>
 
 <!--HOME-->
-<section id="home" class="container home">
+<section id="home" class="section home">
     <p class="big-text">Enroll with Ease at WMSU</p>
     <p class="small-text">
         Western Mindanao State University's modern online enrollment system.<br>
         Fast, Secure, and hassle-free registration for all students.
     </p>
     <div class="btn-group">
-        <a href="Freshmen/enroll.html" class="btn" id="enroll-btn">Start Enrollment</a>
-        <a href="login page/login.html" class="btn" id="login">Login</a>
+        <div class="btn-wrapper">
+            <a href="Freshmen/flogin.html" class="btn" id="enroll-btn">Start Enrollment</a>
+            <span class="btn-hint">Freshman or Transferee? Click here</span>
+        </div>
+        <div class="btn-wrapper">
+            <a href="login page/login.html" class="btn" id="login">Login</a>
+            <span class="btn-hint">Already have an account? Click here</span>
+        </div>
     </div>
 </section>
 
 <!--ABOUT-->
-<section id="about" class="container1 about">
+<section id="about" class="section about">
     <p class="medium-text">Why Choose WMSU-Ease?</p>
     <div class="why-grid">
         <div class="why">
-            <div class="step-img"><img src="photos/clock.png" alt="Fast Processing" class="step-img"></div>
+            <div class="step-img">
+                <!-- Clock -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
             <h3><br>Fast Processing</h3>
             <p>Complete your enrollment in minutes, not hours.</p>
         </div>
         <div class="why">
-            <div class="step-img"><img src="photos/sheild.png" alt="Secure System" class="step-img"></div>
+            <div class="step-img">
+                <!-- Shield -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
             <h3><br>Secure System</h3>
             <p>Your information is protected with advanced security.</p>
         </div>
         <div class="why">
-            <div class="step-img"><img src="photos/book.png" alt="Easy to Use" class="step-img"></div>
+            <div class="step-img">
+                <!-- Book -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+            </div>
             <h3><br>Easy to Use</h3>
             <p>Intuitive interface designed for students.</p>
         </div>
         <div class="why">
-            <div class="step-img"><img src="logo.png" alt="24/7 Access" class="step-img"></div>
+            <div class="step-img">
+                <!-- Graduation hat (reused logo) -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+            </div>
             <h3><br>24/7 Access</h3>
             <p>Enroll anytime, anywhere at your convenience.</p>
         </div>
@@ -68,7 +105,7 @@
 </section>
 
 <!--ENROLLMENT-->
-<section id="enrollment-section" class="container1 enrollment">
+<section id="enrollment-section" class="section enrollment">
     <p class="medium-text">Simple Enrollment Process</p>
     <div class="log">
         <div class="why2">
@@ -90,7 +127,7 @@
 </section>
 
 <!--HELP-->
-<section id="help" class="container1 help">
+<section id="help" class="section help">
     <p class="medium-text">Need Help?</p>
     <p class="small-text">
         Our support team is here to assist you with any questions<br>
@@ -102,7 +139,7 @@
 </section>
 
 <!--FOOTER-->
-<footer class="container2 infos">
+<footer class="infos">
     <div class="footer-about">
         <div class="footer-brand">
             <svg class="footer-logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

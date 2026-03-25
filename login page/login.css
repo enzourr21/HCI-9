@@ -1,16 +1,18 @@
 /* ─── LOGIN WRAPPER ──────────────────────────────── */
 .login-wrapper {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #f3f3f3;
+    padding: 20px;
 }
 
 /* ─── LOGIN CARD ─────────────────────────────────── */
 .login-card {
     background: white;
-    width: 420px;
+    width: 100%;
+    max-width: 420px;
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -59,7 +61,7 @@
 
 #tab-student:checked ~ .role-switch label[for="tab-student"],
 #tab-admin:checked ~ .role-switch label[for="tab-admin"] {
-    background: crimson;
+    background: var(--crimson, crimson);
     color: white;
 }
 
@@ -91,7 +93,7 @@
 
 .forms form input:focus,
 .forms form select:focus {
-    border-color: crimson;
+    border-color: var(--crimson, crimson);
 }
 
 /* ─── PASSWORD BOX ───────────────────────────────── */
@@ -106,6 +108,8 @@
     align-items: center;
     margin-top: 12px;
     font-size: 13px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .options label {
@@ -120,18 +124,19 @@
 .options input[type="checkbox"] {
     width: auto;
     margin: 0;
-    accent-color: crimson;
+    accent-color: var(--crimson, crimson);
 }
 
 .options a {
-    color: crimson;
+    color: var(--crimson, crimson);
 }
 
 .options a:hover {
-    color: darkred;
+    color: var(--crimson-dark, darkred);
     text-decoration: underline;
 }
 
+/* ─── ROLE DROPDOWN ──────────────────────────────── */
 .role-dropdown {
     width: 100%;
     padding: 12px;
@@ -141,10 +146,15 @@
     font-family: inherit;
     background-color: white;
     cursor: pointer;
+    font-size: 14px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
 }
 
 .role-dropdown:focus {
-    border-color: #d32f2f; /* WMSU Red */
+    border-color: var(--crimson, crimson);
     outline: none;
 }
 
@@ -155,7 +165,7 @@
     padding: 13px;
     border: none;
     border-radius: 10px;
-    background: crimson;
+    background: var(--crimson, crimson);
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -166,11 +176,11 @@
 }
 
 .login-btn:hover {
-    background: darkred;
+    background: var(--crimson-dark, darkred);
     transform: translateY(-2px);
 }
 
-/* ─── REGISTER LINK ─────────────────────────────── */
+/* ─── REGISTER LINK ──────────────────────────────── */
 .register {
     margin-top: 20px;
     font-size: 13px;
@@ -178,11 +188,72 @@
 }
 
 .register a {
-    color: crimson;
+    color: var(--crimson, crimson);
     font-weight: 600;
 }
 
 .register a:hover {
-    color: darkred;
+    color: var(--crimson-dark, darkred);
     text-decoration: underline;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 480px) {
+    .login-wrapper {
+        align-items: flex-start;
+        padding: 30px 16px;
+    }
+
+    .login-card {
+        padding: 28px 20px;
+        border-radius: 12px;
+    }
+
+    .login-card h1 {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+
+    .role-switch label {
+        padding: 8px 6px;
+        font-size: 13px;
+    }
+
+    .forms form input,
+    .forms form select {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .login-btn {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .options {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .login-card {
+        padding: 22px 14px;
+    }
+
+    .login-card h1 {
+        font-size: 20px;
+    }
+
+    .role-switch {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .role-switch label {
+        width: 100%;
+    }
 }
