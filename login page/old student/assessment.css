@@ -1,7 +1,7 @@
 /* ─── TOTAL ROW ──────────────────────────────────── */
 .total-row {
     background-color: #fff5f5;
-    border-top: 2px solid crimson !important;
+    border-top: 2px solid var(--crimson, crimson) !important;
 }
 
 .total-row td {
@@ -10,7 +10,28 @@
     color: #111;
 }
 
-/* ─── STAT VALUE SMALL ───────────────────────────── */
+/* ─── STAT VALUE ─────────────────────────────────── */
 .stat-value {
     font-size: 28px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+    .total-row td {
+        font-size: 14px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .total-row td {
+        font-size: 13px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+    }
 }

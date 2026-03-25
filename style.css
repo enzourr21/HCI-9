@@ -1,5 +1,5 @@
 /* ─── RESET & BASE ─────────────────────────────── */
-* {
+*, *::before, *::after {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -12,15 +12,16 @@ a {
 }
 
 :root {
-    --crimson: crimson;
-    --crimson-dark: darkred;
+    --crimson: #c0192b;
+    --crimson-dark: #9b1422;
     --white: #ffffff;
-    --black: #000000;
+    --black: #1a1a1a;
     --light-gray: #f5f5f5;
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
     --radius: 8px;
     --transition: 0.2s ease;
+    --navbar-height: 64px;
 }
 
 html {
@@ -28,16 +29,9 @@ html {
 }
 
 body {
-    background-color: var(--white);
+    background-color: var(--light-gray);
     color: var(--black);
     line-height: 1.6;
-}
-
-.logo-icon {
-    width: 32px;
-    height: 32px;
-    color: crimson;
-    flex-shrink: 0;
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────── */
@@ -50,17 +44,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: crimson;
+    background: var(--crimson);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: darkred;
+    background: var(--crimson-dark);
 }
 
 /* ─── SELECTION COLOR ────────────────────────────── */
 ::selection {
-    background-color: crimson;
+    background-color: var(--crimson);
     color: white;
 }
 
@@ -93,8 +87,64 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: 2px solid crimson;
+    outline: 2px solid var(--crimson);
     outline-offset: 2px;
+}
+
+/* ─── NAVBAR ─────────────────────────────────────── */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--navbar-height);
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: var(--shadow);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--crimson);
+    flex-shrink: 0;
+}
+
+.name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--crimson);
+    letter-spacing: 0.5px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links li a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 15px;
+    color: var(--black);
+    font-weight: 500;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.nav-links li a:hover {
+    color: var(--crimson);
 }
 
 /* ─── ANIMATIONS ─────────────────────────────────── */
@@ -123,25 +173,4 @@ button:focus {
         opacity: 1;
         transform: translateX(0);
     }
-}
-
-/* ─── RESPONSIVE FONT SIZES ──────────────────────── */
-@media (max-width: 768px) {
-    .big-text { font-size: 36px; }
-    .medium-text { font-size: 28px; }
-    .small-text { font-size: 16px; }
-    .btn { width: auto; font-size: 16px; }
-    .navbar { padding: 0 20px; }
-    .infos { flex-direction: column; }
-    .why-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 480px) {
-    .big-text { font-size: 28px; }
-    .medium-text { font-size: 22px; }
-    .why-grid { grid-template-columns: 1fr; }
-    .log { flex-direction: column; align-items: center; }
-    .why2 { width: 100%; }
-    .login-card { width: 95%; padding: 24px; }
-    .containerEnroll { width: 95%; padding: 24px; }
 }
