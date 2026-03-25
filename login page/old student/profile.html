@@ -10,6 +10,10 @@
 </head>
 <body>
 
+    <!-- SIDEBAR TOGGLE -->
+    <input type="checkbox" id="sidebar-toggle">
+    <label for="sidebar-toggle" class="sidebar-overlay"></label>
+
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">
@@ -35,17 +39,16 @@
 
     <div class="layout">
 
-        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <!-- HAMBURGER -->
+        <label for="sidebar-toggle" class="hamburger" aria-label="Toggle menu">
             <span></span>
             <span></span>
             <span></span>
-        </button>
-
-        <!-- OVERLAY -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        </label>
 
         <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar">
+            <label for="sidebar-toggle" class="sidebar-close">&#10005;</label>
             <ul class="sidebar-links">
                 <li>
                     <a href="profile.html" class="active">
@@ -143,32 +146,99 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:8px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Personal Information
                 </h3>
-                <div class="profile-grid">
-                    <div class="profile-field">
-                        <p class="field-label">Last Name</p>
-                        <p class="field-value">Dela Cruz</p>
+
+                <input type="checkbox" id="edit-toggle">
+
+                <!-- VIEW MODE -->
+                <div class="profile-view">
+                    <div class="profile-grid">
+                        <div class="profile-field">
+                            <p class="field-label">Last Name</p>
+                            <p class="field-value">Dela Cruz</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">First Name</p>
+                            <p class="field-value">Juan</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Middle Name</p>
+                            <p class="field-value">Santos</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Date of Birth</p>
+                            <p class="field-value">January 15, 2005</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Sex / Gender</p>
+                            <p class="field-value">Male</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Nationality</p>
+                            <p class="field-value">Filipino</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Contact Number</p>
+                            <p class="field-value">09123456789</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Email Address</p>
+                            <p class="field-value">juan.delacruz@email.com</p>
+                        </div>
                     </div>
-                    <div class="profile-field">
-                        <p class="field-label">First Name</p>
-                        <p class="field-value">Juan</p>
+                    <label for="edit-toggle" class="btn-edit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        Edit Profile
+                    </label>
+                </div>
+
+                <!-- EDIT MODE -->
+                <div class="profile-edit">
+                    <div class="profile-grid">
+                        <div class="form-group">
+                            <label class="field-label">Last Name</label>
+                            <input type="text" value="Dela Cruz">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">First Name</label>
+                            <input type="text" value="Juan">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">Middle Name</label>
+                            <input type="text" value="Santos">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">Date of Birth</label>
+                            <input type="date" value="2005-01-15">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">Sex / Gender</label>
+                            <select>
+                                <option selected>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">Nationality</label>
+                            <input type="text" value="Filipino">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">Contact Number</label>
+                            <input type="text" value="09123456789">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">Email Address</label>
+                            <input type="email" value="juan.delacruz@email.com">
+                        </div>
                     </div>
-                    <div class="profile-field">
-                        <p class="field-label">Middle Name</p>
-                        <p class="field-value">Santos</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Date of Birth</p>
-                        <p class="field-value">January 15, 2005</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Sex / Gender</p>
-                        <p class="field-value">Male</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Nationality</p>
-                        <p class="field-value">Filipino</p>
+                    <div class="edit-actions">
+                        <label for="edit-toggle" class="btn-save">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            Save Changes
+                        </label>
+                        <label for="edit-toggle" class="btn-cancel">Cancel</label>
                     </div>
                 </div>
+
             </div>
 
             <!-- 1ST SEM SUBJECTS -->
@@ -243,35 +313,6 @@
 
         </main>
     </div>
-
-    <script>
-        const hamburger = document.getElementById('hamburgerBtn');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('open');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
-        });
-
-        overlay.addEventListener('click', () => {
-            hamburger.classList.remove('open');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        document.querySelectorAll('.sidebar-links li a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('open');
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
-    </script>
 
 </body>
 </html>
