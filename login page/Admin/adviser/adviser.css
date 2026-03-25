@@ -45,7 +45,6 @@
     margin-top: 2px;
 }
 
-/* Fixing the Profile Text Stack */
 .profile-text {
     display: flex;
     flex-direction: column;
@@ -77,16 +76,23 @@
 .user-profile-top {
     display: flex;
     align-items: center; 
+    height: 100%;
 }
 
 .logout-link {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 15px; /* Matches icon size */
+    font-size: 15px; 
     color: #333;
     text-decoration: none;
     font-weight: 500;
+    padding: 5px 10px;
+}
+
+.logout-link i {
+    font-size: 1.1rem;
+    color: #d32f2f;
 }
 
 .logout-icon {
@@ -98,7 +104,6 @@
     background: #fff;
     border-right: 1px solid #eee;
     padding: 20px;
-    /* This ensures the sidebar doesn't scroll with the content */
     position: sticky;
     top: 70px;
     height: calc(100vh - 70px);
@@ -184,7 +189,6 @@
     font-weight: 500;
     cursor: pointer;
     outline: none;
-    /* Customizing the dropdown arrow slightly */
     appearance: none; 
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d32f2f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
@@ -218,13 +222,6 @@
     height: 100%;
     width: 4px;
     background-color: #D32F2F;
-}
-.nav-item::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 12px;
 }
 
 .nav-item.active {
@@ -368,7 +365,7 @@ font-weight: 600;
 }
 
 .btn-primary:hover {
-    background-color: #B71C1C; /* Darker red */
+    background-color: #B71C1C;
     filter: brightness(90%);
 }
 
@@ -391,7 +388,7 @@ font-weight: 600;
 }
 
 .btn-proceed {
-    background-color: #2e7d32; /* Forest Green */
+    background-color: #2e7d32;
     color: #ffffff !important;
     border: none;
     transition: background-color 0.3s ease;
@@ -482,6 +479,7 @@ font-weight: 600;
     margin-right: 12px;
     width: 20px;
     text-align: center;
+    font-size: 1.1rem;
 }
 
 /* Quick Stats Row Styling */
