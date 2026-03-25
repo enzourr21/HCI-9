@@ -5,6 +5,26 @@
     position: relative;
 }
 
+/* ─── SIDEBAR TOGGLE CHECKBOX ────────────────────── */
+#sidebar-toggle {
+    display: none;
+}
+
+/* ─── SIDEBAR OVERLAY (CSS-only) ─────────────────── */
+label.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 40;
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+}
+
+#sidebar-toggle:checked ~ label.sidebar-overlay {
+    display: block;
+}
+
 /* ─── SIDEBAR ────────────────────────────────────── */
 .sidebar {
     position: sticky;
@@ -65,61 +85,63 @@
     stroke: white;
 }
 
-/* ─── HAMBURGER BUTTON ───────────────────────────── */
-.hamburger {
+/* ─── SIDEBAR CLOSE BUTTON ───────────────────────── */
+.sidebar-close {
+    display: none;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* ─── HAMBURGER LABEL (CSS-only) ─────────────────── */
+label.hamburger {
     display: none;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    background: none;
-    border: none;
+    width: 36px;
+    height: 36px;
     cursor: pointer;
     padding: 4px;
-    position: absolute;
-    top: 14px;
-    left: 16px;
-    z-index: 60;
+    flex-shrink: 0;
+    margin: 12px 0 0 12px;
+    align-self: flex-start;
 }
 
-.hamburger span {
+label.hamburger span {
     display: block;
-    width: 22px;
-    height: 2px;
-    background-color: #111;
-    border-radius: 2px;
-    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.2s;
+    height: 2.5px;
+    width: 100%;
+    background-color: #333;
+    border-radius: 4px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
 }
 
-.hamburger:hover span {
+label.hamburger:hover span {
     background-color: var(--crimson, crimson);
 }
 
-/* ─── HAMBURGER OPEN STATE (X animation) ─────────── */
-.hamburger.open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+/* ─── HAMBURGER X ANIMATION ──────────────────────── */
+#sidebar-toggle:checked ~ .layout label.hamburger span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
 }
 
-.hamburger.open span:nth-child(2) {
+#sidebar-toggle:checked ~ .layout label.hamburger span:nth-child(2) {
     opacity: 0;
-    transform: scaleX(0);
 }
 
-.hamburger.open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+#sidebar-toggle:checked ~ .layout label.hamburger span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
 }
 
-/* ─── SIDEBAR OVERLAY ────────────────────────────── */
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.35);
-    z-index: 40;
-    backdrop-filter: blur(2px);
-}
-
-.sidebar-overlay.active {
-    display: block;
+/* ─── SIDEBAR OPEN STATE (CSS-only) ──────────────── */
+#sidebar-toggle:checked ~ .layout .sidebar {
+    transform: translateX(0);
 }
 
 /* ─── MAIN CONTENT ───────────────────────────────── */
@@ -140,6 +162,11 @@
     padding: 28px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
     animation: fadeUp 0.4s ease forwards;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .card-title {
@@ -343,7 +370,23 @@ tbody tr:last-child {
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 1024px) {
     .sidebar {
-        width: 210px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 260px;
+        transform: translateX(-100%);
+        z-index: 50;
+        padding-top: 60px;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar-close {
+        display: block;
+    }
+
+    label.hamburger {
+        display: flex;
     }
 
     .main-content {
@@ -356,33 +399,8 @@ tbody tr:last-child {
 }
 
 @media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-        position: relative;
-        top: auto;
-        left: auto;
-        margin: 12px 0 0 12px;
-        align-self: flex-start;
-    }
-
     .layout {
         flex-direction: column;
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 260px;
-        transform: translateX(-100%);
-        z-index: 50;
-        padding-top: 70px;
-        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
     }
 
     .main-content {
