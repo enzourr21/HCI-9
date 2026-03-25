@@ -9,6 +9,26 @@
 </head>
 <body>
 
+    <!-- MODAL TOGGLE CHECKBOX -->
+    <input type="checkbox" id="modal-toggle">
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="crimson" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <p class="modal-title">Application Submitted!</p>
+            <p class="modal-message">
+                Your enrollment application has been successfully submitted.<br><br>
+                Please wait for a confirmation email from the <strong>WMSU Registrar's Office</strong>. Check your inbox and spam folder for further instructions regarding your enrollment status from your college.
+            </p>
+            <a href="../index.html" class="btn-modal-ok">OK</a>
+        </div>
+    </div>
+
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">
@@ -396,7 +416,7 @@
             <!-- SUBMIT -->
             <hr class="divider">
             <div class="submit-section">
-                <button type="submit" class="btn-submit">Submit Enrollment Application</button>
+                <label for="modal-toggle" class="btn-submit-label">Submit Enrollment Application</label>
                 <p class="submit-note">By submitting this form, you agree to the terms and conditions of WMSU enrollment process.</p>
             </div>
 
