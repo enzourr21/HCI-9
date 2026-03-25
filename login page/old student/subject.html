@@ -10,6 +10,10 @@
 </head>
 <body>
 
+    <!-- SIDEBAR TOGGLE -->
+    <input type="checkbox" id="sidebar-toggle">
+    <label for="sidebar-toggle" class="sidebar-overlay"></label>
+
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">
@@ -35,15 +39,16 @@
 
     <div class="layout">
 
-        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <!-- HAMBURGER -->
+        <label for="sidebar-toggle" class="hamburger" aria-label="Toggle menu">
             <span></span>
             <span></span>
             <span></span>
-        </button>
+        </label>
 
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <aside class="sidebar" id="sidebar">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <label for="sidebar-toggle" class="sidebar-close">&#10005;</label>
             <ul class="sidebar-links">
                 <li>
                     <a href="profile.html">
@@ -182,35 +187,6 @@
 
         </main>
     </div>
-
-    <script>
-        const hamburger = document.getElementById('hamburgerBtn');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('open');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
-        });
-
-        overlay.addEventListener('click', () => {
-            hamburger.classList.remove('open');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        document.querySelectorAll('.sidebar-links li a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('open');
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
-    </script>
 
 </body>
 </html>
