@@ -332,6 +332,116 @@ input[type="number"]::-webkit-outer-spin-button {
     line-height: 1.6;
 }
 
+/* ─── MODAL TOGGLE ───────────────────────────────── */
+#modal-toggle {
+    display: none;
+}
+
+/* ─── MODAL OVERLAY ──────────────────────────────── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+#modal-toggle:checked ~ .modal-overlay {
+    display: flex;
+}
+
+/* ─── MODAL BOX ──────────────────────────────────── */
+.modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 40px 36px;
+    max-width: 460px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+/* ─── MODAL ICON ─────────────────────────────────── */
+.modal-icon {
+    width: 70px;
+    height: 70px;
+    background-color: #fff0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+/* ─── MODAL TEXT ─────────────────────────────────── */
+.modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.modal-message {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+.modal-message strong {
+    color: #333;
+}
+
+/* ─── MODAL OK BUTTON ────────────────────────────── */
+.btn-modal-ok {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: crimson;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    box-sizing: border-box;
+}
+
+.btn-modal-ok:hover {
+    background-color: darkred;
+}
+
+/* ─── SUBMIT LABEL BUTTON ────────────────────────── */
+.btn-submit-label {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    background-color: crimson;
+    color: white;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.15s;
+    box-sizing: border-box;
+}
+
+.btn-submit-label:hover {
+    background-color: darkred;
+    transform: translateY(-2px);
+}
+
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 1024px) {
     .containerEnroll {
