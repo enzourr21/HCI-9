@@ -34,7 +34,6 @@
 
     <div class="apply-wrapper">
 
-        <!-- ══════════════ APPLICATION FORM ══════════════ -->
         <div class="apply-card" id="apply-card">
             <h1 class="apply-title">Freshman Application</h1>
             <p class="instructions">Fill in your details carefully. All fields are required.</p>
@@ -70,7 +69,7 @@
                 </div>
             </div>
 
-            <form id="applyForm">
+            <form id="applyForm" novalidate>
 
                 <!-- STEP 1: Personal Information -->
                 <div class="form-panel active" id="step1">
@@ -130,39 +129,39 @@
                         <label for="course">Select Course to Apply</label>
                         <select id="course" name="course" class="form-control" required>
                             <option value="">Choose a course...</option>
-                                <option value="BS Agriculture">BS Agriculture</option>
-                                <option value="BS Agri Business">BS Agri Business</option>
-                                <option value="BS Food Technology">BS Food Technology</option>
-                                <option value="BS Islamic Studies">BS Islamic Studies</option>
-                                <option value="BS Asian Studies">BS Asian Studies</option>
-                                <option value="BS Computer Science">BS Computer Science</option>
-                                <option value="BS Information Technology">BS Information Technology</option>
-                                <option value="Associate in Computer Technology major in Networking Application Development">Associate in Computer Technology major in Networking Application Development</option>
-                                <option value="BS Criminology">BS Criminology</option>
-                                <option value="BS Civil Engineering">BS Civil Engineering</option>
-                                <option value="BS Mechanical Engineering">BS Mechanical Engineering</option>
-                                <option value="BS Sanitary Engineering">BS Sanitary Engineering</option>
-                                <option value="BS Industrial Engineering">BS Industrial Engineering</option>
-                                <option value="BS Agricultural Biosystem Engineering">BS Agricultural Biosystem Engineering</option>
-                                <option value="BS Environmental Engineering">BS Environmental Engineering</option>
-                                <option value="BS Geodetic Engineering">BS Geodetic Engineering</option>
-                                <option value="BS Electronics Communication Engineering">BS Electronics Communication Engineering</option>
-                                <option value="BS Computer Engineering">BS Computer Engineering</option>
-                                <option value="BS Forestry">BS Forestry</option>
-                                <option value="BS Environmental Science">BS Environmental Science</option>
-                                <option value="BS Agro-Forestry">BS Agro-Forestry</option>
-                                <option value="BS Home Economics">BS Home Economics</option>
-                                <option value="BS Nutrition and Dietetics">BS Nutrition and Dietetics</option>
-                                <option value="BS Hospitality Management">BS Hospitality Management</option>
-                                <option value="Bachelor of Arts in English Language Studies (BAELS)">Bachelor of Arts in English Language Studies (BAELS)</option>
-                                <option value="BS Journalism">BS Journalism</option>
-                                <option value="BA Broadcasting">BA Broadcasting</option>
-                                <option value="BS Economics">BS Economics</option>
-                                <option value="BS Accountancy">BS Accountancy</option>
-                                <option value="BA Political Science">BA Political Science</option>
-                                <option value="BA Psychology">BA Psychology</option>
-                                <option value="BS Business Administration">BS Business Administration</option>
-                                <option value="BS Nursing">BS Nursing</option>
+                            <option value="BS Agriculture">BS Agriculture</option>
+                            <option value="BS Agri Business">BS Agri Business</option>
+                            <option value="BS Food Technology">BS Food Technology</option>
+                            <option value="BS Islamic Studies">BS Islamic Studies</option>
+                            <option value="BS Asian Studies">BS Asian Studies</option>
+                            <option value="BS Computer Science">BS Computer Science</option>
+                            <option value="BS Information Technology">BS Information Technology</option>
+                            <option value="Associate in Computer Technology major in Networking Application Development">Associate in Computer Technology major in Networking Application Development</option>
+                            <option value="BS Criminology">BS Criminology</option>
+                            <option value="BS Civil Engineering">BS Civil Engineering</option>
+                            <option value="BS Mechanical Engineering">BS Mechanical Engineering</option>
+                            <option value="BS Sanitary Engineering">BS Sanitary Engineering</option>
+                            <option value="BS Industrial Engineering">BS Industrial Engineering</option>
+                            <option value="BS Agricultural Biosystem Engineering">BS Agricultural Biosystem Engineering</option>
+                            <option value="BS Environmental Engineering">BS Environmental Engineering</option>
+                            <option value="BS Geodetic Engineering">BS Geodetic Engineering</option>
+                            <option value="BS Electronics Communication Engineering">BS Electronics Communication Engineering</option>
+                            <option value="BS Computer Engineering">BS Computer Engineering</option>
+                            <option value="BS Forestry">BS Forestry</option>
+                            <option value="BS Environmental Science">BS Environmental Science</option>
+                            <option value="BS Agro-Forestry">BS Agro-Forestry</option>
+                            <option value="BS Home Economics">BS Home Economics</option>
+                            <option value="BS Nutrition and Dietetics">BS Nutrition and Dietetics</option>
+                            <option value="BS Hospitality Management">BS Hospitality Management</option>
+                            <option value="Bachelor of Arts in English Language Studies (BAELS)">Bachelor of Arts in English Language Studies (BAELS)</option>
+                            <option value="BS Journalism">BS Journalism</option>
+                            <option value="BA Broadcasting">BA Broadcasting</option>
+                            <option value="BS Economics">BS Economics</option>
+                            <option value="BS Accountancy">BS Accountancy</option>
+                            <option value="BA Political Science">BA Political Science</option>
+                            <option value="BA Psychology">BA Psychology</option>
+                            <option value="BS Business Administration">BS Business Administration</option>
+                            <option value="BS Nursing">BS Nursing</option>
                         </select>
                     </div>
                     <div class="flex-row">
@@ -202,25 +201,49 @@
             document.getElementById('alert').style.display = 'none';
         }
 
+        // STEP 1 → 2
         document.getElementById('nextStep1').addEventListener('click', function () {
-            const cetid = document.getElementById('cetid').value.trim();
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
+            const name    = document.getElementById('name').value.trim();
+            const email   = document.getElementById('email').value.trim();
             const contact = document.getElementById('contact').value.trim();
-            if (!cetid || !name || !email || !contact) { showAlert('Please fill in all personal information fields.'); return; }
+
+            if (!name || !email || !contact) {
+                showAlert('Please fill in all personal information fields.');
+                return;
+            }
+
+            // FIX 1: Added missing email format validation
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showAlert('Please enter a valid email address.');
+                return;
+            }
+
+            // FIX 2: Added missing contact number validation (PH format)
+            if (!/^(09|\+639)\d{9}$/.test(contact)) {
+                showAlert('Please enter a valid contact number (e.g. 09123456789).');
+                return;
+            }
+
             hideAlert();
             currentStep = 2;
             showStep(currentStep);
         });
 
+        // STEP 2 → 3
         document.getElementById('nextStep2').addEventListener('click', function () {
-            const ids = ['english','reading','science','quantitative','abstract','oapr'];
+            const ids = ['english', 'reading', 'science', 'quantitative', 'abstract', 'oapr'];
             let valid = true;
             ids.forEach(id => {
-                const v = document.getElementById(id).value;
-                if (!v.trim() || +v < 0 || +v > 100) valid = false;
+                const raw = document.getElementById(id).value;
+                // FIX 3: v.trim() on number inputs is unreliable — check raw === '' instead
+                if (raw === '' || isNaN(Number(raw)) || Number(raw) < 0 || Number(raw) > 100) {
+                    valid = false;
+                }
             });
-            if (!valid) { showAlert('Please fill in all percentile fields with values between 0 and 100.'); return; }
+            if (!valid) {
+                showAlert('Please fill in all percentile fields with values between 0 and 100.');
+                return;
+            }
             hideAlert();
             currentStep = 3;
             showStep(currentStep);
@@ -229,33 +252,46 @@
         document.getElementById('backStep2').addEventListener('click', () => { currentStep = 1; showStep(currentStep); hideAlert(); });
         document.getElementById('backStep3').addEventListener('click', () => { currentStep = 2; showStep(currentStep); hideAlert(); });
 
-        document.getElementById('applyForm').addEventListener('submit', function(e) {
+        // SUBMIT
+        document.getElementById('applyForm').addEventListener('submit', function (e) {
             e.preventDefault();
+
             const course = document.getElementById('course').value;
             if (!course) { showAlert('Please select a course.'); return; }
 
             const oapr = Number(document.getElementById('oapr').value);
-            if (Number.isNaN(oapr) || oapr < 0 || oapr > 100) { showAlert('Overall Ability Percentile Rank (OAPR) must be between 0 and 100.'); return; }
-            if (oapr < 85) { showAlert('Your OAPR is below the required threshold of 85. Please improve your score or try again next intake.'); return; }
+            if (Number.isNaN(oapr) || oapr < 0 || oapr > 100) {
+                showAlert('Overall Ability Percentile Rank (OAPR) must be between 0 and 100.');
+                return;
+            }
+            if (oapr < 85) {
+                showAlert('Your OAPR (' + oapr + ') is below the required threshold of 85. Please improve your score or try again next intake.');
+                return;
+            }
 
             const payload = {
-                cetid: document.getElementById('cetid').value.trim(),
-                name: document.getElementById('name').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                contact: document.getElementById('contact').value.trim(),
-                course: course,
-                english: Number(document.getElementById('english').value),
-                reading: Number(document.getElementById('reading').value),
-                science: Number(document.getElementById('science').value),
-                quantitative: Number(document.getElementById('quantitative').value),
-                abstract: Number(document.getElementById('abstract').value),
-                oapr: oapr,
-                applicationId: document.getElementById('cetid').value.trim(),
+                name:          document.getElementById('name').value.trim(),
+                email:         document.getElementById('email').value.trim(),
+                contact:       document.getElementById('contact').value.trim(),
+                course:        course,
+                english:       Number(document.getElementById('english').value),
+                reading:       Number(document.getElementById('reading').value),
+                science:       Number(document.getElementById('science').value),
+                quantitative:  Number(document.getElementById('quantitative').value),
+                abstract:      Number(document.getElementById('abstract').value),
+                oapr:          oapr,
                 submittedDate: new Date().toISOString(),
-                status: 'Submitted'
+                status:        'Submitted'
             };
 
-            localStorage.setItem('freshmanApp', JSON.stringify(payload));
+            // FIX 4: Wrapped localStorage in try/catch — throws in private/incognito mode
+            try {
+                localStorage.setItem('freshmanApp', JSON.stringify(payload));
+            } catch (err) {
+                showAlert('Could not save your application. Please try a different browser.');
+                return;
+            }
+
             window.location.href = 'freshman-account.html';
         });
     </script>
