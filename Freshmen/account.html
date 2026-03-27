@@ -34,19 +34,9 @@
     <div class="login-wrapper">
         <div class="login-card">
 
-            <h1>Start Your College Application</h1>
+            <h1>Welcome Back</h1>
 
             <form id="loginForm">
-                <div class="field-group">
-                    <label for="applicantType">Select Applicant Type</label>
-                    <select id="applicantType" name="applicantType" required>
-                        <option value="">Choose...</option>
-                        <option value="freshman">Freshman</option>
-                        <option value="shiftee">Shiftee</option>
-                        <option value="transferee">Transferee</option>
-                    </select>
-                </div>
-
                 <div class="field-group">
                     <label for="id">Enter ID</label>
                     <input
@@ -59,10 +49,8 @@
                 </div>
 
                 <div class="options">
-                        <p>Already Have an account? <a href="account.html">Sign In</a></p>
-                    </div>
 
-                <button type="submit" class="continue-btn">Continue</button>
+                <button type="submit" class="continue-btn" href="freshman-account.html">Sign In</button>
             </form>
 
             <div id="alert" class="alert" style="display: none;"></div>
@@ -73,28 +61,25 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const type = document.getElementById('applicantType').value;
             const id = document.getElementById('id').value.trim();
             const alertDiv = document.getElementById('alert');
-            if (!type || !id) {
-                alertDiv.textContent = 'Please select an applicant type and enter your ID.';
+            if (!id) {
+                alertDiv.textContent = 'Please enter your ID.';
                 alertDiv.style.display = 'block';
                 return;
             }
             alertDiv.style.display = 'none';
-            let redirectUrl;
-            switch(type) {
-                case 'freshman':
-                    redirectUrl = 'freshman-apply.html';
-                    break;
-                case 'shiftee':
-                    redirectUrl = 'shiftee.html';
-                    break;
-                case 'transferee':
-                    redirectUrl = 'freshman-apply.html';
-                    break;
+
+            const savedApp = localStorage.getItem('freshmanApp');
+            if (savedApp) {
+                window.location.href = 'freshman-account.html';
+            } else {
+                alertDiv.textContent = 'You don\'t have an account yet. Redirecting to create one...';
+                alertDiv.style.display = 'block';
+                setTimeout(function() {
+                    window.location.href = 'flogin.html';
+                }, 600);
             }
-            window.location.href = redirectUrl;
         });
     </script>
 

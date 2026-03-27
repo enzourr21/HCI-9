@@ -1,6 +1,6 @@
 /* ─── WRAPPER ────────────────────────────────────── */
 .login-wrapper {
-    min-height: calc(100vh - var(--navbar-height));
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,6 +17,14 @@
     padding: 40px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
     border-top: 5px solid var(--crimson);
+}
+
+.login-card h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 30px;
 }
 
 /* ─── CARD HEADER ────────────────────────────────── */
@@ -58,7 +66,8 @@
     margin-bottom: 6px;
 }
 
-.field-group input {
+.field-group input,
+.field-group select {
     padding: 11px 14px;
     border: 1.5px solid #ddd;
     border-radius: 8px;
@@ -69,12 +78,14 @@
     color: var(--black);
 }
 
-.field-group input:focus {
+.field-group input:focus,
+.field-group select:focus {
     border-color: var(--crimson);
     box-shadow: 0 0 0 3px rgba(192, 25, 43, 0.08);
 }
 
-.field-group input:invalid:not(:placeholder-shown) {
+.field-group input:invalid:not(:placeholder-shown),
+.field-group select:invalid {
     border-color: #e57373;
 }
 
@@ -100,6 +111,25 @@
 /* ─── OPTIONS ────────────────────────────────────── */
 .options {
     margin-bottom: 24px;
+    text-align: center;
+}
+
+.options p {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+}
+
+.options a {
+    color: var(--crimson);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.options a:hover {
+    color: var(--crimson-dark);
+    text-decoration: underline;
 }
 
 .remember {
@@ -118,8 +148,8 @@
     cursor: pointer;
 }
 
-/* ─── LOGIN BUTTON ───────────────────────────────── */
-.login-btn {
+/* ─── CONTINUE BUTTON ───────────────────────────────── */
+.continue-btn {
     width: 100%;
     padding: 13px;
     border: none;
@@ -133,7 +163,7 @@
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
-.login-btn:hover {
+.continue-btn:hover {
     background: var(--crimson-dark);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(192, 25, 43, 0.25);
@@ -156,6 +186,17 @@
 .register a:hover {
     color: var(--crimson-dark);
     text-decoration: underline;
+}
+
+/* ─── ALERT ───────────────────────────────────── */
+.alert {
+    margin-top: 22px;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    font-size: 0.88rem;
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────── */
