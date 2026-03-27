@@ -34,40 +34,69 @@
     <div class="login-wrapper">
         <div class="login-card">
 
-            <div class="card-header">
-                <svg class="card-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                </svg>
-                <h1>Welcome</h1>
-                <p class="subtitle">Sign in to continue your enrollment</p>
-            </div>
+            <h1>Start Your College Application</h1>
 
-            <form id="loginForm" action="../Freshmen/enroll.html">
+            <form id="loginForm">
                 <div class="field-group">
-                    <label for="cetid">CET ID</label>
+                    <label for="applicantType">Select Applicant Type</label>
+                    <select id="applicantType" name="applicantType" required>
+                        <option value="">Choose...</option>
+                        <option value="freshman">Freshman</option>
+                        <option value="shiftee">Shiftee</option>
+                        <option value="transferee">Transferee</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label for="id">Enter ID</label>
                     <input
                         type="text"
-                        id="cetid"
-                        name="cetid"
-                        placeholder="Enter your CET ID"
-                        inputmode="numeric"
-                        pattern="[0-9]+"
-                        maxlength="20"
+                        id="id"
+                        name="id"
+                        placeholder="Enter your CET or Student ID"
                         required
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                     />
                 </div>
 
-                <button type="submit" class="login-btn">Sign In</button>
+                <div class="options">
+                        <p>Already Have an account? <a href="account.html">Sign In</a></p>
+                    </div>
+
+                <button type="submit" class="continue-btn">Continue</button>
             </form>
 
-            <p class="register">
-                Forgot CET ID? <a href="#">Contact Admin</a>
-            </p>
+            <div id="alert" class="alert" style="display: none;"></div>
 
         </div>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const type = document.getElementById('applicantType').value;
+            const id = document.getElementById('id').value.trim();
+            const alertDiv = document.getElementById('alert');
+            if (!type || !id) {
+                alertDiv.textContent = 'Please select an applicant type and enter your ID.';
+                alertDiv.style.display = 'block';
+                return;
+            }
+            alertDiv.style.display = 'none';
+            let redirectUrl;
+            switch(type) {
+                case 'freshman':
+                    redirectUrl = 'freshman-apply.html';
+                    break;
+                case 'shiftee':
+                    redirectUrl = 'shiftee.html';
+                    break;
+                case 'transferee':
+                    redirectUrl = 'freshman-apply.html';
+                    break;
+            }
+            window.location.href = redirectUrl;
+        });
+    </script>
 
 </body>
 </html>
