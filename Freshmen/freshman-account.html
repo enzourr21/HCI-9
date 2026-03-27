@@ -235,10 +235,39 @@
                 <label for="new-course">New Course</label>
                 <select id="new-course" class="form-control">
                     <option value="">Choose a course...</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="Business Administration">Business Administration</option>
-                    <option value="Nursing">Nursing</option>
+                    <option value="BS Agriculture">BS Agriculture</option>
+                    <option value="BS Agri Business">BS Agri Business</option>
+                    <option value="BS Food Technology">BS Food Technology</option>
+                    <option value="BS Islamic Studies">BS Islamic Studies</option>
+                    <option value="BS Asian Studies">BS Asian Studies</option>
+                    <option value="BS Computer Science">BS Computer Science</option>
+                    <option value="BS Information Technology">BS Information Technology</option>
+                    <option value="Associate in Computer Technology major in Networking Application Development">Associate in Computer Technology major in Networking Application Development</option>
+                    <option value="BS Criminology">BS Criminology</option>
+                    <option value="BS Civil Engineering">BS Civil Engineering</option>
+                    <option value="BS Mechanical Engineering">BS Mechanical Engineering</option>
+                    <option value="BS Sanitary Engineering">BS Sanitary Engineering</option>
+                    <option value="BS Industrial Engineering">BS Industrial Engineering</option>
+                    <option value="BS Agricultural Biosystem Engineering">BS Agricultural Biosystem Engineering</option>
+                    <option value="BS Environmental Engineering">BS Environmental Engineering</option>
+                    <option value="BS Geodetic Engineering">BS Geodetic Engineering</option>
+                    <option value="BS Electronics Communication Engineering">BS Electronics Communication Engineering</option>
+                    <option value="BS Computer Engineering">BS Computer Engineering</option>
+                    <option value="BS Forestry">BS Forestry</option>
+                    <option value="BS Environmental Science">BS Environmental Science</option>
+                    <option value="BS Agro-Forestry">BS Agro-Forestry</option>
+                    <option value="BS Home Economics">BS Home Economics</option>
+                    <option value="BS Nutrition and Dietetics">BS Nutrition and Dietetics</option>
+                    <option value="BS Hospitality Management">BS Hospitality Management</option>
+                    <option value="Bachelor of Arts in English Language Studies (BAELS)">Bachelor of Arts in English Language Studies (BAELS)</option>
+                    <option value="BS Journalism">BS Journalism</option>
+                    <option value="BA Broadcasting">BA Broadcasting</option>
+                    <option value="BS Economics">BS Economics</option>
+                    <option value="BS Accountancy">BS Accountancy</option>
+                    <option value="BA Political Science">BA Political Science</option>
+                    <option value="BA Psychology">BA Psychology</option>
+                    <option value="BS Business Administration">BS Business Administration</option>
+                    <option value="BS Nursing">BS Nursing</option>
                 </select>
             </div>
             <div id="modal-alert" class="form-alert" style="display:none;"></div>
@@ -251,10 +280,39 @@
 
     <script>
         const courseIcons = {
-            'Computer Science':        '💻',
-            'Engineering':             '⚙️',
-            'Business Administration': '📊',
-            'Nursing':                 '🩺'
+            'BS Computer Science': '💻',
+            'BS Information Technology': '💻',
+            'Associate in Computer Technology major in Networking Application Development': '💻',
+            'BS Civil Engineering': '⚙️',
+            'BS Mechanical Engineering': '⚙️',
+            'BS Sanitary Engineering': '⚙️',
+            'BS Industrial Engineering': '⚙️',
+            'BS Agricultural Biosystem Engineering': '⚙️',
+            'BS Environmental Engineering': '⚙️',
+            'BS Geodetic Engineering': '⚙️',
+            'BS Electronics Communication Engineering': '⚙️',
+            'BS Computer Engineering': '⚙️',
+            'BS Business Administration': '📊',
+            'BS Nursing': '🩺',
+            'BS Criminology': '⚖️',
+            'BS Agriculture': '🌾',
+            'BS Agri Business': '🌾',
+            'BS Food Technology': '🌾',
+            'BS Forestry': '🌲',
+            'BS Environmental Science': '🌍',
+            'BS Agro-Forestry': '🌲',
+            'BS Home Economics': '🏠',
+            'BS Nutrition and Dietetics': '🍎',
+            'BS Hospitality Management': '🏨',
+            'Bachelor of Arts in English Language Studies (BAELS)': '📖',
+            'BS Journalism': '📰',
+            'BA Broadcasting': '📺',
+            'BS Economics': '💰',
+            'BS Accountancy': '🧮',
+            'BA Political Science': '🏛️',
+            'BA Psychology': '🧠',
+            'BS Islamic Studies': '🕌',
+            'BS Asian Studies': '🌏'
         };
 
         const raw = localStorage.getItem('freshmanApp');
