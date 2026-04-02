@@ -74,6 +74,7 @@
                     <select id="adminRole">
                         <option value="">-- Role --</option>
                         <option value="misto">MISTO</option>
+                        <option value="assessment">Assessment Office</option>
                         <option value="dean">College Dean</option>
                         <option value="dept-admin">Department Admin</option>
                         <option value="secretary">Secretary</option>
@@ -120,8 +121,11 @@
         }
 
         switch(role) {
+            case 'assessment':
+                window.location.href = adminPath + "assessment/assessment_dashboard.html";
+                break;
             case 'adviser':
-                window.location.href = adminPath + "adviser/dashboard.html";
+                window.location.href = adminPath + "adviser/adviser_dashboard.html";
                 break;
             default:
                 // For roles not yet built, you can send them to a generic dashboard or an alert
