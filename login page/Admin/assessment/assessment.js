@@ -21,7 +21,7 @@ const MOCK_STUDENTS = [
         adviser:             "Prof. Maria Reyes",
         student_type:        "REGULAR",   // or "IRREGULAR"
         residency_warning:   false,
-        total_units:         23,
+        total_units:         23.00,
         subjects: [
             { code: "CS 101",  description: "Introduction to Computing",        units: 3, lec: 3, lab: 0 },
             { code: "CS 102",  description: "Computer Programming 1",           units: 4, lec: 2, lab: 2 },
@@ -42,7 +42,46 @@ const MOCK_STUDENTS = [
             id_fee:           120,
             other:            55,
         }
+    },
+
+    {
+        queue_id: "q-002",
+        student_name: "John Smith Doe",
+        initials: "JD",
+        cet_id: "2023-05678",
+        program: "BSCS-2B",
+        year_level: "Year 2",
+        student_type: "IRREGULAR", 
+        adviser: "Dr. Jose Rizal",
+        residency_warning: true,
+        total_units: 18.00,
+        subjects: [
+            { code: "CS 201", description: "Data Structures", units: 3, lec: 2, lab: 1 },
+            { code: "MATH 2", description: "Calculus 2", units: 3, lec: 3, lab: 0 }
+        ],
+        shs_info: { school: "Zamboanga City High School", strand: "ICT" },
+        guardian_info: { name: "Jane Doe", relationship: "Aunt", address: "Tetuan, Zamboanga City", contact: "09987654321" }
+    },
+
+    {
+        queue_id: "q-003",
+        student_name: "Cassidy V. Himodo",
+        initials: "CH",
+        cet_id: "2023-09207",
+        program: "BSCS-2A",
+        year_level: "Year 2",
+        student_type: "REGULAR", 
+        adviser: "Gojo Satoru",
+        residency_warning: false,
+        total_units: 18.00,
+        subjects: [
+            { code: "CS 201", description: "Data Structures", units: 3, lec: 2, lab: 1 },
+            { code: "MATH 2", description: "Calculus 2", units: 3, lec: 3, lab: 0 }
+        ],
+        shs_info: { school: "Zamboanga City High School", strand: "ICT" },
+        guardian_info: { name: "Jane Doe", relationship: "Aunt", address: "Tetuan, Zamboanga City", contact: "09987654321" }
     }
+
 ];
 
 // ---------------------------------------------------------------
@@ -216,7 +255,7 @@ function renderLeftPanel(s) {
 
         <!-- Subject Table -->
         <div class="subjects-section">
-            <h3>Subjects Enlisted</h3>
+
             <table class="subjects-table">
                 <thead>
                     <tr>
@@ -297,13 +336,7 @@ function renderRightPanel(s) {
             <span class="fee-grand-total">${formatCurrency(grandTotal)}</span>
         </div>
 
-        ${s.residency_warning ? `
-        <div class="fee-note residency-note">
-            ⚠ Tuition applied manually — student exceeds free tuition limit.
-        </div>` : `
-        <div class="fee-note">
-            ✓ Free Tuition (RA 10931) applied. Tuition = ₱0.00.
-        </div>`}
+
     `;
 
     // Wire up the Confirm Assessment button

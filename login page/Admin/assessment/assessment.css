@@ -266,3 +266,13 @@ html, body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
+.subjects-table th:nth-child(3), 
+.subjects-table td:nth-child(3), /* Lec */
+.subjects-table th:nth-child(4), 
+.subjects-table td:nth-child(4), /* Lab */
+.subjects-table th:nth-child(5), 
+.subjects-table td:nth-child(5)  /* Units */ {
+    text-align: center;
+    padding-right: 10px;
+}
