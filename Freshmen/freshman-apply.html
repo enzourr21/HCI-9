@@ -74,9 +74,18 @@
                 <!-- STEP 1: Personal Information -->
                 <div class="form-panel active" id="step1">
                     <h2 class="sec-head">Personal Information</h2>
+
                     <div class="field-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required>
+                        <label for="surname">Surname</label>
+                        <input type="text" id="surname" name="surname" class="form-control" placeholder="e.g. Dela Cruz" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="firstname">First Name</label>
+                        <input type="text" id="firstname" name="firstname" class="form-control" placeholder="e.g. Juan" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="middleinitial">Middle Initial</label>
+                        <input type="text" id="middleinitial" name="middleinitial" class="form-control" placeholder="e.g. R" maxlength="2" required>
                     </div>
                     <div class="field-group">
                         <label for="email">Email Address</label>
@@ -175,7 +184,7 @@
             <div id="alert" class="form-alert" style="display:none;"></div>
         </div>
 
-    </div><!-- end .apply-wrapper -->
+    </div>
 
     <script>
         let currentStep = 1;
@@ -203,22 +212,24 @@
 
         // STEP 1 → 2
         document.getElementById('nextStep1').addEventListener('click', function () {
-            const name    = document.getElementById('name').value.trim();
-            const email   = document.getElementById('email').value.trim();
-            const contact = document.getElementById('contact').value.trim();
+            const surname       = document.getElementById('surname').value.trim();
+            const firstname     = document.getElementById('firstname').value.trim();
+            const middleinitial = document.getElementById('middleinitial').value.trim();
+            const email         = document.getElementById('email').value.trim();
+            const contact       = document.getElementById('contact').value.trim();
 
-            if (!name || !email || !contact) {
+            if (!surname || !firstname || !middleinitial || !email || !contact) {
                 showAlert('Please fill in all personal information fields.');
                 return;
             }
-
-            // FIX 1: Added missing email format validation
+            if (!/^[A-Za-z]\.?$/.test(middleinitial)) {
+                showAlert('Middle initial must be a single letter (e.g. R or R.).');
+                return;
+            }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 showAlert('Please enter a valid email address.');
                 return;
             }
-
-            // FIX 2: Added missing contact number validation (PH format)
             if (!/^(09|\+639)\d{9}$/.test(contact)) {
                 showAlert('Please enter a valid contact number (e.g. 09123456789).');
                 return;
@@ -235,10 +246,7 @@
             let valid = true;
             ids.forEach(id => {
                 const raw = document.getElementById(id).value;
-                // FIX 3: v.trim() on number inputs is unreliable — check raw === '' instead
-                if (raw === '' || isNaN(Number(raw)) || Number(raw) < 0 || Number(raw) > 100) {
-                    valid = false;
-                }
+                if (raw === '' || isNaN(Number(raw)) || Number(raw) < 0 || Number(raw) > 100) valid = false;
             });
             if (!valid) {
                 showAlert('Please fill in all percentile fields with values between 0 and 100.');
@@ -269,8 +277,17 @@
                 return;
             }
 
+            const surname       = document.getElementById('surname').value.trim();
+            const firstname     = document.getElementById('firstname').value.trim();
+            const middleinitial = document.getElementById('middleinitial').value.trim().replace('.', '').toUpperCase();
+            // Full name stored as: Surname, Firstname M.
+            const fullName = surname + ', ' + firstname + ' ' + middleinitial + '.';
+
             const payload = {
-                name:          document.getElementById('name').value.trim(),
+                surname:       surname,
+                firstname:     firstname,
+                middleinitial: middleinitial,
+                name:          fullName,
                 email:         document.getElementById('email').value.trim(),
                 contact:       document.getElementById('contact').value.trim(),
                 course:        course,
@@ -284,7 +301,6 @@
                 status:        'Submitted'
             };
 
-            // FIX 4: Wrapped localStorage in try/catch — throws in private/incognito mode
             try {
                 localStorage.setItem('freshmanApp', JSON.stringify(payload));
             } catch (err) {
