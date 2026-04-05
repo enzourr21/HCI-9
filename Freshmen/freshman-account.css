@@ -24,15 +24,14 @@ body {
     max-width: 680px;
     margin: 0 auto;
     padding: 40px 30px 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
 }
 
-.profile-card,
-.two-col,
-.notice-card {
-    margin-bottom: 18px;
+/* ─── DASHBOARD CONTENT ─────────────────────────── */
+/* This is the actual flex column that spaces the cards */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 /* ─── NO DATA STATE ─────────────────────────────── */
@@ -95,7 +94,7 @@ body {
     display: flex;
     align-items: center;
     gap: 18px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .avatar {
@@ -133,7 +132,7 @@ body {
 .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 12px;
     margin-bottom: 20px;
 }
 
@@ -224,7 +223,7 @@ body {
     border-radius: 12px;
     padding: 14px 16px;
     background: #fafafa;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .ac-icon { font-size: 1.6rem; flex-shrink: 0; }
@@ -321,18 +320,11 @@ body {
     line-height: 1.55;
 }
 
-/* ─── TWO-COLUMN ROW ────────────────────────────── */
-.two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
 /* ─── PROGRESS CARD ─────────────────────────────── */
 .progress-card {
     background: var(--white);
     border-radius: 14px;
-    padding: 24px;
+    padding: 28px 24px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
@@ -340,7 +332,7 @@ body {
     font-size: 0.86rem;
     font-weight: 700;
     color: var(--black);
-    margin-bottom: 1.3rem;
+    margin-bottom: 1.5rem;
 }
 
 .progress-track {
@@ -353,7 +345,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     position: relative;
 }
 
@@ -407,53 +399,6 @@ body {
     letter-spacing: 0.04em;
 }
 
-/* ─── SCORES CARD ───────────────────────────────── */
-.scores-card {
-    background: var(--white);
-    border-radius: 14px;
-    padding: 24px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-}
-
-.score-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.score-item {
-    background: #fafafa;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.score-label {
-    font-size: 0.64rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--text-muted);
-}
-
-.score-value {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--black);
-}
-
-.score-item--oapr {
-    border-color: var(--crimson);
-    background: var(--crimson-light);
-}
-
-.score-item--oapr .score-value {
-    color: var(--crimson);
-}
-
 /* ─── NOTICE CARD ───────────────────────────────── */
 .notice-card {
     background: var(--white);
@@ -489,7 +434,6 @@ body {
     color: var(--text-muted);
     text-align: center;
     line-height: 1.5;
-    margin-top: 4px;
 }
 
 /* ─── MODAL ─────────────────────────────────────── */
@@ -614,17 +558,16 @@ body {
 
 /* ─── RESPONSIVE ────────────────────────────────── */
 @media (max-width: 600px) {
-    .account-wrapper  { padding: 24px 16px 48px; }
-    .profile-card     { padding: 22px 18px; }
-    .info-grid        { grid-template-columns: 1fr; }
-    .info-block--full { grid-column: 1 / -1; }
-    .two-col          { grid-template-columns: 1fr; }
-    .score-grid       { grid-template-columns: 1fr 1fr; }
-    .progress-circle  { width: 28px; height: 28px; }
-    .p-line           { top: 14px; }
-    .p-step-lbl       { font-size: 0.54rem; }
-    .btn-change-course { font-size: 0.72rem; padding: 7px 10px; }
-    .modal-box        { padding: 24px 18px; }
+    .account-wrapper     { padding: 24px 16px 48px; }
+    .dashboard-content   { gap: 20px; }
+    .profile-card        { padding: 22px 18px; }
+    .info-grid           { grid-template-columns: 1fr; }
+    .info-block--full    { grid-column: 1 / -1; }
+    .progress-circle     { width: 28px; height: 28px; }
+    .p-line              { top: 14px; }
+    .p-step-lbl          { font-size: 0.54rem; }
+    .btn-change-course   { font-size: 0.72rem; padding: 7px 10px; }
+    .modal-box           { padding: 24px 18px; }
     .info-edit-form.open { flex-direction: column; }
     .info-edit-input     { width: 100%; }
     .info-save-btn       { align-self: flex-end; }
