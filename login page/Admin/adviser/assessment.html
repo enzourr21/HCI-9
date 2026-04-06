@@ -4,28 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMSU-Ease | Assessment</title>
-    <link rel="stylesheet" href="../../../style.css"> 
-    <link rel="stylesheet" href="adviser.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../../style.css">
+    <link rel="stylesheet" href="adviser.css">
 </head>
 <body>
 
-    <input type="radio" name="student-filter" id="all" checked hidden>
+    <!-- CSS-only filter radios -->
+    <input type="radio" name="student-filter" id="all"     checked hidden>
     <input type="radio" name="student-filter" id="pending" hidden>
-    <input type="radio" name="student-filter" id="action" hidden>
+    <input type="radio" name="student-filter" id="action"  hidden>
 
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">
-            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
                 <path d="M6 12v5c3 3 9 3 12 0v-5"/>
             </svg>
             <span class="name">WMSU-Ease</span>
         </div>
         <ul class="nav-links">
+            <li class="adviser-info">
+                <div class="adviser-avatar">AD</div>
+                <div class="adviser-text">
+                    <span class="adviser-name">Dr. Ana Dizon</span>
+                    <span class="adviser-role">Adviser</span>
+                </div>
+            </li>
             <li>
-                <a href="../../login.html" style="display:flex; align-items:center; gap:6px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                <a href="../../login.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        width="17" height="17">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                         <polyline points="16 17 21 12 16 7"/>
                         <line x1="21" y1="12" x2="9" y2="12"/>
@@ -36,7 +48,10 @@
         </ul>
     </nav>
 
+    <!-- LAYOUT -->
     <div class="adviser-layout">
+
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <nav class="nav-menu">
                 <a href="adviser_dashboard.html" class="nav-item">
@@ -52,12 +67,13 @@
 
             <div class="quick-stats">
                 <h4>Quick Stats</h4>
-                <div class="stat-item"><span>Total Students:</span> <strong>7</strong></div>
-                <div class="stat-item"><span>Pending Review:</span> <strong>6</strong></div>
-                <div class="stat-item"><span>Approved:</span> <strong>1</strong></div>
+                <div class="stat-item"><span>Total Students</span><strong>7</strong></div>
+                <div class="stat-item"><span>Pending Review</span><strong>6</strong></div>
+                <div class="stat-item"><span>Approved</span><strong>1</strong></div>
             </div>
         </aside>
 
+        <!-- MAIN CONTENT -->
         <main class="content">
             <div class="content-header">
                 <div class="header-left">
@@ -71,20 +87,22 @@
                         </select>
                     </div>
                 </div>
-                
                 <div class="header-right">
                     <div class="control-group">
                         <span class="label">Filter:</span>
                         <div class="pills">
-                            <label for="all" class="filter-btn">All</label>
+                            <label for="all"     class="filter-btn">All</label>
                             <label for="pending" class="filter-btn">Regular (2)</label>
-                            <label for="action" class="filter-btn">Overloaded/Irregular (1)</label>
+                            <label for="action"  class="filter-btn">Overloaded / Irregular (1)</label>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- STUDENT CARDS -->
             <div id="student-list">
+
+                <!-- Card: Juan Dela Cruz — Irregular -->
                 <div class="student-card irregular">
                     <div class="card-header">
                         <div class="profile-row">
@@ -93,10 +111,9 @@
                                 <h3 class="student-name">Juan Dela Cruz</h3>
                                 <p class="student-id">2024-001234 • Year 3 • CS-3B</p>
                             </div>
-                            <div class="status-pill irregular">Overloaded/Irregular</div>
+                            <div class="status-pill irregular">Overloaded / Irregular</div>
                         </div>
                     </div>
-
                     <div class="card-body">
                         <h4 class="enrolled-title">Subjects for Review (Preview)</h4>
                         <ul class="subject-preview-list">
@@ -104,13 +121,17 @@
                             <li>CS 106 - Cyber Security</li>
                         </ul>
                     </div>
-
                     <div class="card-btns">
-                        <button class="btn btn-outline">View Subjects</button>
-                        <button class="btn btn-proceed"><i class="fas fa-check-circle"></i>Submit Assessment</button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-eye"></i> View Subjects
+                        </button>
+                        <button class="btn btn-proceed">
+                            <i class="fas fa-check-circle"></i> Submit Assessment
+                        </button>
                     </div>
                 </div>
 
+                <!-- Card: Cassidy Himodo — Regular -->
                 <div class="student-card regular">
                     <div class="card-header">
                         <div class="profile-row">
@@ -122,21 +143,25 @@
                             <div class="status-pill regular">Regular</div>
                         </div>
                     </div>
-
                     <div class="card-body">
                         <h4 class="enrolled-title">Subjects for Review (Preview)</h4>
                         <ul class="subject-preview-list">
-                            <li>CC 104 - Data Structures & Algorithms</li>
+                            <li>CC 104 - Data Structures &amp; Algorithms</li>
                         </ul>
                     </div>
-
                     <div class="card-btns">
-                        <button class="btn btn-outline">View Subjects</button>
-                        <button class="btn btn-proceed"><i class="fas fa-check-circle"></i>Submit Assessment</button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-eye"></i> View Subjects
+                        </button>
+                        <button class="btn btn-proceed">
+                            <i class="fas fa-check-circle"></i> Submit Assessment
+                        </button>
                     </div>
                 </div>
-            </div>
+
+            </div><!-- /#student-list -->
         </main>
     </div>
+
 </body>
 </html>
