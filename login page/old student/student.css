@@ -254,7 +254,8 @@ label.hamburger:hover span {
 /* ─── BADGES ─────────────────────────────────────── */
 .badge {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
     padding: 4px 10px;
     border-radius: 20px;
     white-space: nowrap;
