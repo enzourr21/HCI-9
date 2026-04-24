@@ -42,7 +42,7 @@ function renderTable(data) {
     if (data.length === 0) {
         emptyState.style.display = "block";
         return;
-    }
+    } 
     emptyState.style.display = "none";
 
     data.forEach((s, idx) => {

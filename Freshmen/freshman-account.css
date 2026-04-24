@@ -388,16 +388,20 @@ body {
 .progress-step.gray .p-step-lbl { color: #bbb; }
 .last-step .p-line { display: none; }
 
-.badge-green {
+/* ─── BADGES ─────────────────────────────────────── */
+.badge {
     font-size: 0.56rem;
     font-weight: 700;
     padding: 2px 6px;
     border-radius: 20px;
-    background: #d1fae5;
-    color: #065f46;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
+
+.badge.green { background-color: #e6f9ed; color: #27ae60;} /*completed */
+.badge.yellow {background-color: #fef9e7; color: #f39c12; } /*in progress*/
+.badge.red    { background-color: #fde8ea; color: var(--crimson, crimson); } /*error/failed*/
+.badge.gray   { background-color: #f0f0f0; color: #888; } /*to be completed*/
 
 /* ─── NOTICE CARD ───────────────────────────────── */
 .notice-card {
