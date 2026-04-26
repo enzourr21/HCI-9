@@ -3,174 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WMSU-Ease</title>
-    <link rel="stylesheet" href="style.css">
+    <title>WMSU-Ease | Online Enrollment System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="landingPage.css">
 </head>
 <body>
 
-<!--NAVBAR-->
-<nav class="navbar">
-    <div class="logo">
-        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- ═══════════════════════════════════════════
+     ANNOUNCEMENT BAR
+═══════════════════════════════════════════ -->
+<div class="lp-bar" id="announcementBar">
+    <span class="lp-bar-dot"></span>
+    <span id="announcementText">Checking enrollment status…</span>
+    <button class="lp-bar-close" id="barClose" aria-label="Close">×</button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════ -->
+<nav class="lp-nav">
+    <a href="#lp-home" class="lp-nav-brand">
+        <svg class="lp-nav-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
             <path d="M6 12v5c3 3 9 3 12 0v-5"/>
         </svg>
-        <span class="name">WMSU-Ease</span>
-    </div>
+        <span class="lp-nav-name">WMSU-Ease</span>
+    </a>
 
-    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
-    <label for="nav-toggle" class="hamburger" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-    </label>
-
-    <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#enrollment-section">Enrollment</a></li>
-        <li><a href="login page/login.html">Login</a></li>
-        <li><a href="#help">Help</a></li>
+    <!-- Desktop links -->
+    <ul class="lp-nav-links">
+        <li><a href="#lp-home">Home</a></li>
+        <li><a href="#lp-paths">Enroll</a></li>
+        <li><a href="#lp-requirements">Requirements</a></li>
+        <li><a href="#lp-dates">Key Dates</a></li>
+        <li><a href="#lp-faq">FAQ</a></li>
+        <li><a href="login page/login.html" class="lp-nav-cta">Login</a></li>
     </ul>
+
+    <!-- Hamburger -->
+    <button class="lp-hamburger" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
 
-<!--HOME-->
-<section id="home" class="section home">
-    <p class="big-text">Enroll with Ease at WMSU</p>
-    <p class="small-text">
-        Western Mindanao State University's modern online enrollment system.<br>
-        Fast, Secure, and hassle-free registration for all students.
-    </p>
-    <div class="btn-group">
-        <div class="btn-wrapper">
-            <a href="Freshmen/flogin.html" class="btn" id="enroll-btn">Start Enrollment</a>
-            <span class="btn-hint">Freshman or Transferee? Click here</span>
+<!-- Mobile overlay + drawer -->
+<div class="lp-nav-overlay" id="navOverlay"></div>
+<ul id="navMenu">
+    <li><a href="#lp-home">Home</a></li>
+    <li><a href="#lp-paths">Enroll</a></li>
+    <li><a href="#lp-requirements">Requirements</a></li>
+    <li><a href="#lp-dates">Key Dates</a></li>
+    <li><a href="#lp-faq">FAQ</a></li>
+    <li><a href="#lp-help">Help</a></li>
+    <li><a href="login page/login.html" class="lp-nav-cta">Login →</a></li>
+</ul>
+
+<!-- ═══════════════════════════════════════════
+     HERO — two-column layout
+═══════════════════════════════════════════ -->
+<section id="lp-home" class="lp-hero">
+    <div class="lp-hero-inner">
+
+        <!-- Left: Headline & dates -->
+        <div class="lp-hero-left">
+            <span class="lp-badge" id="semBadge">A.Y. 2025–2026 · 1st Semester</span>
+            <h1 class="lp-h1">Enroll with <em>Ease</em><br>at WMSU</h1>
+            <p class="lp-hero-desc">
+                Western Mindanao State University's modern online enrollment system.
+                Fast, secure, and hassle-free registration for all students.
+            </p>
+            <div class="lp-date-strip">
+                <div class="lp-date-item">
+                    <span class="lp-date-lbl">Old Students</span>
+                    <span class="lp-date-val" id="dateOld">—</span>
+                </div>
+                <div class="lp-date-sep"></div>
+                <div class="lp-date-item">
+                    <span class="lp-date-lbl">New Students</span>
+                    <span class="lp-date-val" id="dateNew">—</span>
+                </div>
+                <div class="lp-date-sep"></div>
+                <div class="lp-date-item">
+                    <span class="lp-date-lbl">Late Enrollment</span>
+                    <span class="lp-date-val" id="dateLate">—</span>
+                </div>
+            </div>
         </div>
-        <div class="btn-wrapper">
-            <a href="login page/login.html" class="btn" id="login">Login</a>
-            <span class="btn-hint">Already have an account? Click here</span>
+
+        <!-- Right: Auth card -->
+        <div class="lp-hero-right">
+            <div class="lp-auth-card">
+
+                <!-- Tabs -->
+                <div class="lp-auth-tabs">
+                    <button id="tabLogin" class="active" onclick="switchTab('login')">Login</button>
+                    <button id="tabApply" onclick="switchTab('apply')">New Student</button>
+                </div>
+
+                <!-- Login panel -->
+                <div class="lp-auth-body" id="authLogin">
+                    <div class="lp-auth-header">
+                        <h3>Welcome back! 👋</h3>
+                        <p>Log in with your WMSU student credentials.</p>
+                    </div>
+                    <div class="lp-field">
+                        <label>Student ID Number</label>
+                        <input type="text" placeholder="e.g. 2021-00001">
+                    </div>
+                    <div class="lp-field">
+                        <label>Password</label>
+                        <input type="password" placeholder="Enter your password">
+                    </div>
+                    <a href="#" class="lp-forgot">Forgot password?</a>
+                    <a href="login page/old student/subject.html" class="lp-btn-full">Login to Portal →</a>
+                    <div class="lp-auth-or">or</div>
+                    <a href="login page/login.html" class="lp-btn-full" style="background:#f5f5f5; color:#333; font-weight:600; border:1.5px solid #e0e0e0;">
+                        Continue with Google
+                    </a>
+                </div>
+
+                <!-- Apply / New Student panel -->
+                <div class="lp-auth-body lp-hidden" id="authApply">
+                    <div class="lp-auth-header">
+                        <h3>First time at WMSU? 🌟</h3>
+                        <p>Select your student type to begin your application.</p>
+                    </div>
+                    <div class="lp-apply-options">
+                        <a href="Freshmen/flogin.html" class="lp-apply-opt">
+                            <span class="lp-apply-opt-icon">🎒</span>
+                            <div class="lp-apply-opt-text">
+                                <strong>Freshmen</strong>
+                                <span>Senior high school graduate</span>
+                            </div>
+                            <span class="lp-apply-opt-arrow">›</span>
+                        </a>
+                        <a href="#" class="lp-apply-opt">
+                            <span class="lp-apply-opt-icon">📂</span>
+                            <div class="lp-apply-opt-text">
+                                <strong>Transferee</strong>
+                                <span>Coming from another school</span>
+                            </div>
+                            <span class="lp-apply-opt-arrow">›</span>
+                        </a>
+                        <a href="#" class="lp-apply-opt">
+                            <span class="lp-apply-opt-icon">🔁</span>
+                            <div class="lp-apply-opt-text">
+                                <strong>Shiftee</strong>
+                                <span>Changing course within WMSU</span>
+                            </div>
+                            <span class="lp-apply-opt-arrow">›</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ENROLLMENT PATHS
+═══════════════════════════════════════════ -->
+<section id="lp-paths" class="lp-section lp-paths">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">Enrollment Process</span>
+            <h2 class="lp-h2">How would you like to enroll?</h2>
+            <p class="lp-sec-sub">Your process depends on your student type. Follow the steps that apply to you.</p>
+        </div>
+
+        <div class="lp-paths-grid">
+
+            <!-- OLD STUDENTS -->
+            <div class="lp-path-card">
+                <div class="lp-path-hd lp-path-hd--old">
+                    <span class="lp-path-emoji">🎓</span>
+                    <h3>Old / Continuing Students</h3>
+                    <p>You have an existing WMSU Student ID and were enrolled in a previous semester.</p>
+                    <div class="lp-tags">
+                        <span class="lp-tag">2nd Year &amp; Above</span>
+                        <span class="lp-tag">Has Student ID</span>
+                    </div>
+                </div>
+                <div class="lp-path-body">
+                    <ul class="lp-steps">
+                        <li><span class="lp-num">1</span><div><strong>Log In to the Portal</strong><span>Use your Student ID and password to access your account.</span></div></li>
+                        <li><span class="lp-num">2</span><div><strong>Clear Obligations</strong><span>Settle any balance or pending concerns with the Registrar, Library, or department.</span></div></li>
+                        <li><span class="lp-num">3</span><div><strong>Confirm Subjects</strong><span>Review pre-enrolled subjects or manually add subjects as allowed.</span></div></li>
+                        <li><span class="lp-num">4</span><div><strong>Print Assessment Form</strong><span>Generate your assessment showing tuition, miscellaneous, and other charges.</span></div></li>
+                        <li><span class="lp-num">5</span><div><strong>Pay Fees</strong><span>Pay at the University Cashier or via GCash / bank transfer.</span></div></li>
+                        <li><span class="lp-num">6</span><div><strong>Get Your COR</strong><span>Download your Certificate of Registration after payment is confirmed.</span></div></li>
+                    </ul>
+                    <a href="login page/login.html" class="lp-path-cta lp-cta--dark">Login to Enroll →</a>
+                </div>
+            </div>
+
+            <!-- NEW STUDENTS -->
+            <div class="lp-path-card">
+                <div class="lp-path-hd lp-path-hd--new">
+                    <span class="lp-path-emoji">🌟</span>
+                    <h3>New Students</h3>
+                    <p>First time at WMSU? Your process begins with an online application before enrollment proper.</p>
+                    <div class="lp-tags">
+                        <span class="lp-tag">Freshmen</span>
+                        <span class="lp-tag">Transferee</span>
+                        <span class="lp-tag">Shiftee</span>
+                    </div>
+                </div>
+                <div class="lp-path-body">
+                    <ul class="lp-steps">
+                        <li><span class="lp-num">1</span><div><strong>Create an Application Account</strong><span>Register with a valid email to access the WMSU Admission Portal.</span></div></li>
+                        <li><span class="lp-num">2</span><div><strong>Submit Application &amp; Documents</strong><span>Fill up the form and upload required credentials (see Requirements).</span></div></li>
+                        <li><span class="lp-num">3</span><div><strong>Entrance Exam / Evaluation</strong><span>Freshmen take the WCAT. Transferees/Shiftees undergo credential evaluation.</span></div></li>
+                        <li><span class="lp-num">4</span><div><strong>Receive Admission Notice</strong><span>Check your email and portal for your acceptance status and student number.</span></div></li>
+                        <li><span class="lp-num">5</span><div><strong>Enroll &amp; Print Assessment</strong><span>Log in, confirm subjects, and generate your assessment form.</span></div></li>
+                        <li><span class="lp-num">6</span><div><strong>Pay Fees &amp; Get COR</strong><span>Pay at the Cashier or online and download your Certificate of Registration.</span></div></li>
+                    </ul>
+                    <a href="Freshmen/flogin.html" class="lp-path-cta lp-cta--crimson">Apply as New Student →</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Subtypes -->
+        <div class="lp-subtypes-grid">
+            <div class="lp-subtype">
+                <span class="lp-sub-emoji">🎒</span>
+                <h4>Freshmen</h4>
+                <p>Senior high school graduates enrolling in college for the first time at WMSU.</p>
+                <ul class="lp-mini-list">
+                    <li>Take the WMSU College Admission Test (WCAT)</li>
+                    <li>Pass qualifying grade per college</li>
+                    <li>Submit original documents upon enrollment</li>
+                    <li>Attend orientation before COR release</li>
+                </ul>
+            </div>
+            <div class="lp-subtype">
+                <span class="lp-sub-emoji">📂</span>
+                <h4>Transferee</h4>
+                <p>Students from another school who wish to continue their studies at WMSU.</p>
+                <ul class="lp-mini-list">
+                    <li>Submit Honorable Dismissal / Transfer Credentials</li>
+                    <li>Undergo subject equivalency evaluation</li>
+                    <li>Approved by the Dean of the receiving college</li>
+                    <li>Comply with residency requirements</li>
+                </ul>
+            </div>
+            <div class="lp-subtype">
+                <span class="lp-sub-emoji">🔁</span>
+                <h4>Shiftee</h4>
+                <p>Current WMSU students changing their degree program or college within the university.</p>
+                <ul class="lp-mini-list">
+                    <li>Get shifting form from current department</li>
+                    <li>Approval from both current &amp; receiving depts.</li>
+                    <li>Subject equivalency assessment</li>
+                    <li>Minimum GPA requirement may apply per college</li>
+                </ul>
+            </div>
         </div>
     </div>
 </section>
 
-<!--ABOUT-->
-<section id="about" class="section about">
-    <p class="medium-text">Why Choose WMSU-Ease?</p>
-    <div class="why-grid">
-        <div class="why">
-            <div class="step-img">
-                <!-- Clock -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-            </div>
-            <h3><br>Fast Processing</h3>
-            <p>Complete your enrollment in minutes, not hours.</p>
+<!-- ═══════════════════════════════════════════
+     REQUIREMENTS
+═══════════════════════════════════════════ -->
+<section id="lp-requirements" class="lp-section lp-requirements">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">Documentary Requirements</span>
+            <h2 class="lp-h2">What documents do you need?</h2>
+            <p class="lp-sec-sub">Prepare the following before starting enrollment. All documents must be clear, complete, and up-to-date.</p>
         </div>
-        <div class="why">
-            <div class="step-img">
-                <!-- Shield -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
+        <div class="lp-req-grid">
+            <div class="lp-req-block">
+                <h4>🎓 Old / Continuing Students</h4>
+                <ul class="lp-req-list">
+                    <li>WMSU Student ID (or receipt of ID application)</li>
+                    <li>Clearance form from previous semester</li>
+                    <li>Updated contact information (if changed)</li>
+                    <li>Scholarship documents (if applicable)</li>
+                    <li>PWD / Solo Parent ID (if applicable for discount)</li>
+                    <li>Signed Enrollment Agreement Form</li>
+                </ul>
             </div>
-            <h3><br>Secure System</h3>
-            <p>Your information is protected with advanced security.</p>
-        </div>
-        <div class="why">
-            <div class="step-img">
-                <!-- Book -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                </svg>
+            <div class="lp-req-block">
+                <h4>🌟 Freshmen</h4>
+                <ul class="lp-req-list">
+                    <li>Original Senior High School Report Card (Form 138)</li>
+                    <li>Original &amp; Photocopy of Birth Certificate (PSA)</li>
+                    <li>Certificate of Good Moral Character</li>
+                    <li>2 pcs 1×1 and 2 pcs 2×2 ID photos (white bg)</li>
+                    <li>WCAT Exam Result / Admission Slip</li>
+                    <li>Accomplished WMSU Application Form</li>
+                    <li>Medical Certificate from licensed physician</li>
+                </ul>
             </div>
-            <h3><br>Easy to Use</h3>
-            <p>Intuitive interface designed for students.</p>
-        </div>
-        <div class="why">
-            <div class="step-img">
-                <!-- Graduation hat (reused logo) -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c0192b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                </svg>
+            <div class="lp-req-block">
+                <h4>📂 Transferee</h4>
+                <ul class="lp-req-list">
+                    <li>Honorable Dismissal from previous school</li>
+                    <li>Certified True Copy of Grades (all semesters)</li>
+                    <li>Course Syllabus / Subject Descriptions</li>
+                    <li>Original Birth Certificate (PSA)</li>
+                    <li>Certificate of Good Moral Character</li>
+                    <li>2 pcs 1×1 and 2 pcs 2×2 ID photos</li>
+                    <li>WMSU Application Form for Transferees</li>
+                </ul>
             </div>
-            <h3><br>24/7 Access</h3>
-            <p>Enroll anytime, anywhere at your convenience.</p>
+            <div class="lp-req-block">
+                <h4>🔁 Shiftee</h4>
+                <ul class="lp-req-list">
+                    <li>Accomplished Shifting Application Form</li>
+                    <li>Certified True Copy of Grades (all WMSU semesters)</li>
+                    <li>Recommendation from current Department Chair</li>
+                    <li>Acceptance from receiving Department Chair</li>
+                    <li>Updated WMSU Student ID</li>
+                    <li>Clearance from current college / department</li>
+                </ul>
+            </div>
         </div>
     </div>
 </section>
 
-<!--ENROLLMENT-->
-<section id="enrollment-section" class="section enrollment">
-    <p class="medium-text">Simple Enrollment Process</p>
-    <div class="log">
-        <div class="why2">
-            <div class="circle"><h2>1</h2></div>
-            <h3>Login</h3>
-            <p>Sign in using your student ID and password.</p>
+<!-- ═══════════════════════════════════════════
+     KEY DATES
+═══════════════════════════════════════════ -->
+<section id="lp-dates" class="lp-section lp-dates">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label lp-label--light">Academic Calendar</span>
+            <h2 class="lp-h2 lp-h2--light">Important enrollment dates</h2>
+            <p class="lp-sec-sub lp-sec-sub--light">Mark these on your calendar. Late enrollment carries an additional surcharge.</p>
         </div>
-        <div class="why2">
-            <div class="circle"><h2>2</h2></div>
-            <h3>Select Subjects</h3>
-            <p>Choose your courses and build your schedule.</p>
+
+        <div class="lp-sem-toggle">
+            <button class="lp-sem-btn active" id="btn1st" onclick="switchSem(1)">1st Semester</button>
+            <button class="lp-sem-btn" id="btn2nd" onclick="switchSem(2)">2nd Semester</button>
         </div>
-        <div class="why2">
-            <div class="circle"><h2>3</h2></div>
-            <h3>Submit</h3>
-            <p>Review and submit for approval.</p>
+
+        <!-- 1st Semester -->
+        <div id="sem1Dates" class="lp-table-wrap">
+            <table class="lp-table">
+                <thead>
+                    <tr><th>Activity</th><th>Who</th><th>Period</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Online Application (New Students)</td><td>Freshmen, Transferees, Shiftees</td><td>May 5 – 30, 2025</td><td><span class="lp-status lp-status--open">Open</span></td></tr>
+                    <tr><td>WMSU College Admission Test (WCAT)</td><td>Freshmen</td><td>May 10 – Jun 7, 2025</td><td><span class="lp-status lp-status--open">Open</span></td></tr>
+                    <tr><td>Transferee / Shiftee Evaluation</td><td>Transferees, Shiftees</td><td>May 15 – Jun 7, 2025</td><td><span class="lp-status lp-status--open">Open</span></td></tr>
+                    <tr><td>Enrollment — Old / Continuing Students</td><td>2nd Year and above</td><td>Jun 2 – 14, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                    <tr><td>Enrollment — New Students</td><td>Freshmen, Transferees, Shiftees</td><td>Jun 16 – 28, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                    <tr><td>Late Enrollment (with surcharge)</td><td>All students</td><td>Jul 1 – 5, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                    <tr><td>First Day of Classes</td><td>All enrolled students</td><td>Jul 7, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 2nd Semester -->
+        <div id="sem2Dates" class="lp-table-wrap lp-hidden">
+            <div class="lp-sem-notice" id="sem2Notice"></div>
+            <table class="lp-table" id="sem2Table">
+                <thead>
+                    <tr><th>Activity</th><th>Who</th><th>Period</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Enrollment — Old / Continuing Students</td><td>2nd Year and above</td><td>Nov 3 – 14, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                    <tr><td>Enrollment — New Students</td><td>Freshmen, Transferees, Shiftees</td><td>Nov 17 – 28, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                    <tr><td>Late Enrollment (with surcharge)</td><td>All students</td><td>Dec 1 – 5, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                    <tr><td>First Day of Classes</td><td>All enrolled students</td><td>Dec 8, 2025</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FAQ
+═══════════════════════════════════════════ -->
+<section id="lp-faq" class="lp-section lp-faq">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">FAQ</span>
+            <h2 class="lp-h2">Got questions? We've got answers.</h2>
+        </div>
+        <div class="lp-faq-list">
+            <div class="lp-faq-item">
+                <button class="lp-faq-q" onclick="toggleFaq(this)">
+                    I forgot my student portal password. What do I do?
+                    <span class="lp-faq-ico">+</span>
+                </button>
+                <div class="lp-faq-a">Click "Forgot Password" on the login page. A reset link will be sent to your registered WMSU email. If you no longer have access to that email, visit the Registrar's Office in person with a valid ID.</div>
+            </div>
+            <div class="lp-faq-item">
+                <button class="lp-faq-q" onclick="toggleFaq(this)">
+                    Can I change my subjects after enrollment?
+                    <span class="lp-faq-ico">+</span>
+                </button>
+                <div class="lp-faq-a">Yes. Subject changes (adding, dropping, or changing sections) are allowed during the official adjustment period — usually the first two weeks of classes. Coordinate with your Department Chair and the Registrar's Office.</div>
+            </div>
+            <div class="lp-faq-item">
+                <button class="lp-faq-q" onclick="toggleFaq(this)">
+                    What payment methods are accepted?
+                    <span class="lp-faq-ico">+</span>
+                </button>
+                <div class="lp-faq-a">Pay over the counter at the WMSU Cashier's Office, or online via GCash, Landbank Link.BizPortal, or accredited banks. Always keep your official receipt.</div>
+            </div>
+            <div class="lp-faq-item">
+                <button class="lp-faq-q" onclick="toggleFaq(this)">
+                    I'm a scholar (CHED, DOST, LGU, etc.). Do I enroll differently?
+                    <span class="lp-faq-ico">+</span>
+                </button>
+                <div class="lp-faq-a">The process is the same, but present your scholarship papers to the Scholarship Office before or during enrollment. Your assessment will be adjusted to reflect your coverage. Contact the Office of Student Affairs for guidance.</div>
+            </div>
+            <div class="lp-faq-item">
+                <button class="lp-faq-q" onclick="toggleFaq(this)">
+                    What if I missed the regular enrollment period?
+                    <span class="lp-faq-ico">+</span>
+                </button>
+                <div class="lp-faq-a">You may still enroll during the Late Enrollment period, but a surcharge will apply. After this period, enrollment is closed for the semester. Contact the Registrar's Office for special cases.</div>
+            </div>
+            <div class="lp-faq-item">
+                <button class="lp-faq-q" onclick="toggleFaq(this)">
+                    Is there a minimum or maximum subject load?
+                    <span class="lp-faq-ico">+</span>
+                </button>
+                <div class="lp-faq-a">The standard load is as prescribed by your curriculum. Overloading requires written approval from your Dean. Underloading may be allowed for graduating students or those with valid academic concerns — check with your Department Chair.</div>
+            </div>
         </div>
     </div>
 </section>
 
-<!--HELP-->
-<section id="help" class="section help">
-    <p class="medium-text">Need Help?</p>
-    <p class="small-text">
-        Our support team is here to assist you with any questions<br>
-        during the enrollment process.
-    </p>
-    <div class="btn-group">
-        <a href="mailto:support@wmsu.edu.ph" class="btn">Contact Support</a>
+<!-- ═══════════════════════════════════════════
+     HELP / CONTACT
+═══════════════════════════════════════════ -->
+<section id="lp-help" class="lp-section lp-help">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">Support</span>
+            <h2 class="lp-h2">We're here to assist you</h2>
+            <p class="lp-sec-sub">Reach out to the right office for your concern.</p>
+        </div>
+        <div class="lp-help-grid">
+            <div class="lp-help-card">
+                <div class="lp-help-ico">🏛️</div>
+                <h4>Registrar's Office</h4>
+                <p>Enrollment concerns, COR, transcript requests, and document processing.</p>
+                <a href="tel:0629911040" class="lp-help-link">(062) 991-1040</a>
+                <a href="mailto:registrar@wmsu.edu.ph" class="lp-help-link">registrar@wmsu.edu.ph</a>
+            </div>
+            <div class="lp-help-card">
+                <div class="lp-help-ico">💻</div>
+                <h4>ICT Help Desk</h4>
+                <p>Portal login issues, password resets, and technical problems with the system.</p>
+                <a href="mailto:ict@wmsu.edu.ph" class="lp-help-link">ict@wmsu.edu.ph</a>
+                <span class="lp-help-hours">Mon–Fri, 8AM–5PM</span>
+            </div>
+            <div class="lp-help-card">
+                <div class="lp-help-ico">🎓</div>
+                <h4>Office of Student Affairs</h4>
+                <p>Scholarships, student welfare, PWD accommodations, and orientation inquiries.</p>
+                <a href="mailto:osa@wmsu.edu.ph" class="lp-help-link">osa@wmsu.edu.ph</a>
+                <a href="mailto:support@wmsu.edu.ph" class="lp-help-link">Contact Support</a>
+            </div>
+        </div>
     </div>
 </section>
 
-<!--FOOTER-->
-<footer class="infos">
-    <div class="footer-about">
-        <div class="footer-brand">
-            <svg class="footer-logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="lp-footer">
+    <div class="lp-footer-about">
+        <div class="lp-footer-brand">
+            <svg class="lp-footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
                 <path d="M6 12v5c3 3 9 3 12 0v-5"/>
             </svg>
-            <span class="footer-name">WMSU-Ease</span>
+            <span class="lp-footer-name">WMSU-Ease</span>
         </div>
-        <p class="footer-desc">
-            The official online enrollment system of Western Mindanao State University.
-        </p>
+        <p class="lp-footer-desc">The official online enrollment system of Western Mindanao State University. Zamboanga City, Philippines.</p>
     </div>
-    <div class="footer-col">
+    <div class="lp-footer-col">
         <h4>Navigation</h4>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#enrollment-section">Enrollment</a></li>
-            <li><a href="#help">Help</a></li>
+            <li><a href="#lp-home">Home</a></li>
+            <li><a href="#lp-paths">Enrollment</a></li>
+            <li><a href="#lp-requirements">Requirements</a></li>
+            <li><a href="#lp-dates">Key Dates</a></li>
+            <li><a href="#lp-faq">FAQ</a></li>
+            <li><a href="#lp-help">Help</a></li>
         </ul>
     </div>
-    <div class="footer-col">
+    <div class="lp-footer-col">
         <h4>Contact</h4>
         <ul>
             <li><a href="#">Normal Road, Baliwasan</a></li>
-            <li><a href="#">Zamboanga City</a></li>
+            <li><a href="#">Zamboanga City, 7000</a></li>
             <li><a href="mailto:WMSU-Ease@wmsu.edu.ph">WMSU-Ease@wmsu.edu.ph</a></li>
-            <li><a href="#">(062) 991-1040</a></li>
+            <li><a href="tel:0629911040">(062) 991-1040</a></li>
         </ul>
     </div>
 </footer>
+<div class="lp-footer-bottom">
+    © 2025 WMSU-Ease · Western Mindanao State University · All rights reserved.
+</div>
 
+<script src="landingPage.js"></script>
 </body>
 </html>
