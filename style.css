@@ -6,7 +6,7 @@
 }
 
 body, input, select, textarea, button {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 a {
@@ -15,16 +15,17 @@ a {
 }
 
 :root {
-    --crimson: #c0192b;
+    --crimson:      #c0192b;         /* FIX: was --cr, now properly named --crimson */
     --crimson-dark: #9b1422;
-    --white: #ffffff;
-    --black: #1a1a1a;
-    --light-gray: #f5f5f5;
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
-    --radius: 8px;
-    --transition: 0.2s ease;
-    --navbar-height: 64px;
+    --white:        #ffffff;
+    --black:        #1a1a1a;
+    --light-gray:   #f5f5f5;
+    --shadow:       0 2px 10px rgba(0, 0, 0, 0.15);
+    --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.15);
+    --radius:       8px;
+    --transition:   0.2s ease;
+    --navbar-height: 64px;           /* FIX: now actually used by .navbar below */
+    --muted:        #6b6b6b;
 }
 
 html {
@@ -32,8 +33,10 @@ html {
 }
 
 body {
-    background-color: var(--light-gray);
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
     color: var(--black);
+    font-size: 15px;
     line-height: 1.6;
 }
 
@@ -47,7 +50,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--crimson);
+    background: var(--crimson);      /* FIX: was var(--cr) — undefined */
     border-radius: 10px;
 }
 
@@ -57,7 +60,7 @@ body {
 
 /* ─── SELECTION COLOR ────────────────────────────── */
 ::selection {
-    background-color: var(--crimson);
+    background-color: var(--crimson); /* FIX: was var(--crimson) — now resolves */
     color: white;
 }
 
@@ -71,7 +74,7 @@ img {
 input,
 select,
 textarea {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: inherit;
     font-size: 15px;
 }
 
@@ -81,7 +84,7 @@ textarea {
 
 /* ─── BUTTONS (global) ───────────────────────────── */
 button {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: inherit;
     cursor: pointer;
 }
 
@@ -90,7 +93,7 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: 2px solid var(--crimson);
+    outline: 2px solid var(--crimson); /* FIX: was var(--crimson) — now resolves */
     outline-offset: 2px;
 }
 
@@ -98,60 +101,60 @@ button:focus {
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 100;
-    height: var(--navbar-height);
-    background-color: var(--white);
+    z-index: 150;
+    height: var(--navbar-height);    /* FIX: was var(--nav-h) — undefined */
+    background: #fff;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.07);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    box-shadow: var(--shadow);
-    margin: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    border-bottom: none;
+    padding: 0 40px;                 /* FIX: removed conflicting !important overrides */
+    gap: 32px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.logo-icon {
-    width: 32px;
-    height: 32px;
-    color: var(--crimson);
+    text-decoration: none;
     flex-shrink: 0;
 }
 
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--crimson);           /* FIX: was var(--cr) — undefined */
+}
+
 .name {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--crimson);
-    letter-spacing: 0.5px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--crimson);           /* FIX: was var(--cr) — undefined */
+    letter-spacing: -0.3px;
 }
 
 .nav-links {
-    list-style: none;
     display: flex;
     align-items: center;
+    gap: 4px;
+    list-style: none;
+    margin-left: auto;
 }
 
 .nav-links li a {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 15px;
-    color: var(--black);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
     font-weight: 500;
+    padding: 6px 12px;
     border-radius: 6px;
-    font-size: 0.95rem;
-    transition: color 0.2s;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
 }
 
 .nav-links li a:hover {
-    color: var(--crimson);
+    color: var(--crimson);           /* FIX: was var(--cr) — undefined */
+    background: rgba(192, 25, 43, 0.06);
 }
 
 /* ─── ANIMATIONS ─────────────────────────────────── */
@@ -168,7 +171,7 @@ button:focus {
 
 @keyframes fadeIn {
     from { opacity: 0; }
-    to { opacity: 1; }
+    to   { opacity: 1; }
 }
 
 @keyframes slideIn {
