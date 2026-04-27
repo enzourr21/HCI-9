@@ -1,24 +1,3 @@
-/* ═══════════════════════════════════════════
-   WMSU-EASE — LANDING PAGE STYLES
-   landingPage.css
-═══════════════════════════════════════════ */
-
-/* ── Tokens ── */
-:root {
-    --cr:       #c0192b;
-    --cr-dk:    #9b1422;
-    --cr-deep:  #6b1218;
-    --gold:     #c9971c;
-    --gold-lt:  #e8b84b;
-    --cream:    #faf7f2;
-    --text:     #1a1a1a;
-    --muted:    #6b6b6b;
-    --border:   rgba(192, 25, 43, 0.14);
-    --nav-h:    62px;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text); font-size: 15px; line-height: 1.6; }
 
 /* ═══════════════════════════════════════════
