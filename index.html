@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="landingPage.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -39,7 +40,7 @@
         <li><a href="#lp-requirements">Requirements</a></li>
         <li><a href="#lp-dates">Key Dates</a></li>
         <li><a href="#lp-faq">FAQ</a></li>
-        <li><a href="login page/login.html" class="lp-nav-cta">Login</a></li>
+        <li><a href="login page/old student/login.html" class="lp-nav-cta">Login</a></li>
     </ul>
 
     <!-- Hamburger -->
@@ -57,7 +58,7 @@
     <li><a href="#lp-dates">Key Dates</a></li>
     <li><a href="#lp-faq">FAQ</a></li>
     <li><a href="#lp-help">Help</a></li>
-    <li><a href="login page/login.html" class="lp-nav-cta">Login →</a></li>
+    <li><a href="login page/old student/login.html" class="lp-nav-cta">Login →</a></li>
 </ul>
 
 <!-- ═══════════════════════════════════════════
@@ -95,51 +96,31 @@
         <!-- Right: Auth card -->
         <div class="lp-hero-right">
             <div class="lp-auth-card">
+                <div class="lp-auth-body">
 
-                <!-- Tabs -->
-                <div class="lp-auth-tabs">
-                    <button id="tabLogin" class="active" onclick="switchTab('login')">Login</button>
-                    <button id="tabApply" onclick="switchTab('apply')">New Student</button>
-                </div>
-
-                <!-- Login panel -->
-                <div class="lp-auth-body" id="authLogin">
                     <div class="lp-auth-header">
-                        <h3>Welcome back! 👋</h3>
-                        <p>Log in with your WMSU student credentials.</p>
+                        <h3>Get Started 🎓</h3>
+                        <p>Select your student type to continue.</p>
                     </div>
-                    <div class="lp-field">
-                        <label>Student ID Number</label>
-                        <input type="text" placeholder="e.g. 2021-00001">
-                    </div>
-                    <div class="lp-field">
-                        <label>Password</label>
-                        <input type="password" placeholder="Enter your password">
-                    </div>
-                    <a href="#" class="lp-forgot">Forgot password?</a>
-                    <a href="login page/old student/subject.html" class="lp-btn-full">Login to Portal →</a>
-                    <div class="lp-auth-or">or</div>
-                    <a href="login page/login.html" class="lp-btn-full" style="background:#f5f5f5; color:#333; font-weight:600; border:1.5px solid #e0e0e0;">
-                        Continue with Google
+
+                    <!-- Old student button -->
+                    <a href="/login page/login.html" class="lp-btn-full" style="margin-bottom: 12px;">
+                        🎓 I'm an Old / Continuing Student →
                     </a>
-                </div>
 
-                <!-- Apply / New Student panel -->
-                <div class="lp-auth-body lp-hidden" id="authApply">
-                    <div class="lp-auth-header">
-                        <h3>First time at WMSU? 🌟</h3>
-                        <p>Select your student type to begin your application.</p>
-                    </div>
+                    <div class="lp-auth-or">new student?</div>
+
+                    <!-- New student options -->
                     <div class="lp-apply-options">
-                        <a href="Freshmen/flogin.html" class="lp-apply-opt">
+                        <a href="Freshmen/flogin.html?type=freshman" class="lp-apply-opt">
                             <span class="lp-apply-opt-icon">🎒</span>
                             <div class="lp-apply-opt-text">
-                                <strong>Freshmen</strong>
+                                <strong>Freshman</strong>
                                 <span>Senior high school graduate</span>
                             </div>
                             <span class="lp-apply-opt-arrow">›</span>
                         </a>
-                        <a href="#" class="lp-apply-opt">
+                        <a href="Freshmen/flogin.html?type=transferee" class="lp-apply-opt">
                             <span class="lp-apply-opt-icon">📂</span>
                             <div class="lp-apply-opt-text">
                                 <strong>Transferee</strong>
@@ -147,7 +128,7 @@
                             </div>
                             <span class="lp-apply-opt-arrow">›</span>
                         </a>
-                        <a href="#" class="lp-apply-opt">
+                        <a href="Freshmen/flogin.html?type=shiftee" class="lp-apply-opt">
                             <span class="lp-apply-opt-icon">🔁</span>
                             <div class="lp-apply-opt-text">
                                 <strong>Shiftee</strong>
@@ -156,8 +137,8 @@
                             <span class="lp-apply-opt-arrow">›</span>
                         </a>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
 
@@ -197,7 +178,7 @@
                         <li><span class="lp-num">5</span><div><strong>Pay Fees</strong><span>Pay at the University Cashier or via GCash / bank transfer.</span></div></li>
                         <li><span class="lp-num">6</span><div><strong>Get Your COR</strong><span>Download your Certificate of Registration after payment is confirmed.</span></div></li>
                     </ul>
-                    <a href="login page/login.html" class="lp-path-cta lp-cta--dark">Login to Enroll →</a>
+                    <a href="login page/old student/login.html" class="lp-path-cta lp-cta--dark">Login to Enroll →</a>
                 </div>
             </div>
 
@@ -222,7 +203,7 @@
                         <li><span class="lp-num">5</span><div><strong>Enroll &amp; Print Assessment</strong><span>Log in, confirm subjects, and generate your assessment form.</span></div></li>
                         <li><span class="lp-num">6</span><div><strong>Pay Fees &amp; Get COR</strong><span>Pay at the Cashier or online and download your Certificate of Registration.</span></div></li>
                     </ul>
-                    <a href="Freshmen/flogin.html" class="lp-path-cta lp-cta--crimson">Apply as New Student →</a>
+                    <a href="Freshmen/flogin.html?type=choose" class="lp-path-cta lp-cta--crimson">Apply as New Student →</a>
                 </div>
             </div>
 
@@ -513,6 +494,6 @@
     © 2025 WMSU-Ease · Western Mindanao State University · All rights reserved.
 </div>
 
-<script src="landingPage.js"></script>
+<script src="/script/landingPage.js"></script>
 </body>
 </html>
