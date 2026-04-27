@@ -25,14 +25,28 @@
         </div>
         <ul class="nav-links">
             <li>
-                <a href="../login.html" style="display:flex; align-items:center; gap:6px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                    </svg>
-                    Log Out
-                </a>
+                <div class="nav-student-info">
+                    <!-- Student chip -->
+                    <div class="nav-student-chip">
+                        <div class="nav-chip-avatar" id="chipAvatar">JD</div>
+                        <div class="nav-chip-text">
+                            <span class="nav-chip-name" id="chipName">Juan Dela Cruz</span>
+                            <span class="nav-chip-meta" id="chipMeta">1st Year &bull; CCS</span>
+                        </div>
+                    </div>
+
+                    <div class="nav-divider"></div>
+
+                    <!-- Log out -->
+                    <a id="logoutLink" href="../login.html" style="display:flex; align-items:center; gap:6px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Log Out
+                    </a>
+                </div>
             </li>
         </ul>
     </nav>
@@ -62,14 +76,12 @@
                         Subjects
                     </a>
                 </li>
-
                 <li>
                     <a href="schedule.html">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         Schedule
                     </a>
                 </li>
-             
                 <li>
                     <a href="payment.html">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -127,10 +139,10 @@
             <!-- PROFILE HEADER -->
             <div class="card">
                 <div class="profile-header">
-                    <div class="profile-avatar">JD</div>
+                    <div class="profile-avatar" id="profileAvatar">JD</div>
                     <div class="profile-meta">
-                        <h2 class="profile-name">Juan Dela Cruz</h2>
-                        <p class="profile-sub">2025-001234 &bull; First Year &bull; College of Computing Studies</p>
+                        <h2 class="profile-name" id="profileName">Juan Dela Cruz</h2>
+                        <p class="profile-sub" id="profileSub">2025-001234 &bull; First Year &bull; College of Computing Studies</p>
                         <span class="badge green">Enrolled</span>
                     </div>
                 </div>
@@ -150,31 +162,31 @@
                     <div class="profile-grid">
                         <div class="profile-field">
                             <p class="field-label">Last Name</p>
-                            <p class="field-value">Dela Cruz</p>
+                            <p class="field-value" id="viewLastName">Dela Cruz</p>
                         </div>
                         <div class="profile-field">
                             <p class="field-label">First Name</p>
-                            <p class="field-value">Juan</p>
+                            <p class="field-value" id="viewFirstName">Juan</p>
                         </div>
                         <div class="profile-field">
                             <p class="field-label">Middle Name</p>
-                            <p class="field-value">Santos</p>
+                            <p class="field-value" id="viewMiddleName">Santos</p>
                         </div>
                         <div class="profile-field">
                             <p class="field-label">Date of Birth</p>
-                            <p class="field-value">January 15, 2005</p>
+                            <p class="field-value" id="viewDOB">January 15, 2005</p>
                         </div>
                         <div class="profile-field">
-                            <p class="field-label">Sex / Gender</p>
-                            <p class="field-value">Male</p>
+                            <p class="field-label">Sex</p>
+                            <p class="field-value" id="viewGender">Male</p>
                         </div>
                         <div class="profile-field">
                             <p class="field-label">Contact Number</p>
-                            <p class="field-value">09123456789</p>
+                            <p class="field-value" id="viewContact">09123456789</p>
                         </div>
                         <div class="profile-field">
                             <p class="field-label">Email Address</p>
-                            <p class="field-value">ty2025001234@wmsu.edu.ph</p>
+                            <p class="field-value" id="viewEmail">ty2025001234@wmsu.edu.ph</p>
                         </div>
                     </div>
                     <label for="edit-toggle" class="btn-edit">
@@ -188,41 +200,41 @@
                     <div class="profile-grid">
                         <div class="form-group">
                             <label class="field-label">Last Name</label>
-                            <input type="text" value="Dela Cruz">
+                            <input type="text" id="editLastName">
                         </div>
                         <div class="form-group">
                             <label class="field-label">First Name</label>
-                            <input type="text" value="Juan">
+                            <input type="text" id="editFirstName">
                         </div>
                         <div class="form-group">
                             <label class="field-label">Middle Name</label>
-                            <input type="text" value="Santos">
+                            <input type="text" id="editMiddleName">
                         </div>
                         <div class="form-group">
                             <label class="field-label">Date of Birth</label>
-                            <input type="date" value="2005-01-15">
+                            <input type="date" id="editDOB">
                         </div>
                         <div class="form-group">
-                            <label class="field-label">Sex / Gender</label>
-                            <select>
-                                <option selected>Male</option>
+                            <label class="field-label">Sex</label>
+                            <select id="editGender">
+                                <option>Male</option>
                                 <option>Female</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="field-label">Contact Number</label>
-                            <input type="text" value="09123456789">
+                            <input type="text" id="editContact">
                         </div>
                         <div class="form-group">
                             <label class="field-label">Email Address</label>
-                            <input type="email" value="ty2025001234@wmsu.edu.ph">
+                            <input type="email" id="editEmail">
                         </div>
                     </div>
                     <div class="edit-actions">
-                        <label for="edit-toggle" class="btn-save">
+                        <button type="button" id="btnSave" class="btn-save">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                             Save Changes
-                        </label>
+                        </button>
                         <label for="edit-toggle" class="btn-cancel">Cancel</label>
                     </div>
                 </div>
@@ -301,6 +313,87 @@
 
         </main>
     </div>
+
+    <script>
+        const student = {
+            firstName:  'Juan',
+            lastName:   'Dela Cruz',
+            middleName: 'Santos',
+            id:         '2025-001234',
+            year:       '1st Year',
+            college:    'College of Computing Studies',
+            collegeAbbr:'CCS',
+            gender:     'Male',
+            dob:        '2005-01-15',
+            contact:    '09123456789',
+            email:      'ty2025001234@wmsu.edu.ph'
+        };
+
+        function getInitials(f, l) { return (f[0] + l[0]).toUpperCase(); }
+
+        function populateChip() {
+            document.getElementById('chipAvatar').textContent = getInitials(student.firstName, student.lastName);
+            document.getElementById('chipName').textContent   = student.firstName + ' ' + student.lastName;
+            document.getElementById('chipMeta').textContent   = student.year + ' \u2022 ' + student.collegeAbbr;
+        }
+
+        function populateHeader() {
+            document.getElementById('profileAvatar').textContent = getInitials(student.firstName, student.lastName);
+            document.getElementById('profileName').textContent   = student.firstName + ' ' + student.lastName;
+            document.getElementById('profileSub').innerHTML =
+                student.id + ' &bull; ' + student.year + ' &bull; ' + student.college;
+        }
+
+        function populateViewFields() {
+            const dob = new Date(student.dob + 'T00:00:00');
+            const formatted = dob.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+            document.getElementById('viewLastName').textContent   = student.lastName;
+            document.getElementById('viewFirstName').textContent  = student.firstName;
+            document.getElementById('viewMiddleName').textContent = student.middleName;
+            document.getElementById('viewDOB').textContent        = formatted;
+            document.getElementById('viewGender').textContent     = student.gender;
+            document.getElementById('viewContact').textContent    = student.contact;
+            document.getElementById('viewEmail').textContent      = student.email;
+        }
+
+        function populateEditFields() {
+            document.getElementById('editLastName').value   = student.lastName;
+            document.getElementById('editFirstName').value  = student.firstName;
+            document.getElementById('editMiddleName').value = student.middleName;
+            document.getElementById('editDOB').value        = student.dob;
+            document.getElementById('editGender').value     = student.gender;
+            document.getElementById('editContact').value    = student.contact;
+            document.getElementById('editEmail').value      = student.email;
+        }
+
+        function saveChanges() {
+            student.lastName   = document.getElementById('editLastName').value.trim()   || student.lastName;
+            student.firstName  = document.getElementById('editFirstName').value.trim()  || student.firstName;
+            student.middleName = document.getElementById('editMiddleName').value.trim();
+            student.dob        = document.getElementById('editDOB').value               || student.dob;
+            student.gender     = document.getElementById('editGender').value;
+            student.contact    = document.getElementById('editContact').value.trim()    || student.contact;
+            student.email      = document.getElementById('editEmail').value.trim()      || student.email;
+            populateChip();
+            populateHeader();
+            populateViewFields();
+            populateEditFields();
+            document.getElementById('edit-toggle').checked = false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            populateChip();
+            populateHeader();
+            populateViewFields();
+            populateEditFields();
+
+            document.getElementById('btnSave').addEventListener('click', saveChanges);
+
+            document.getElementById('logoutLink').addEventListener('click', function (e) {
+                if (!confirm('Are you sure you want to log out?')) e.preventDefault();
+            });
+        });
+    </script>
 
 </body>
 </html>
