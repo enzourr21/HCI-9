@@ -61,7 +61,7 @@ var SCHED = {
             bar.className = 'lp-bar lp-bar--closed';
             txt.innerHTML = 'Enrollment is currently <strong>closed</strong>. Contact the Registrar\u2019s Office for the next schedule.';
             /* Disable enroll buttons */
-            document.querySelectorAll('.lp-btn--primary, .lp-path-cta').forEach(function(btn) {
+            document.querySelectorAll('.lp-btn--primary, .lp-path-cta, .lp-btn-full, .lp-apply-opt').forEach(function(btn) {
                 btn.style.opacity = '0.45';
                 btn.style.pointerEvents = 'none';
                 btn.style.cursor = 'not-allowed';
@@ -103,20 +103,11 @@ function toggleFaq(btn) {
     if (!wasOpen) item.classList.add('open');
 }
 
-/* ── Hero auth tab toggle ── */
-function switchTab(tab) {
-    var isLogin = tab === 'login';
-    document.getElementById('authLogin').classList.toggle('lp-hidden', !isLogin);
-    document.getElementById('authApply').classList.toggle('lp-hidden', isLogin);
-    document.getElementById('tabLogin').classList.toggle('active', isLogin);
-    document.getElementById('tabApply').classList.toggle('active', !isLogin);
-}
-
 /* ── Hamburger menu ── */
 (function hamburger() {
-    var toggle = document.getElementById('navToggle');
-    var menu   = document.getElementById('navMenu');
-    var overlay= document.getElementById('navOverlay');
+    var toggle  = document.getElementById('navToggle');
+    var menu    = document.getElementById('navMenu');
+    var overlay = document.getElementById('navOverlay');
     if (!toggle || !menu) return;
 
     function openMenu() {

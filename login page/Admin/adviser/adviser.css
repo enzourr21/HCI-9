@@ -9,37 +9,38 @@
 }
 
 .adviser-avatar {
-    width: 34px;
-    height: 34px;
-    background: #d32f2f;
-    color: #fff;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    background: var(--crimson, #c0192b);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 700;
     flex-shrink: 0;
+    letter-spacing: .5px;
 }
 
 .adviser-text {
     display: flex;
     flex-direction: column;
-    line-height: 1.2;
+    line-height: 1;
 }
-
 .adviser-name {
-    font-size: 0.88rem;
+    font-size: 12.5px;
     font-weight: 700;
-    color: #1a1a1a;
+    color: #111;
+    white-space: nowrap;
+    margin-bottom: 2px;
 }
 
 .adviser-role {
-    font-size: 0.68rem;
-    color: #d32f2f;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-size: 10.5px;
+    color: #888;
+    white-space: nowrap;
+    text-transform:uppercase;
 }
 
 /* ─── SHARED LAYOUT ──────────────────────────────── */
