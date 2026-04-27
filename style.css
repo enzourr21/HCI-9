@@ -26,6 +26,16 @@ a {
     --transition:   0.2s ease;
     --navbar-height: 64px;           /* FIX: now actually used by .navbar below */
     --muted:        #6b6b6b;
+    --cr:       #c0192b;
+    --cr-dk:    #9b1422;
+    --cr-deep:  #6b1218;
+    --gold:     #c9971c;
+    --gold-lt:  #e8b84b;
+    --cream:    #faf7f2;
+    --text:     #1a1a1a;
+    --muted:    #6b6b6b;
+    --border:   rgba(192, 25, 43, 0.14);
+    --nav-h:    62px;
 }
 
 html {
@@ -86,15 +96,6 @@ textarea {
 button {
     font-family: inherit;
     cursor: pointer;
-}
-
-/* ─── FOCUS OUTLINE ──────────────────────────────── */
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: 2px solid var(--crimson); /* FIX: was var(--crimson) — now resolves */
-    outline-offset: 2px;
 }
 
 /* ─── NAVBAR ─────────────────────────────────────── */
