@@ -197,6 +197,7 @@
                                     <option value="">— Select Role —</option>
                                     <option value="misto">MISTO</option>
                                     <option value="assessment">Assessment Office</option>
+                                    <option value="admission">Admission Office</option>
                                     <option value="dean">College Dean</option>
                                     <option value="dept-admin">Department Admin</option>
                                     <option value="secretary">Secretary</option>
@@ -292,6 +293,12 @@
                 break;
             case 'adviser':
                 window.location.href = adminPath + "adviser/adviser_dashboard.html";
+                break;
+            case 'dept-admin':
+                window.location.href = adminPath + "dept-admin/dept-head.html";
+                break;
+            case 'admission':
+                window.location.href = adminPath + "admission/admission.html";
                 break;
             default:
                 alertDiv.textContent   = 'This portal is currently under maintenance. Please contact MISTO.';

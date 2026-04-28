@@ -20,10 +20,10 @@ var SCHED = {
         labelLate  : 'Jul 1 – 5, 2025'
     },
     2: {
-        classStart : 'Dec 8, 2025',
-        labelOld   : 'Nov 3 – 14, 2025',
-        labelNew   : 'Nov 17 – 28, 2025',
-        labelLate  : 'Dec 1 – 5, 2025'
+        classStart : 'Dec 8, 2026',
+        labelOld   : 'Nov 3 – 14, 2026',
+        labelNew   : 'Nov 17 – 28, 2026',
+        labelLate  : 'Dec 1 – 5, 2026'
     }
 };
 
