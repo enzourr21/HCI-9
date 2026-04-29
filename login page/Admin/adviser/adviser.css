@@ -730,5 +730,381 @@
     .sub-nav           { padding: 0 16px; overflow-x: auto; }
     .history-table     { font-size: 0.78rem; }
     .history-table th,
+    .history-table td { padding: 10px; }
+}
+
+/* Correction CSS */
+.correction-nav-item.active {
+    background: #e65100;
+}
+ 
+.correction-nav-item:hover {
+    background: #fff3e0;
+    color: #e65100;
+}
+ 
+.correction-nav-item:hover::before {
+    background: #e65100;
+}
+
+.correction-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 20px;
+    background: #fff;
+    color: #e65100;
+    font-size: 0.65rem;
+    font-weight: 800;
+    margin-left: auto;
+    line-height: 1;
+}
+ 
+.correction-nav-item.active .correction-count-badge {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+}
+ 
+ 
+/* ── PAGE SUBTITLE ───────────────────────────────────────────  */
+ 
+.correction-subtitle {
+    font-size: 0.83rem;
+    color: #777;
+    margin: 4px 0 0;
+}
+ 
+ 
+/* ── CORRECTION CARD LIST ────────────────────────────────────  */
+ 
+.correction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+ 
+ 
+/* ── CORRECTION CARD ─────────────────────────────────────────
+   Extends .student-card with an orange border                  */
+ 
+.correction-card {
+    border-color: #e65100;
+    border-width: 1.5px;
+    padding: 0;              /* override base card padding — sections handle their own */
+}
+ 
+.correction-card .card-header {
+    padding: 20px 20px 14px;
+}
+ 
+.correction-card .card-body {
+    padding: 0 20px 12px;
+}
+ 
+/* Orange status pill for returned cards */
+.status-pill.correction {
+    background: #fff3e0;
+    color: #e65100;
+}
+ 
+ 
+/* ── REASON TAGS ROW ─────────────────────────────────────────  */
+ 
+.correction-reasons-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 20px 12px;
+}
+ 
+.correction-reason-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffcc80;
+}
+ 
+.correction-meta {
+    font-size: 0.72rem;
+    color: #aaa;
+    margin-left: auto;
+    white-space: nowrap;
+}
+ 
+ 
+/* ── COLLAPSIBLE NOTE ────────────────────────────────────────  */
+ 
+.correction-note-toggle {
+    padding: 10px 20px;
+    border-top: 1px solid #f5f5f5;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+ 
+.correction-note-toggle:hover { background: #fff8f5; }
+ 
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #e65100;
+    user-select: none;
+}
+ 
+.toggle-icon {
+    font-size: 0.75rem;
+    transition: transform 0.25s;
+}
+ 
+/* The collapsible body — hidden by default, shown with .open */
+.correction-note-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+ 
+.correction-note-body.open {
+    max-height: 300px;
+}
+ 
+.correction-note-inner {
+    margin: 0 20px 14px;
+    padding: 12px 14px;
+    background: #fff8f5;
+    border: 1.5px solid #ffcc80;
+    border-left: 3px solid #e65100;
+    border-radius: 0 8px 8px 0;
+}
+ 
+.correction-note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #e65100;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+ 
+.correction-note-text {
+    font-size: 0.83rem;
+    color: #444;
+    line-height: 1.6;
+    margin: 0;
+}
+ 
+ 
+/* ── EMPTY STATE ─────────────────────────────────────────────  */
+ 
+.empty-correction {
+    text-align: center;
+    padding: 70px 20px;
+    color: #ccc;
+}
+ 
+.empty-correction i  { font-size: 3rem; margin-bottom: 12px; display: block; color: #2e7d32; }
+.empty-correction p  { font-size: 0.95rem; font-weight: 500; }
+ 
+ 
+/* ── RESUBMIT MODAL CARD ─────────────────────────────────────  */
+ 
+.resubmit-modal-card {
+    width: 95%;
+    max-width: 1000px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+ 
+/* Assessment note banner inside modal */
+.modal-note-banner {
+    margin: 14px 28px 0;
+    padding: 10px 14px;
+    background: #fff8f5;
+    border: 1.5px solid #ffcc80;
+    border-left: 3px solid #e65100;
+    border-radius: 0 8px 8px 0;
+    flex-shrink: 0;
+}
+ 
+.modal-note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #e65100;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+ 
+.modal-note-text {
+    font-size: 0.82rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+}
+ 
+/* Modal footer bar with unit count + action buttons */
+.modal-footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    border-top: 1px solid #eee;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+ 
+.modal-units-count {
+    font-size: 0.85rem;
+    color: #555;
+}
+ 
+.modal-units-count strong {
+    color: #d32f2f;
+    font-size: 1rem;
+}
+ 
+.modal-footer-actions {
+    display: flex;
+    gap: 10px;
+}
+ 
+/* Resubmit button */
+.btn-resubmit {
+    flex: 1;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: #e65100;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+ 
+.btn-resubmit:hover { background: #bf360c; }
+ 
+ 
+/* ── CONFIRM MODAL ───────────────────────────────────────────
+   Higher z-index so it layers correctly over resubmit modal   */
+ 
+#confirmModal {
+    z-index: 10001;
+}
+ 
+.confirm-modal-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 32px 28px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    position: relative;
+    z-index: 10002;
+}
+ 
+.confirm-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #fff3e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 1.3rem;
+    color: #e65100;
+}
+ 
+.confirm-modal-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 10px;
+}
+ 
+.confirm-modal-card p {
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0 0 22px;
+}
+ 
+.confirm-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+ 
+.confirm-actions .btn-outline {
+    flex: 0 0 auto;
+    padding: 9px 20px;
+}
+ 
+.confirm-actions .btn-resubmit {
+    flex: 0 0 auto;
+    padding: 9px 20px;
+}
+ 
+ 
+/* ── TOAST NOTIFICATION ──────────────────────────────────────  */
+ 
+.correction-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: #2e7d32;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    z-index: 99999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+ 
+.correction-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+ 
+ 
+/* ── RESPONSIVE ──────────────────────────────────────────────  */
+ 
+@media (max-width: 768px) {
+    .correction-meta        { display: none; }
+    .resubmit-modal-card    { max-width: 100%; }
+    .modal-footer-bar       { flex-direction: column; align-items: flex-start; }
+    .modal-note-banner      { margin: 14px 16px 0; }
+    .confirm-modal-card     { padding: 24px 20px; }
     .history-table td  { padding: 10px; }
 }
