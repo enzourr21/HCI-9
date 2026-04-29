@@ -1,0 +1,250 @@
+/* ─── SUBJECT TYPE BADGE ─────────────────────────── */
+.subject-type {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.subject-type.major {
+    background-color: #fff0f0;
+    color: var(--crimson, crimson);
+    border: 1px solid rgba(220, 20, 60, 0.2);
+}
+
+.subject-type.minor {
+    background-color: #f0f4ff;
+    color: #3a5bd9;
+    border: 1px solid rgba(58, 91, 217, 0.2);
+}
+
+/* ─── LEC / LAB TAG ──────────────────────────────── */
+.type-tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.type-tag.lec {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.type-tag.lab {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+/* ─── DAY BADGES ─────────────────────────────────── */
+.day-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.day-badge.mon { background-color: #fce4ec; color: #c62828; }
+.day-badge.tue { background-color: #fff3e0; color: #e65100; }
+.day-badge.wed { background-color: #e8f5e9; color: #2e7d32; }
+.day-badge.thu { background-color: #e3f2fd; color: #1565c0; }
+.day-badge.fri { background-color: #f3e5f5; color: #6a1b9a; }
+.day-badge.sat { background-color: #e8f4fd; color: #1a6fa8; }
+.day-badge.sun { background-color: #fdf3e3; color: #b85c00; }
+
+/* ─── TOTAL ROW ──────────────────────────────────── */
+.total-row {
+    background-color: #fff5f5;
+    border-top: 2px solid var(--crimson, crimson) !important;
+}
+
+.total-row td {
+    font-weight: 700;
+    font-size: 15px;
+    color: #111;
+}
+
+/* ─── WEEKLY GRID ────────────────────────────────── */
+.week-grid {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.day-col {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ─── DAY HEADERS ────────────────────────────────── */
+.day-header {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 4px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mon-h { background-color: #fce4ec; color: #c62828; }
+.tue-h { background-color: #fff3e0; color: #e65100; }
+.wed-h { background-color: #e8f5e9; color: #2e7d32; }
+.thu-h { background-color: #e3f2fd; color: #1565c0; }
+.fri-h { background-color: #f3e5f5; color: #6a1b9a; }
+.sat-h { background-color: #e8f4fd; color: #1a6fa8; }
+.sun-h { background-color: #fdf3e3; color: #b85c00; }
+
+/* ─── DAY SLOTS ──────────────────────────────────── */
+.day-slot {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+    border-left: 3px solid var(--crimson, crimson);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.day-slot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.day-slot.minor {
+    border-left: 3px solid #3a5bd9;
+    background-color: #f7f9ff;
+}
+
+.slot-code {
+    font-size: 12px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 2px;
+}
+
+.slot-time {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 2px;
+}
+
+.slot-room {
+    font-size: 11px;
+    color: #aaa;
+}
+
+/* ─── STAT VALUE ─────────────────────────────────── */
+.stat-value {
+    font-size: 28px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 1024px) {
+    .day-col {
+        min-width: 100px;
+    }
+
+    .day-header {
+        font-size: 11px;
+        padding: 6px 2px;
+    }
+
+    .slot-code {
+        font-size: 11px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .week-grid {
+        flex-direction: column;
+        overflow-x: unset;
+    }
+
+    .day-col {
+        min-width: 100%;
+    }
+
+    .day-header {
+        font-size: 12px;
+        padding: 8px;
+        text-align: left;
+        padding-left: 12px;
+    }
+
+    .day-slot {
+        padding: 10px 12px;
+    }
+
+    .total-row td {
+        font-size: 14px;
+    }
+
+    .subject-type {
+        font-size: 10px;
+        padding: 2px 8px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .day-header {
+        font-size: 11px;
+    }
+
+    .day-slot {
+        padding: 8px 10px;
+    }
+
+    .slot-code {
+        font-size: 11px;
+    }
+
+    .slot-time,
+    .slot-room {
+        font-size: 10px;
+    }
+
+    .type-tag {
+        display: block;
+        margin-left: 0;
+        margin-top: 3px;
+        width: fit-content;
+    }
+
+    .day-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    .total-row td {
+        font-size: 13px;
+    }
+
+    .subject-type {
+        font-size: 9px;
+        padding: 2px 6px;
+        letter-spacing: 0;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+}

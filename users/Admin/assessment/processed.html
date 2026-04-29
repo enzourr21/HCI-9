@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On-Hold / Flags | WMSU-Ease</title>
+    <link rel="stylesheet" href="../admin.css">
+    <link rel="stylesheet" href="assessment.css">
+    <link rel="stylesheet" href="processed.css">
+</head>
+<body class="admin-layout">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="name">WMSU-Ease</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="../../login.html" style="display:flex;align-items:center;gap:6px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Log Out
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-wrapper">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="menu-items">
+                <a href="assessment_dashboard.html" class="menu-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                    </svg>
+                    Student Queue
+                </a>
+                <a href="processed.html" class="menu-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    On-Hold / Flags
+                </a>
+                <a href="reviewed.html" class="menu-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    History
+                </a>
+            </div>
+
+            <div class="quick-stats">
+                <h4>Quick Stats</h4>
+                <div class="stat-row">
+                    <span>On-Hold</span>
+                    <strong id="stat-onhold">—</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Missing Docs</span>
+                    <strong id="stat-missingdocs">—</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Unit Mismatch</span>
+                    <strong id="stat-unitmismatch">—</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Residency Issues</span>
+                    <strong id="stat-residency">—</strong>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content-area">
+            <div class="content-header">
+                <h2>On-Hold / Flags</h2>
+                <div class="search-container">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="flagSearch"
+                        placeholder="Search CET-ID or Name..." class="search-input">
+                </div>
+            </div>
+
+            <div class="flag-list" id="flagList"></div>
+
+            <div class="empty-flags" id="emptyFlags" style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <p>No flagged students at this time.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         EDIT FLAG MODAL
+         Assessment Office can only edit reasons and note.
+         Actual resolution always comes from the adviser.
+    ══════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="flagModal">
+        <div class="flag-modal-card">
+
+            <div class="flag-modal-header">
+                <h3>Edit Flag</h3>
+                <button class="flag-modal-close" id="closeFlagModal">&times;</button>
+            </div>
+
+            <div class="flag-target-info">
+                <strong id="modalStudentName">—</strong>
+                <span id="modalStudentMeta">—</span>
+            </div>
+
+            <div class="modal-section-label">Reason(s) for flagging</div>
+            <div class="reason-options" id="reasonOptions"></div>
+
+            <div class="note-group">
+                <label for="flagNoteInput">Note for Adviser</label>
+                <textarea class="note-textarea" id="flagNoteInput"
+                    placeholder="Describe what needs to be corrected or clarified by the adviser…"></textarea>
+            </div>
+
+            <div class="flag-modal-actions">
+                <button class="btn-cancel-flag" id="cancelFlagModal">Cancel</button>
+                <button class="btn-save-flag"   id="saveFlagBtn">Save Changes</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    // ─────────────────────────────────────────────────────────────
+    // FLAG REASON DEFINITIONS
+    // Extend this list after further consultation with Assessment staff.
+    // ─────────────────────────────────────────────────────────────
+    const FLAG_REASONS = [
+        {
+            id:    "missing_docs",
+            label: "Missing Documents",
+            sub:   "Student has incomplete submission requirements."
+        },
+        {
+            id:    "residency",
+            label: "Residency Issue",
+            sub:   "Account age exceeds 10 semesters — manual tuition required (RA 10931)."
+        },
+        {
+            id:    "unit_mismatch",
+            label: "Unit Count Mismatch",
+            sub:   "Subject unit count in the form conflicts with the official prospectus."
+        },
+        {
+            id:    "shiftee_credits",
+            label: "Shiftee Credit Review",
+            sub:   "Transferred subjects need credit evaluation before assessment can proceed."
+        },
+        {
+            id:    "schedule_conflict",
+            label: "Schedule Conflict",
+            sub:   "Overlapping subjects or unresolved room/time assignment."
+        },
+        {
+            id:    "other",
+            label: "Other",
+            sub:   "Requires manual review — see note for details."
+        }
+    ];
+
+    // ─────────────────────────────────────────────────────────────
+    // MOCK DATA
+    // Replace with a real API fetch when the backend is ready.
+    // These records are pushed here when the Assessment Officer clicks
+    // "Flag / Put on Hold" from the assessment_dashboard.
+    // ─────────────────────────────────────────────────────────────
+    let flaggedStudents = [
+        {
+            id:        "2024-001234",
+            name:      "Juan Dela Cruz",
+            initials:  "JDC",
+            program:   "BSCS",
+            year:      "Year 3",
+            section:   "CS-3B",
+            reasons:   ["missing_docs", "unit_mismatch"],
+            note:      "Enrollment form is missing the department head signature. Also, CS 106 shows 5 units in the submitted form but only 3 units in the official prospectus — please verify and resubmit a corrected record.",
+            flaggedAt: "March 10, 2026 · 10:22 AM"
+        },
+        {
+            id:        "2023-009812",
+            name:      "Renee Alcantara",
+            initials:  "RA",
+            program:   "BSCS",
+            year:      "Year 4",
+            section:   "CS-4A",
+            reasons:   ["residency"],
+            note:      "Student has exceeded the 5-year free tuition window. Tuition must be assessed manually. Please confirm with the student and resubmit.",
+            flaggedAt: "March 10, 2026 · 11:05 AM"
+        }
+    ];
+
+    let editTargetIdx = null;
+
+    // ─────────────────────────────────────────────────────────────
+    // HELPERS
+    // ─────────────────────────────────────────────────────────────
+    function getReasonLabel(id) {
+        return FLAG_REASONS.find(r => r.id === id)?.label ?? id;
+    }
+
+    function escHtml(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // RENDER
+    // ─────────────────────────────────────────────────────────────
+    function renderFlags(data) {
+        const list  = document.getElementById("flagList");
+        const empty = document.getElementById("emptyFlags");
+
+        if (data.length === 0) {
+            list.innerHTML      = "";
+            empty.style.display = "block";
+            updateStats(data);
+            return;
+        }
+
+        empty.style.display = "none";
+
+        list.innerHTML = data.map(s => {
+            const origIdx = flaggedStudents.indexOf(s);
+            return `
+            <div class="flag-card">
+
+                <div class="flag-card-header">
+                    <div class="flag-card-identity">
+                        <div class="student-avatar">${escHtml(s.initials)}</div>
+                        <div class="flag-card-meta">
+                            <h3>${escHtml(s.name)}</h3>
+                            <p>${escHtml(s.id)} &bull; ${escHtml(s.year)} &bull; ${escHtml(s.program)} ${escHtml(s.section)}</p>
+                        </div>
+                    </div>
+                    <span class="status-badge flagged">On-Hold</span>
+                </div>
+
+                <div class="flag-card-body">
+                    <div class="reason-tags">
+                        ${s.reasons.map(r =>
+                            `<span class="reason-tag">${escHtml(getReasonLabel(r))}</span>`
+                        ).join("")}
+                    </div>
+                    ${s.note ? `
+                    <div>
+                        <div class="flag-note-label">Note for Adviser</div>
+                        <div class="flag-note-text">${escHtml(s.note)}</div>
+                    </div>` : ""}
+                </div>
+
+                <div class="flag-card-footer">
+                    <span class="flag-date">Flagged: ${escHtml(s.flaggedAt)}</span>
+                    <button class="btn-edit-flag" onclick="openFlagModal(${origIdx})">
+                        Edit Flag
+                    </button>
+                </div>
+
+            </div>`;
+        }).join("");
+
+        updateStats(data);
+    }
+
+    function updateStats(data) {
+        document.getElementById("stat-onhold").textContent =
+            data.length;
+        document.getElementById("stat-missingdocs").textContent =
+            data.filter(s => s.reasons.includes("missing_docs")).length;
+        document.getElementById("stat-unitmismatch").textContent =
+            data.filter(s => s.reasons.includes("unit_mismatch")).length;
+        document.getElementById("stat-residency").textContent =
+            data.filter(s => s.reasons.includes("residency")).length;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // SEARCH
+    // ─────────────────────────────────────────────────────────────
+    function applySearch() {
+        const q = document.getElementById("flagSearch").value.toLowerCase().trim();
+        const filtered = flaggedStudents.filter(s =>
+            !q ||
+            s.name.toLowerCase().includes(q) ||
+            s.id.toLowerCase().includes(q)
+        );
+        renderFlags(filtered);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // MODAL — OPEN
+    // ─────────────────────────────────────────────────────────────
+    function openFlagModal(idx) {
+        editTargetIdx = idx;
+        const s = flaggedStudents[idx];
+
+        document.getElementById("modalStudentName").textContent = s.name;
+        document.getElementById("modalStudentMeta").textContent =
+            `${s.id} · ${s.year} · ${s.program} ${s.section}`;
+
+        // Build reason checkboxes from the master list
+        document.getElementById("reasonOptions").innerHTML =
+            FLAG_REASONS.map(r => {
+                const isChecked = s.reasons.includes(r.id);
+                return `
+                <label class="reason-option${isChecked ? " selected" : ""}" id="opt-${r.id}">
+                    <input type="checkbox" value="${r.id}" ${isChecked ? "checked" : ""}
+                        onchange="toggleReasonStyle('${r.id}', this.checked)">
+                    <div class="reason-option-body">
+                        <span class="reason-option-label">${escHtml(r.label)}</span>
+                        <span class="reason-option-sub">${escHtml(r.sub)}</span>
+                    </div>
+                </label>`;
+            }).join("");
+
+        document.getElementById("flagNoteInput").value = s.note ?? "";
+        document.getElementById("flagModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function toggleReasonStyle(id, isChecked) {
+        document.getElementById(`opt-${id}`)?.classList.toggle("selected", isChecked);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // MODAL — CLOSE
+    // ─────────────────────────────────────────────────────────────
+    function closeFlagModal() {
+        editTargetIdx = null;
+        document.getElementById("flagModal").classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // MODAL — SAVE
+    // ─────────────────────────────────────────────────────────────
+    function saveFlag() {
+        if (editTargetIdx === null) return;
+
+        const checked = [
+            ...document.querySelectorAll("#reasonOptions input[type='checkbox']:checked")
+        ].map(cb => cb.value);
+
+        if (checked.length === 0) {
+            alert("Please select at least one reason before saving.");
+            return;
+        }
+
+        flaggedStudents[editTargetIdx].reasons = checked;
+        flaggedStudents[editTargetIdx].note    =
+            document.getElementById("flagNoteInput").value.trim();
+
+        closeFlagModal();
+        applySearch();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────────────────────────
+    document.addEventListener("DOMContentLoaded", () => {
+        renderFlags(flaggedStudents);
+
+        document.getElementById("flagSearch")
+            .addEventListener("input", applySearch);
+
+        document.getElementById("closeFlagModal")
+            .addEventListener("click", closeFlagModal);
+        document.getElementById("cancelFlagModal")
+            .addEventListener("click", closeFlagModal);
+        document.getElementById("saveFlagBtn")
+            .addEventListener("click", saveFlag);
+
+        // Close on backdrop click
+        document.getElementById("flagModal").addEventListener("click", e => {
+            if (e.target === document.getElementById("flagModal")) closeFlagModal();
+        });
+    });
+    </script>
+</body>
+</html>

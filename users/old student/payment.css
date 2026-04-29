@@ -1,0 +1,367 @@
+/* ─── PAYMENT STATUS BOX ─────────────────────────── */
+.payment-status-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fef9e7;
+    border-radius: 10px;
+    border-left: 4px solid #f39c12;
+    flex-wrap: wrap;
+}
+
+.payment-status-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.payment-status-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.payment-status-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.payment-status-desc {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* ─── PAYMENT CHANNELS ───────────────────────────── */
+.payment-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.channel-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    border-left: 3px solid var(--crimson, crimson);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.channel-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.channel-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.channel-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.channel-desc {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 4px;
+    line-height: 1.5;
+}
+
+.channel-hours {
+    font-size: 13px;
+    color: #888;
+}
+
+.channel-detail {
+    font-size: 13px;
+    color: #555;
+    margin-top: 2px;
+}
+
+/* ─── FEE TABLE DISABLED ROW ─────────────────────── */
+.fee-row-disabled td {
+    color: #bbb;
+}
+
+.fee-note {
+    font-size: 11px;
+    color: #aaa;
+    font-weight: 400;
+}
+
+/* ─── GRAY BADGE ─────────────────────────────────── */
+.badge.gray {
+    background-color: #e0e0e0;
+    color: #888;
+}
+
+/* ─── EMPTY ROW ──────────────────────────────────── */
+.empty-row {
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+    padding: 30px !important;
+}
+
+/* ─── SUBMIT PROOF FORM ──────────────────────────── */
+.payment-note {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.6;
+}
+
+.upload-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+    margin-top: 16px;
+}
+
+.payment-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.payment-input:focus {
+    border-color: var(--crimson, crimson);
+}
+
+.payment-select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    background-color: white;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    transition: border-color 0.2s ease;
+}
+
+.payment-select:focus {
+    border-color: var(--crimson, crimson);
+}
+
+/* ─── UPLOAD BOX ─────────────────────────────────── */
+.upload-box-payment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 30px 20px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease, background-color 0.3s ease,
+                transform 0.2s ease;
+    margin-top: 6px;
+    gap: 6px;
+}
+
+.upload-box-payment:hover {
+    border-color: var(--crimson, crimson);
+    background-color: #fff5f5;
+    transform: translateY(-2px);
+}
+
+.upload-icon-pay {
+    font-size: 30px;
+    color: #aaa;
+}
+
+.upload-title-pay {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.upload-sub-pay {
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* ─── SUBMIT BUTTON ──────────────────────────────── */
+.btn-submit-pay {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background-color: var(--crimson, crimson);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.btn-submit-pay:hover {
+    background-color: var(--crimson-dark, darkred);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 20, 60, 0.25);
+}
+
+/* ─── STAT VALUE ─────────────────────────────────── */
+.stat-value {
+    font-size: 28px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 1024px) {
+    .payment-status-title {
+        font-size: 15px;
+    }
+
+    .channel-title {
+        font-size: 14px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .payment-status-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .payment-status-icon {
+        font-size: 28px;
+    }
+
+    .payment-status-title {
+        font-size: 15px;
+    }
+
+    .payment-status-desc {
+        font-size: 13px;
+    }
+
+    .channel-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 16px;
+    }
+
+    .channel-icon {
+        font-size: 24px;
+    }
+
+    .channel-title {
+        font-size: 14px;
+    }
+
+    .channel-desc,
+    .channel-hours,
+    .channel-detail {
+        font-size: 12px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .btn-submit-pay {
+        font-size: 15px;
+        padding: 13px;
+    }
+
+    .upload-box-payment {
+        padding: 24px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-status-box {
+        padding: 14px;
+        border-radius: 8px;
+    }
+
+    .payment-status-icon {
+        font-size: 24px;
+    }
+
+    .payment-status-title {
+        font-size: 14px;
+    }
+
+    .payment-status-desc {
+        font-size: 12px;
+    }
+
+    .channel-card {
+        padding: 14px;
+        border-radius: 8px;
+    }
+
+    .channel-icon {
+        font-size: 22px;
+    }
+
+    .payment-input,
+    .payment-select {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .upload-label {
+        font-size: 13px;
+    }
+
+    .upload-icon-pay {
+        font-size: 26px;
+    }
+
+    .upload-title-pay {
+        font-size: 13px;
+    }
+
+    .upload-sub-pay {
+        font-size: 11px;
+    }
+
+    .btn-submit-pay {
+        font-size: 14px;
+        padding: 12px;
+        margin-top: 16px;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    .fee-note {
+        font-size: 10px;
+    }
+
+    .payment-note {
+        font-size: 13px;
+    }
+}

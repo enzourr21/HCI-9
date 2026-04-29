@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History | WMSU-Ease</title>
+    <link rel="stylesheet" href="../admin.css">
+    <link rel="stylesheet" href="assessment.css">
+    <link rel="stylesheet" href="reviewed.css">
+</head>
+<body class="admin-layout">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="name">WMSU-Ease</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="../../login.html" style="display:flex;align-items:center;gap:6px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Log Out
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-wrapper">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="menu-items">
+                <a href="assessment_dashboard.html" class="menu-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                    </svg>
+                    Student Queue
+                </a>
+                <a href="processed.html" class="menu-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    On-Hold / Flags
+                </a>
+                <a href="reviewed.html" class="menu-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    History
+                </a>
+            </div>
+
+            <div class="quick-stats">
+                <h4>Quick Stats</h4>
+                <div class="stat-row">
+                    <span>Total Assessed</span>
+                    <strong id="stat-total">—</strong>
+                </div>
+                <div class="stat-row">
+                    <span>COR Claimed</span>
+                    <strong id="stat-claimed">—</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Pending COR</span>
+                    <strong id="stat-pending">—</strong>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="history-wrapper">
+
+            <!-- Header -->
+            <div class="content-header">
+                <h2>Assessment History</h2>
+                <div class="search-container">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="historySearch"
+                        placeholder="Search by ID or Surname..." class="search-input">
+                </div>
+            </div>
+
+            <!-- Stats strip -->
+            <div class="stats-strip">
+                <div class="strip-card">
+                    <span class="strip-val" id="strip-total">—</span>
+                    <span class="strip-label">Total Assessed</span>
+                </div>
+                <div class="strip-card">
+                    <span class="strip-val" id="strip-claimed">—</span>
+                    <span class="strip-label">COR Claimed</span>
+                </div>
+                <div class="strip-card">
+                    <span class="strip-val" id="strip-pending">—</span>
+                    <span class="strip-label">Pending COR</span>
+                </div>
+                <div class="strip-card">
+                    <span class="strip-val" id="strip-regular">—</span>
+                    <span class="strip-label">Regular</span>
+                </div>
+                <div class="strip-card">
+                    <span class="strip-val" id="strip-irregular">—</span>
+                    <span class="strip-label">Irregular</span>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrapper">
+                <table class="history-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Student Name</th>
+                            <th>CET-ID</th>
+                            <th>Program</th>
+                            <th>Year</th>
+                            <th>Type</th>
+                            <th>Total Units</th>
+                            <th>Total Fees</th>
+                            <th>Assessed On</th>
+                            <th>COR Status</th>
+                            <th>Breakdown</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody"></tbody>
+                </table>
+
+                <div class="empty-history" id="emptyHistory" style="display:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    <p>No assessment records found.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+    // ─────────────────────────────────────────────────────────────
+    // MOCK DATA
+    // Replace with a real API fetch when the backend is ready.
+    //
+    // cor_status values:
+    //   "pending" = assessed, student has NOT yet claimed COR at MISTO (yellow)
+    //   "claimed" = student physically claimed COR at MISTO office (green)
+    //
+    // MISTO updates cor_status to "claimed" when the student walks in.
+    // This page is strictly READ-ONLY from the Assessment Office side.
+    // ─────────────────────────────────────────────────────────────
+    const assessedStudents = [
+        {
+            id:          "2024-001235",
+            name:        "Maria Santos",
+            initials:    "MS",
+            program:     "BSCS-3B",
+            year:        "Year 3",
+            type:        "regular",
+            units:       25,
+            assessedOn:  "March 8, 2026 · 9:14 AM",
+            cor_status:  "claimed",
+            fees: {
+                tuition:  0,       // RA 10931 — within residency limit
+                misc:     500,
+                lab:      285,
+                sfdf:     100,
+                athletics: 50,
+                library:  75,
+                id_fee:   120,
+                other:    55,
+            }
+        },
+        {
+            id:          "2025-001234",
+            name:        "Cassidy Himodo",
+            initials:    "CH",
+            program:     "BSCS-2A",
+            year:        "Year 2",
+            type:        "regular",
+            units:       22,
+            assessedOn:  "March 9, 2026 · 10:02 AM",
+            cor_status:  "pending",
+            fees: {
+                tuition:  0,
+                misc:     500,
+                lab:      285,
+                sfdf:     100,
+                athletics: 50,
+                library:  75,
+                id_fee:   0,       // not a freshman, no ID fee
+                other:    55,
+            }
+        },
+        {
+            id:          "2024-005571",
+            name:        "Liam Ferrer",
+            initials:    "LF",
+            program:     "BSCS-2A",
+            year:        "Year 2",
+            type:        "irregular",
+            units:       15,
+            assessedOn:  "March 11, 2026 · 2:45 PM",
+            cor_status:  "pending",
+            fees: {
+                tuition:  0,
+                misc:     500,
+                lab:      142.50,  // prorated for fewer lab units
+                sfdf:     100,
+                athletics: 50,
+                library:  75,
+                id_fee:   0,
+                other:    55,
+            }
+        },
+        {
+            id:          "2022-007731",
+            name:        "Sophia Navarro",
+            initials:    "SN",
+            program:     "BSCS-4B",
+            year:        "Year 4",
+            type:        "irregular",
+            units:       18,
+            assessedOn:  "March 12, 2026 · 8:30 AM",
+            cor_status:  "claimed",
+            fees: {
+                tuition:  2700,    // residency exceeded — manual tuition applied
+                misc:     500,
+                lab:      285,
+                sfdf:     100,
+                athletics: 50,
+                library:  75,
+                id_fee:   0,
+                other:    55,
+            }
+        }
+    ];
+
+    // ─────────────────────────────────────────────────────────────
+    // HELPERS
+    // ─────────────────────────────────────────────────────────────
+    function getInitials(name) {
+        return name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+    }
+
+    function formatCurrency(val) {
+        return "₱" + Number(val).toLocaleString("en-PH", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    function computeTotal(fees) {
+        return Object.values(fees).reduce((sum, v) => sum + v, 0);
+    }
+
+    function escHtml(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    }
+
+    function corBadge(status) {
+        return status === "claimed"
+            ? `<span class="cor-badge claimed"><span class="cor-dot"></span>COR Claimed</span>`
+            : `<span class="cor-badge pending"><span class="cor-dot"></span>Pending COR</span>`;
+    }
+
+    function typeBadge(type) {
+        return `<span class="type-badge ${type}">${type.charAt(0).toUpperCase() + type.slice(1)}</span>`;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // FEE BREAKDOWN ROW
+    // Builds a collapsible <tr> that sits below each student row.
+    // ─────────────────────────────────────────────────────────────
+    const FEE_LABELS = {
+        tuition:   "Tuition",
+        misc:      "Miscellaneous Fee",
+        lab:       "Laboratory Fee",
+        sfdf:      "Student Fund Dev. Fee",
+        athletics: "Athletics Fee",
+        library:   "Library Fee",
+        id_fee:    "ID Fee",
+        other:     "Other Fees"
+    };
+
+    function buildFeeExpandRow(s, rowId) {
+        const total = computeTotal(s.fees);
+        const lines = Object.entries(s.fees)
+            .filter(([, v]) => v > 0)
+            .map(([k, v]) => `
+            <div class="fee-line">
+                <span class="fee-line-label">${FEE_LABELS[k] ?? k}</span>
+                <span class="fee-line-amount">${formatCurrency(v)}</span>
+            </div>`).join("");
+
+        return `
+        <tr class="fee-expand-row" id="fee-row-${rowId}">
+            <td colspan="11">
+                <div class="fee-breakdown-inner">
+                    <div class="fee-breakdown-header">Fee Breakdown — ${escHtml(s.name)}</div>
+                    <div class="fee-breakdown-body">${lines}</div>
+                    <div class="fee-total-line">
+                        <span>Total Assessment</span>
+                        <span>${formatCurrency(total)}</span>
+                    </div>
+                </div>
+            </td>
+        </tr>`;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // TOGGLE FEE BREAKDOWN
+    // ─────────────────────────────────────────────────────────────
+    function toggleFees(rowId, btn) {
+        const expandRow = document.getElementById(`fee-row-${rowId}`);
+        const isOpen    = expandRow.classList.toggle("open");
+        btn.classList.toggle("open", isOpen);
+        btn.querySelector("span").textContent = isOpen ? "Hide" : "View";
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // RENDER TABLE
+    // ─────────────────────────────────────────────────────────────
+    function renderTable(data) {
+        const tbody = document.getElementById("historyBody");
+        const empty = document.getElementById("emptyHistory");
+
+        if (data.length === 0) {
+            tbody.innerHTML     = "";
+            empty.style.display = "block";
+            updateStats(data);
+            return;
+        }
+
+        empty.style.display = "none";
+        tbody.innerHTML = "";
+
+        data.forEach((s, idx) => {
+            const rowId = `${s.id}-${idx}`;
+            const total = computeTotal(s.fees);
+
+            // Main student row
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="row-num">${idx + 1}</span></td>
+                <td>
+                    <div class="student-cell">
+                        <div class="table-avatar">${escHtml(s.initials)}</div>
+                        <span class="student-full-name">${escHtml(s.name)}</span>
+                    </div>
+                </td>
+                <td>${escHtml(s.id)}</td>
+                <td>${escHtml(s.program)}</td>
+                <td>${escHtml(s.year)}</td>
+                <td>${typeBadge(s.type)}</td>
+                <td><strong>${s.units}</strong> units</td>
+                <td><strong>${formatCurrency(total)}</strong></td>
+                <td style="white-space:nowrap;">${escHtml(s.assessedOn)}</td>
+                <td>${corBadge(s.cor_status)}</td>
+                <td>
+                    <button class="btn-view-fees" id="btn-${rowId}"
+                        onclick="toggleFees('${rowId}', this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        <span>View</span>
+                    </button>
+                </td>`;
+
+            tbody.appendChild(tr);
+
+            // Fee breakdown row (hidden by default)
+            tbody.insertAdjacentHTML("beforeend", buildFeeExpandRow(s, rowId));
+        });
+
+        updateStats(data);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // STATS
+    // ─────────────────────────────────────────────────────────────
+    function updateStats(data) {
+        const claimed   = data.filter(s => s.cor_status === "claimed").length;
+        const pending   = data.filter(s => s.cor_status === "pending").length;
+        const regular   = data.filter(s => s.type === "regular").length;
+        const irregular = data.filter(s => s.type === "irregular").length;
+
+        // Sidebar
+        document.getElementById("stat-total").textContent   = data.length;
+        document.getElementById("stat-claimed").textContent = claimed;
+        document.getElementById("stat-pending").textContent = pending;
+
+        // Strip
+        document.getElementById("strip-total").textContent    = data.length;
+        document.getElementById("strip-claimed").textContent  = claimed;
+        document.getElementById("strip-pending").textContent  = pending;
+        document.getElementById("strip-regular").textContent  = regular;
+        document.getElementById("strip-irregular").textContent = irregular;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // SEARCH — by CET-ID or surname (last word of name)
+    // ─────────────────────────────────────────────────────────────
+    function applySearch() {
+        const q = document.getElementById("historySearch").value.toLowerCase().trim();
+        const filtered = assessedStudents.filter(s => {
+            if (!q) return true;
+            const surname = s.name.split(" ").at(-1).toLowerCase();
+            return surname.includes(q) || s.id.toLowerCase().includes(q);
+        });
+        renderTable(filtered);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────────────────────────
+    document.addEventListener("DOMContentLoaded", () => {
+        renderTable(assessedStudents);
+        document.getElementById("historySearch")
+            .addEventListener("input", applySearch);
+    });
+    </script>
+</body>
+</html>

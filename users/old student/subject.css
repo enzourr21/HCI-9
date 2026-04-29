@@ -1,0 +1,124 @@
+/* ─── ADD SUBJECT BUTTON ─────────────────────────── */
+.btn-add {
+    background-color: var(--crimson, crimson);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-add:hover {
+    background-color: var(--crimson-dark, darkred);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 20, 60, 0.25);
+}
+
+/* ─── SUBJECT TYPE BADGE ─────────────────────────── */
+.subject-type {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.subject-type.major {
+    background-color: #fff0f0;
+    color: var(--crimson, crimson);
+    border: 1px solid rgba(220, 20, 60, 0.2);
+}
+
+.subject-type.minor {
+    background-color: #f0f4ff;
+    color: #3a5bd9;
+    border: 1px solid rgba(58, 91, 217, 0.2);
+}
+
+/* ─── LEC / LAB TAG ──────────────────────────────── */
+.type-tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.type-tag.lec {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.type-tag.lab {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+/* ─── TOTAL ROW ──────────────────────────────────── */
+.total-row {
+    background-color: #fff5f5;
+    border-top: 2px solid var(--crimson, crimson) !important;
+}
+
+.total-row td {
+    font-weight: 700;
+    font-size: 15px;
+    color: #111;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+    .btn-add {
+        padding: 9px 16px;
+        font-size: 13px;
+    }
+
+    .subject-type {
+        padding: 2px 8px;
+        font-size: 10px;
+    }
+
+    .type-tag {
+        font-size: 9px;
+        padding: 2px 5px;
+    }
+
+    .total-row td {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-add {
+        width: 100%;
+        padding: 10px;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .subject-type {
+        padding: 2px 6px;
+        font-size: 9px;
+        letter-spacing: 0;
+    }
+
+    .type-tag {
+        display: block;
+        margin-left: 0;
+        margin-top: 3px;
+        width: fit-content;
+    }
+
+    .total-row td {
+        font-size: 13px;
+    }
+}
