@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMSU-Ease | Admin Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* ── Admin-specific overrides ── */
+    
+
+        /* Role select wrapper already in login.css */
+        .lp-field .select-wrap { position: relative; }
+        .lp-field .select-wrap::after {
+            content: '›';
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            color: var(--muted, #999); font-size: 16px;
+            pointer-events: none;
+        }
+
+        /* options row (remember me + forgot) */
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #666;
+        }
+        .options label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .options .forgot {
+            color: var(--cr, #c0192b);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .options .forgot:hover { text-decoration: underline; }
+
+        /* password wrapper */
+        .password-box input { width: 100%; }
+
+        /* Hero badge color tweak for admin */
+        .lp-badge {
+            background: rgba(255,255,255,.10);
+            border-color: rgba(255,255,255,.20);
+        }
+
+        /* Alert */
+        .lp-alert {
+            margin-top: 14px; padding: 10px 14px;
+            background: #fef2f2; color: #991b1b;
+            border: 1px solid #fecaca; border-radius: 8px;
+            font-size: 13px; display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar">
+    <a href="registrar_login.html" class="logo">
+        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+        <span class="name">WMSU-Ease</span>
+    </a>
+    <ul class="nav-links">
+        <li>
+            <a href="../adminLandingPage.html">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round" width="16" height="16">
+                    <path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Back to Home
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- ─── HERO + FORM ─── -->
+<div class="page-hero">
+    <div class="page-inner">
+
+        <!-- Left: context -->
+        <div class="hero-left">
+            <span class="lp-badge">Admin Portal</span>
+            <h1 class="hero-h1">Admin<br><em>Access</em></h1>
+            <p class="hero-desc">
+                Authorized personnel only. Select your role and sign in to manage enrollment records at WMSU.
+            </p>
+
+            <ul class="step-list">
+                <li>
+                    <span class="step-num">1</span>
+                    <div>
+                        <strong>Select Your Role</strong>
+                        <span>Choose from MISTO, Dean, Adviser, and more</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-num">2</span>
+                    <div>
+                        <strong>Enter Credentials</strong>
+                        <span>Use your assigned WMSU admin email</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-num">3</span>
+                    <div>
+                        <strong>Are you a Student?</strong>
+                        <span>Use the <a href="login.html" style="color:var(--gold-lt);font-weight:600;text-decoration:none;">Student Login</a> instead</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right: card -->
+        <div class="hero-right">
+            <div class="lp-auth-card">
+
+                <div class="auth-card-top">
+                    <span class="card-emoji">🛠️</span>
+                    <h2>Admin Sign In</h2>
+                    <p>Select your role and sign in.</p>
+                </div>
+
+                <div class="auth-card-body">
+
+                    <!-- ── ADMIN FORM ── -->
+                    <form id="adminForm" novalidate>
+
+                        <div class="lp-field">
+                            <label for="adminRole">Select Role</label>
+                            <div class="select-wrap">
+                                <select id="adminRole" required>
+                                    <option value="">— Select Role —</option>
+                                    <option value="misto">MISTO</option>
+                                    <option value="assessment">Assessment Office</option>
+                                    <option value="admission">Admission Office</option>
+                                    <option value="dean">College Dean</option>
+                                    <option value="dept-admin">Department Admin</option>
+                                    <option value="secretary">Secretary</option>
+                                    <option value="adviser">Adviser</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="lp-field">
+                            <label for="adminEmail">Admin Email</label>
+                            <input
+                                type="email"
+                                id="adminEmail"
+                                placeholder="example@wmsu.edu.ph"
+                                pattern="[a-zA-Z0-9._%+\-]+@wmsu\.edu\.ph"
+                                title="Please use your WMSU email (@wmsu.edu.ph)"
+                                required
+                            >
+                        </div>
+
+                        <div class="lp-field">
+                            <label for="adminPassword">Password</label>
+                            <div class="password-box">
+                                <input type="password" id="adminPassword" placeholder="Enter password">
+                            </div>
+                        </div>
+
+                        <div class="options">
+                            <label><input type="checkbox"> Remember me</label>
+                            <a href="#" class="forgot">Forgot Password?</a>
+                        </div>
+
+                        <button type="button" class="lp-btn-full" onclick="handleAdminLogin()">Sign In →</button>
+
+                        <div id="adminAlert" class="lp-alert"></div>
+
+                    </form>
+
+                </div>
+            </div>
+
+            <p style="text-align:center; margin-top:14px; font-size:13px; color:rgba(255,255,255,.55);">
+                Not an admin? <a href="login.html" style="color:rgba(255,255,255,.85); font-weight:600;">Student Login</a>
+                &nbsp;·&nbsp;
+                <a href="#" style="color:rgba(255,255,255,.85); font-weight:600;">Contact MISTO</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function handleAdminLogin() {
+        const role     = document.getElementById('adminRole').value;
+        const alertDiv = document.getElementById('adminAlert');
+        const adminPath = "Admin/";
+
+        if (!role) {
+            alertDiv.textContent   = 'Please select an admin role first.';
+            alertDiv.style.display = 'block';
+            return;
+        }
+
+        alertDiv.style.display = 'none';
+
+        switch (role) {
+            case 'assessment':
+                window.location.href = adminPath + "assessment/assessment_dashboard.html";
+                break;
+            case 'adviser':
+                window.location.href = adminPath + "adviser/adviser_dashboard.html";
+                break;
+            case 'dept-admin':
+                window.location.href = adminPath + "dept-admin/dept-head.html";
+                break;
+            case 'admission':
+                window.location.href = adminPath + "admission/admission.html";
+                break;
+            default:
+                alertDiv.textContent   = 'This portal is currently under maintenance. Please contact MISTO.';
+                alertDiv.style.display = 'block';
+                break;
+        }
+    }
+</script>
+
+</body>
+</html>
