@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMSU-Ease | Adviser Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="adviser.css">
+    <link rel="stylesheet" href="../admin.css">
+</head>
+<body>
+
+    <!-- CSS-only filter radios -->
+    <input type="radio" name="student-filter" id="all"     checked hidden>
+    <input type="radio" name="student-filter" id="pending" hidden>
+    <input type="radio" name="student-filter" id="action"  hidden>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="name">WMSU-Ease</span>
+        </div>
+        <ul class="nav-links">
+            <li class="adviser-info">
+                <div class="adviser-avatar">AD</div>
+                <div class="adviser-text">
+                    <span class="adviser-name">Dr. Ana Dizon</span>
+                    <span class="adviser-role">Adviser</span>
+                </div>
+            </li>
+            <li>
+                <a href="../../login.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        width="17" height="17">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Log Out
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- LAYOUT -->
+    <div class="adviser-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <a href="adviser_dashboard.html" class="nav-item active">
+                    <i class="fa-solid fa-users"></i> My Students
+                </a>
+                <a href="assessment.html" class="nav-item">
+                    <i class="fa-solid fa-file-invoice"></i> Assessment
+                </a>
+                <a href="submitted.html" class="nav-item">
+                    <i class="fa-solid fa-circle-check"></i> Submitted
+                </a>
+                <a href="correction.html" class="nav-item">
+                    <i class="fa-solid fa-rotate-left"></i> For Correction
+                </a>
+            </nav>
+
+            <div class="quick-stats">
+                <h4>Quick Stats</h4>
+                <div class="stat-item"><span>Total Students</span><strong>7</strong></div>
+                <div class="stat-item"><span>Pending Review</span><strong>6</strong></div>
+                <div class="stat-item"><span>Pending Assessment</span><strong>9</strong></div>
+                <div class="stat-item"><span>Approved</span><strong>1</strong></div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <div class="content-header">
+                <div class="header-left">
+                    <h2>My Advisees</h2>
+                    <div class="section-row">
+                        <span class="label">Section:</span>
+                        <select class="section-select">
+                            <option>All</option>
+                            <option>CS-1A</option>
+                            <option>CS-3A</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="control-group">
+                        <span class="label">Filter:</span>
+                        <div class="pills">
+                            <label for="all"     class="filter-btn">All</label>
+                            <label for="pending" class="filter-btn">Pending (2)</label>
+                            <label for="action"  class="filter-btn">Action Required (1)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STUDENT CARDS -->
+            <div id="student-list">
+
+                <!-- Card: Juan Dela Cruz -->
+                <div class="student-card pending">
+                    <div class="card-header">
+                        <div class="profile-row">
+                            <div class="avatar">JDC</div>
+                            <div class="name-container">
+                                <h3 class="student-name">
+                                    Juan Dela Cruz
+                                    <span class="badge regular">Regular</span>
+                                </h3>
+                                <p class="student-id">2024-001234 • Year 3 • CS-3B</p>
+                            </div>
+                            <div class="status-pill pending">Pending</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="enrolled-title">Enrolled Subjects (20.00 units)</h4>
+                        <div class="subject-list">
+                            <div class="subject-row">
+                                <span>DS 131 - Discrete Structures 3</span>
+                                <span class="units">3.00 units</span>
+                            </div>
+                            <div class="subject-row">
+                                <span>CS 106 - Cyber Security</span>
+                                <span class="units">5.00 units</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-btns">
+                        <a href="#modal-juan" class="btn btn-review">
+                            <i class="fas fa-pen"></i> Review &amp; Edit
+                        </a>
+                        <button class="btn btn-proceed">
+                            <i class="fas fa-check-circle"></i> Proceed
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card: Cassidy Himodo -->
+                <div class="student-card action">
+                    <div class="card-header">
+                        <div class="profile-row">
+                            <div class="avatar">CH</div>
+                            <div class="name-container">
+                                <h3 class="student-name">
+                                    Cassidy Himodo
+                                    <span class="badge regular">Regular</span>
+                                </h3>
+                                <p class="student-id">2025-001234 • Year 2 • CS-2A</p>
+                            </div>
+                            <div class="status-pill action">Action Required</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="enrolled-title">Enrolled Subjects (22.00 units)</h4>
+                        <div class="subject-list">
+                            <div class="subject-row">
+                                <span>CC 104 - Data Structures &amp; Algorithms</span>
+                                <span class="units">3.00 units</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-btns">
+                        <a href="#modal-cassidy" class="btn btn-review">
+                            <i class="fas fa-pen"></i> Review &amp; Edit
+                        </a>
+                        <button class="btn btn-proceed">
+                            <i class="fas fa-check-circle"></i> Proceed
+                        </button>
+                    </div>
+                </div>
+
+            </div><!-- /#student-list -->
+        </main>
+    </div>
+
+    <!-- ── MODAL: Juan Dela Cruz ── -->
+    <div id="modal-juan" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Subjects — Juan Dela Cruz</h3>
+                <button class="btn-add"><i class="fas fa-plus"></i> Add Subject</button>
+                <a href="#" class="close-btn">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table class="edit-table">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>Subject ID</th>
+                            <th>Subject Description</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Room</th>
+                            <th>Section</th>
+                            <th>Units</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="action-cell">
+                                <button class="icon-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="icon-btn edit"   title="Edit"><i class="fas fa-edit"></i></button>
+                            </td>
+                            <td><input type="text" value="CS 401" class="id-edit"></td>
+                            <td>Capstone Project 1</td>
+                            <td>MWF</td>
+                            <td>8:00–9:00 AM</td>
+                            <td>CS-401</td>
+                            <td>CS-4A</td>
+                            <td>3.00</td>
+                        </tr>
+                        <tr>
+                            <td class="action-cell">
+                                <button class="icon-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="icon-btn edit"   title="Edit"><i class="fas fa-edit"></i></button>
+                            </td>
+                            <td><input type="text" value="DS 131" class="id-edit"></td>
+                            <td>Discrete Structures 3</td>
+                            <td>TTh</td>
+                            <td>10:00–11:30 AM</td>
+                            <td>CS-202</td>
+                            <td>CS-3B</td>
+                            <td>3.00</td>
+                        </tr>
+                        <tr>
+                            <td class="action-cell">
+                                <button class="icon-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="icon-btn edit"   title="Edit"><i class="fas fa-edit"></i></button>
+                            </td>
+                            <td><input type="text" value="CS 106" class="id-edit"></td>
+                            <td>Cyber Security</td>
+                            <td>MWF</td>
+                            <td>1:00–2:00 PM</td>
+                            <td>CS-301</td>
+                            <td>CS-3B</td>
+                            <td>5.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MODAL: Cassidy Himodo ── -->
+    <div id="modal-cassidy" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Subjects — Cassidy Himodo</h3>
+                <button class="btn-add"><i class="fas fa-plus"></i> Add Subject</button>
+                <a href="#" class="close-btn">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table class="edit-table">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>Subject ID</th>
+                            <th>Subject Description</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Room</th>
+                            <th>Section</th>
+                            <th>Units</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="action-cell">
+                                <button class="icon-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="icon-btn edit"   title="Edit"><i class="fas fa-edit"></i></button>
+                            </td>
+                            <td><input type="text" value="CC 104" class="id-edit"></td>
+                            <td>Data Structures &amp; Algorithms</td>
+                            <td>TTh</td>
+                            <td>8:00–9:30 AM</td>
+                            <td>CS-101</td>
+                            <td>CS-2A</td>
+                            <td>3.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

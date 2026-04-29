@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMSU-Ease | New Student Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar">
+    <a href="../index.html" class="logo">
+        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+        <span class="name">WMSU-Ease</span>
+    </a>
+    <ul class="nav-links">
+        <li>
+            <a href="../index.html">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round" width="16" height="16">
+                    <path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Back to Home
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- ─── HERO + FORM ─── -->
+<div class="page-hero">
+    <div class="page-inner">
+
+        <!-- Left: context -->
+        <div class="hero-left">
+            <span class="lp-badge">New Student Portal</span>
+            <h1 class="hero-h1">Start Your<br><em>Application</em></h1>
+            <p class="hero-desc">
+                Apply online as a Freshman, Transferee, or Shiftee at Western Mindanao State University.
+            </p>
+
+            <ul class="step-list">
+                <li>
+                    <span class="step-num">1</span>
+                    <div>
+                        <strong>Select Applicant Type</strong>
+                        <span>Choose Freshman, Shiftee, or Transferee</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-num">2</span>
+                    <div>
+                        <strong>Enter Your ID</strong>
+                        <span>Use your CET or Student ID number</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-num">3</span>
+                    <div>
+                        <strong>Complete Application</strong>
+                        <span>Fill out and submit your enrollment form</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right: card -->
+        <div class="hero-right">
+            <div class="lp-auth-card">
+
+                <div class="auth-card-top">
+                    <span class="card-emoji">🌟</span>
+                    <h2>College Application</h2>
+                    <p>Enter your details to get started.</p>
+                </div>
+
+                <div class="auth-card-body">
+
+                    <div class="auth-signin">
+                        Already have an account? <a href="account.html">Sign In</a>
+                    </div>
+
+                    <form id="loginForm" novalidate>
+
+                        <div class="lp-field">
+                            <label for="applicantType">Applicant Type</label>
+                            <div class="select-wrap">
+                                <select id="applicantType" name="applicantType" required>
+                                    <option value="choose">Choose your type…</option>
+                                    <option value="freshman">🎒 Freshman</option>
+                                    <option value="shiftee">🔁 Shiftee</option>
+                                    <option value="transferee">📂 Transferee</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="lp-field">
+                            <label for="id">ID Number</label>
+                            <input
+                                type="text"
+                                id="id"
+                                name="id"
+                                placeholder="Enter your CET or Student ID"
+                                required
+                                autocomplete="off"
+                            />
+                            <span class="lp-field-hint">e.g. WCAT-2025-00001 or 2021-00001</span>
+                        </div>
+
+                        <button type="submit" class="lp-btn-full">Continue →</button>
+
+                        <div id="alert" class="lp-alert"></div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const typeConfig = {
+        freshman:   { emoji: '🎒', label: 'Freshman',   route: '../users/Freshmen/freshman-apply.html' },
+        shiftee:    { emoji: '🔁', label: 'Shiftee',    route: '../users/Freshmen/shiftee-apply.html' },
+        transferee: { emoji: '📂', label: 'Transferee', route: '../users/Freshmen/transferee-apply.html' }
+    };
+
+    // Read ?type= from URL and pre-select
+    const params      = new URLSearchParams(window.location.search);
+    const preselected = params.get('type');
+    const select      = document.getElementById('applicantType');
+    const cardEmoji   = document.querySelector('.card-emoji');
+    const cardTitle   = document.querySelector('.auth-card-top h2');
+    const cardSub     = document.querySelector('.auth-card-top p');
+
+    function applyType(val) {
+        if (!val || !typeConfig[val]) return;
+        select.value    = val;
+        cardEmoji.textContent = typeConfig[val].emoji;
+        cardTitle.textContent = typeConfig[val].label + ' Application';
+        cardSub.textContent   = 'Enter your ID to continue as a ' + typeConfig[val].label + '.';
+    }
+
+    // Apply from URL on load
+    if (preselected) applyType(preselected);
+
+    // Update card header when user changes the dropdown
+    select.addEventListener('change', function() {
+        applyType(this.value);
+    });
+
+    // Submit
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const type     = select.value;
+        const id       = document.getElementById('id').value.trim();
+        const alertDiv = document.getElementById('alert');
+
+        if (!type || !id) {
+            alertDiv.textContent = 'Please select an applicant type and enter your ID.';
+            alertDiv.style.display = 'block';
+            return;
+        }
+        alertDiv.style.display = 'none';
+        window.location.href = typeConfig[type].route;
+    });
+</script>
+
+</body>
+</html>
