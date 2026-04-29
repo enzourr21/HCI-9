@@ -47,6 +47,17 @@
 
         <!-- DASHBOARD -->
         <div id="accountContent" hidden>
+            <div class="top-status-banner">
+                <div class="top-status-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 8 12 12 14.5 13.5"/>
+                    </svg>
+                </div>
+                <div class="top-status-content">
+                    <strong>Pending Review</strong> — Your application has been received. Please wait for official confirmation via email.
+                </div>
+            </div>
             <!-- FIX: inner wrapper that actually applies the flex gap between cards -->
             <div class="dashboard-content">
 
@@ -126,36 +137,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Applied Course -->
-                    <div class="applied-course-block">
-                        <div class="ac-icon" id="res-course-icon">📚</div>
-                        <div class="ac-info">
-                            <div class="ac-label-tiny">Applied Course</div>
-                            <div class="ac-name" id="res-course-name">—</div>
-                        </div>
-                        <button class="btn-change-course" onclick="openChangeCourse()">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">
-                                <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-                                <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-                            </svg>
-                            Change Course
-                        </button>
-                    </div>
-
-                    <!-- Status Banner -->
-                    <div class="status-banner">
-                        <div class="status-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                            </svg>
-                        </div>
-                        <div class="status-text-block">
-                            <span class="status-badge">Pending Review</span>
-                            <div class="status-title">Application Submitted — Awaiting Confirmation</div>
-                            <div class="status-desc">Your application has been received. Please wait for an official confirmation via email. Do <strong>not</strong> assume you have been admitted until you receive an official notice.</div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Application Progress Card -->
@@ -192,6 +173,21 @@
                             <p class="p-step-lbl">Enrolled</p>
                         </div>
                     </div>
+                </div>
+
+                <div class="applied-course-block">
+                    <div class="ac-icon" id="res-course-icon">📚</div>
+                    <div class="ac-info">
+                        <div class="ac-label-tiny">Applied Course</div>
+                        <div class="ac-name" id="res-course-name">—</div>
+                    </div>
+                    <button class="btn-change-course" onclick="openChangeCourse()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">
+                            <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                            <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                        </svg>
+                        Change Course
+                    </button>
                 </div>
 
                 <!-- Notice Card -->
