@@ -1,0 +1,238 @@
+.registrar-page {
+    min-height: 100vh;
+    background: #f8fafc;
+    color: var(--text, #111827);
+}
+
+.login-wrapper {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 18px 72px;
+    background: linear-gradient(180deg, rgba(249,250,251,.98), rgba(249,250,251,1));
+}
+
+.login-card {
+    width: min(520px, 100%);
+    background: rgba(255,255,255,.98);
+    border-radius: 26px;
+    box-shadow: 0 24px 60px rgba(15,23,42,.12);
+    padding: 34px 32px 32px;
+    border: 1px solid rgba(148,163,184,.12);
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: var(--crimson, #c0192b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+}
+
+.card-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.card-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    color: #94a3b8;
+    font-size: 12px;
+    text-align: center;
+}
+
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.form-label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+    background: #fff;
+}
+
+.form-input:focus {
+    border-color: var(--crimson, #c0192b);
+    box-shadow: 0 0 0 4px rgba(192,25,43,.08);
+}
+
+.password-box {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    font-size: 13px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: #64748b;
+}
+
+.error-msg {
+    display: none;
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    color: #991b1b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.options input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--crimson, #c0192b);
+}
+
+.options .forgot-link {
+    color: var(--crimson, #c0192b);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.options .forgot-link:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 12px;
+    background: var(--crimson, #c0192b);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s, background .2s, box-shadow .2s;
+}
+
+.login-btn:hover {
+    background: #a01728;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px rgba(192,25,43,.22);
+}
+
+.login-btn:disabled {
+    opacity: .75;
+    cursor: wait;
+}
+
+.footer-note {
+    margin-top: 22px;
+    font-size: 12px;
+    color: #64748b;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.footer-note a {
+    color: var(--crimson, #c0192b);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #111827;
+    transition: color .2s;
+}
+
+.back-link:hover {
+    color: var(--crimson, #c0192b);
+}
+
+@media (max-width: 620px) {
+    .login-wrapper {
+        padding: 40px 16px 56px;
+    }
+
+    .login-card {
+        padding: 28px 24px;
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-8px); }
+    40%       { transform: translateX(8px); }
+    60%       { transform: translateX(-5px); }
+    80%       { transform: translateX(5px); }
+}
