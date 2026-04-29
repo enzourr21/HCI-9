@@ -1,15 +1,3 @@
-// =============================================================
-// correction.js — For Correction Page Logic
-// Handles: card rendering, note expand/collapse, resubmit modal,
-//          inline subject editing, confirmation prompt
-// =============================================================
-
-// ─────────────────────────────────────────────────────────────
-// MOCK DATA
-// Replace with a real API fetch when the backend is ready.
-// These records are pushed here when Assessment flags a student
-// and the system routes them back to the adviser.
-// ─────────────────────────────────────────────────────────────
 let flaggedReturns = [
     {
         id:         "2024-001234",

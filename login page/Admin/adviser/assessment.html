@@ -11,9 +11,40 @@
 <body>
 
     <!-- CSS-only filter radios -->
-    <input type="radio" name="student-filter" id="all"     checked hidden>
-    <input type="radio" name="student-filter" id="pending" hidden>
-    <input type="radio" name="student-filter" id="action"  hidden>
+    <input type="radio" name="student-filter" id="filter-all"       checked hidden>
+    <input type="radio" name="student-filter" id="filter-regular"   hidden>
+    <input type="radio" name="student-filter" id="filter-irregular" hidden>
+
+    <!-- SUBJECTS MODAL -->
+    <div class="modal-overlay" id="subjectsModal">
+        <div class="modal-card" style="max-width:560px;">
+            <div class="modal-header">
+                <div class="modal-avatar" id="modalAvatar"></div>
+                <div>
+                    <h3 id="modalStudentName" style="margin:0;font-size:1rem;font-weight:700;color:#1a1a1a;"></h3>
+                    <p id="modalStudentMeta" style="margin:0;font-size:0.8rem;color:#777;"></p>
+                </div>
+                <button class="close-btn" onclick="closeModal()" style="margin-left:auto;">&times;</button>
+            </div>
+            <div class="modal-body" style="margin-top:16px;">
+                <table class="edit-table" id="modalSubjectsTable">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Subject</th>
+                            <th>Units</th>
+                            <th>Schedule</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalSubjectsBody"></tbody>
+                </table>
+                <div style="margin-top:14px;padding-top:12px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:0.82rem;color:#555;">Total Units: <strong id="modalTotalUnits" style="color:#d32f2f;"></strong></span>
+                    <span id="modalStatusBadge" style="font-size:0.75rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- NAVBAR -->
     <nav class="navbar">
@@ -94,9 +125,9 @@
                     <div class="control-group">
                         <span class="label">Filter:</span>
                         <div class="pills">
-                            <label for="all"     class="filter-btn">All</label>
-                            <label for="pending" class="filter-btn">Regular (2)</label>
-                            <label for="action"  class="filter-btn">Overloaded / Irregular (1)</label>
+                            <label for="filter-all"       class="filter-btn">All</label>
+                            <label for="filter-regular"   class="filter-btn">Regular (2)</label>
+                            <label for="filter-irregular" class="filter-btn">Overloaded / Irregular (1)</label>
                         </div>
                     </div>
                 </div>
@@ -106,7 +137,20 @@
             <div id="student-list">
 
                 <!-- Card: Juan Dela Cruz — Irregular -->
-                <div class="student-card irregular">
+                <div class="student-card irregular"
+                     data-name="Juan Dela Cruz"
+                     data-meta="2024-001234 • Year 3 • CS-3B"
+                     data-initials="JDC"
+                     data-type="irregular"
+                     data-subjects='[
+                         {"code":"DS 131","name":"Discrete Structures 3","units":3,"schedule":"MWF 7:30–8:30AM"},
+                         {"code":"CS 106","name":"Cyber Security","units":3,"schedule":"TTh 1:00–2:30PM"},
+                         {"code":"CS 201","name":"Software Engineering","units":3,"schedule":"MWF 9:00–10:00AM"},
+                         {"code":"CS 211","name":"Operating Systems","units":3,"schedule":"TTh 4:00–5:30PM"},
+                         {"code":"GE 001","name":"Understanding the Self","units":3,"schedule":"MWF 11:00AM–12:00PM"},
+                         {"code":"PE 003","name":"Physical Education 3","units":2,"schedule":"Fri 1:00–3:00PM"},
+                         {"code":"CS 198","name":"Special Topics (Overload)","units":3,"schedule":"Sat 8:00–11:00AM"}
+                     ]'>
                     <div class="card-header">
                         <div class="profile-row">
                             <div class="avatar">JDC</div>
@@ -122,10 +166,11 @@
                         <ul class="subject-preview-list">
                             <li>DS 131 - Discrete Structures 3</li>
                             <li>CS 106 - Cyber Security</li>
+                            <li><em style="color:#aaa;font-size:.82rem;">+5 more subjects…</em></li>
                         </ul>
                     </div>
                     <div class="card-btns">
-                        <button class="btn btn-outline">
+                        <button class="btn btn-outline" onclick="openModal(this)">
                             <i class="fas fa-eye"></i> View Subjects
                         </button>
                         <button class="btn btn-proceed">
@@ -135,7 +180,19 @@
                 </div>
 
                 <!-- Card: Cassidy Himodo — Regular -->
-                <div class="student-card regular">
+                <div class="student-card regular"
+                     data-name="Cassidy Himodo"
+                     data-meta="2025-001234 • Year 2 • CS-2A"
+                     data-initials="CH"
+                     data-type="regular"
+                     data-subjects='[
+                         {"code":"CC 104","name":"Data Structures & Algorithms","units":3,"schedule":"MWF 7:30–8:30AM"},
+                         {"code":"CC 105","name":"Object-Oriented Programming","units":3,"schedule":"TTh 10:30AM–12:00PM"},
+                         {"code":"CC 106","name":"Information Management","units":3,"schedule":"MWF 1:00–2:00PM"},
+                         {"code":"GE 002","name":"Readings in Philippine History","units":3,"schedule":"TTh 1:00–2:30PM"},
+                         {"code":"PE 002","name":"Physical Education 2","units":2,"schedule":"Fri 3:00–5:00PM"},
+                         {"code":"NSTP 2","name":"National Service Training Program 2","units":3,"schedule":"Sat 8:00–11:00AM"}
+                     ]'>
                     <div class="card-header">
                         <div class="profile-row">
                             <div class="avatar">CH</div>
@@ -150,10 +207,52 @@
                         <h4 class="enrolled-title">Subjects for Review (Preview)</h4>
                         <ul class="subject-preview-list">
                             <li>CC 104 - Data Structures &amp; Algorithms</li>
+                            <li>CC 105 - Object-Oriented Programming</li>
+                            <li><em style="color:#aaa;font-size:.82rem;">+4 more subjects…</em></li>
                         </ul>
                     </div>
                     <div class="card-btns">
-                        <button class="btn btn-outline">
+                        <button class="btn btn-outline" onclick="openModal(this)">
+                            <i class="fas fa-eye"></i> View Subjects
+                        </button>
+                        <button class="btn btn-proceed">
+                            <i class="fas fa-check-circle"></i> Submit Assessment
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card: Mark Reyes — Regular -->
+                <div class="student-card regular"
+                     data-name="Mark Reyes"
+                     data-meta="2025-005678 • Year 2 • CS-2A"
+                     data-initials="MR"
+                     data-type="regular"
+                     data-subjects='[
+                         {"code":"CC 104","name":"Data Structures & Algorithms","units":3,"schedule":"MWF 7:30–8:30AM"},
+                         {"code":"CC 105","name":"Object-Oriented Programming","units":3,"schedule":"TTh 10:30AM–12:00PM"},
+                         {"code":"GE 002","name":"Readings in Philippine History","units":3,"schedule":"MWF 11:00AM–12:00PM"},
+                         {"code":"PE 002","name":"Physical Education 2","units":2,"schedule":"Fri 3:00–5:00PM"}
+                     ]'>
+                    <div class="card-header">
+                        <div class="profile-row">
+                            <div class="avatar">MR</div>
+                            <div class="name-container">
+                                <h3 class="student-name">Mark Reyes</h3>
+                                <p class="student-id">2025-005678 • Year 2 • CS-2A</p>
+                            </div>
+                            <div class="status-pill regular">Regular</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="enrolled-title">Subjects for Review (Preview)</h4>
+                        <ul class="subject-preview-list">
+                            <li>CC 104 - Data Structures &amp; Algorithms</li>
+                            <li>GE 002 - Readings in Philippine History</li>
+                            <li><em style="color:#aaa;font-size:.82rem;">+2 more subjects…</em></li>
+                        </ul>
+                    </div>
+                    <div class="card-btns">
+                        <button class="btn btn-outline" onclick="openModal(this)">
                             <i class="fas fa-eye"></i> View Subjects
                         </button>
                         <button class="btn btn-proceed">
@@ -166,5 +265,95 @@
         </main>
     </div>
 
+    <script>
+        // ── MODAL ──
+        function openModal(btn) {
+            const card = btn.closest('.student-card');
+            const subjects = JSON.parse(card.dataset.subjects);
+            const type = card.dataset.type;
+
+            document.getElementById('modalAvatar').textContent = card.dataset.initials;
+            document.getElementById('modalAvatar').style.cssText =
+                'width:40px;height:40px;border-radius:50%;background:#d32f2f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;';
+            document.getElementById('modalStudentName').textContent = card.dataset.name;
+            document.getElementById('modalStudentMeta').textContent = card.dataset.meta;
+
+            const badge = document.getElementById('modalStatusBadge');
+            if (type === 'irregular') {
+                badge.textContent = 'Overloaded / Irregular';
+                badge.style.cssText = 'font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;background:#fff4e5;color:#b05d00;';
+            } else {
+                badge.textContent = 'Regular';
+                badge.style.cssText = 'font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;background:#d4edda;color:#155724;';
+            }
+
+            let totalUnits = 0;
+            const tbody = document.getElementById('modalSubjectsBody');
+            tbody.innerHTML = '';
+            subjects.forEach(s => {
+                totalUnits += s.units;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${s.code}</strong></td>
+                        <td>${s.name}</td>
+                        <td style="color:#d32f2f;font-weight:700;text-align:center;">${s.units}</td>
+                        <td style="color:#555;font-size:.82rem;">${s.schedule}</td>
+                    </tr>`;
+            });
+            document.getElementById('modalTotalUnits').textContent = totalUnits + ' units';
+
+            document.getElementById('subjectsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('subjectsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on overlay click
+        document.getElementById('subjectsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+
+        // ── FILTER (JS — reliable cross-browser) ──
+        const filterRadios = document.querySelectorAll('input[name="student-filter"]');
+        const cards = document.querySelectorAll('.student-card');
+
+        filterRadios.forEach(radio => {
+            radio.addEventListener('change', applyFilter);
+        });
+
+        function applyFilter() {
+            const active = document.querySelector('input[name="student-filter"]:checked').id;
+            cards.forEach(card => {
+                if (active === 'filter-all') {
+                    card.style.display = '';
+                } else if (active === 'filter-regular') {
+                    card.style.display = card.classList.contains('regular') ? '' : 'none';
+                } else if (active === 'filter-irregular') {
+                    card.style.display = card.classList.contains('irregular') ? '' : 'none';
+                }
+            });
+        }
+
+        // Highlight active filter pill
+        const filterLabels = document.querySelectorAll('.filter-btn');
+        filterRadios.forEach((radio, i) => {
+            radio.addEventListener('change', () => {
+                filterLabels.forEach(l => l.classList.remove('active-filter'));
+                filterLabels[i].classList.add('active-filter');
+            });
+        });
+
+        // Set default active on load
+        filterLabels[0].classList.add('active-filter');
+    </script>
 </body>
 </html>
