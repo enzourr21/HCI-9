@@ -389,6 +389,14 @@
             document.getElementById('statusBannerText').innerHTML = `<strong>${status.label}</strong> — ${status.message}`;
         }
 
+        function syncFreshmanAppToShared(app) {
+            const all = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
+            const idx = all.findIndex(a => a.appNo === app.appNo);
+            if (idx === -1) return;
+            all[idx] = { ...all[idx], ...app };
+            localStorage.setItem('wmsu_applications', JSON.stringify(all));
+        }
+
         function populate(app) {
             if (!app.surname) {
                 app.surname       = app.name || '—';
@@ -458,6 +466,7 @@
 
             document.getElementById('edit-' + field).classList.remove('open');
             localStorage.setItem('freshmanApp', JSON.stringify(app));
+            syncFreshmanAppToShared(app);
         }
 
         document.querySelectorAll('.info-edit-input').forEach(inp => {
@@ -488,6 +497,7 @@
             const app = JSON.parse(localStorage.getItem('freshmanApp'));
             app.course = newCourse;
             localStorage.setItem('freshmanApp', JSON.stringify(app));
+            syncFreshmanAppToShared(app);
             closeChangeCourse();
         }
 
