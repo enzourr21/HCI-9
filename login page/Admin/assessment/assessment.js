@@ -19,7 +19,7 @@ const MOCK_STUDENTS = [
         program:             "BSCS-1A",
         year_level:          "Year 1",
         adviser:             "Prof. Maria Reyes",
-        student_type:        "REGULAR",   // or "IRREGULAR"
+        student_type:        "REGULAR",
         residency_warning:   false,
         total_units:         23.00,
         subjects: [
@@ -33,10 +33,10 @@ const MOCK_STUDENTS = [
             { code: "STS 1",   description: "Science, Technology and Society",  units: 2, lec: 2, lab: 0 },
         ],
         fees: {
-            tuition_per_unit: 150,    // pesos per unit (0 if under RA 10931 and within residency)
+            tuition_per_unit: 150,
             misc:             500,
             lab:              285,
-            sfdf:             100,    // Student Fund Development Fee
+            sfdf:             100,
             athletics:        50,
             library:          75,
             id_fee:           120,
@@ -45,43 +45,62 @@ const MOCK_STUDENTS = [
     },
 
     {
-        queue_id: "q-002",
-        student_name: "John Smith Doe",
-        initials: "JD",
-        cet_id: "2023-05678",
-        program: "BSCS-2B",
-        year_level: "Year 2",
-        student_type: "IRREGULAR", 
-        adviser: "Dr. Jose Rizal",
+        queue_id:          "q-002",
+        student_name:      "John Smith Doe",
+        initials:          "JD",
+        cet_id:            "2023-05678",
+        program:           "BSCS-2B",
+        year_level:        "Year 2",
+        student_type:      "IRREGULAR",
+        adviser:           "Dr. Jose Rizal",
         residency_warning: true,
-        total_units: 18.00,
+        total_units:       18.00,
         subjects: [
             { code: "CS 201", description: "Data Structures", units: 3, lec: 2, lab: 1 },
-            { code: "MATH 2", description: "Calculus 2", units: 3, lec: 3, lab: 0 }
+            { code: "MATH 2", description: "Calculus 2",      units: 3, lec: 3, lab: 0 }
         ],
-        shs_info: { school: "Zamboanga City High School", strand: "ICT" },
-        guardian_info: { name: "Jane Doe", relationship: "Aunt", address: "Tetuan, Zamboanga City", contact: "09987654321" }
+        shs_info:      { school: "Zamboanga City High School", strand: "ICT" },
+        guardian_info: { name: "Jane Doe", relationship: "Aunt", address: "Tetuan, Zamboanga City", contact: "09987654321" },
+        fees: {
+            tuition_per_unit: 150,
+            misc:             500,
+            lab:              200,
+            sfdf:             100,
+            athletics:        50,
+            library:          75,
+            id_fee:           0,
+            other:            30,
+        }
     },
 
     {
-        queue_id: "q-003",
-        student_name: "Cassidy V. Himodo",
-        initials: "CH",
-        cet_id: "2023-09207",
-        program: "BSCS-2A",
-        year_level: "Year 2",
-        student_type: "REGULAR", 
-        adviser: "Gojo Satoru",
+        queue_id:          "q-003",
+        student_name:      "Cassidy V. Himodo",
+        initials:          "CH",
+        cet_id:            "2023-09207",
+        program:           "BSCS-2A",
+        year_level:        "Year 2",
+        student_type:      "REGULAR",
+        adviser:           "Gojo Satoru",
         residency_warning: false,
-        total_units: 18.00,
+        total_units:       18.00,
         subjects: [
             { code: "CS 201", description: "Data Structures", units: 3, lec: 2, lab: 1 },
-            { code: "MATH 2", description: "Calculus 2", units: 3, lec: 3, lab: 0 }
+            { code: "MATH 2", description: "Calculus 2",      units: 3, lec: 3, lab: 0 }
         ],
-        shs_info: { school: "Zamboanga City High School", strand: "ICT" },
-        guardian_info: { name: "Jane Doe", relationship: "Aunt", address: "Tetuan, Zamboanga City", contact: "09987654321" }
+        shs_info:      { school: "Zamboanga City High School", strand: "ICT" },
+        guardian_info: { name: "Jane Doe", relationship: "Aunt", address: "Tetuan, Zamboanga City", contact: "09987654321" },
+        fees: {
+            tuition_per_unit: 150,
+            misc:             500,
+            lab:              200,
+            sfdf:             100,
+            athletics:        50,
+            library:          75,
+            id_fee:           120,
+            other:            55,
+        }
     }
-
 ];
 
 // ---------------------------------------------------------------
@@ -91,16 +110,9 @@ let currentStudent = null;
 
 // ---------------------------------------------------------------
 // QUEUE LOADER
-// Populates the queue cards on page load.
-// Swap the mock data for: const res = await fetch('/api/assessment/queue?status=PENDING');
 // ---------------------------------------------------------------
 async function loadQueue() {
-    // --- REAL API (uncomment when backend is ready) ---
-    // const res  = await fetch('/api/assessment/queue?status=PENDING');
-    // const json = await res.json();
-    // const students = json.data;
-
-    const students = MOCK_STUDENTS; // ← remove this line when using real API
+    const students = MOCK_STUDENTS; // ← swap for real API when ready
 
     const queueContainer = document.getElementById('queue-body-cards') || document.querySelector('.queue-list');
 
@@ -110,12 +122,10 @@ async function loadQueue() {
     if (statPending)  statPending.textContent  = students.filter(s => s.queue_status !== 'ASSESSED').length;
     if (statAssessed) statAssessed.textContent = students.filter(s => s.queue_status === 'ASSESSED').length;
 
-    // If queue is card-based (not a table), render cards
     if (queueContainer) {
         queueContainer.innerHTML = students.map(s => buildQueueCard(s)).join('');
     }
 
-    // If queue is table-based, render rows
     const tbody = document.getElementById('queue-body');
     if (tbody) {
         tbody.innerHTML = students.map(s => buildQueueRow(s)).join('');
@@ -123,7 +133,7 @@ async function loadQueue() {
 }
 
 // ---------------------------------------------------------------
-// QUEUE CARD BUILDER (matches your screenshot UI)
+// QUEUE CARD BUILDER
 // ---------------------------------------------------------------
 function buildQueueCard(s) {
     return `
@@ -136,7 +146,7 @@ function buildQueueCard(s) {
         </div>
         <div class="card-info">
             <h3>${escHtml(s.student_name)}</h3>
-            <p>${escHtml(s.cet_id)} • ${escHtml(s.year_level)} • ${escHtml(s.program)}</p>
+            <p>${escHtml(s.cet_id)} &bull; ${escHtml(s.year_level)} &bull; ${escHtml(s.program)}</p>
             <p><strong>Enrolled Subjects:</strong> ${s.total_units}.00 units</p>
             <p><strong>Adviser:</strong> ${escHtml(s.adviser)}</p>
         </div>
@@ -147,7 +157,7 @@ function buildQueueCard(s) {
 }
 
 // ---------------------------------------------------------------
-// QUEUE TABLE ROW BUILDER (for the table version of the dashboard)
+// QUEUE TABLE ROW BUILDER
 // ---------------------------------------------------------------
 function buildQueueRow(s) {
     return `
@@ -169,14 +179,11 @@ function buildQueueRow(s) {
 
 // ---------------------------------------------------------------
 // OPEN ASSESSMENT MODAL
-// Called by: onclick="openAssessmentModal(queueId)"
-// If called with no argument (legacy onclick="openAssessmentModal()"),
-// defaults to the first student in the list.
 // ---------------------------------------------------------------
 function openAssessmentModal(queueId) {
     const student = queueId
         ? MOCK_STUDENTS.find(s => s.queue_id === queueId)
-        : MOCK_STUDENTS[0]; // fallback for legacy button
+        : MOCK_STUDENTS[0];
 
     if (!student) {
         console.warn('Student not found for queue_id:', queueId);
@@ -201,7 +208,6 @@ function closeModal() {
     currentStudent = null;
 }
 
-// Close on overlay click (outside the modal container)
 document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('assessmentModal');
     if (overlay) {
@@ -209,9 +215,78 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === overlay) closeModal();
         });
     }
-
     loadQueue();
 });
+
+// ---------------------------------------------------------------
+// STATUS BANNER — varies by student_type / residency_warning
+// ---------------------------------------------------------------
+function buildStatusBanner(s) {
+    if (s.residency_warning) {
+        return `
+        <div class="status-banner status-banner--irregular">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <div>
+                <strong>⚠ Residency Warning</strong>
+                <p>This student has exceeded the 5-year (10-semester) free tuition limit under RA 10931. Tuition must be charged <strong>manually</strong>.</p>
+            </div>
+        </div>`;
+    }
+
+    const banners = {
+        REGULAR: `
+        <div class="status-banner status-banner--regular">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <div>
+                <strong>Regular Student</strong>
+                <p>Enrolled in the standard full load for their year level and curriculum.</p>
+            </div>
+        </div>`,
+
+        IRREGULAR: `
+        <div class="status-banner status-banner--irregular">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <div>
+                <strong>Irregular Student</strong>
+                <p>Not following the standard curriculum sequence. Subjects may be mixed across year levels. Verify carefully before confirming.</p>
+            </div>
+        </div>`,
+
+        PROBATIONARY: `
+        <div class="status-banner status-banner--probationary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
+                <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div>
+                <strong>Probationary Student</strong>
+                <p>Subject to academic conditions. Maximum load is limited. Dean's approval may be required before confirming assessment.</p>
+            </div>
+        </div>`,
+
+        GRADUATING: `
+        <div class="status-banner status-banner--graduating">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <div>
+                <strong>Graduating Student</strong>
+                <p>On track to complete degree requirements this semester. Verify all prerequisites and clearance before confirming.</p>
+            </div>
+        </div>`,
+    };
+
+    return banners[s.student_type] || '';
+}
 
 // ---------------------------------------------------------------
 // LEFT PANEL — Student Info + Subject Table
@@ -220,29 +295,20 @@ function renderLeftPanel(s) {
     const container = document.querySelector('#assessmentModal .audit-content');
     if (!container) return;
 
-    const isResidency = s.residency_warning;
-
     container.innerHTML = `
+        ${buildStatusBanner(s)}
 
-        ${isResidency ? `
-        <div class="residency-alert">
-            <strong>⚠ Residency Alert:</strong>
-            This student has exceeded the 5-year (10-semester) free tuition limit under RA 10931.
-            Tuition must be charged <strong>manually</strong>.
-        </div>` : ''}
-
-        <!-- Student Info Block -->
         <div class="student-info-block">
             <div class="student-avatar large">${escHtml(s.initials)}</div>
             <div class="student-details">
                 <h2>${escHtml(s.student_name)}</h2>
                 <div class="info-grid">
-                    <div class="student-header-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-                    <div><strong>CET-ID:</strong> ${escHtml(s.cet_id)}</div>
-                    <div><strong>Program:</strong> ${escHtml(s.program)}</div>
-                    <div><strong>Year Level:</strong> ${escHtml(s.year_level)}</div>
-                    <div><strong>Adviser:</strong> ${escHtml(s.adviser)}</div>
-                </div>
+                    <div class="student-header-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+                        <div><strong>CET-ID:</strong> ${escHtml(s.cet_id)}</div>
+                        <div><strong>Program:</strong> ${escHtml(s.program)}</div>
+                        <div><strong>Year Level:</strong> ${escHtml(s.year_level)}</div>
+                        <div><strong>Adviser:</strong> ${escHtml(s.adviser)}</div>
+                    </div>
                     <div class="info-item">
                         <span class="info-label">Total Units</span>
                         <span class="info-value">${s.total_units} units</span>
@@ -253,9 +319,7 @@ function renderLeftPanel(s) {
 
         <hr class="divider">
 
-        <!-- Subject Table -->
         <div class="subjects-section">
-
             <table class="subjects-table">
                 <thead>
                     <tr>
@@ -289,10 +353,9 @@ function renderLeftPanel(s) {
 
 // ---------------------------------------------------------------
 // RIGHT PANEL — Fee Summary
-// Computes totals from the student's fee structure
 // ---------------------------------------------------------------
 function renderRightPanel(s) {
-    const feeList = document.querySelector('.fee-list');
+    const feeList = document.querySelector('#assessmentModal .fee-list');
     if (!feeList) return;
 
     const f = s.fees;
@@ -301,14 +364,14 @@ function renderRightPanel(s) {
     const grandTotal   = tuitionTotal + miscTotal;
 
     const feeRows = [
-        { label: `Tuition (${s.total_units} units × ₱${f.tuition_per_unit.toFixed(2)})`, amount: tuitionTotal, highlight: false },
-        { label: "Miscellaneous Fee",         amount: f.misc,      highlight: false },
-        { label: "Laboratory Fee",            amount: f.lab,       highlight: false },
-        { label: "Student Fund Dev. Fee",     amount: f.sfdf,      highlight: false },
-        { label: "Athletics Fee",             amount: f.athletics, highlight: false },
-        { label: "Library Fee",               amount: f.library,   highlight: false },
-        { label: "ID Fee",                    amount: f.id_fee,    highlight: false },
-        { label: "Other Fees",                amount: f.other,     highlight: false },
+        { label: `Tuition (${s.total_units} units × ₱${f.tuition_per_unit.toFixed(2)})`, amount: tuitionTotal },
+        { label: "Miscellaneous Fee",     amount: f.misc      },
+        { label: "Laboratory Fee",        amount: f.lab       },
+        { label: "Student Fund Dev. Fee", amount: f.sfdf      },
+        { label: "Athletics Fee",         amount: f.athletics },
+        { label: "Library Fee",           amount: f.library   },
+        { label: "ID Fee",                amount: f.id_fee    },
+        { label: "Other Fees",            amount: f.other     },
     ];
 
     feeList.innerHTML = `
@@ -335,13 +398,13 @@ function renderRightPanel(s) {
             <span>Total Assessment</span>
             <span class="fee-grand-total">${formatCurrency(grandTotal)}</span>
         </div>
-
-
     `;
 
-    // Wire up the Confirm Assessment button
-    const confirmBtn = document.querySelector('.btn-approve');
+    // Wire the confirm button
+    const confirmBtn = document.querySelector('#assessmentModal .btn-approve');
     if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Confirm Assessment';
         confirmBtn.onclick = () => confirmAssessment(s, grandTotal);
     }
 }
@@ -366,12 +429,11 @@ async function confirmAssessment(student, grandTotal) {
         //     })
         // });
 
-        // Simulate network delay
         await new Promise(r => setTimeout(r, 800));
 
         closeModal();
         showToast(`✓ SOA generated for ${student.student_name}`);
-        loadQueue(); // Refresh the queue
+        loadQueue();
 
     } catch (err) {
         console.error('Assessment confirmation failed:', err);
@@ -383,8 +445,6 @@ async function confirmAssessment(student, grandTotal) {
 
 // ---------------------------------------------------------------
 // LEGACY SUPPORT
-// Your existing HTML uses: onclick="openAuditModal()"
-// This alias keeps that working without changing your HTML.
 // ---------------------------------------------------------------
 function openAuditModal()  { openAssessmentModal(); }
 function closeAuditModal() { closeModal(); }
@@ -413,9 +473,8 @@ function showToast(message, type = 'success') {
         position: fixed; bottom: 24px; right: 24px;
         background: ${type === 'error' ? '#c0392b' : '#27ae60'};
         color: white; padding: 12px 20px; border-radius: 8px;
-        font-size: 14px; font-weight: 500; z-index: 9999;
+        font-size: 14px; font-weight: 500; z-index: 99999;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        animation: slideInRight 0.3s ease;
     `;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3500);

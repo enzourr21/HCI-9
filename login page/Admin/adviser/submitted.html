@@ -4,62 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMSU-Ease | Submitted History</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../../../style.css"> <link rel="stylesheet" href="adviser.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../../style.css">
+    <link rel="stylesheet" href="adviser.css">
 </head>
 <body>
-    <div class="adviser-layout">
-        <aside class="sidebar">
-            <div class="brand">
-                <img src="../../../logo.png" alt="WMSU Logo" class="logo-img">
-                <span>WMSU-Ease</span>
-            </div>
-            <nav class="nav-menu">
-                <a href="adviser_dashboard.html" class="nav-item">
-                    <i class="fas fa-users"></i> My Students</a>
-                <a href="assessment.html" class="nav-item">
-                    <i class="fas fa-file-invoice"></i> Assessment</a>
-                <a href="submitted.html" class="nav-item active">
-                    <i class="fas fa-check-circle"></i> Submitted</a>
-            </nav>
-        </aside>
 
-        <main class="content">
-            <header class="top-bar">
-                <div class="header-text">
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="name">WMSU-Ease</span>
+        </div>
+        <ul class="nav-links">
+            <li class="adviser-info">
+                <div class="adviser-avatar">AD</div>
+                <div class="adviser-text">
+                    <span class="adviser-name">Dr. Ana Dizon</span>
+                    <span class="adviser-role">Adviser</span>
+                </div>
+            </li>
+            <li>
+                <a href="../../login.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        width="17" height="17">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Log Out
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- FULL-SCREEN LAYOUT (no sidebar) -->
+    <div class="submitted-layout">
+
+        <!-- Sub-nav bar -->
+        <div class="sub-nav">
+            <a href="adviser_dashboard.html" class="sub-nav-link">
+                <i class="fa-solid fa-users"></i> My Students
+            </a>
+            <a href="assessment.html" class="sub-nav-link">
+                <i class="fa-solid fa-file-invoice"></i> Assessment
+            </a>
+            <a href="submitted.html" class="sub-nav-link active">
+                <i class="fa-solid fa-circle-check"></i> Submitted
+            </a>
+            <a href="correction.html" class="nav-item">
+                <i class="fa-solid fa-rotate-left"></i> For Correction
+            </a>
+        </div>
+
+        <main class="submitted-content">
+
+            <div class="content-header">
+                <div class="header-left">
                     <h2>Submission History</h2>
-                    <p>Track students forwarded to the Assessment Office.</p>
+                    <p style="margin:0;font-size:0.85rem;color:#777;">All students forwarded to the Assessment Office.</p>
                 </div>
-                <div class="search-container">
-                    <input type="text" placeholder="Search name or ID..." class="search-input">
+                <div class="header-right">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Search name or ID…" class="search-input">
+                    </div>
+                    <div class="control-group">
+                        <span class="label">Section:</span>
+                        <select class="section-select" id="sectionFilter">
+                            <option value="">All</option>
+                            <option value="CS-2A">CS-2A</option>
+                            <option value="CS-3B">CS-3B</option>
+                            <option value="CS-4A">CS-4A</option>
+                        </select>
+                    </div>
                 </div>
-            </header>
+            </div>
 
-            <section class="submitted-table-container">
+            <div class="stats-strip">
+                <div class="strip-item">
+                    <span class="strip-val" id="statTotal">—</span>
+                    <span class="strip-label">Total Submitted</span>
+                </div>
+                <div class="strip-item">
+                    <span class="strip-val" id="statRegular">—</span>
+                    <span class="strip-label">Regular</span>
+                </div>
+                <div class="strip-item">
+                    <span class="strip-val" id="statIrregular">—</span>
+                    <span class="strip-label">Irregular / Overloaded</span>
+                </div>
+                <div class="strip-item">
+                    <span class="strip-val" id="statRecalled">—</span>
+                    <span class="strip-label">Recalled</span>
+                </div>
+            </div>
+
+            <section class="table-wrapper">
                 <table class="history-table">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Student Name</th>
                             <th>ID Number</th>
-                            <th>Date Submitted</th>
+                            <th>Section</th>
+                            <th>Year</th>
+                            <th>Type</th>
                             <th>Total Units</th>
+                            <th>Date Submitted</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Maria Santos</td>
-                            <td>2024-001235</td>
-                            <td>March 8, 2026</td>
-                            <td>25.00</td>
-                            <td>
-                                <button class="btn-recall">↺ Recall</button>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody id="tableBody"></tbody>
                 </table>
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    <i class="fas fa-inbox"></i>
+                    <p>No submitted records found.</p>
+                </div>
             </section>
+
         </main>
     </div>
+
+    <!-- RECALL MODAL -->
+    <div class="modal-overlay" id="recallModal">
+        <div class="modal-card recall-modal-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-undo" style="color:#d32f2f;margin-right:6px;"></i>Recall Student</h3>
+                <button class="close-btn" id="closeRecallModal">&times;</button>
+            </div>
+            <div class="modal-body recall-body" style="padding-top:6px;">
+                <p>Are you sure you want to recall <strong id="recallStudentName"></strong> from the Assessment Office?</p>
+                <p class="recall-note">This will move the student back to <em>Pending</em> status in your dashboard.</p>
+            </div>
+            <div class="recall-actions">
+                <button class="btn btn-outline" id="cancelRecall" style="flex:0 0 auto;padding:9px 20px;">Cancel</button>
+                <button class="btn-recall-confirm" id="confirmRecall">
+                    <i class="fas fa-undo"></i> Confirm Recall
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="submitted.js"></script>
 </body>
 </html>

@@ -24,35 +24,37 @@
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
     flex-wrap: wrap;
 }
 
 .profile-avatar {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    background-color: var(--crimson, crimson);
+    background-color: var(--crimson, #6b1218);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+    box-shadow: 0 3px 10px rgba(107,18,24,.22);
+    border: 3px solid #fff;
+    outline: 2px solid rgba(107,18,24,.12);
 }
 
 .profile-name {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 700;
     color: #111;
     margin-bottom: 4px;
 }
 
 .profile-sub {
-    font-size: 14px;
-    color: #777;
+    font-size: 13.5px;
+    color: #888;
     margin-bottom: 8px;
 }
 
@@ -66,35 +68,37 @@
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 14px;
 }
 
 .profile-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 14px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    border-left: 3px solid var(--crimson, crimson);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 14px 16px;
+    background: #fafafa;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+    border-left: 3px solid rgba(107,18,24,.55);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-left-color 0.18s;
 }
 
 .profile-field:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,.06);
+    border-left-color: var(--crimson, #6b1218);
 }
 
 .field-label {
     font-size: 11px;
-    color: #888;
+    color: #999;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .field-value {
-    font-size: 15px;
+    font-size: 14.5px;
     color: #111;
     font-weight: 500;
 }
@@ -105,20 +109,21 @@
     align-items: center;
     gap: 6px;
     margin-top: 16px;
-    padding: 9px 18px;
+    padding: 8px 18px;
     background-color: white;
-    color: var(--crimson, crimson);
-    border: 1.5px solid var(--crimson, crimson);
+    color: var(--crimson, #6b1218);
+    border: 1.5px solid rgba(107,18,24,.35);
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s;
 }
 
 .btn-edit:hover {
-    background-color: var(--crimson, crimson);
+    background-color: var(--crimson, #6b1218);
     color: white;
+    border-color: var(--crimson, #6b1218);
 }
 
 /* ─── EDIT FORM INPUTS ───────────────────────────── */
@@ -131,20 +136,23 @@
 .profile-edit input,
 .profile-edit select {
     padding: 10px 12px;
-    border: 1px solid #ddd;
+    border: 1.5px solid #e8e8e8;
     border-radius: 8px;
     font-size: 14px;
+    font-family: inherit;                   /* FIX: prevent browser default font on inputs */
     outline: none;
     width: 100%;
     color: #111;
-    background-color: white;
-    transition: border-color 0.2s;
+    background-color: #fafafa;
+    transition: border-color 0.18s, box-shadow 0.18s;
     box-sizing: border-box;
 }
 
 .profile-edit input:focus,
 .profile-edit select:focus {
-    border-color: var(--crimson, crimson);
+    border-color: rgba(107,18,24,.5);
+    box-shadow: 0 0 0 3px rgba(107,18,24,.07);
+    background-color: #fff;
 }
 
 /* ─── EDIT ACTIONS ───────────────────────────────── */
@@ -160,17 +168,22 @@
     align-items: center;
     gap: 6px;
     padding: 9px 20px;
-    background-color: var(--crimson, crimson);
+    border: none;                           /* FIX: remove default browser button border */
+    background-color: var(--crimson, #6b1218);
     color: white;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13.5px;
+    font-family: inherit;                   /* FIX: prevent browser default font on button */
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(107,18,24,.22);
 }
 
 .btn-save:hover {
-    background-color: darkred;
+    opacity: 0.88;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(107,18,24,.28);
 }
 
 /* ─── CANCEL BUTTON ──────────────────────────────── */
@@ -179,18 +192,18 @@
     align-items: center;
     padding: 9px 20px;
     background-color: white;
-    color: #555;
-    border: 1.5px solid #ddd;
+    color: #666;
+    border: 1.5px solid #e0e0e0;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: background-color 0.18s, border-color 0.18s;
 }
 
 .btn-cancel:hover {
-    background-color: #f5f5f5;
-    border-color: #bbb;
+    background-color: #f7f7f7;
+    border-color: #c8c8c8;
 }
 
 /* ─── SUBJECT TYPE BADGE ─────────────────────────── */
@@ -205,15 +218,15 @@
 }
 
 .subject-type.major {
-    background-color: #fff0f0;
-    color: var(--crimson, crimson);
-    border: 1px solid rgba(220, 20, 60, 0.2);
+    background-color: #fdf0f1;
+    color: var(--crimson, #6b1218);
+    border: 1px solid rgba(107,18,24,.15);
 }
 
 .subject-type.minor {
     background-color: #f0f4ff;
     color: #3a5bd9;
-    border: 1px solid rgba(58, 91, 217, 0.2);
+    border: 1px solid rgba(58,91,217,.15);
 }
 
 /* ─── LEC / LAB TAG ──────────────────────────────── */
@@ -239,13 +252,13 @@
 
 /* ─── TOTAL ROW ──────────────────────────────────── */
 .total-row {
-    background-color: #fff5f5;
-    border-top: 2px solid var(--crimson, crimson) !important;
+    background-color: #fdf8f8;
+    border-top: 2px solid rgba(107,18,24,.20) !important;
 }
 
 .total-row td {
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14.5px;
     color: #111;
 }
 
@@ -256,13 +269,13 @@
     }
 
     .profile-name {
-        font-size: 20px;
+        font-size: 19px;
     }
 
     .profile-avatar {
-        width: 70px;
-        height: 70px;
-        font-size: 24px;
+        width: 64px;
+        height: 64px;
+        font-size: 21px;
     }
 }
 
@@ -271,7 +284,7 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 16px;
+        gap: 14px;
     }
 
     .profile-meta {
@@ -280,35 +293,35 @@
 
     .profile-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 10px;
     }
 
     .profile-name {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .profile-sub {
-        font-size: 13px;
+        font-size: 12.5px;
     }
 
     .field-value {
-        font-size: 14px;
+        font-size: 13.5px;
     }
 
     .total-row td {
-        font-size: 14px;
+        font-size: 13.5px;
     }
 }
 
 @media (max-width: 480px) {
     .profile-avatar {
-        width: 64px;
-        height: 64px;
-        font-size: 22px;
+        width: 58px;
+        height: 58px;
+        font-size: 19px;
     }
 
     .profile-name {
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .profile-sub {
@@ -321,7 +334,7 @@
     }
 
     .profile-field {
-        padding: 12px;
+        padding: 12px 14px;
     }
 
     .field-label {

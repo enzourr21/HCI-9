@@ -1,260 +1,276 @@
-/* ─── LOGIN WRAPPER ──────────────────────────────── */
-.login-wrapper {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f3f3f3;
-    padding: 20px;
-    box-sizing: border-box;
-}
+.page-hero {
+            min-height: calc(100vh - var(--nav-h));
+            background: url('../picture/wmsu-campus.png') center/cover no-repeat;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            padding: 60px 24px;
+        }
 
-/* ─── LOGIN CARD ─────────────────────────────────── */
-.login-card {
-    background: white;
-    width: 100%;
-    max-width: 420px;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    text-align: center;
-}
+        .page-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                110deg,
+                rgba(107,18,24,.90) 0%,
+                rgba(107,18,24,.82) 45%,
+                rgba(26,26,26,.70) 100%
+            );
+        }
 
-.login-card h1 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 6px;
-}
+        /* ─── INNER LAYOUT ─── */
+        .page-inner {
+            position: relative; z-index: 1;
+            max-width: 1000px; width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 56px; align-items: center;
+        }
 
-/* ─── SUBTITLE ───────────────────────────────────── */
-.subtitle {
-    color: gray;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
+        /* ─── LEFT: Hero text ─── */
+        .hero-left {
+            display: flex; flex-direction: column; gap: 20px;
+            animation: lp-fadeup .7s ease both;
+        }
 
-/* ─── ROLE SWITCH ────────────────────────────────── */
-.role-switch {
-    display: flex;
-    background: #eaeaea;
-    border-radius: 10px;
-    padding: 4px;
-    margin-bottom: 25px;
-}
+        .lp-badge {
+            display: inline-block;
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.25);
+            color: var(--gold-lt);
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase;
+            padding: 5px 16px; border-radius: 20px;
+            width: fit-content;
+        }
 
-.role-switch label {
-    flex: 1;
-    padding: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 14px;
-    color: #333;
-    transition: background 0.2s, color 0.2s;
-}
+        .hero-h1 {
+            font-size: clamp(32px, 4.5vw, 52px);
+            font-weight: 800; line-height: 1.1;
+            color: #fff; letter-spacing: -.5px;
+        }
+        .hero-h1 em { font-style: italic; color: var(--gold-lt); }
 
-/* ─── ACTIVE TAB ─────────────────────────────────── */
-#tab-student:checked ~ .forms #studentForm,
-#tab-admin:checked ~ .forms #adminForm {
-    display: block;
-}
+        .hero-desc {
+            font-size: 15px;
+            color: rgba(255,255,255,.70);
+            line-height: 1.75; max-width: 400px;
+        }
 
-#tab-student:checked ~ .role-switch label[for="tab-student"],
-#tab-admin:checked ~ .role-switch label[for="tab-admin"] {
-    background: var(--crimson, crimson);
-    color: white;
-}
+        /* Step pills */
+        .step-list {
+            list-style: none;
+            display: flex; flex-direction: column; gap: 10px;
+            margin-top: 6px;
+        }
+        .step-list li {
+            display: flex; align-items: flex-start; gap: 12px;
+        }
+        .step-num {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: rgba(255,255,255,.1);
+            border: 1.5px solid rgba(255,255,255,.25);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: var(--gold-lt);
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .step-list li div strong {
+            display: block; font-size: 13px; font-weight: 600; color: #fff;
+        }
+        .step-list li div span {
+            font-size: 12px; color: rgba(255,255,255,.5);
+        }
 
-/* ─── FORMS ──────────────────────────────────────── */
-.forms form {
-    display: none;
-    text-align: left;
-}
+        /* ─── RIGHT: Auth Card ─── */
+        .hero-right { animation: lp-fadeup .7s .2s ease both; }
 
-.forms form label {
-    font-size: 14px;
-    margin-top: 10px;
-    display: block;
-    font-weight: 600;
-    color: #333;
-}
+        .lp-auth-card {
+            background: rgba(255,255,255,.97);
+            border-radius: 18px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.3);
+            overflow: hidden;
+        }
 
-.forms form input,
-.forms form select {
-    width: 100%;
-    padding: 11px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-}
+        /* Card top bar */
+        .auth-card-top {
+            background: var(--cr-deep);
+            padding: 22px 28px 20px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .auth-card-top .card-emoji { font-size: 22px; margin-bottom: 4px; }
+        .auth-card-top h2 {
+            font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 2px;
+        }
+        .auth-card-top p { font-size: 13px; color: rgba(255,255,255,.6); }
 
-.forms form input:focus,
-.forms form select:focus {
-    border-color: var(--crimson, crimson);
-}
+        /* Card body */
+        .auth-card-body { padding: 26px 28px 28px; }
 
-/* ─── PASSWORD BOX ───────────────────────────────── */
-.password-box {
-    position: relative;
-}
+        .lp-field { margin-bottom: 16px; }
+        .lp-field label {
+            display: block; font-size: 12px; font-weight: 600;
+            color: #555; margin-bottom: 5px; letter-spacing: .3px;
+        }
+        .lp-field input,
+        .lp-field select {
+            width: 100%; padding: 11px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px; font-size: 14px;
+            color: var(--text); font-family: inherit;
+            transition: border-color .2s, box-shadow .2s;
+            background: #fafafa;
+            outline: none;
+            appearance: none;
+        }
+        .lp-field input:focus,
+        .lp-field select:focus {
+            border-color: var(--cr);
+            box-shadow: 0 0 0 3px rgba(192,25,43,.1);
+            background: #fff;
+        }
+        .lp-field .select-wrap { position: relative; }
+        .lp-field .select-wrap::after {
+            content: '›';
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            color: var(--muted); font-size: 16px;
+            pointer-events: none;
+        }
 
-/* ─── OPTIONS ────────────────────────────────────── */
-.options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-    font-size: 13px;
-    flex-wrap: wrap;
-    gap: 8px;
-}
+        .lp-field-hint {
+            font-size: 11.5px; color: #bbb; margin-top: 4px;
+        }
 
-.options label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 400 !important;
-    margin-top: 0 !important;
-    cursor: pointer;
-}
+        /* Divider */
+        .auth-divider {
+            display: flex; align-items: center; gap: 12px;
+            margin: 4px 0 16px; color: #ccc; font-size: 12px;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: ''; flex: 1; height: 1px; background: #eee;
+        }
 
-.options input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-    accent-color: var(--crimson, crimson);
-}
+        /* Sign-in link */
+        .auth-signin {
+            text-align: center; font-size: 13px;
+            color: var(--muted); margin-bottom: 18px;
+        }
+        .auth-signin a {
+            color: var(--cr); font-weight: 600; text-decoration: none;
+            transition: color .2s;
+        }
+        .auth-signin a:hover { color: var(--cr-dk); text-decoration: underline; }
 
-.options a {
-    color: var(--crimson, crimson);
-}
+        /* Submit button */
+        .lp-btn-full {
+            display: block; width: 100%; padding: 13px;
+            background: var(--cr); color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 15px; font-weight: 700;
+            text-align: center; text-decoration: none;
+            cursor: pointer; font-family: inherit;
+            transition: background .2s, transform .15s, box-shadow .2s;
+        }
+        .lp-btn-full:hover {
+            background: var(--cr-dk);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(192,25,43,.3);
+        }
 
-.options a:hover {
-    color: var(--crimson-dark, darkred);
-    text-decoration: underline;
-}
+        /* Alert */
+        .lp-alert {
+            margin-top: 14px; padding: 10px 14px;
+            background: #fef2f2; color: #991b1b;
+            border: 1px solid #fecaca; border-radius: 8px;
+            font-size: 13px; display: none;
+        }
 
-/* ─── ROLE DROPDOWN ──────────────────────────────── */
-.role-dropdown {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0 20px 0;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-family: inherit;
-    background-color: white;
-    cursor: pointer;
-    font-size: 14px;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-}
+          /* ── Role tab switch ── */
+        .role-switch {
+            display: flex;
+            gap: 0;
+            margin-bottom: 18px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .role-switch label {
+            flex: 1;
+            padding: 9px 0;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            background: #fafafa;
+            transition: background .2s, color .2s;
+            user-select: none;
+        }
+        #tab-student:checked ~ .lp-auth-card .role-switch label[for="tab-student"],
+        #tab-admin:checked   ~ .lp-auth-card .role-switch label[for="tab-admin"] {
+            background: var(--cr, #c0192b);
+            color: #fff;
+        }
 
-.role-dropdown:focus {
-    border-color: var(--crimson, crimson);
-    outline: none;
-}
+        /* Hide/show forms via sibling selector trick */
+        #tab-student:checked ~ .lp-auth-card #studentForm { display: block; }
+        #tab-student:checked ~ .lp-auth-card #adminForm   { display: none;  }
+        #tab-admin:checked   ~ .lp-auth-card #studentForm { display: none;  }
+        #tab-admin:checked   ~ .lp-auth-card #adminForm   { display: block; }
 
-/* ─── LOGIN BUTTON ───────────────────────────────── */
-.login-btn {
-    width: 100%;
-    margin-top: 20px;
-    padding: 13px;
-    border: none;
-    border-radius: 10px;
-    background: var(--crimson, crimson);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-    display: block;
-    text-align: center;
-}
+        /* Move radio inputs just before the card so sibling selector works */
+        .radio-anchor { display: none; }
 
-.login-btn:hover {
-    background: var(--crimson-dark, darkred);
-    transform: translateY(-2px);
-}
+        /* Override: put radios outside card for sibling trick */
+        .tab-group { position: relative; }
+        .tab-group input[type="radio"] { display: none; }
 
-/* ─── REGISTER LINK ──────────────────────────────── */
-.register {
-    margin-top: 20px;
-    font-size: 13px;
-    text-align: center;
-}
+        /* Active tab highlight using JS instead (simpler with nested structure) */
+        .role-switch label.active {
+            background: #c0192b;
+            color: #fff;
+        }
 
-.register a {
-    color: var(--crimson, crimson);
-    font-weight: 600;
-}
+        /* options row (remember me + forgot) */
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #666;
+        }
+        .options label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .options .forgot {
+            color: var(--cr, #c0192b);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .options .forgot:hover { text-decoration: underline; }
 
-.register a:hover {
-    color: var(--crimson-dark, darkred);
-    text-decoration: underline;
-}
+        /* password wrapper */
+        .password-box input { width: 100%; }
 
-/* ─── RESPONSIVE ─────────────────────────────────── */
-@media (max-width: 480px) {
-    .login-wrapper {
-        align-items: flex-start;
-        padding: 30px 16px;
-    }
+        /* ─── ANIMATIONS ─── */
+        @keyframes lp-fadeup {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    .login-card {
-        padding: 28px 20px;
-        border-radius: 12px;
-    }
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 860px) {
+            .page-inner {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .hero-left { text-align: center; }
+            .hero-left .lp-badge { margin: 0 auto; }
+            .hero-desc { max-width: 100%; }
+            .step-list { display: none; }
+        }
 
-    .login-card h1 {
-        font-size: 22px;
-    }
-
-    .subtitle {
-        font-size: 13px;
-        margin-bottom: 18px;
-    }
-
-    .role-switch label {
-        padding: 8px 6px;
-        font-size: 13px;
-    }
-
-    .forms form input,
-    .forms form select {
-        padding: 10px;
-        font-size: 13px;
-    }
-
-    .login-btn {
-        padding: 12px;
-        font-size: 15px;
-    }
-
-    .options {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 360px) {
-    .login-card {
-        padding: 22px 14px;
-    }
-
-    .login-card h1 {
-        font-size: 20px;
-    }
-
-    .role-switch {
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .role-switch label {
-        width: 100%;
-    }
-}
+        @media (max-width: 480px) {
+            .lp-nav { padding: 0 16px; }
+            .page-hero { padding: 40px 16px; }
+            .auth-card-body { padding: 20px; }
+            .auth-card-top { padding: 18px 20px 16px; }
+        }
