@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMSU-Ease | Admin Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="landingPage.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ═══════════════════════════════════════════
+           ADMIN-SPECIFIC OVERRIDES & EXTENSIONS
+           (uses only CSS vars already in style.css / landingPage.css)
+        ═══════════════════════════════════════════ */
+
+        /* Admin hero — darker, more authoritative */
+        .adm-hero {
+            min-height: calc(100vh - var(--nav-h));
+            background: url('/picture/wmsu-campus.png') center/cover no-repeat;
+            position: relative;
+            display: flex; align-items: center;
+        }
+        .adm-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                115deg,
+                rgba(26,6,9,.96) 0%,
+                rgba(107,18,24,.88) 50%,
+                rgba(26,18,6,.82) 100%
+            );
+        }
+
+        .adm-hero-inner {
+            position: relative; z-index: 1;
+            max-width: 1100px; margin: 0 auto;
+            width: 100%; padding: 64px 40px;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 60px; align-items: center;
+        }
+
+        /* Left */
+        .adm-hero-left { display: flex; flex-direction: column; gap: 24px; }
+
+        .adm-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(201,151,28,.15);
+            border: 1px solid rgba(201,151,28,.35);
+            color: var(--gold-lt);
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 2.5px; text-transform: uppercase;
+            padding: 6px 16px; border-radius: 20px;
+            width: fit-content;
+            animation: lp-fadeup .55s ease both;
+        }
+        .adm-badge-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--gold-lt);
+            animation: lp-pulse 2s infinite;
+        }
+
+        .adm-h1 {
+            font-size: clamp(34px, 5vw, 58px);
+            font-weight: 800; line-height: 1.08;
+            color: #fff; letter-spacing: -.5px;
+            animation: lp-fadeup .65s .08s ease both;
+        }
+        .adm-h1 em { font-style: normal; color: var(--gold-lt); }
+        .adm-h1 span { display: block; font-size: .55em; font-weight: 400; color: rgba(255,255,255,.45); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 6px; font-style: normal; }
+
+        .adm-hero-desc {
+            font-size: 15.5px; color: rgba(255,255,255,.62);
+            line-height: 1.8; max-width: 430px;
+            animation: lp-fadeup .65s .16s ease both;
+        }
+
+        /* Role chips */
+        .adm-roles {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            animation: lp-fadeup .65s .24s ease both;
+        }
+        .adm-role-chip {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.15);
+            color: rgba(255,255,255,.75);
+            font-size: 12px; font-weight: 500;
+            padding: 5px 13px; border-radius: 20px;
+            transition: background .2s, border-color .2s;
+        }
+        .adm-role-chip:hover {
+            background: rgba(201,151,28,.14);
+            border-color: rgba(201,151,28,.3);
+            color: var(--gold-lt);
+        }
+        .adm-role-chip-icon { font-size: 13px; }
+
+        /* Stats strip */
+        .adm-stats {
+            display: flex; gap: 0;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 12px; overflow: hidden;
+            width: fit-content;
+            animation: lp-fadeup .65s .3s ease both;
+        }
+        .adm-stat {
+            display: flex; flex-direction: column;
+            align-items: center; padding: 14px 22px; gap: 2px;
+            border-right: 1px solid rgba(255,255,255,.08);
+        }
+        .adm-stat:last-child { border-right: none; }
+        .adm-stat-val { font-size: 22px; font-weight: 800; color: var(--gold-lt); line-height: 1; }
+        .adm-stat-lbl { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+        /* Right — Login card */
+        .adm-hero-right { animation: lp-fadeup .65s .38s ease both; }
+
+        .adm-login-card {
+            background: rgba(255,255,255,.97);
+            border-radius: 20px;
+            box-shadow: 0 24px 70px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.08);
+            overflow: hidden;
+        }
+
+        .adm-login-banner {
+            background: var(--cr-deep);
+            padding: 20px 28px;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .adm-login-banner-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: rgba(255,255,255,.12);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; flex-shrink: 0;
+        }
+        .adm-login-banner h3 { font-size: 17px; font-weight: 700; color: #fff; }
+        .adm-login-banner p  { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; }
+
+        .adm-login-body { padding: 26px 28px 30px; }
+
+        .adm-notice {
+            display: flex; align-items: flex-start; gap: 10px;
+            background: rgba(201,151,28,.08);
+            border: 1px solid rgba(201,151,28,.22);
+            border-radius: 8px; padding: 11px 14px;
+            margin-bottom: 20px;
+        }
+        .adm-notice-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+        .adm-notice p { font-size: 12.5px; color: #7b5a00; line-height: 1.55; }
+
+        /* Role selector */
+        .adm-role-select-wrap { margin-bottom: 16px; }
+        .adm-role-select-wrap label {
+            display: block; font-size: 11.5px; font-weight: 600;
+            color: #555; margin-bottom: 6px; letter-spacing: .3px;
+        }
+        .adm-role-select-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .adm-role-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 12px;
+            border: 1.5px solid #e8e8e8;
+            border-radius: 9px;
+            background: #fafafa;
+            cursor: pointer; transition: all .18s;
+            font-family: inherit;
+        }
+        .adm-role-btn:hover {
+            border-color: var(--cr);
+            background: rgba(192,25,43,.03);
+        }
+        .adm-role-btn.selected {
+            border-color: var(--cr);
+            background: rgba(192,25,43,.06);
+            box-shadow: 0 0 0 3px rgba(192,25,43,.08);
+        }
+        .adm-role-btn-icon { font-size: 17px; flex-shrink: 0; }
+        .adm-role-btn-text { display: flex; flex-direction: column; text-align: left; }
+        .adm-role-btn-text strong { font-size: 12.5px; font-weight: 600; color: var(--text); line-height: 1.2; }
+        .adm-role-btn-text span { font-size: 10.5px; color: #999; }
+        .adm-role-btn.selected .adm-role-btn-text strong { color: var(--cr); }
+
+        .adm-login-cta {
+            display: block; width: 100%; padding: 13px;
+            background: var(--cr-deep); color: #fff;
+            border: none; border-radius: 9px;
+            font-size: 15px; font-weight: 700;
+            text-align: center; text-decoration: none;
+            cursor: pointer; margin-top: 18px;
+            transition: background .2s, transform .15s;
+            letter-spacing: .3px;
+            font-family: inherit;
+        }
+        .adm-login-cta:hover { background: #4c0d11; transform: translateY(-1px); }
+
+        .adm-login-footer {
+            border-top: 1px solid #f0f0f0; padding: 13px 28px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .adm-login-footer p { font-size: 12px; color: #bbb; }
+        .adm-login-footer a { font-size: 12px; color: var(--cr); font-weight: 600; text-decoration: none; }
+        .adm-login-footer a:hover { text-decoration: underline; }
+
+        /* ═══════════════════════════════════════════
+           SECTION: ROLES & ACCESS
+        ═══════════════════════════════════════════ */
+        .adm-roles-section { background: var(--cream); }
+
+        .adm-roles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .adm-role-card {
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 22px 20px;
+            display: flex; flex-direction: column; gap: 10px;
+            transition: transform .22s, box-shadow .22s, border-color .22s;
+            position: relative; overflow: hidden;
+        }
+        .adm-role-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cr), var(--gold));
+            opacity: 0; transition: opacity .22s;
+        }
+        .adm-role-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(192,25,43,.13);
+            border-color: rgba(192,25,43,.25);
+        }
+        .adm-role-card:hover::before { opacity: 1; }
+
+        .adm-role-card-ico {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: rgba(107,18,24,.07);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+        }
+        .adm-role-card h4 { font-size: 15px; font-weight: 700; color: var(--cr-deep); }
+        .adm-role-card p  { font-size: 12.5px; color: #888; line-height: 1.55; flex: 1; }
+
+        .adm-access-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+        .adm-access-tag {
+            background: rgba(192,25,43,.06);
+            border: 1px solid rgba(192,25,43,.15);
+            color: var(--cr-deep);
+            font-size: 10.5px; font-weight: 600;
+            padding: 3px 9px; border-radius: 20px;
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTION: ANNOUNCEMENTS
+        ═══════════════════════════════════════════ */
+        .adm-announcements { background: #fff; }
+
+        .adm-ann-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+
+        .adm-ann-list { display: flex; flex-direction: column; gap: 14px; }
+
+        .adm-ann-item {
+            display: flex; gap: 16px; align-items: flex-start;
+            padding: 16px 18px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            border-left: 4px solid var(--cr);
+            transition: transform .2s, box-shadow .2s;
+        }
+        .adm-ann-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 18px rgba(192,25,43,.1);
+        }
+        .adm-ann-item--gold { border-left-color: var(--gold); }
+        .adm-ann-item--green { border-left-color: #22c55e; }
+        .adm-ann-item--gray { border-left-color: #aaa; }
+
+        .adm-ann-ico { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+        .adm-ann-content { flex: 1; }
+        .adm-ann-meta {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 5px;
+        }
+        .adm-ann-tag {
+            font-size: 10px; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase; padding: 2px 8px;
+            border-radius: 20px;
+        }
+        .adm-ann-tag--urgent { background: rgba(192,25,43,.1); color: var(--cr); }
+        .adm-ann-tag--info   { background: rgba(201,151,28,.12); color: #7b5a00; }
+        .adm-ann-tag--done   { background: rgba(34,197,94,.1); color: #16803c; }
+        .adm-ann-tag--system { background: rgba(0,0,0,.06); color: #555; }
+        .adm-ann-date { font-size: 11px; color: #aaa; }
+        .adm-ann-content h5 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .adm-ann-content p  { font-size: 12.5px; color: #777; line-height: 1.55; }
+
+        /* Sidebar: quick links */
+        .adm-sidebar-box {
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            height: fit-content;
+        }
+        .adm-sidebar-box h4 {
+            font-size: 13px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--cr-deep); margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gold);
+        }
+        .adm-quick-links { display: flex; flex-direction: column; gap: 6px; }
+        .adm-quick-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 8px;
+            background: #fff;
+            border: 1px solid #eee;
+            text-decoration: none; color: var(--text);
+            font-size: 13px; font-weight: 500;
+            transition: all .18s;
+        }
+        .adm-quick-link:hover {
+            border-color: var(--cr);
+            background: rgba(192,25,43,.03);
+            color: var(--cr);
+            transform: translateX(3px);
+        }
+        .adm-quick-link-icon { font-size: 16px; flex-shrink: 0; }
+        .adm-quick-link span { flex: 1; }
+        .adm-quick-link-arrow { color: #ccc; font-size: 14px; }
+
+        /* ═══════════════════════════════════════════
+           SECTION: DASHBOARD PREVIEW
+        ═══════════════════════════════════════════ */
+        .adm-dashboard { background: var(--cr-deep); }
+
+        .adm-dash-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .adm-dash-stat {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 14px; padding: 20px 18px;
+            display: flex; flex-direction: column; gap: 8px;
+            transition: background .2s, transform .2s;
+        }
+        .adm-dash-stat:hover {
+            background: rgba(255,255,255,.11);
+            transform: translateY(-2px);
+        }
+        .adm-dash-stat-top { display: flex; align-items: center; justify-content: space-between; }
+        .adm-dash-stat-ico { font-size: 22px; }
+        .adm-dash-stat-change {
+            font-size: 11px; font-weight: 600;
+            padding: 2px 8px; border-radius: 20px;
+        }
+        .adm-dash-stat-change--up   { background: rgba(74,222,128,.15); color: #7edd9a; }
+        .adm-dash-stat-change--down { background: rgba(248,113,113,.15); color: #fca5a5; }
+        .adm-dash-stat-val { font-size: 30px; font-weight: 800; color: #fff; line-height: 1; }
+        .adm-dash-stat-lbl { font-size: 12px; color: rgba(255,255,255,.5); }
+
+        .adm-dash-progress-wrap {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 14px; padding: 22px 24px;
+        }
+        .adm-dash-progress-hd {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 18px;
+        }
+        .adm-dash-progress-hd h4 { font-size: 14px; font-weight: 700; color: #fff; }
+        .adm-dash-progress-hd span { font-size: 12px; color: rgba(255,255,255,.4); }
+
+        .adm-progress-row { display: flex; flex-direction: column; gap: 12px; }
+        .adm-prog-item { display: flex; flex-direction: column; gap: 5px; }
+        .adm-prog-meta { display: flex; justify-content: space-between; }
+        .adm-prog-meta span:first-child { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.75); }
+        .adm-prog-meta span:last-child  { font-size: 12px; color: rgba(255,255,255,.4); }
+        .adm-prog-bar-bg {
+            height: 6px; background: rgba(255,255,255,.1);
+            border-radius: 4px; overflow: hidden;
+        }
+        .adm-prog-bar {
+            height: 100%; border-radius: 4px;
+            background: linear-gradient(90deg, var(--cr), var(--gold));
+            transition: width 1s ease;
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTION: WORKFLOW PIPELINE
+        ═══════════════════════════════════════════ */
+        .adm-workflow { background: #fff; }
+
+        .adm-flow-steps {
+            display: flex; align-items: flex-start;
+            gap: 0; position: relative;
+        }
+        .adm-flow-steps::before {
+            content: '';
+            position: absolute; top: 32px; left: 48px; right: 48px;
+            height: 2px; background: var(--border);
+            z-index: 0;
+        }
+
+        .adm-flow-step {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; text-align: center; gap: 12px;
+            position: relative; z-index: 1; padding: 0 12px;
+        }
+        .adm-flow-step-ico {
+            width: 64px; height: 64px; border-radius: 16px;
+            background: var(--cream); border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px;
+            transition: all .2s;
+        }
+        .adm-flow-step:hover .adm-flow-step-ico {
+            background: var(--cr-deep); border-color: var(--cr-deep);
+            transform: scale(1.06);
+        }
+        .adm-flow-step-num {
+            position: absolute; top: -6px; right: calc(50% - 40px);
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--cr); color: #fff;
+            font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .adm-flow-step h5 { font-size: 13.5px; font-weight: 700; color: var(--text); }
+        .adm-flow-step p  { font-size: 12px; color: #999; line-height: 1.5; }
+        .adm-flow-step-owner {
+            font-size: 10.5px; font-weight: 600;
+            color: var(--cr); background: rgba(192,25,43,.07);
+            padding: 3px 10px; border-radius: 20px;
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTION: ADMIN RESPONSIBILITIES
+        ═══════════════════════════════════════════ */
+        .adm-responsibilities { background: var(--cream); }
+
+        .adm-resp-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+        }
+        .adm-resp-block {
+            background: #fff; border-radius: 12px;
+            border: 1px solid var(--border); padding: 22px 24px;
+        }
+        .adm-resp-block-hd {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 14px; padding-bottom: 12px;
+            border-bottom: 2px solid var(--gold);
+        }
+        .adm-resp-ico { font-size: 24px; }
+        .adm-resp-block-hd h4 { font-size: 15px; font-weight: 700; color: var(--cr-deep); }
+        .adm-resp-block-hd span { font-size: 11px; color: #aaa; font-weight: 500; margin-top: 1px; display: block; }
+
+        .adm-resp-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+        .adm-resp-list li {
+            font-size: 13px; color: #555;
+            padding: 5px 0 5px 16px; position: relative;
+            border-bottom: 1px solid rgba(0,0,0,.04);
+            line-height: 1.45;
+        }
+        .adm-resp-list li:last-child { border-bottom: none; }
+        .adm-resp-list li::before { content: '—'; color: var(--gold); font-weight: 700; position: absolute; left: 0; }
+
+        /* ═══════════════════════════════════════════
+           SECTION: SECURITY NOTICE
+        ═══════════════════════════════════════════ */
+        .adm-security {
+            background: #0d0608;
+            padding: 50px 40px;
+        }
+        .adm-security-inner {
+            max-width: 1000px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+        }
+        .adm-sec-item {
+            display: flex; flex-direction: column; gap: 10px;
+            padding: 22px; background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 12px;
+            transition: background .2s;
+        }
+        .adm-sec-item:hover { background: rgba(255,255,255,.07); }
+        .adm-sec-ico { font-size: 24px; }
+        .adm-sec-item h4 { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.85); }
+        .adm-sec-item p  { font-size: 12.5px; color: rgba(255,255,255,.4); line-height: 1.6; }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .adm-hero-inner { grid-template-columns: 1fr; gap: 36px; padding: 50px 24px; }
+            .adm-roles-grid { grid-template-columns: 1fr 1fr; }
+            .adm-ann-grid   { grid-template-columns: 1fr; }
+            .adm-dash-grid  { grid-template-columns: 1fr 1fr; }
+            .adm-flow-steps { flex-wrap: wrap; gap: 20px; }
+            .adm-flow-steps::before { display: none; }
+            .adm-resp-grid  { grid-template-columns: 1fr; }
+            .adm-security-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
+            .adm-roles-grid { grid-template-columns: 1fr; }
+            .adm-dash-grid  { grid-template-columns: 1fr 1fr; }
+            .adm-role-select-grid { grid-template-columns: 1fr; }
+            .adm-security-inner { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .adm-hero-inner { padding: 40px 16px; }
+            .adm-dash-grid  { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     ANNOUNCEMENT BAR
+═══════════════════════════════════════════ -->
+<div class="lp-bar lp-bar--upcoming" id="announcementBar">
+    <span class="lp-bar-dot"></span>
+    <span id="announcementText">🔒 Restricted access — This portal is for WMSU administrators only. Unauthorized access is prohibited.</span>
+    <button class="lp-bar-close" id="barClose" aria-label="Close">×</button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════ -->
+<nav class="lp-nav">
+    <a href="login-pages/registrar_login.html" class="lp-nav-brand">
+        <svg class="lp-nav-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+        <span class="lp-nav-name">WMSU-Ease</span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="lp-nav-links">
+        <li><a href="#adm-hero">Home</a></li>
+        <li><a href="#adm-roles-section">Roles</a></li>
+        <li><a href="#adm-announcements">Announcements</a></li>
+        <li><a href="#adm-dashboard">Dashboard</a></li>
+        <li><a href="#adm-workflow">Workflow</a></li>
+        <li><a href="login-pages/adminLogin.html" class="lp-nav-cta">Admin Login</a></li>
+    </ul>
+
+    <!-- Hamburger -->
+    <button class="lp-hamburger" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- Mobile overlay + drawer -->
+<div class="lp-nav-overlay" id="navOverlay"></div>
+<ul id="navMenu">
+    <li><a href="#adm-hero">Home</a></li>
+    <li><a href="#adm-roles-section">Roles</a></li>
+    <li><a href="#adm-announcements">Announcements</a></li>
+    <li><a href="#adm-dashboard">Dashboard</a></li>
+    <li><a href="#adm-workflow">Workflow</a></li>
+    <li><a href="login-pages/adminLogin.html" class="lp-nav-cta">Admin Login →</a></li>
+</ul>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section id="adm-hero" class="adm-hero">
+    <div class="adm-hero-inner">
+
+        <!-- Left -->
+        <div class="adm-hero-left">
+            <div class="adm-badge">
+                <span class="adm-badge-dot"></span>
+                Admin Portal · A.Y. 2025–2026
+            </div>
+
+            <h1 class="adm-h1">
+                <span>WMSU-Ease</span>
+                <em>Administrative</em><br>Control Hub
+            </h1>
+
+            <p class="adm-hero-desc">
+                Centralized enrollment management for WMSU administrators. Monitor enrollment activity, manage student applications, and coordinate across departments — all in one secure portal.
+            </p>
+
+            <div class="adm-roles">
+                <div class="adm-role-chip"><span class="adm-role-chip-icon">👤</span> Adviser</div>
+                <div class="adm-role-chip"><span class="adm-role-chip-icon">🏛️</span> Department Head</div>
+                <div class="adm-role-chip"><span class="adm-role-chip-icon">🎓</span> Department Dean</div>
+                <div class="adm-role-chip"><span class="adm-role-chip-icon">📋</span> Secretary</div>
+                <div class="adm-role-chip"><span class="adm-role-chip-icon">📝</span> Admission Office</div>
+                <div class="adm-role-chip"><span class="adm-role-chip-icon">💰</span> Assessment Office</div>
+                <div class="adm-role-chip"><span class="adm-role-chip-icon">💻</span> MISTO</div>
+            </div>
+
+            <div class="adm-stats">
+                <div class="adm-stat">
+                    <span class="adm-stat-val" id="statEnrolled">—</span>
+                    <span class="adm-stat-lbl">Enrolled</span>
+                </div>
+                <div class="adm-stat">
+                    <span class="adm-stat-val" id="statPending">—</span>
+                    <span class="adm-stat-lbl">Pending</span>
+                </div>
+                <div class="adm-stat">
+                    <span class="adm-stat-val" id="statDepts">12</span>
+                    <span class="adm-stat-lbl">Colleges</span>
+                </div>
+                <div class="adm-stat">
+                    <span class="adm-stat-val" id="statDays">—</span>
+                    <span class="adm-stat-lbl">Days Left</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right — Login Card -->
+        <div class="adm-hero-right">
+            <div class="adm-login-card">
+
+                <div class="adm-login-banner">
+                    <div class="adm-login-banner-icon">🔐</div>
+                    <div>
+                        <h3>Administrator Access</h3>
+                        <p>Authorized personnel only</p>
+                    </div>
+                </div>
+
+                <div class="adm-login-body">
+                    <div class="adm-notice">
+                        <span class="adm-notice-icon">⚠️</span>
+                        <p>Select your role to proceed to the correct login portal. All sessions are logged and monitored.</p>
+                    </div>
+
+                    <div class="adm-role-select-wrap">
+                        <label>Your Administrative Role</label>
+                        <div class="adm-role-select-grid" id="roleGrid">
+                            <button class="adm-role-btn" data-role="adviser" onclick="selectRole(this)">
+                                <span class="adm-role-btn-icon">👤</span>
+                                <div class="adm-role-btn-text">
+                                    <strong>Adviser</strong>
+                                    <span>Student advising</span>
+                                </div>
+                            </button>
+                            <button class="adm-role-btn" data-role="dept-head" onclick="selectRole(this)">
+                                <span class="adm-role-btn-icon">🏛️</span>
+                                <div class="adm-role-btn-text">
+                                    <strong>Dept. Head</strong>
+                                    <span>Department chair</span>
+                                </div>
+                            </button>
+                            <button class="adm-role-btn" data-role="dean" onclick="selectRole(this)">
+                                <span class="adm-role-btn-icon">🎓</span>
+                                <div class="adm-role-btn-text">
+                                    <strong>Dean</strong>
+                                    <span>College dean</span>
+                                </div>
+                            </button>
+                            <button class="adm-role-btn" data-role="secretary" onclick="selectRole(this)">
+                                <span class="adm-role-btn-icon">📋</span>
+                                <div class="adm-role-btn-text">
+                                    <strong>Secretary</strong>
+                                    <span>Admin secretary</span>
+                                </div>
+                            </button>
+                            <button class="adm-role-btn" data-role="admission" onclick="selectRole(this)">
+                                <span class="adm-role-btn-icon">📝</span>
+                                <div class="adm-role-btn-text">
+                                    <strong>Admission</strong>
+                                    <span>Admissions office</span>
+                                </div>
+                            </button>
+                            <button class="adm-role-btn" data-role="assessment" onclick="selectRole(this)">
+                                <span class="adm-role-btn-icon">💰</span>
+                                <div class="adm-role-btn-text">
+                                    <strong>Assessment</strong>
+                                    <span>Fees & assessment</span>
+                                </div>
+                            </button>
+                            <button class="adm-role-btn" data-role="misto" onclick="selectRole(this)" style="grid-column: 1 / -1;">
+                                <span class="adm-role-btn-icon">💻</span>
+                                <div class="adm-role-btn-text">
+                                    <strong>MISTO</strong>
+                                    <span>Management Info. Systems & Tech. Office</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <a href="login-pages/adminLogin.html" id="loginCta" class="adm-login-cta">
+                        Proceed to Login →
+                    </a>
+                </div>
+
+                <div class="adm-login-footer">
+                    <p>🔒 Secured connection</p>
+                    <a href="mailto:ict@wmsu.edu.ph">Need access? Contact ICT</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ROLES & ACCESS
+═══════════════════════════════════════════ -->
+<section id="adm-roles-section" class="lp-section adm-roles-section">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">Administrative Roles</span>
+            <h2 class="lp-h2">Who has portal access?</h2>
+            <p class="lp-sec-sub">Each role has a defined scope of access and responsibilities within the enrollment system.</p>
+        </div>
+
+        <div class="adm-roles-grid">
+            <!-- Adviser -->
+            <div class="adm-role-card">
+                <div class="adm-role-card-ico">👤</div>
+                <h4>Adviser</h4>
+                <p>Guides students in selecting appropriate subjects based on their curriculum, year level, and academic standing.</p>
+                <div class="adm-access-tags">
+                    <span class="adm-access-tag">Student Records</span>
+                    <span class="adm-access-tag">Subject Approval</span>
+                    <span class="adm-access-tag">Load Verification</span>
+                </div>
+            </div>
+
+            <!-- Department Head -->
+            <div class="adm-role-card">
+                <div class="adm-role-card-ico">🏛️</div>
+                <h4>Department Head</h4>
+                <p>Oversees enrollment within a specific department. Approves shiftee applications and manages subject offerings.</p>
+                <div class="adm-access-tags">
+                    <span class="adm-access-tag">Shift Approval</span>
+                    <span class="adm-access-tag">Subject Mgmt.</span>
+                    <span class="adm-access-tag">Dept. Reports</span>
+                </div>
+            </div>
+
+            <!-- Dean -->
+            <div class="adm-role-card">
+                <div class="adm-role-card-ico">🎓</div>
+                <h4>Department Dean</h4>
+                <p>College-level authority. Reviews and approves overloads, special enrollments, and college-wide enrollment status.</p>
+                <div class="adm-access-tags">
+                    <span class="adm-access-tag">Overload Approval</span>
+                    <span class="adm-access-tag">College Overview</span>
+                    <span class="adm-access-tag">Final Approval</span>
+                </div>
+            </div>
+
+            <!-- Secretary -->
+            <div class="adm-role-card">
+                <div class="adm-role-card-ico">📋</div>
+                <h4>Secretary</h4>
+                <p>Handles administrative paperwork, coordinates between offices, and assists in the enrollment documentation process.</p>
+                <div class="adm-access-tags">
+                    <span class="adm-access-tag">Document Processing</span>
+                    <span class="adm-access-tag">COR Handling</span>
+                    <span class="adm-access-tag">Student Queries</span>
+                </div>
+            </div>
+
+            <!-- Admission Office -->
+            <div class="adm-role-card">
+                <div class="adm-role-card-ico">📝</div>
+                <h4>Admission Office</h4>
+                <p>Reviews and processes applications from freshmen, transferees, and shiftees. Manages admission status and results.</p>
+                <div class="adm-access-tags">
+                    <span class="adm-access-tag">Application Review</span>
+                    <span class="adm-access-tag">Admission Results</span>
+                    <span class="adm-access-tag">CET Management</span>
+                </div>
+            </div>
+
+            <!-- Assessment Office -->
+            <div class="adm-role-card">
+                <div class="adm-role-card-ico">💰</div>
+                <h4>Assessment Office</h4>
+                <p>Generates and validates student fee assessments, processes scholarship deductions, and confirms payment clearance.</p>
+                <div class="adm-access-tags">
+                    <span class="adm-access-tag">Fee Assessment</span>
+                    <span class="adm-access-tag">Scholarship Deductions</span>
+                    <span class="adm-access-tag">Payment Confirmation</span>
+                </div>
+            </div>
+
+            <!-- MISTO -->
+            <div class="adm-role-card" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+                <div class="adm-role-card-ico">💻</div>
+                <h4>MISTO</h4>
+                <p>Management Information Systems & Technology Office. Maintains system integrity, manages user accounts, handles technical issues, and ensures data security across all portals.</p>
+                <div class="adm-access-tags">
+                    <span class="adm-access-tag">Full System Access</span>
+                    <span class="adm-access-tag">User Management</span>
+                    <span class="adm-access-tag">System Logs</span>
+                    <span class="adm-access-tag">Data Security</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ANNOUNCEMENTS
+═══════════════════════════════════════════ -->
+<section id="adm-announcements" class="lp-section adm-announcements">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">Admin Announcements</span>
+            <h2 class="lp-h2">Latest updates & notices</h2>
+            <p class="lp-sec-sub">Important communications for all administrative personnel. Check regularly for updates.</p>
+        </div>
+
+        <div class="adm-ann-grid">
+            <!-- Main announcements list -->
+            <div class="adm-ann-list">
+
+                <div class="adm-ann-item">
+                    <div class="adm-ann-ico">🚨</div>
+                    <div class="adm-ann-content">
+                        <div class="adm-ann-meta">
+                            <span class="adm-ann-tag adm-ann-tag--urgent">Urgent</span>
+                            <span class="adm-ann-date">April 29, 2026</span>
+                        </div>
+                        <h5>Enrollment Portal Opens June 2, 2026</h5>
+                        <p>All department advisers and secretaries must ensure that pre-enrolled subjects for continuing students are finalized and approved in the system before May 30, 2026.</p>
+                    </div>
+                </div>
+
+                <div class="adm-ann-item adm-ann-item--gold">
+                    <div class="adm-ann-ico">📊</div>
+                    <div class="adm-ann-content">
+                        <div class="adm-ann-meta">
+                            <span class="adm-ann-tag adm-ann-tag--info">Notice</span>
+                            <span class="adm-ann-date">April 25, 2026</span>
+                        </div>
+                        <h5>CET Results Integration — Action Required</h5>
+                        <p>Admission Office must upload and validate CET results into the system by May 15. Deans will receive automated reports per college. Coordinate with MISTO for bulk uploads.</p>
+                    </div>
+                </div>
+
+                <div class="adm-ann-item adm-ann-item--green">
+                    <div class="adm-ann-ico">✅</div>
+                    <div class="adm-ann-content">
+                        <div class="adm-ann-meta">
+                            <span class="adm-ann-tag adm-ann-tag--done">Completed</span>
+                            <span class="adm-ann-date">April 20, 2026</span>
+                        </div>
+                        <h5>2nd Semester Enrollment — Successfully Closed</h5>
+                        <p>Second semester enrollment has been officially closed. Final enrollment reports are available in the dashboard. Deans and Department Heads may download their college reports.</p>
+                    </div>
+                </div>
+
+                <div class="adm-ann-item adm-ann-item--gray">
+                    <div class="adm-ann-ico">🔧</div>
+                    <div class="adm-ann-content">
+                        <div class="adm-ann-meta">
+                            <span class="adm-ann-tag adm-ann-tag--system">System</span>
+                            <span class="adm-ann-date">April 18, 2026</span>
+                        </div>
+                        <h5>Scheduled System Maintenance — May 1, 2026</h5>
+                        <p>MISTO will conduct scheduled maintenance on May 1, 2026 from 10:00 PM to 2:00 AM. The portal will be temporarily unavailable. Plan accordingly.</p>
+                    </div>
+                </div>
+
+                <div class="adm-ann-item">
+                    <div class="adm-ann-ico">📋</div>
+                    <div class="adm-ann-content">
+                        <div class="adm-ann-meta">
+                            <span class="adm-ann-tag adm-ann-tag--urgent">Reminder</span>
+                            <span class="adm-ann-date">April 15, 2026</span>
+                        </div>
+                        <h5>Scholarship Verification — Assessment Office</h5>
+                        <p>All scholarship-tagged students must be verified with the Office of Student Affairs before enrollment opens. Assessment Office must update scholarship flags by May 28, 2026.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sidebar -->
+            <div>
+                <div class="adm-sidebar-box" style="margin-bottom: 18px;">
+                    <h4>Quick Access</h4>
+                    <div class="adm-quick-links">
+                        <a href="login-pages/adminLogin.html" class="adm-quick-link">
+                            <span class="adm-quick-link-icon">🔐</span>
+                            <span>Admin Login Portal</span>
+                            <span class="adm-quick-link-arrow">›</span>
+                        </a>
+                        <a href="#" class="adm-quick-link">
+                            <span class="adm-quick-link-icon">📊</span>
+                            <span>Enrollment Dashboard</span>
+                            <span class="adm-quick-link-arrow">›</span>
+                        </a>
+                        <a href="#" class="adm-quick-link">
+                            <span class="adm-quick-link-icon">👥</span>
+                            <span>Student Applications</span>
+                            <span class="adm-quick-link-arrow">›</span>
+                        </a>
+                        <a href="#" class="adm-quick-link">
+                            <span class="adm-quick-link-icon">📝</span>
+                            <span>Generate Reports</span>
+                            <span class="adm-quick-link-arrow">›</span>
+                        </a>
+                        <a href="#" class="adm-quick-link">
+                            <span class="adm-quick-link-icon">🔧</span>
+                            <span>System Settings</span>
+                            <span class="adm-quick-link-arrow">›</span>
+                        </a>
+                        <a href="mailto:ict@wmsu.edu.ph" class="adm-quick-link">
+                            <span class="adm-quick-link-icon">🛟</span>
+                            <span>ICT Support</span>
+                            <span class="adm-quick-link-arrow">›</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="adm-sidebar-box">
+                    <h4>Enrollment Period</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                            <span style="color: #777;">Phase</span>
+                            <span style="font-weight: 600; color: var(--cr);" id="adminEnrollPhase">—</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                            <span style="color: #777;">Old Students</span>
+                            <span style="font-weight: 600; color: var(--text);">Jun 2–14</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                            <span style="color: #777;">New Students</span>
+                            <span style="font-weight: 600; color: var(--text);">Jun 16–28</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                            <span style="color: #777;">Late Enrollment</span>
+                            <span style="font-weight: 600; color: var(--text);">Jul 1–5</span>
+                        </div>
+                        <div style="height: 1px; background: #eee;"></div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                            <span style="color: #777;">Classes Begin</span>
+                            <span style="font-weight: 700; color: var(--cr-deep);">Jul 7, 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     DASHBOARD PREVIEW
+═══════════════════════════════════════════ -->
+<section id="adm-dashboard" class="lp-section adm-dashboard">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label lp-label--light">Dashboard Preview</span>
+            <h2 class="lp-h2 lp-h2--light">Real-time enrollment overview</h2>
+            <p class="lp-sec-sub lp-sec-sub--light">Admins get access to live statistics, per-college breakdowns, and enrollment tracking tools.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="adm-dash-grid">
+            <div class="adm-dash-stat">
+                <div class="adm-dash-stat-top">
+                    <span class="adm-dash-stat-ico">👥</span>
+                    <span class="adm-dash-stat-change adm-dash-stat-change--up">+12%</span>
+                </div>
+                <div class="adm-dash-stat-val">4,821</div>
+                <div class="adm-dash-stat-lbl">Total Enrolled (Preview)</div>
+            </div>
+            <div class="adm-dash-stat">
+                <div class="adm-dash-stat-top">
+                    <span class="adm-dash-stat-ico">⏳</span>
+                    <span class="adm-dash-stat-change adm-dash-stat-change--down">−5%</span>
+                </div>
+                <div class="adm-dash-stat-val">312</div>
+                <div class="adm-dash-stat-lbl">Pending Applications</div>
+            </div>
+            <div class="adm-dash-stat">
+                <div class="adm-dash-stat-top">
+                    <span class="adm-dash-stat-ico">✅</span>
+                    <span class="adm-dash-stat-change adm-dash-stat-change--up">+8%</span>
+                </div>
+                <div class="adm-dash-stat-val">1,204</div>
+                <div class="adm-dash-stat-lbl">New Students Admitted</div>
+            </div>
+            <div class="adm-dash-stat">
+                <div class="adm-dash-stat-top">
+                    <span class="adm-dash-stat-ico">🏛️</span>
+                    <span class="adm-dash-stat-change adm-dash-stat-change--up">All Active</span>
+                </div>
+                <div class="adm-dash-stat-val">12</div>
+                <div class="adm-dash-stat-lbl">Colleges / Units</div>
+            </div>
+        </div>
+
+        <!-- Progress by college -->
+        <div class="adm-dash-progress-wrap">
+            <div class="adm-dash-progress-hd">
+                <h4>Enrollment Progress by College (Preview Data)</h4>
+                <span>1st Semester · A.Y. 2025–2026</span>
+            </div>
+            <div class="adm-progress-row">
+                <div class="adm-prog-item">
+                    <div class="adm-prog-meta">
+                        <span>College of Engineering & Technology</span>
+                        <span>78% · 934 / 1,197</span>
+                    </div>
+                    <div class="adm-prog-bar-bg"><div class="adm-prog-bar" style="width: 78%"></div></div>
+                </div>
+                <div class="adm-prog-item">
+                    <div class="adm-prog-meta">
+                        <span>College of Business Administration</span>
+                        <span>65% · 702 / 1,080</span>
+                    </div>
+                    <div class="adm-prog-bar-bg"><div class="adm-prog-bar" style="width: 65%"></div></div>
+                </div>
+                <div class="adm-prog-item">
+                    <div class="adm-prog-meta">
+                        <span>College of Education</span>
+                        <span>82% · 886 / 1,080</span>
+                    </div>
+                    <div class="adm-prog-bar-bg"><div class="adm-prog-bar" style="width: 82%"></div></div>
+                </div>
+                <div class="adm-prog-item">
+                    <div class="adm-prog-meta">
+                        <span>College of Arts & Sciences</span>
+                        <span>59% · 531 / 900</span>
+                    </div>
+                    <div class="adm-prog-bar-bg"><div class="adm-prog-bar" style="width: 59%"></div></div>
+                </div>
+                <div class="adm-prog-item">
+                    <div class="adm-prog-meta">
+                        <span>College of Nursing</span>
+                        <span>91% · 364 / 400</span>
+                    </div>
+                    <div class="adm-prog-bar-bg"><div class="adm-prog-bar" style="width: 91%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     WORKFLOW PIPELINE
+═══════════════════════════════════════════ -->
+<section id="adm-workflow" class="lp-section adm-workflow">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">Admin Workflow</span>
+            <h2 class="lp-h2">How enrollment flows through the offices</h2>
+            <p class="lp-sec-sub">From application to COR release — each admin role plays a critical part in the pipeline.</p>
+        </div>
+
+        <div class="adm-flow-steps">
+            <div class="adm-flow-step">
+                <div class="adm-flow-step-ico">📝</div>
+                <span class="adm-flow-step-num">1</span>
+                <h5>Application Received</h5>
+                <p>Student submits online application with required documents.</p>
+                <span class="adm-flow-step-owner">Admission Office</span>
+            </div>
+            <div class="adm-flow-step">
+                <div class="adm-flow-step-ico">🔍</div>
+                <span class="adm-flow-step-num">2</span>
+                <h5>Document Review</h5>
+                <p>Credentials verified and evaluated for completeness.</p>
+                <span class="adm-flow-step-owner">Admission Office</span>
+            </div>
+            <div class="adm-flow-step">
+                <div class="adm-flow-step-ico">✅</div>
+                <span class="adm-flow-step-num">3</span>
+                <h5>Dean Approval</h5>
+                <p>College Dean reviews and approves enrollment eligibility.</p>
+                <span class="adm-flow-step-owner">Dean / Dept. Head</span>
+            </div>
+            <div class="adm-flow-step">
+                <div class="adm-flow-step-ico">📚</div>
+                <span class="adm-flow-step-num">4</span>
+                <h5>Subject Assignment</h5>
+                <p>Adviser confirms subject load per curriculum.</p>
+                <span class="adm-flow-step-owner">Adviser</span>
+            </div>
+            <div class="adm-flow-step">
+                <div class="adm-flow-step-ico">💰</div>
+                <span class="adm-flow-step-num">5</span>
+                <h5>Assessment Generated</h5>
+                <p>Fees computed with applicable deductions and scholarships.</p>
+                <span class="adm-flow-step-owner">Assessment Office</span>
+            </div>
+            <div class="adm-flow-step">
+                <div class="adm-flow-step-ico">🎟️</div>
+                <span class="adm-flow-step-num">6</span>
+                <h5>COR Released</h5>
+                <p>Certificate of Registration issued after payment confirmed.</p>
+                <span class="adm-flow-step-owner">Secretary / Registrar</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     RESPONSIBILITIES
+═══════════════════════════════════════════ -->
+<section id="adm-responsibilities" class="lp-section adm-responsibilities">
+    <div class="lp-inner">
+        <div class="lp-sec-hd">
+            <span class="lp-label">Responsibilities</span>
+            <h2 class="lp-h2">Admin duties during enrollment</h2>
+            <p class="lp-sec-sub">A clear breakdown of tasks each role must complete during the enrollment period.</p>
+        </div>
+
+        <div class="adm-resp-grid">
+            <div class="adm-resp-block">
+                <div class="adm-resp-block-hd">
+                    <span class="adm-resp-ico">📝</span>
+                    <div>
+                        <h4>Admission Office</h4>
+                        <span>Pre-enrollment phase</span>
+                    </div>
+                </div>
+                <ul class="adm-resp-list">
+                    <li>Open and manage the online application portal</li>
+                    <li>Review and verify submitted documents from applicants</li>
+                    <li>Administer and encode CET results</li>
+                    <li>Issue admission notices to qualified applicants</li>
+                    <li>Coordinate slot allocation with respective deans</li>
+                    <li>Manage waitlists and alternative course assignments</li>
+                </ul>
+            </div>
+
+            <div class="adm-resp-block">
+                <div class="adm-resp-block-hd">
+                    <span class="adm-resp-ico">🎓</span>
+                    <div>
+                        <h4>Dean & Department Head</h4>
+                        <span>Approval & oversight</span>
+                    </div>
+                </div>
+                <ul class="adm-resp-list">
+                    <li>Set and update subject offerings per semester</li>
+                    <li>Approve shiftee applications and transferee acceptance</li>
+                    <li>Review and approve student overload requests</li>
+                    <li>Monitor enrollment progress within the college</li>
+                    <li>Coordinate with advisers on curriculum exceptions</li>
+                    <li>Sign off on final enrollment summary reports</li>
+                </ul>
+            </div>
+
+            <div class="adm-resp-block">
+                <div class="adm-resp-block-hd">
+                    <span class="adm-resp-ico">👤</span>
+                    <div>
+                        <h4>Adviser</h4>
+                        <span>Student-level guidance</span>
+                    </div>
+                </div>
+                <ul class="adm-resp-list">
+                    <li>Pre-enroll continuing students' subjects before enrollment opens</li>
+                    <li>Verify student standing and curriculum compliance</li>
+                    <li>Approve or flag subject additions and changes</li>
+                    <li>Flag students with academic concerns to the Department Head</li>
+                    <li>Assist students in loading/underloading requests</li>
+                    <li>Endorse graduating students for final enrollment check</li>
+                </ul>
+            </div>
+
+            <div class="adm-resp-block">
+                <div class="adm-resp-block-hd">
+                    <span class="adm-resp-ico">💰</span>
+                    <div>
+                        <h4>Assessment & Secretary</h4>
+                        <span>Financial & documentation</span>
+                    </div>
+                </div>
+                <ul class="adm-resp-list">
+                    <li>Generate and validate student fee assessments</li>
+                    <li>Apply scholarship and discount deductions accurately</li>
+                    <li>Confirm payment receipts and update payment status</li>
+                    <li>Process and release Certificate of Registration (COR)</li>
+                    <li>Handle late enrollment surcharge documentation</li>
+                    <li>File and archive enrollment records per semester</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECURITY NOTICE
+═══════════════════════════════════════════ -->
+<section class="adm-security">
+    <div class="adm-security-inner">
+        <div class="adm-sec-item">
+            <span class="adm-sec-ico">🔒</span>
+            <h4>Secure Access</h4>
+            <p>All admin sessions are encrypted and require institutional credentials. Two-factor authentication is enabled for sensitive roles.</p>
+        </div>
+        <div class="adm-sec-item">
+            <span class="adm-sec-ico">📋</span>
+            <h4>Audit Logging</h4>
+            <p>Every action performed in the admin portal is timestamped and logged. Logs are accessible only to MISTO and are retained for 5 years.</p>
+        </div>
+        <div class="adm-sec-item">
+            <span class="adm-sec-ico">⚠️</span>
+            <h4>Unauthorized Access</h4>
+            <p>Unauthorized access to this portal is a violation of WMSU policy and applicable Philippine cybercrime laws. All access attempts are monitored.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="lp-footer">
+    <div class="lp-footer-about">
+        <div class="lp-footer-brand">
+            <svg class="lp-footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="lp-footer-name">WMSU-Ease</span>
+        </div>
+        <p class="lp-footer-desc">Admin Portal — Restricted to authorized WMSU administrative personnel only. Western Mindanao State University, Zamboanga City.</p>
+    </div>
+    <div class="lp-footer-col">
+        <h4>Portal</h4>
+        <ul>
+            <li><a href="#adm-hero">Home</a></li>
+            <li><a href="#adm-roles-section">Roles</a></li>
+            <li><a href="#adm-announcements">Announcements</a></li>
+            <li><a href="#adm-dashboard">Dashboard</a></li>
+            <li><a href="#adm-workflow">Workflow</a></li>
+        </ul>
+    </div>
+    <div class="lp-footer-col">
+        <h4>Contact</h4>
+        <ul>
+            <li><a href="#">Normal Road, Baliwasan</a></li>
+            <li><a href="#">Zamboanga City, 7000</a></li>
+            <li><a href="mailto:ict@wmsu.edu.ph">ict@wmsu.edu.ph</a></li>
+            <li><a href="tel:0629911040">(062) 991-1040</a></li>
+        </ul>
+    </div>
+</footer>
+<div class="lp-footer-bottom">
+    © 2026 WMSU-Ease · Admin Portal · Western Mindanao State University · All rights reserved.
+</div>
+
+<script src="script/adminLandingPage.js"></script>
+</body>
+</html>
