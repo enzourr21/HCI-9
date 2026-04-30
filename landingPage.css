@@ -1,4 +1,10 @@
-body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text); font-size: 15px; line-height: 1.6; }
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+}
 
 /* ═══════════════════════════════════════════
    ANNOUNCEMENT BAR
@@ -14,7 +20,7 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     position: relative;
     z-index: 200;
 }
-.lp-bar--open     { background: var(--cr-deep); color: rgba(255,255,255,.9); }
+.lp-bar--open     { background: var(--cr);      color: rgba(255,255,255,.9); }
 .lp-bar--upcoming { background: #7b4f00;         color: rgba(255,255,255,.9); }
 .lp-bar--closed   { background: #333;            color: rgba(255,255,255,.75); }
 .lp-bar strong { color: #fff; }
@@ -153,7 +159,7 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 }
 
 /* ═══════════════════════════════════════════
-   HERO — two-column with campus bg
+   HERO
 ═══════════════════════════════════════════ */
 .lp-hero {
     min-height: calc(100vh - var(--nav-h));
@@ -167,9 +173,9 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     position: absolute; inset: 0;
     background: linear-gradient(
         110deg,
-        rgba(107,18,24,.90) 0%,
-        rgba(107,18,24,.82) 45%,
-        rgba(26,26,26,.70) 100%
+        rgba(192,25,43,.82) 0%,
+        rgba(192,25,43,.68) 45%,
+        rgba(26,26,26,.58) 100%
     );
 }
 
@@ -182,13 +188,12 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     gap: 56px; align-items: center;
 }
 
-/* Left column */
 .lp-hero-left { display: flex; flex-direction: column; gap: 22px; }
 
 .lp-badge {
     display: inline-block;
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.28);
     color: var(--gold-lt);
     font-size: 11px; font-weight: 600;
     letter-spacing: 2px; text-transform: uppercase;
@@ -207,7 +212,7 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 
 .lp-hero-desc {
     font-size: clamp(15px, 1.6vw, 17px);
-    color: rgba(255,255,255,.72); line-height: 1.75;
+    color: rgba(255,255,255,.78); line-height: 1.75;
     max-width: 440px;
     animation: lp-fadeup .7s .2s ease both;
 }
@@ -215,8 +220,8 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 /* Date strip */
 .lp-date-strip {
     display: inline-flex; align-items: stretch;
-    background: rgba(255,255,255,.09);
-    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
     border-radius: 12px; overflow: hidden;
     width: fit-content;
     animation: lp-fadeup .7s .3s ease both;
@@ -226,33 +231,18 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     align-items: center; padding: 12px 20px; gap: 3px;
 }
 .lp-date-sep { width: 1px; background: rgba(255,255,255,.15); margin: 8px 0; }
-.lp-date-lbl { font-size: 9.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.45); }
+.lp-date-lbl { font-size: 9.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.5); }
 .lp-date-val { font-size: 13px; font-weight: 700; color: var(--gold-lt); }
 
-/* Right column — auth card */
+/* Auth card */
 .lp-hero-right { animation: lp-fadeup .7s .35s ease both; }
 
 .lp-auth-card {
     background: rgba(255,255,255,.97);
     border-radius: 18px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,.28);
     overflow: hidden;
 }
-
-.lp-auth-tabs {
-    display: flex; border-bottom: 1.5px solid rgba(192,25,43,.12);
-}
-.lp-auth-tabs button {
-    flex: 1; padding: 16px 0;
-    background: none; border: none;
-    font-size: 14px; font-weight: 600;
-    color: var(--muted); cursor: pointer;
-    border-bottom: 2.5px solid transparent;
-    margin-bottom: -1.5px;
-    transition: color .2s, border-color .2s;
-}
-.lp-auth-tabs button.active { color: var(--cr); border-bottom-color: var(--cr); }
-.lp-auth-tabs button:hover:not(.active) { color: var(--cr); }
 
 .lp-auth-body { padding: 28px 28px 30px; }
 
@@ -260,35 +250,23 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 .lp-auth-header h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .lp-auth-header p  { font-size: 13px; color: var(--muted); }
 
-.lp-field { margin-bottom: 14px; }
-.lp-field label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; letter-spacing: .3px; }
-.lp-field input {
-    width: 100%; padding: 10px 14px;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 8px; font-size: 14px;
-    color: var(--text);
-    transition: border-color .2s, box-shadow .2s;
-    background: #fafafa;
-}
-.lp-field input:focus {
-    outline: none;
-    border-color: var(--cr);
-    box-shadow: 0 0 0 3px rgba(192,25,43,.1);
-    background: #fff;
-}
-
-.lp-forgot { display: block; text-align: right; font-size: 12px; color: var(--cr); text-decoration: none; margin-top: -8px; margin-bottom: 18px; }
-.lp-forgot:hover { text-decoration: underline; }
-
+/* Old-student button */
 .lp-btn-full {
-    display: block; width: 100%; padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%; padding: 12px;
     background: var(--cr); color: #fff;
     border: none; border-radius: 8px;
-    font-size: 15px; font-weight: 600;
+    font-size: 14px; font-weight: 600;
     text-align: center; text-decoration: none;
-    cursor: pointer; transition: background .2s, transform .15s;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .2s, transform .15s;
 }
 .lp-btn-full:hover { background: var(--cr-dk); transform: translateY(-1px); }
+.lp-btn-full svg { flex-shrink: 0; }
 
 .lp-auth-or {
     display: flex; align-items: center; gap: 12px;
@@ -314,10 +292,15 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     background: rgba(192,25,43,.03);
     transform: translateX(3px);
 }
-.lp-apply-opt-icon { font-size: 20px; flex-shrink: 0; }
+.lp-apply-opt-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(192,25,43,.07);
+    border-radius: 8px;
+}
 .lp-apply-opt-text strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); }
 .lp-apply-opt-text span  { font-size: 12px; color: var(--muted); }
-.lp-apply-opt-arrow { margin-left: auto; color: var(--muted); font-size: 16px; }
+.lp-apply-opt-arrow { margin-left: auto; color: var(--muted); font-size: 18px; line-height: 1; }
 
 /* ═══════════════════════════════════════════
    SHARED SECTION SCAFFOLD
@@ -331,7 +314,7 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     letter-spacing: 2.5px; text-transform: uppercase;
     color: var(--cr); margin-bottom: 10px;
 }
-.lp-label--light { color: rgba(255,255,255,.5); }
+.lp-label--light { color: rgba(255,255,255,.55); }
 
 .lp-h2 {
     font-size: clamp(26px, 3.5vw, 38px);
@@ -343,7 +326,7 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     font-size: 15px; color: var(--muted);
     max-width: 520px; margin: 10px auto 0; line-height: 1.7;
 }
-.lp-sec-sub--light { color: rgba(255,255,255,.55); }
+.lp-sec-sub--light { color: rgba(255,255,255,.6); }
 
 /* ═══════════════════════════════════════════
    ENROLLMENT PATHS
@@ -357,28 +340,34 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 
 .lp-path-card {
     border-radius: 16px; border: 1.5px solid var(--border);
-    overflow: hidden; box-shadow: 0 2px 14px rgba(192,25,43,.07);
+    overflow: hidden; box-shadow: 0 2px 14px rgba(192,25,43,.06);
     display: flex; flex-direction: column;
     background: #fff;
     transition: transform .25s, box-shadow .25s;
 }
 .lp-path-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 14px 38px rgba(192,25,43,.14);
+    box-shadow: 0 14px 38px rgba(192,25,43,.13);
 }
 
 .lp-path-hd { padding: 24px 24px 20px; }
-.lp-path-hd--old { background: var(--cr-deep); }
+.lp-path-hd--old { background: var(--cr-dk); }
 .lp-path-hd--new { background: var(--cr); }
 
-.lp-path-emoji { font-size: 26px; display: block; margin-bottom: 10px; }
+.lp-path-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,.14);
+    border-radius: 12px;
+    margin-bottom: 14px;
+}
 .lp-path-hd h3 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-.lp-path-hd p  { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.5; }
+.lp-path-hd p  { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.5; }
 
 .lp-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
 .lp-tag  {
-    background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.2);
-    color: rgba(255,255,255,.88); font-size: 11px; font-weight: 600;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22);
+    color: rgba(255,255,255,.9); font-size: 11px; font-weight: 600;
     padding: 3px 10px; border-radius: 20px;
 }
 
@@ -396,7 +385,7 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 
 .lp-num {
     width: 23px; height: 23px; border-radius: 50%;
-    background: rgba(192,25,43,.07); border: 1.5px solid rgba(192,25,43,.22);
+    background: rgba(192,25,43,.07); border: 1.5px solid rgba(192,25,43,.2);
     display: flex; align-items: center; justify-content: center;
     font-size: 10.5px; font-weight: 700; color: var(--cr);
     flex-shrink: 0; margin-top: 2px;
@@ -410,8 +399,8 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     border-radius: 8px; font-size: 14px; font-weight: 600;
     text-decoration: none; transition: background .2s;
 }
-.lp-cta--dark    { background: var(--cr-deep); color: #fff; }
-.lp-cta--dark:hover { background: #4c0d11; }
+.lp-cta--dark    { background: var(--cr-dk); color: #fff; }
+.lp-cta--dark:hover { background: #7a1020; }
 .lp-cta--crimson { background: var(--cr); color: #fff; }
 .lp-cta--crimson:hover { background: var(--cr-dk); }
 
@@ -428,8 +417,14 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     transform: translateY(-3px);
     box-shadow: 0 8px 22px rgba(192,25,43,.1);
 }
-.lp-sub-emoji { font-size: 22px; display: block; margin-bottom: 8px; }
-.lp-subtype h4 { font-size: 17px; font-weight: 700; color: var(--cr); margin-bottom: 6px; }
+.lp-sub-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px;
+    background: rgba(192,25,43,.07);
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+.lp-subtype h4 { font-size: 16px; font-weight: 700; color: var(--cr); margin-bottom: 6px; }
 .lp-subtype p  { font-size: 12.5px; color: #888; line-height: 1.5; margin-bottom: 10px; }
 
 .lp-mini-list { list-style: none; }
@@ -451,8 +446,9 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     border: 1px solid var(--border); padding: 22px 24px;
 }
 .lp-req-block h4 {
-    font-size: 16px; font-weight: 700;
-    color: var(--cr-deep); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 15px; font-weight: 700;
+    color: var(--cr-dk); margin-bottom: 14px;
     padding-bottom: 10px; border-bottom: 2px solid var(--gold);
 }
 .lp-req-list { list-style: none; }
@@ -467,29 +463,29 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 /* ═══════════════════════════════════════════
    KEY DATES
 ═══════════════════════════════════════════ */
-.lp-dates { background: var(--cr-deep); }
+.lp-dates { background: var(--cr-dk); }
 
 .lp-sem-toggle {
-    display: flex; background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.15);
+    display: flex; background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
     border-radius: 8px; overflow: hidden;
     width: fit-content; margin: 0 auto 26px;
 }
 .lp-sem-btn {
     padding: 10px 28px; background: none; border: none;
-    color: rgba(255,255,255,.6); font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,.65); font-size: 14px; font-weight: 600;
     cursor: pointer; transition: background .2s, color .2s;
     font-family: inherit;
 }
 .lp-sem-btn.active { background: var(--cr); color: #fff; }
-.lp-sem-btn:hover:not(.active) { background: rgba(255,255,255,.06); color: rgba(255,255,255,.85); }
+.lp-sem-btn:hover:not(.active) { background: rgba(255,255,255,.08); color: rgba(255,255,255,.9); }
 
 .lp-table-wrap { overflow-x: auto; }
 
 .lp-table {
     width: 100%; border-collapse: collapse;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
     border-radius: 12px; overflow: hidden;
 }
 .lp-table thead tr { background: rgba(255,255,255,.08); }
@@ -497,12 +493,12 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
     padding: 12px 18px; text-align: left;
     font-size: 11px; font-weight: 600;
     letter-spacing: 1.5px; text-transform: uppercase;
-    color: rgba(255,255,255,.5);
+    color: rgba(255,255,255,.55);
 }
 .lp-table td {
     padding: 12px 18px; font-size: 13.5px;
-    color: rgba(255,255,255,.82);
-    border-top: 1px solid rgba(255,255,255,.06);
+    color: rgba(255,255,255,.85);
+    border-top: 1px solid rgba(255,255,255,.07);
 }
 .lp-table tr:hover td { background: rgba(255,255,255,.04); }
 
@@ -516,14 +512,14 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 
 .lp-sem-notice {
     display: none; align-items: flex-start; gap: 12px;
-    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
     border-radius: 10px; padding: 14px 18px;
-    margin-bottom: 16px; color: rgba(255,255,255,.75);
+    margin-bottom: 16px; color: rgba(255,255,255,.8);
     font-size: 13.5px; line-height: 1.6;
 }
 .lp-sem-notice > span { font-size: 20px; flex-shrink: 0; }
 .lp-sem-notice strong { display: block; color: #fff; font-size: 14px; margin-bottom: 3px; }
-.lp-sem-notice p { color: rgba(255,255,255,.5); font-size: 12.5px; margin: 0; }
+.lp-sem-notice p { color: rgba(255,255,255,.55); font-size: 12.5px; margin: 0; }
 
 /* ═══════════════════════════════════════════
    FAQ
@@ -582,9 +578,9 @@ body   { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text
 }
 .lp-help-ico {
     width: 52px; height: 52px; border-radius: 14px;
-    background: var(--cr-deep);
+    background: var(--cr);
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px; margin-bottom: 4px;
+    margin-bottom: 4px;
 }
 .lp-help-card h4 { font-size: 15px; font-weight: 600; color: var(--text); }
 .lp-help-card p  { font-size: 13px; color: #888; line-height: 1.5; }
