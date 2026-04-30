@@ -198,7 +198,6 @@
     function handleAdminLogin() {
         const role     = document.getElementById('adminRole').value;
         const alertDiv = document.getElementById('adminAlert');
-        const adminPath = "Admin/";
 
         if (!role) {
             alertDiv.textContent   = 'Please select an admin role first.';
@@ -210,16 +209,16 @@
 
         switch (role) {
             case 'assessment':
-                window.location.href = adminPath + "assessment/assessment_dashboard.html";
+                window.location.href = '../users/Admin/assessment/assessment_dashboard.html';
                 break;
             case 'adviser':
-                window.location.href = adminPath + "adviser/adviser_dashboard.html";
+                window.location.href = '../users/Admin/adviser/adviser_dashboard.html';
                 break;
             case 'dept-admin':
-                window.location.href = adminPath + "dept-admin/dept-head.html";
+                window.location.href = '../users/Admin/dept-admin/dept-head.html';
                 break;
             case 'admission':
-                window.location.href = adminPath + "admission/admission.html";
+                window.location.href = '../users/Admin/admission/admission.html';
                 break;
             default:
                 alertDiv.textContent   = 'This portal is currently under maintenance. Please contact MISTO.';
