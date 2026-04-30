@@ -4,506 +4,915 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WMSU-Ease | Freshman Account</title>
-    <link rel="stylesheet" href="../../style.css" />
     <link rel="stylesheet" href="freshman-account.css" />
+    <link rel="stylesheet" href="../../style.css" />
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">
-            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-            </svg>
-            <span class="name">WMSU-Ease</span>
-        </div>
-        <ul class="nav-links">
-            <li>
-                <a href="../../login-pages/freshmen1-login.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                    </svg>
-                    Log Out
-                </a>
-            </li>
-        </ul>
-    </nav>
+<nav class="navbar">
+    <div class="logo">
+        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+        <span class="name">WMSU-Ease</span>
+    </div>
+    <ul class="nav-links">
+        <li>
+            <a href="../../login-pages/freshmen1-login.html">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Log Out
+            </a>
+        </li>
+    </ul>
+</nav>
 
-    <div class="account-wrapper">
+<div class="account-wrapper">
 
-        <!-- NO DATA STATE -->
-        <div id="missingApp" class="no-data-card" hidden>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="no-data-icon">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            <h2>No Application Found</h2>
-            <p>It looks like you haven't submitted an application yet. Please complete the form first.</p>
-            <a class="btn-crimson-link" href="freshman-apply.html">Go to Application</a>
-        </div>
+    <!-- ── NO APPLICATION STATE ── -->
+    <div id="missingApp" class="no-data-card" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="no-data-icon">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <h2>No Application Found</h2>
+        <p>It looks like you haven't submitted an application yet. Please complete the form first.</p>
+        <a class="btn-crimson-link" href="freshman-apply.html">Go to Application</a>
+    </div>
 
-        <!-- DASHBOARD -->
-        <div id="accountContent" hidden>
-            <div class="top-status-banner">
-                <div class="top-status-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 8 12 12 14.5 13.5"/>
-                    </svg>
-                </div>
-                <div class="top-status-content" id="statusBannerText">
-                    <strong>Pending Review</strong> — Your application has been received. Please wait for official confirmation via email.
-                </div>
+    <!-- ── MAIN DASHBOARD ── -->
+    <div id="accountContent" hidden>
+
+        <!-- Top Status Banner -->
+        <div class="top-status-banner pending" id="topStatusBanner">
+            <div class="top-status-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14.5 13.5"/>
+                </svg>
             </div>
-            <!-- FIX: inner wrapper that actually applies the flex gap between cards -->
-            <div class="dashboard-content">
+            <div class="top-status-content" id="statusBannerText">
+                <strong>Application Submitted</strong> — Your application is now being reviewed by your department.
+            </div>
+        </div>
 
-                <!-- Profile Card -->
-                <div class="profile-card">
-                    <div class="profile-header">
-                        <div class="avatar" id="res-avatar">—</div>
-                        <div class="profile-name-block">
-                            <div class="profile-name" id="res-name">—</div>
-                            <div class="profile-date" id="res-date">Submitted: —</div>
+        <div class="dashboard-content">
+
+            <!-- ══════════════════════════════════════
+                 PROFILE CARD  (right column)
+                 ══════════════════════════════════════ -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="avatar" id="res-avatar">—</div>
+                    <div class="profile-name-block">
+                        <div class="profile-name" id="res-name">—</div>
+                        <div class="profile-date" id="res-date">Submitted: —</div>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-block">
+                        <div class="info-label">Surname</div>
+                        <div class="info-value" id="res-surname-val">—</div>
+                        <button class="info-edit-btn" onclick="toggleEdit('surname')" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <div class="info-edit-form" id="edit-surname">
+                            <input type="text" class="info-edit-input" id="edit-surname-input" placeholder="Surname">
+                            <button class="info-save-btn" onclick="saveEdit('surname')">Save</button>
                         </div>
                     </div>
-
-                    <div class="info-grid">
-                        <!-- Surname -->
-                        <div class="info-block">
-                            <div class="info-label">Surname</div>
-                            <div class="info-value" id="res-surname-val">—</div>
-                            <button class="info-edit-btn" onclick="toggleEdit('surname')" title="Edit surname">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                            </button>
-                            <div class="info-edit-form" id="edit-surname">
-                                <input type="text" class="info-edit-input" id="edit-surname-input" placeholder="Surname">
-                                <button class="info-save-btn" onclick="saveEdit('surname')">Save</button>
-                            </div>
+                    <div class="info-block">
+                        <div class="info-label">First Name</div>
+                        <div class="info-value" id="res-firstname-val">—</div>
+                        <button class="info-edit-btn" onclick="toggleEdit('firstname')" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <div class="info-edit-form" id="edit-firstname">
+                            <input type="text" class="info-edit-input" id="edit-firstname-input" placeholder="First name">
+                            <button class="info-save-btn" onclick="saveEdit('firstname')">Save</button>
                         </div>
-
-                        <!-- First Name -->
-                        <div class="info-block">
-                            <div class="info-label">First Name</div>
-                            <div class="info-value" id="res-firstname-val">—</div>
-                            <button class="info-edit-btn" onclick="toggleEdit('firstname')" title="Edit first name">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                            </button>
-                            <div class="info-edit-form" id="edit-firstname">
-                                <input type="text" class="info-edit-input" id="edit-firstname-input" placeholder="First name">
-                                <button class="info-save-btn" onclick="saveEdit('firstname')">Save</button>
-                            </div>
+                    </div>
+                    <div class="info-block">
+                        <div class="info-label">Middle Initial</div>
+                        <div class="info-value" id="res-middleinitial-val">—</div>
+                        <button class="info-edit-btn" onclick="toggleEdit('middleinitial')" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <div class="info-edit-form" id="edit-middleinitial">
+                            <input type="text" class="info-edit-input" id="edit-middleinitial-input" placeholder="e.g. R" maxlength="2">
+                            <button class="info-save-btn" onclick="saveEdit('middleinitial')">Save</button>
                         </div>
-
-                        <!-- Middle Initial -->
-                        <div class="info-block">
-                            <div class="info-label">Middle Initial</div>
-                            <div class="info-value" id="res-middleinitial-val">—</div>
-                            <button class="info-edit-btn" onclick="toggleEdit('middleinitial')" title="Edit middle initial">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                            </button>
-                            <div class="info-edit-form" id="edit-middleinitial">
-                                <input type="text" class="info-edit-input" id="edit-middleinitial-input" placeholder="e.g. R" maxlength="2">
-                                <button class="info-save-btn" onclick="saveEdit('middleinitial')">Save</button>
-                            </div>
+                    </div>
+                    <div class="info-block">
+                        <div class="info-label">Email Address</div>
+                        <div class="info-value" id="res-email-val">—</div>
+                        <button class="info-edit-btn" onclick="toggleEdit('email')" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <div class="info-edit-form" id="edit-email">
+                            <input type="email" class="info-edit-input" id="edit-email-input" placeholder="New email">
+                            <button class="info-save-btn" onclick="saveEdit('email')">Save</button>
                         </div>
-
-                        <!-- Email -->
-                        <div class="info-block">
-                            <div class="info-label">Email Address</div>
-                            <div class="info-value" id="res-email-val">—</div>
-                            <button class="info-edit-btn" onclick="toggleEdit('email')" title="Edit email">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                            </button>
-                            <div class="info-edit-form" id="edit-email">
-                                <input type="email" class="info-edit-input" id="edit-email-input" placeholder="New email">
-                                <button class="info-save-btn" onclick="saveEdit('email')">Save</button>
-                            </div>
-                        </div>
-
-                        <!-- Contact -->
-                        <div class="info-block info-block--full">
-                            <div class="info-label">Contact Number</div>
-                            <div class="info-value" id="res-contact-val">—</div>
-                            <button class="info-edit-btn" onclick="toggleEdit('contact')" title="Edit contact">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                            </button>
-                            <div class="info-edit-form" id="edit-contact">
-                                <input type="tel" class="info-edit-input" id="edit-contact-input" placeholder="New contact #">
-                                <button class="info-save-btn" onclick="saveEdit('contact')">Save</button>
-                            </div>
+                    </div>
+                    <div class="info-block info-block--full">
+                        <div class="info-label">Contact Number</div>
+                        <div class="info-value" id="res-contact-val">—</div>
+                        <button class="info-edit-btn" onclick="toggleEdit('contact')" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <div class="info-edit-form" id="edit-contact">
+                            <input type="tel" class="info-edit-input" id="edit-contact-input" placeholder="New contact #">
+                            <button class="info-save-btn" onclick="saveEdit('contact')">Save</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Application Progress Card -->
-                <div class="progress-card" id="progressCard">
-                    <div class="card-title">Application Progress</div>
-                    <div class="progress-track">
-                        <div class="progress-step" id="stepSubmitted">
-                            <div class="p-line"></div>
-                            <div class="progress-circle">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </div>
-                            <p class="p-step-lbl">Submitted</p>
-                            <span class="badge green" id="badgeSubmitted">Completed</span>
-                        </div>
-                        <div class="progress-step gray" id="stepUnderReview">
-                            <div class="p-line"></div>
-                            <div class="progress-circle gray">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                            </div>
-                            <p class="p-step-lbl">Under Review</p>
-                            <span class="badge gray" id="badgeUnderReview">Pending</span>
-                        </div>
-                        <div class="progress-step gray" id="stepContacted">
-                            <div class="p-line"></div>
-                            <div class="progress-circle gray">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.82 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.25a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                            </div>
-                            <p class="p-step-lbl">Contacted</p>
-                            <span class="badge gray" id="badgeContacted" style="display:none;"></span>
-                        </div>
-                        <div class="progress-step gray last-step" id="stepEnrolled">
-                            <div class="progress-circle gray">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                            </div>
-                            <p class="p-step-lbl">Enrolled</p>
-                            <span class="badge gray" id="badgeEnrolled" style="display:none;"></span>
-                        </div>
-                    </div>
-                </div>
-
+                <!-- Applied Course -->
                 <div class="applied-course-block">
                     <div class="ac-icon" id="res-course-icon">📚</div>
                     <div class="ac-info">
                         <div class="ac-label-tiny">Applied Course</div>
                         <div class="ac-name" id="res-course-name">—</div>
                     </div>
-                    <button class="btn-change-course" onclick="openChangeCourse()">
+                    <button class="btn-change-course" id="changeCourseBtn" onclick="openChangeCourse()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">
                             <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
                             <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
                         </svg>
-                        Change Course
+                        <span id="changeCourseLabel">Change Course</span>
                     </button>
                 </div>
 
-                <!-- Notice Card -->
-                <div class="notice-card">
-                    <div class="notice-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                            <line x1="12" y1="9" x2="12" y2="13"/>
-                            <line x1="12" y1="17" x2="12.01" y2="17"/>
-                        </svg>
-                        Important Reminders
-                    </div>
-                    <p class="notice-text">
+                <!-- Important Reminders -->
+                <div style="border-left: 4px solid var(--crimson); padding: 12px 14px; background: var(--crimson-light); border-radius: 0 8px 8px 0;">
+                    <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--crimson); margin-bottom:6px;">Important Reminders</div>
+                    <p style="font-size:0.8rem; color:#444; line-height:1.7;">
                         Submitting this application does <strong>not</strong> guarantee admission — acceptance is subject to slot availability and final evaluation.
                         Wait for an official confirmation email before making any enrollment decisions or payments.
                         You may update your personal information on this page while your application is still under review.
-                        To change your applied course, click <strong>"Change Course"</strong> above — note that this will restart the review process.
+                        To change your applied course, click <strong>"Change Course"</strong> — note that this will restart the review process.
+                        Course changes are <strong>not</strong> allowed once your application is scheduled for interview.
                     </p>
                 </div>
-
-                <p class="result-note">You will be notified at every step of the process via your registered email.</p>
-
-            </div><!-- end .dashboard-content -->
-        </div><!-- end #accountContent -->
-
-    </div><!-- end .account-wrapper -->
-
-    <!-- Change Course Modal -->
-    <div class="modal-overlay" id="changeCourseModal">
-        <div class="modal-box">
-            <div class="modal-title">Change Your Applied Course</div>
-            <div class="modal-sub">Changing your course will reset the review process. Please select the new course you want to apply for.</div>
-            <div class="field-group">
-                <label for="new-course">New Course</label>
-                <select id="new-course" class="form-control">
-                    <option value="">Choose a course...</option>
-                    <option value="BS Agriculture">BS Agriculture</option>
-                    <option value="BS Agri Business">BS Agri Business</option>
-                    <option value="BS Food Technology">BS Food Technology</option>
-                    <option value="BS Islamic Studies">BS Islamic Studies</option>
-                    <option value="BS Asian Studies">BS Asian Studies</option>
-                    <option value="BS Computer Science">BS Computer Science</option>
-                    <option value="BS Information Technology">BS Information Technology</option>
-                    <option value="Associate in Computer Technology major in Networking Application Development">Associate in Computer Technology major in Networking Application Development</option>
-                    <option value="BS Criminology">BS Criminology</option>
-                    <option value="BS Civil Engineering">BS Civil Engineering</option>
-                    <option value="BS Mechanical Engineering">BS Mechanical Engineering</option>
-                    <option value="BS Sanitary Engineering">BS Sanitary Engineering</option>
-                    <option value="BS Industrial Engineering">BS Industrial Engineering</option>
-                    <option value="BS Agricultural Biosystem Engineering">BS Agricultural Biosystem Engineering</option>
-                    <option value="BS Environmental Engineering">BS Environmental Engineering</option>
-                    <option value="BS Geodetic Engineering">BS Geodetic Engineering</option>
-                    <option value="BS Electronics Communication Engineering">BS Electronics Communication Engineering</option>
-                    <option value="BS Computer Engineering">BS Computer Engineering</option>
-                    <option value="BS Forestry">BS Forestry</option>
-                    <option value="BS Environmental Science">BS Environmental Science</option>
-                    <option value="BS Agro-Forestry">BS Agro-Forestry</option>
-                    <option value="BS Home Economics">BS Home Economics</option>
-                    <option value="BS Nutrition and Dietetics">BS Nutrition and Dietetics</option>
-                    <option value="BS Hospitality Management">BS Hospitality Management</option>
-                    <option value="Bachelor of Arts in English Language Studies (BAELS)">Bachelor of Arts in English Language Studies (BAELS)</option>
-                    <option value="BS Journalism">BS Journalism</option>
-                    <option value="BA Broadcasting">BA Broadcasting</option>
-                    <option value="BS Economics">BS Economics</option>
-                    <option value="BS Accountancy">BS Accountancy</option>
-                    <option value="BA Political Science">BA Political Science</option>
-                    <option value="BA Psychology">BA Psychology</option>
-                    <option value="BS Business Administration">BS Business Administration</option>
-                    <option value="BS Nursing">BS Nursing</option>
-                </select>
             </div>
-            <div id="modal-alert" class="form-alert" style="display:none;"></div>
-            <div class="modal-actions">
-                <button class="btn-modal-cancel" onclick="closeChangeCourse()">Cancel</button>
-                <button class="btn-modal-confirm" onclick="confirmChangeCourse()">Confirm Change</button>
+
+            <!-- ══════════════════════════════════════
+                 PROGRESS STEPPER (col 1)
+                 Flow: Submitted → Interview → Accepted → Form → Enrolled
+                 ══════════════════════════════════════ -->
+            <div class="progress-card">
+                <div class="card-title">Application Progress</div>
+                <div class="progress-track">
+                    <!-- Step 1: Submitted -->
+                    <div class="progress-step" id="stepSubmitted">
+                        <div class="p-line" id="lineSubmitted"></div>
+                        <div class="progress-circle" id="circleSubmitted">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <p class="p-step-lbl">Submitted</p>
+                        <span class="badge green" id="badgeSubmitted">Done</span>
+                    </div>
+                    <!-- Step 2: Interview -->
+                    <div class="progress-step gray" id="stepInterview">
+                        <div class="p-line" id="lineInterview"></div>
+                        <div class="progress-circle gray" id="circleInterview">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <p class="p-step-lbl">Interview</p>
+                        <span class="badge gray" id="badgeInterview">Pending</span>
+                    </div>
+                    <!-- Step 3: Accepted -->
+                    <div class="progress-step gray" id="stepAccepted">
+                        <div class="p-line" id="lineAccepted"></div>
+                        <div class="progress-circle gray" id="circleAccepted">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <p class="p-step-lbl">Accepted</p>
+                        <span class="badge gray" id="badgeAccepted">Pending</span>
+                    </div>
+                    <!-- Step 4: Form -->
+                    <div class="progress-step gray" id="stepForm">
+                        <div class="p-line" id="lineForm"></div>
+                        <div class="progress-circle gray" id="circleForm">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        </div>
+                        <p class="p-step-lbl">Form</p>
+                        <span class="badge gray" id="badgeForm">Pending</span>
+                    </div>
+                    <!-- Step 5: Enrolled -->
+                    <div class="progress-step gray last-step" id="stepEnrolled">
+                        <div class="progress-circle gray" id="circleEnrolled">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                        </div>
+                        <p class="p-step-lbl">Enrolled</p>
+                        <span class="badge gray" id="badgeEnrolled">Pending</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- ══════════════════════════════════════
+                 INTERVIEW SCHEDULE CARD
+                 Shown when: for_interview
+                 ══════════════════════════════════════ -->
+            <div class="status-card interview-card" id="interviewCard">
+                <div class="interview-card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    Interview Schedule
+                </div>
+                <div class="interview-sched">
+                    <div class="sched-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+                        <span class="sched-label">Date:</span><span class="sched-value" id="sched-date">—</span>
+                    </div>
+                    <div class="sched-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span class="sched-label">Time:</span><span class="sched-value" id="sched-time">—</span>
+                    </div>
+                    <div class="sched-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span class="sched-label">Venue:</span><span class="sched-value" id="sched-venue">—</span>
+                    </div>
+                </div>
+                <div class="interview-locked-note">
+                    🔒 <strong>Course change is now locked.</strong> Your application is set for interview — you can no longer change your applied course at this stage. Contact the admissions office if you have concerns.
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 REJECTION CARD
+                 Shown when: rejected
+                 ══════════════════════════════════════ -->
+            <div class="status-card rejection-card" id="rejectionCard">
+                <div class="rejection-card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                    Application Not Accepted
+                </div>
+                <p class="rejection-desc">
+                    We regret to inform you that your application was not accepted for the selected course at this time.
+                    This may be due to limited slot availability or evaluation criteria. You are welcome to apply for a different course.
+                </p>
+                <div class="rejection-change-note">
+                    ↩ You can now change your applied course and re-submit for review. Click <strong>"Change Course"</strong> on the right panel to select a new course.
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 ACCEPTED CARD
+                 Shown when: accepted
+                 ══════════════════════════════════════ -->
+            <div class="acceptance-card" id="acceptanceCard">
+                <div class="acceptance-title">🎉 Congratulations! You have been accepted!</div>
+                <div class="acceptance-subtitle">
+                    Your application has been reviewed and approved. You are now cleared to proceed with enrollment.
+                    Your adviser has assigned your enrollment schedule — please see below and follow it strictly.
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 ENROLLMENT SCHEDULE CARD
+                 Shown when: accepted, enrolled
+                 ══════════════════════════════════════ -->
+            <div class="status-card enrollment-schedule-card" id="enrollSchedCard">
+                <div class="enroll-sched-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    Enrollment Schedule
+                </div>
+                <div class="enroll-sched-box">
+                    <div class="enroll-sched-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+                        <span class="enroll-sched-label">Date:</span><span class="enroll-sched-value" id="enroll-date">—</span>
+                    </div>
+                    <div class="enroll-sched-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span class="enroll-sched-label">Time:</span><span class="enroll-sched-value" id="enroll-time">—</span>
+                    </div>
+                    <div class="enroll-sched-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span class="enroll-sched-label">Venue:</span><span class="enroll-sched-value" id="enroll-venue">—</span>
+                    </div>
+                </div>
+                <!-- Simulated email notification (UI only) -->
+                <div class="email-sim-note">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    A confirmation of your enrollment schedule has also been sent to your registered email address.
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 ENROLLMENT FORM CARD
+                 Shown when: accepted
+                 Button changes to "Form Submitted" after submission
+                 ══════════════════════════════════════ -->
+            <div class="status-card form-card" id="formCard">
+                <div class="form-card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    Enrollment Form
+                </div>
+                <!-- This div gets replaced by JS when form is submitted -->
+                <div id="formActionArea">
+                    <a href="forms.html" class="btn-fill-form">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                        Fill Up Enrollment Form
+                    </a>
+                </div>
+                <!-- Reminder box: shown after form is submitted -->
+                <div class="form-reminder-box" id="formReminderBox">
+                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#92400e; margin-bottom:10px;">📋 Before You Come In — Please Prepare:</div>
+                    <div class="form-reminder-item">
+                        <div class="reminder-dot"></div>
+                        <span>Prepare all <strong>original documents</strong> for verification (Form 138, Birth Certificate, Good Moral Certificate, etc.).</span>
+                    </div>
+                    <div class="form-reminder-item">
+                        <div class="reminder-dot"></div>
+                        <span>Bring exactly <strong>₱260.00</strong> for college fees. No exact change, no enrollment.</span>
+                    </div>
+                    <div class="form-reminder-item">
+                        <div class="reminder-dot"></div>
+                        <span>Follow your <strong>assigned schedule strictly</strong>. Late arrivals may not be accommodated on the same day.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 ENROLLED CARD
+                 Shown when: enrolled
+                 ══════════════════════════════════════ -->
+            <div class="enrolled-card" id="enrolledCard">
+                <div class="enrolled-title">🎓 You are now officially enrolled!</div>
+                <div class="enrolled-subtitle">
+                    Welcome to Western Mindanao State University! Your enrollment has been confirmed and fully processed.
+                </div>
+                <div class="cor-box">
+                    <div class="cor-box-title">📄 Certificate of Registration (COR)</div>
+                    <div class="cor-box-text">
+                        You may now claim your COR at the <strong>MISTO Office</strong>.<br>
+                        Please wait for the official MISTO collection schedule to be posted on this portal and sent to your email.
+                        Bring a valid ID when claiming your COR.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 NOTICE CARD
+                 Shown when: pending, for_interview
+                 ══════════════════════════════════════ -->
+            <div class="notice-card" id="noticeCard">
+                <div class="notice-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    Important Reminders
+                </div>
+                <p class="notice-text">
+                    Submitting this application does <strong>not</strong> guarantee admission — acceptance is subject to slot availability and final evaluation.
+                    Wait for an official confirmation email before making any enrollment decisions or payments.
+                    You may update your personal information on this page while your application is still under review.
+                    To change your applied course, click <strong>"Change Course"</strong> above — note that this will restart the review process.
+                    Course changes are <strong>not</strong> allowed once your application is scheduled for interview.
+                </p>
+            </div>
+
+            <p class="result-note">You will be notified at every step of the process via your registered email.</p>
+
+        </div><!-- end .dashboard-content -->
+    </div><!-- end #accountContent -->
+</div><!-- end .account-wrapper -->
+
+<!-- ── CHANGE COURSE MODAL ── -->
+<div class="modal-overlay" id="changeCourseModal">
+    <div class="modal-box">
+        <div class="modal-title">Change Your Applied Course</div>
+        <div class="modal-sub">Changing your course will reset the review process. Please select the new course you want to apply for.</div>
+        <div class="field-group">
+            <label for="new-course">New Course</label>
+            <select id="new-course" class="form-control">
+                <option value="">Choose a course...</option>
+                <option>BS Agriculture</option><option>BS Agri Business</option><option>BS Food Technology</option>
+                <option>BS Islamic Studies</option><option>BS Asian Studies</option>
+                <option>BS Computer Science</option><option>BS Information Technology</option>
+                <option>Associate in Computer Technology major in Networking Application Development</option>
+                <option>BS Criminology</option><option>BS Civil Engineering</option>
+                <option>BS Mechanical Engineering</option><option>BS Sanitary Engineering</option>
+                <option>BS Industrial Engineering</option><option>BS Agricultural Biosystem Engineering</option>
+                <option>BS Environmental Engineering</option><option>BS Geodetic Engineering</option>
+                <option>BS Electronics Communication Engineering</option><option>BS Computer Engineering</option>
+                <option>BS Forestry</option><option>BS Environmental Science</option><option>BS Agro-Forestry</option>
+                <option>BS Home Economics</option><option>BS Nutrition and Dietetics</option>
+                <option>BS Hospitality Management</option>
+                <option>Bachelor of Arts in English Language Studies (BAELS)</option>
+                <option>BS Journalism</option><option>BA Broadcasting</option><option>BS Economics</option>
+                <option>BS Accountancy</option><option>BA Political Science</option><option>BA Psychology</option>
+                <option>BS Business Administration</option><option>BS Nursing</option>
+            </select>
+        </div>
+        <div id="modal-alert" class="form-alert" style="display:none;"></div>
+        <div class="modal-actions">
+            <button class="btn-modal-cancel" onclick="closeChangeCourse()">Cancel</button>
+            <button class="btn-modal-confirm" onclick="confirmChangeCourse()">Confirm Change</button>
         </div>
     </div>
+</div>
 
-    <script>
-        const courseIcons = {
-            'BS Computer Science': '💻', 'BS Information Technology': '💻',
-            'Associate in Computer Technology major in Networking Application Development': '💻',
-            'BS Civil Engineering': '⚙️', 'BS Mechanical Engineering': '⚙️',
-            'BS Sanitary Engineering': '⚙️', 'BS Industrial Engineering': '⚙️',
-            'BS Agricultural Biosystem Engineering': '⚙️', 'BS Environmental Engineering': '⚙️',
-            'BS Geodetic Engineering': '⚙️', 'BS Electronics Communication Engineering': '⚙️',
-            'BS Computer Engineering': '⚙️', 'BS Business Administration': '📊',
-            'BS Nursing': '🩺', 'BS Criminology': '⚖️', 'BS Agriculture': '🌾',
-            'BS Agri Business': '🌾', 'BS Food Technology': '🌾', 'BS Forestry': '🌲',
-            'BS Environmental Science': '🌍', 'BS Agro-Forestry': '🌲',
-            'BS Home Economics': '🏠', 'BS Nutrition and Dietetics': '🍎',
-            'BS Hospitality Management': '🏨',
-            'Bachelor of Arts in English Language Studies (BAELS)': '📖',
-            'BS Journalism': '📰', 'BA Broadcasting': '📺', 'BS Economics': '💰',
-            'BS Accountancy': '🧮', 'BA Political Science': '🏛️', 'BA Psychology': '🧠',
-            'BS Islamic Studies': '🕌', 'BS Asian Studies': '🌏'
-        };
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════ -->
+<script>
 
-        const raw = localStorage.getItem('freshmanApp');
-        const missingApp = document.getElementById('missingApp');
-        const accountContent = document.getElementById('accountContent');
+/* ─────────────────────────────────────────────────────────────────
+   COURSE ICONS
+───────────────────────────────────────────────────────────────── */
+const COURSE_ICONS = {
+    'BS Computer Science':'💻','BS Information Technology':'💻',
+    'Associate in Computer Technology major in Networking Application Development':'💻',
+    'BS Civil Engineering':'⚙️','BS Mechanical Engineering':'⚙️','BS Sanitary Engineering':'⚙️',
+    'BS Industrial Engineering':'⚙️','BS Agricultural Biosystem Engineering':'⚙️',
+    'BS Environmental Engineering':'⚙️','BS Geodetic Engineering':'⚙️',
+    'BS Electronics Communication Engineering':'⚙️','BS Computer Engineering':'⚙️',
+    'BS Business Administration':'📊','BS Nursing':'🩺','BS Criminology':'⚖️',
+    'BS Agriculture':'🌾','BS Agri Business':'🌾','BS Food Technology':'🌾',
+    'BS Forestry':'🌲','BS Environmental Science':'🌍','BS Agro-Forestry':'🌲',
+    'BS Home Economics':'🏠','BS Nutrition and Dietetics':'🍎','BS Hospitality Management':'🏨',
+    'Bachelor of Arts in English Language Studies (BAELS)':'📖',
+    'BS Journalism':'📰','BA Broadcasting':'📺','BS Economics':'💰',
+    'BS Accountancy':'🧮','BA Political Science':'🏛️','BA Psychology':'🧠',
+    'BS Islamic Studies':'🕌','BS Asian Studies':'🌏'
+};
 
-        if (!raw) {
-            missingApp.hidden = false;
-            accountContent.hidden = true;
+/* ─────────────────────────────────────────────────────────────────
+   APP STATE  —  single source of truth
+   Replace the default values with a backend fetch when ready.
+   Keys that will come from backend: deptStatus, formSubmitted,
+   interviewDate/Time/Venue, enrollDate/Time/Venue.
+───────────────────────────────────────────────────────────────── */
+let appState = {
+    /* Personal info */
+    surname:       'Dela Cruz',
+    firstname:     'Juan',
+    middleinitial: 'R',
+    email:         'juandelacruz@gmail.com',
+    contact:       '09171234567',
+    course:        'BS Computer Science',
+    submittedDate: new Date().toISOString(),
+    appNo:         'APP-2025-001',
+
+    /*
+     * deptStatus — valid values:
+     *   'pending'        submitted, waiting for review/interview scheduling
+     *   'for_interview'  interview scheduled by dept
+     *   'rejected'       not accepted after interview
+     *   'accepted'       accepted, adviser assigned enrollment schedule
+     *   'enrolled'       fully enrolled
+     */
+    deptStatus: 'pending',
+
+    /*
+     * formSubmitted — tracks whether the student clicked "Fill Up Form"
+     * and completed it on form.html.
+     * form.html should call: localStorage.setItem('formSubmitted','true')
+     * This page detects that flag on load and updates the UI.
+     */
+    formSubmitted: false,
+
+    /* Interview details — set by department */
+    interviewDate:  'June 15, 2025',
+    interviewTime:  '9:00 AM – 12:00 PM',
+    interviewVenue: 'College of Computing Studies, Room 201',
+
+    /* Enrollment schedule — set by adviser */
+    enrollDate:  'July 10, 2025',
+    enrollTime:  '8:00 AM – 10:00 AM',
+    enrollVenue: "Registrar's Office, Main Building"
+};
+
+/* Load persisted state */
+try {
+    const saved = localStorage.getItem('freshmanApp');
+    if (saved) appState = { ...appState, ...JSON.parse(saved) };
+} catch(e) {}
+
+/* ─────────────────────────────────────────────────────────────────
+   STATUS CONFIG TABLE
+   Defines banner appearance + which cards are visible per status.
+───────────────────────────────────────────────────────────────── */
+const STATUS_CONFIG = {
+    pending: {
+        bannerClass: 'pending',
+        bannerSvg:   '<circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14.5 13.5"/>',
+        bannerLabel: 'Application Submitted',
+        bannerMsg:   'Your application is now being reviewed by your department. Please wait for an interview notification via email.',
+        courseLocked: false,
+        /* card visibility flags */
+        showInterview: false, showRejection: false, showAcceptance: false,
+        showEnrollSched: false, showFormCard: false, showEnrolled: false, showNotice: true,
+    },
+    for_interview: {
+        bannerClass: 'interview',
+        bannerSvg:   '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+        bannerLabel: 'Interview Scheduled',
+        bannerMsg:   'Your application passed initial review! Please attend your scheduled interview — details are shown below.',
+        courseLocked: true,
+        showInterview: true, showRejection: false, showAcceptance: false,
+        showEnrollSched: false, showFormCard: false, showEnrolled: false, showNotice: false,
+    },
+    rejected: {
+        bannerClass: 'rejected',
+        bannerSvg:   '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+        bannerLabel: 'Application Not Accepted',
+        bannerMsg:   'Your application was not accepted for this course. You may change your course and re-apply.',
+        courseLocked: false,
+        showInterview: false, showRejection: true, showAcceptance: false,
+        showEnrollSched: false, showFormCard: false, showEnrolled: false, showNotice: false,
+    },
+    accepted: {
+        bannerClass: 'accepted',
+        bannerSvg:   '<polyline points="20 6 9 17 4 12"/>',
+        bannerLabel: 'Accepted — Proceed to Enrollment',
+        bannerMsg:   'Your application has been accepted! Fill out the enrollment form and follow your assigned schedule.',
+        courseLocked: true,
+        showInterview: false, showRejection: false, showAcceptance: true,
+        showEnrollSched: true, showFormCard: true, showEnrolled: false, showNotice: false,
+    },
+    enrolled: {
+        bannerClass: 'enrolled',
+        bannerSvg:   '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+        bannerLabel: 'Officially Enrolled',
+        bannerMsg:   'You are now officially enrolled at WMSU. Claim your COR at the MISTO Office per your schedule.',
+        courseLocked: true,
+        showInterview: false, showRejection: false, showAcceptance: false,
+        showEnrollSched: true, showFormCard: false, showEnrolled: true, showNotice: false,
+    }
+};
+
+/* ─────────────────────────────────────────────────────────────────
+   PROGRESS STEPPER STATE MAP
+   Returns array: [submitted, interview, accepted, form, enrolled]
+   Each value: 'done' | 'active' | 'rejected' | 'pending'
+───────────────────────────────────────────────────────────────── */
+function getStepStates(status, formSubmitted) {
+    const map = {
+        //                       sub       interview  accepted    form      enrolled
+        pending:       ['done',  'pending',  'pending',  'pending',  'pending'],
+        for_interview: ['done',  'active',   'pending',  'pending',  'pending'],
+        rejected:      ['done',  'rejected', 'pending',  'pending',  'pending'],
+        accepted:      ['done',  'done',     'active',   formSubmitted ? 'done' : 'pending', 'pending'],
+        enrolled:      ['done',  'done',     'done',     'done',     'active'],
+    };
+    return map[status] || map.pending;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   RENDER: PROGRESS STEPPER
+───────────────────────────────────────────────────────────────── */
+function renderProgress(status, formSubmitted) {
+    const states = getStepStates(status, formSubmitted);
+
+    const STEPS = [
+        { step:'stepSubmitted',  circle:'circleSubmitted', line:'lineSubmitted', badge:'badgeSubmitted',
+          labels:{ done:'Done', active:'Current', rejected:'Done', pending:'Pending' },
+          colors:{ done:'green', active:'yellow', rejected:'green', pending:'gray' } },
+        { step:'stepInterview',  circle:'circleInterview', line:'lineInterview', badge:'badgeInterview',
+          labels:{ done:'Done', active:'Scheduled', rejected:'Rejected', pending:'Pending' },
+          colors:{ done:'green', active:'yellow', rejected:'red', pending:'gray' } },
+        { step:'stepAccepted',   circle:'circleAccepted',  line:'lineAccepted',  badge:'badgeAccepted',
+          labels:{ done:'Done', active:'Current', rejected:'Pending', pending:'Pending' },
+          colors:{ done:'green', active:'yellow', rejected:'gray', pending:'gray' } },
+        { step:'stepForm',       circle:'circleForm',      line:'lineForm',       badge:'badgeForm',
+          labels:{ done:'Submitted', active:'Pending', rejected:'Pending', pending:'Pending' },
+          colors:{ done:'green', active:'yellow', rejected:'gray', pending:'gray' } },
+        { step:'stepEnrolled',   circle:'circleEnrolled',  line:null,             badge:'badgeEnrolled',
+          labels:{ done:'Done', active:'Ready', rejected:'Pending', pending:'Pending' },
+          colors:{ done:'green', active:'yellow', rejected:'gray', pending:'gray' } },
+    ];
+
+    STEPS.forEach((cfg, i) => {
+        const state    = states[i];
+        const stepEl   = document.getElementById(cfg.step);
+        const circleEl = document.getElementById(cfg.circle);
+        const badgeEl  = document.getElementById(cfg.badge);
+        const lineEl   = cfg.line ? document.getElementById(cfg.line) : null;
+
+        // Dim step if pending
+        stepEl.classList.toggle('gray', state === 'pending');
+
+        // Circle colour
+        circleEl.className = 'progress-circle';
+        if      (state === 'pending')  circleEl.classList.add('gray');
+        else if (state === 'active')   circleEl.classList.add('yellow');
+        else if (state === 'rejected') circleEl.classList.add('red');
+        // 'done' → default crimson
+
+        // Connector line
+        if (lineEl) lineEl.classList.toggle('active', state === 'done');
+
+        // Badge
+        if (badgeEl) {
+            badgeEl.textContent = cfg.labels[state] || 'Pending';
+            badgeEl.className   = `badge ${cfg.colors[state] || 'gray'}`;
+        }
+    });
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   RENDER: STATUS UI  (banner + cards)
+───────────────────────────────────────────────────────────────── */
+function renderStatusUI(state) {
+    const status = state.deptStatus || 'pending';
+    const cfg    = STATUS_CONFIG[status] || STATUS_CONFIG.pending;
+
+    // Banner
+    const banner = document.getElementById('topStatusBanner');
+    banner.className = `top-status-banner ${cfg.bannerClass}`;
+    banner.querySelector('.top-status-icon svg').innerHTML = cfg.bannerSvg;
+    document.getElementById('statusBannerText').innerHTML =
+        `<strong>${cfg.bannerLabel}</strong> — ${cfg.bannerMsg}`;
+
+    // Toggle all .status-card visibility
+    const show = (id, visible) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('visible', visible);
+    };
+    show('interviewCard',   cfg.showInterview);
+    show('rejectionCard',   cfg.showRejection);
+    show('enrollSchedCard', cfg.showEnrollSched);
+    show('formCard',        cfg.showFormCard);
+
+    // Acceptance card (gradient, not .status-card)
+    const acceptEl = document.getElementById('acceptanceCard');
+    if (acceptEl) {
+        acceptEl.style.display = cfg.showAcceptance ? 'block' : 'none';
+    }
+
+    // Enrolled card
+    const enrolledEl = document.getElementById('enrolledCard');
+    if (enrolledEl) {
+        enrolledEl.style.display = cfg.showEnrolled ? 'block' : 'none';
+    }
+
+    // Notice card
+    document.getElementById('noticeCard').style.display = cfg.showNotice ? '' : 'none';
+
+    // Populate schedule values
+    if (cfg.showInterview) {
+        document.getElementById('sched-date').textContent  = state.interviewDate  || '—';
+        document.getElementById('sched-time').textContent  = state.interviewTime  || '—';
+        document.getElementById('sched-venue').textContent = state.interviewVenue || '—';
+    }
+    if (cfg.showEnrollSched) {
+        document.getElementById('enroll-date').textContent  = state.enrollDate  || '—';
+        document.getElementById('enroll-time').textContent  = state.enrollTime  || '—';
+        document.getElementById('enroll-venue').textContent = state.enrollVenue || '—';
+    }
+
+    // Form card button state
+    if (cfg.showFormCard) renderFormButton(state.formSubmitted);
+
+    // Course change button
+    const courseBtn = document.getElementById('changeCourseBtn');
+    const courseLbl = document.getElementById('changeCourseLabel');
+    courseBtn.disabled = cfg.courseLocked;
+    if (cfg.courseLocked) {
+        courseBtn.classList.add('btn-change-course--locked');
+        courseLbl.textContent = 'Course Locked';
+    } else {
+        courseBtn.classList.remove('btn-change-course--locked');
+        courseLbl.textContent = 'Change Course';
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   RENDER: FORM BUTTON
+   Switches between "Fill Up Enrollment Form" and "Form Submitted"
+───────────────────────────────────────────────────────────────── */
+function renderFormButton(submitted) {
+    const area        = document.getElementById('formActionArea');
+    const reminderBox = document.getElementById('formReminderBox');
+
+    if (submitted) {
+        // Change button to confirmed state
+        area.innerHTML = `
+            <div class="btn-form-submitted">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Form Submitted: Information Received
+            </div>`;
+        // Show document & fee reminders
+        reminderBox.classList.add('visible');
+    } else {
+        area.innerHTML = `
+            <a href="forms.html" class="btn-fill-form">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                Fill Up Enrollment Form
+            </a>`;
+        reminderBox.classList.remove('visible');
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   RENDER: PROFILE CARD
+───────────────────────────────────────────────────────────────── */
+function renderProfile(s) {
+    const mi       = s.middleinitial ? ' ' + s.middleinitial.replace('.','').toUpperCase() + '.' : '';
+    const fullName = `${s.surname}, ${s.firstname}${mi}`;
+    const initials = ((s.surname[0] || '') + (s.firstname[0] || '')).toUpperCase();
+
+    document.getElementById('res-avatar').textContent            = initials || '?';
+    document.getElementById('res-name').textContent              = fullName;
+    document.getElementById('res-date').textContent              = 'Submitted: ' +
+        (s.submittedDate
+            ? new Date(s.submittedDate).toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' })
+            : '—');
+    document.getElementById('res-surname-val').textContent       = s.surname;
+    document.getElementById('res-firstname-val').textContent     = s.firstname;
+    document.getElementById('res-middleinitial-val').textContent = s.middleinitial
+        ? s.middleinitial.replace('.','').toUpperCase() + '.' : '—';
+    document.getElementById('res-email-val').textContent         = s.email;
+    document.getElementById('res-contact-val').textContent       = s.contact;
+    document.getElementById('res-course-name').textContent       = s.course;
+    document.getElementById('res-course-icon').textContent       = COURSE_ICONS[s.course] || '📚';
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MASTER RENDER — call this whenever appState changes
+───────────────────────────────────────────────────────────────── */
+function render() {
+    renderProfile(appState);
+    renderProgress(appState.deptStatus, appState.formSubmitted);
+    renderStatusUI(appState);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SAVE STATE to localStorage
+   TODO: Replace with API call e.g. fetch('/api/student', { method:'PATCH', body:... })
+───────────────────────────────────────────────────────────────── */
+function normalizeAppId(value) {
+    return value ? value.toString().toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+}
+
+function getFreshmanApp() {
+    const raw = localStorage.getItem('freshmanApp');
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (err) { return null; }
+}
+
+function findSharedApp(appNo) {
+    if (!appNo) return null;
+    try {
+        const all = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
+        return all.find(app => normalizeAppId(app.appNo) === normalizeAppId(appNo));
+    } catch (err) {
+        return null;
+    }
+}
+
+function saveState() {
+    localStorage.setItem('freshmanApp', JSON.stringify(appState));
+    try {
+        const all = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
+        const idx = all.findIndex(app => app.appNo === appState.appNo);
+        if (idx >= 0) {
+            all[idx] = { ...all[idx], ...appState };
         } else {
-            let app = JSON.parse(raw);
-            const shared = JSON.parse(localStorage.getItem('wmsu_applications') || '[]').find(a => a.appNo === app.appNo);
-            if (shared) {
-                app = { ...app, ...shared };
-                localStorage.setItem('freshmanApp', JSON.stringify(app));
-            }
-            missingApp.hidden = true;
-            accountContent.hidden = false;
-            populate(app);
+            all.push(appState);
         }
+        localStorage.setItem('wmsu_applications', JSON.stringify(all));
+    } catch (err) {
+        console.warn('Unable to sync updated application state to shared storage.', err);
+    }
+}
 
-        function buildFullName(app) {
-            const mi = app.middleinitial ? ' ' + app.middleinitial.replace('.', '').toUpperCase() + '.' : '';
-            return app.surname + ', ' + app.firstname + mi;
-        }
+function getAppNoFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('appNo');
+}
 
-        function getApplicationStatus(app) {
-            const accepted = app.deptStatus === 'accepted' || app.status === 'reviewed';
-            const interview = app.deptStatus === 'for_interview';
-            const rejected = app.deptStatus === 'rejected';
+/* ─────────────────────────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────────────────────────── */
+(function init() {
+    const persistedApp = getFreshmanApp();
+    const queryAppNo = getAppNoFromQuery();
+    const sharedApp = queryAppNo ? findSharedApp(queryAppNo) : null;
+    const appToLoad = persistedApp || sharedApp;
 
-            if (rejected) {
-                return {
-                    label: 'Rejected',
-                    message: 'Your application has been rejected by the department. Please contact admission for next steps.',
-                    stage: 'rejected',
-                };
-            }
-            if (interview) {
-                return {
-                    label: 'Interview Scheduled',
-                    message: 'Your application is scheduled for interview. Please check your email for details.',
-                    stage: 'contacted',
-                };
-            }
-            if (accepted) {
-                return {
-                    label: 'Under Review',
-                    message: 'Your application was approved by the department and is now under review.',
-                    stage: 'under_review',
-                };
-            }
-            return {
-                label: 'Pending Review',
-                message: 'Your application has been received. Please wait for official confirmation via email.',
-                stage: 'submitted',
-            };
-        }
+    if (!appToLoad) {
+        document.getElementById('missingApp').hidden = false;
+        document.getElementById('accountContent').hidden = true;
+        return;
+    }
 
-        function updateProgressStep(stepId, state, badgeText, badgeClass) {
-            const step = document.getElementById(stepId);
-            if (!step) return;
-            const circle = step.querySelector('.progress-circle');
-            const badge = step.querySelector('.badge');
+    appState = { ...appState, ...appToLoad };
+    saveState();
 
-            if (state === 'pending') {
-                step.classList.add('gray');
-                circle?.classList.add('gray');
-            } else {
-                step.classList.remove('gray');
-                circle?.classList.remove('gray');
-            }
+    if (localStorage.getItem('formSubmitted') === 'true') {
+        appState.formSubmitted = true;
+        localStorage.removeItem('formSubmitted'); // consume the flag
+        saveState();
+    }
 
-            if (badge) {
-                if (badgeText) {
-                    badge.textContent = badgeText;
-                    badge.className = `badge ${badgeClass}`;
-                    badge.style.display = 'inline-block';
-                } else {
-                    badge.style.display = 'none';
-                }
-            }
-        }
+    document.getElementById('missingApp').hidden    = true;
+    document.getElementById('accountContent').hidden = false;
+    render();
+})();
 
-        function renderApplicationProgress(app) {
-            const status = getApplicationStatus(app);
-            const pending = status.stage === 'submitted';
-            const underReview = status.stage === 'under_review';
-            const contacted = status.stage === 'contacted';
-            const rejected = status.stage === 'rejected';
+/* ─────────────────────────────────────────────────────────────────
+   INLINE EDIT FUNCTIONS
+───────────────────────────────────────────────────────────────── */
+function toggleEdit(field) {
+    const form = document.getElementById('edit-' + field);
+    form.classList.toggle('open');
+    if (form.classList.contains('open')) {
+        const valEl = document.getElementById('res-' + field + '-val');
+        document.getElementById('edit-' + field + '-input').value =
+            valEl ? valEl.textContent.replace(/\.$/, '') : '';
+        document.getElementById('edit-' + field + '-input').focus();
+    }
+}
 
-            updateProgressStep('stepSubmitted', 'completed', 'Completed', 'green');
-            updateProgressStep('stepUnderReview', rejected ? 'pending' : underReview ? 'active' : contacted ? 'completed' : 'pending', rejected ? 'Rejected' : underReview ? 'In Progress' : contacted ? 'Completed' : 'Pending', rejected ? 'red' : underReview ? 'yellow' : contacted ? 'green' : 'gray');
-            updateProgressStep('stepContacted', contacted ? 'active' : rejected ? 'pending' : 'pending', contacted ? 'Scheduled' : '', 'yellow');
-            updateProgressStep('stepEnrolled', 'pending', '', 'gray');
-        }
+function saveEdit(field) {
+    const input = document.getElementById('edit-' + field + '-input');
+    let val = input.value.trim();
+    if (!val) return;
 
-        function renderApplicationStatus(app) {
-            const status = getApplicationStatus(app);
-            document.getElementById('statusBannerText').innerHTML = `<strong>${status.label}</strong> — ${status.message}`;
-        }
+    if (field === 'middleinitial') {
+        val = val.replace('.','').toUpperCase();
+        if (!/^[A-Z]$/.test(val)) { alert('Middle initial must be a single letter.'); return; }
+        appState.middleinitial = val;
+        document.getElementById('res-middleinitial-val').textContent = val + '.';
+    } else {
+        appState[field] = val;
+        document.getElementById('res-' + field + '-val').textContent = val;
+    }
 
-        function syncFreshmanAppToShared(app) {
-            const all = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
-            const idx = all.findIndex(a => a.appNo === app.appNo);
-            if (idx === -1) return;
-            all[idx] = { ...all[idx], ...app };
-            localStorage.setItem('wmsu_applications', JSON.stringify(all));
-        }
+    // Refresh name/avatar for name field changes
+    if (['surname','firstname','middleinitial'].includes(field)) {
+        const mi = appState.middleinitial ? ' ' + appState.middleinitial.toUpperCase() + '.' : '';
+        document.getElementById('res-name').textContent = `${appState.surname}, ${appState.firstname}${mi}`;
+        const initials = ((appState.surname[0]||'') + (appState.firstname[0]||'')).toUpperCase();
+        document.getElementById('res-avatar').textContent = initials || '?';
+    }
 
-        function populate(app) {
-            if (!app.surname) {
-                app.surname       = app.name || '—';
-                app.firstname     = '';
-                app.middleinitial = '';
-            }
-            const fullName = buildFullName(app);
-            const initials = (app.surname[0] + (app.firstname[0] || '')).toUpperCase();
+    document.getElementById('edit-' + field).classList.remove('open');
+    saveState();
+}
 
-            document.getElementById('res-avatar').textContent            = initials || '?';
-            document.getElementById('res-name').textContent              = fullName;
-            document.getElementById('res-date').textContent              = 'Submitted: ' + (app.submittedDate ? new Date(app.submittedDate).toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' }) : '—');
-            document.getElementById('res-surname-val').textContent       = app.surname;
-            document.getElementById('res-firstname-val').textContent     = app.firstname;
-            document.getElementById('res-middleinitial-val').textContent = app.middleinitial ? app.middleinitial.replace('.', '').toUpperCase() + '.' : '—';
-            document.getElementById('res-email-val').textContent         = app.email;
-            document.getElementById('res-contact-val').textContent       = app.contact;
-            document.getElementById('res-course-name').textContent       = app.course;
-            document.getElementById('res-course-icon').textContent       = courseIcons[app.course] || '📚';
+// Allow Enter key inside inline edit inputs
+document.querySelectorAll('.info-edit-input').forEach(inp => {
+    inp.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') saveEdit(this.id.replace('edit-','').replace('-input',''));
+    });
+});
 
-            renderApplicationStatus(app);
-            renderApplicationProgress(app);
-        }
+/* ─────────────────────────────────────────────────────────────────
+   COURSE CHANGE MODAL
+───────────────────────────────────────────────────────────────── */
+function openChangeCourse() {
+    const cfg = STATUS_CONFIG[appState.deptStatus || 'pending'];
+    if (cfg && cfg.courseLocked) return;
+    document.getElementById('modal-alert').style.display = 'none';
+    document.getElementById('new-course').value = '';
+    document.getElementById('changeCourseModal').classList.add('open');
+}
+function closeChangeCourse() {
+    document.getElementById('changeCourseModal').classList.remove('open');
+}
+function confirmChangeCourse() {
+    const newCourse = document.getElementById('new-course').value;
+    if (!newCourse) {
+        document.getElementById('modal-alert').textContent = 'Please select a new course.';
+        document.getElementById('modal-alert').style.display = 'block';
+        return;
+    }
+    appState.course = newCourse;
+    // Reset to pending when changing course after rejection
+    if (appState.deptStatus === 'rejected') appState.deptStatus = 'pending';
+    saveState();
+    render();
+    closeChangeCourse();
+}
+document.getElementById('changeCourseModal').addEventListener('click', function(e) {
+    if (e.target === this) closeChangeCourse();
+});
 
-        function toggleEdit(field) {
-            const form = document.getElementById('edit-' + field);
-            form.classList.toggle('open');
-            if (form.classList.contains('open')) {
-                const valEl = document.getElementById('res-' + field + '-val');
-                document.getElementById('edit-' + field + '-input').value = valEl ? valEl.textContent.replace(/\.$/, '') : '';
-                document.getElementById('edit-' + field + '-input').focus();
-            }
-        }
 
-        function saveEdit(field) {
-            const input = document.getElementById('edit-' + field + '-input');
-            let val = input.value.trim();
-            if (!val) return;
-
-            const app = JSON.parse(localStorage.getItem('freshmanApp'));
-
-            if (field === 'middleinitial') {
-                val = val.replace('.', '').toUpperCase();
-                if (!/^[A-Z]$/.test(val)) { alert('Middle initial must be a single letter.'); return; }
-                app.middleinitial = val;
-                document.getElementById('res-middleinitial-val').textContent = val + '.';
-            } else if (field === 'surname') {
-                app.surname = val;
-                document.getElementById('res-surname-val').textContent = val;
-            } else if (field === 'firstname') {
-                app.firstname = val;
-                document.getElementById('res-firstname-val').textContent = val;
-            } else if (field === 'email') {
-                app.email = val;
-                document.getElementById('res-email-val').textContent = val;
-            } else if (field === 'contact') {
-                app.contact = val;
-                document.getElementById('res-contact-val').textContent = val;
-            }
-
-            if (['surname', 'firstname', 'middleinitial'].includes(field)) {
-                app.name = buildFullName(app);
-                document.getElementById('res-name').textContent = app.name;
-                const initials = (app.surname[0] + (app.firstname[0] || '')).toUpperCase();
-                document.getElementById('res-avatar').textContent = initials || '?';
-            }
-
-            document.getElementById('edit-' + field).classList.remove('open');
-            localStorage.setItem('freshmanApp', JSON.stringify(app));
-            syncFreshmanAppToShared(app);
-        }
-
-        document.querySelectorAll('.info-edit-input').forEach(inp => {
-            inp.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') saveEdit(this.id.replace('edit-', '').replace('-input', ''));
-            });
-        });
-
-        function openChangeCourse() {
-            document.getElementById('modal-alert').style.display = 'none';
-            document.getElementById('new-course').value = '';
-            document.getElementById('changeCourseModal').classList.add('open');
-        }
-
-        function closeChangeCourse() {
-            document.getElementById('changeCourseModal').classList.remove('open');
-        }
-
-        function confirmChangeCourse() {
-            const newCourse = document.getElementById('new-course').value;
-            if (!newCourse) {
-                document.getElementById('modal-alert').textContent = 'Please select a new course.';
-                document.getElementById('modal-alert').style.display = 'block';
-                return;
-            }
-            document.getElementById('res-course-name').textContent = newCourse;
-            document.getElementById('res-course-icon').textContent = courseIcons[newCourse] || '📚';
-            const app = JSON.parse(localStorage.getItem('freshmanApp'));
-            app.course = newCourse;
-            localStorage.setItem('freshmanApp', JSON.stringify(app));
-            syncFreshmanAppToShared(app);
-            closeChangeCourse();
-        }
-
-        document.getElementById('changeCourseModal').addEventListener('click', function(e) {
-            if (e.target === this) closeChangeCourse();
-        });
-    </script>
+</script>
 </body>
 </html>

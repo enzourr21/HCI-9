@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="../style.css">
+    <script src="../../../script/seedApplications.js"></script>
 </head>
 <body>
 
@@ -85,7 +86,7 @@
                 <div class="auth-card-body">
 
                     <div class="auth-signin">
-                        No account yet? <a href="flogin.html">Create one here</a>
+                        No account yet? <a href="freshmen-login.html">Create one here</a>
                     </div>
 
                     <form id="loginForm" novalidate>
@@ -100,7 +101,7 @@
                                 required
                                 autocomplete="off"
                             />
-                            <span class="lp-field-hint">e.g. WCAT-2025-00001 or 2021-00001</span>
+                            <span class="lp-field-hint">e.g. CET-2025-00001 or 2021-00001</span>
                         </div>
 
                         <button type="submit" class="lp-btn-full">Sign In →</button>
@@ -116,32 +117,56 @@
 </div>
 
 <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const id       = document.getElementById('id').value.trim();
-        const alertDiv = document.getElementById('alert');
-
-        if (!id) {
-            alertDiv.className = 'lp-alert';
-            alertDiv.textContent = 'Please enter your ID.';
-            alertDiv.style.display = 'block';
-            return;
+        function normalizeAppId(value) {
+            return value.toLowerCase().replace(/[^a-z0-9]/g, '');
         }
 
-        const savedApp = localStorage.getItem('freshmanApp');
-        if (savedApp) {
-            alertDiv.style.display = 'none';
-            window.location.href = 'freshman-account.html';
-        } else {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('id').value.trim();
+            const alertDiv = document.getElementById('alert');
+
+            if (!id) {
+                alertDiv.className = 'lp-alert';
+                alertDiv.textContent = 'Please enter your application ID.';
+                alertDiv.style.display = 'block';
+                return;
+            }
+
+            const normalizedInput = normalizeAppId(id);
+            const storedApps = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
+            const matchFromShared = storedApps.find(app => normalizeAppId(app.appNo || '') === normalizedInput);
+
+            if (matchFromShared) {
+                localStorage.setItem('freshmanApp', JSON.stringify(matchFromShared));
+                alertDiv.style.display = 'none';
+                window.location.href = '../users/Freshmen/freshman-account.html';
+                return;
+            }
+
+            const savedAppRaw = localStorage.getItem('freshmanApp');
+            let savedApp = null;
+            if (savedAppRaw) {
+                try { savedApp = JSON.parse(savedAppRaw); } catch (err) { savedApp = null; }
+            }
+
+            const appNo = savedApp?.appNo || savedApp?.id || '';
+            const normalizedAppNo = normalizeAppId(appNo);
+
+            if (savedApp && normalizedInput === normalizedAppNo) {
+                alertDiv.style.display = 'none';
+                window.location.href = '../users/Freshmen/freshman-account.html';
+                return;
+            }
+
             alertDiv.className = 'lp-alert lp-alert--info';
-            alertDiv.textContent = "No account found. Redirecting to create one…";
+            alertDiv.textContent = 'No matching application found for that ID. If you have not created an account yet, please register first.';
             alertDiv.style.display = 'block';
             setTimeout(function() {
-                window.location.href = 'flogin.html';
+                window.location.href = 'freshmen-login.html';
             }, 1200);
-        }
-    });
-</script>
+        });
+    </script>
 
 </body>
 </html>
