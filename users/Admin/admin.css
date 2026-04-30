@@ -82,23 +82,20 @@ input, select, textarea { font-family: inherit; }
 
 
 /* ══════════════════════════════════════════════════════════════
-   TOPBAR / NAVBAR
+   TOPBAR / NAVBAR  —  WHITE
 ══════════════════════════════════════════════════════════════ */
 .topbar {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 200;
     height: var(--nav-h);
-    background: var(--cr-deep);
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     padding: 0 24px;
     gap: 16px;
-    box-shadow: 0 2px 20px rgba(0,0,0,.28);
-    /* Subtle noise texture for depth */
-    background-image:
-        linear-gradient(135deg, rgba(255,255,255,.04) 0%, transparent 60%),
-        linear-gradient(to right, #6b1218, #8b1a26);
+    box-shadow: 0 1px 4px rgba(0,0,0,.07);
 }
 
 /* Brand / Logo */
@@ -110,29 +107,28 @@ input, select, textarea { font-family: inherit; }
     flex-shrink: 0;
     transition: opacity .15s;
 }
-.topbar-brand:hover { opacity: .85; }
+.topbar-brand:hover { opacity: .75; }
 
 .topbar-logo {
     width: 30px;
     height: 30px;
-    color: var(--gold-lt);
-    filter: drop-shadow(0 0 6px rgba(232,184,75,.35));
+    color: var(--cr);
     flex-shrink: 0;
 }
 
 .topbar-name {
     font-size: 17px;
     font-weight: 800;
-    color: #fff;
+    color: var(--text);
     letter-spacing: -.5px;
     white-space: nowrap;
 }
 
-/* Pill label (e.g. "Admission Office") */
+/* Pill label */
 .topbar-pill {
-    background: rgba(255,255,255,.13);
-    border: 1px solid rgba(255,255,255,.2);
-    color: rgba(255,255,255,.9);
+    background: var(--cr-pale);
+    border: 1px solid rgba(192,25,43,.18);
+    color: var(--cr);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: .7px;
@@ -146,11 +142,11 @@ input, select, textarea { font-family: inherit; }
 .topbar-divider {
     width: 1px;
     height: 24px;
-    background: rgba(255,255,255,.18);
+    background: var(--border);
     flex-shrink: 0;
 }
 
-/* Department selector (Dept Head) */
+/* Department selector */
 .topbar-dept-wrap {
     display: flex;
     align-items: center;
@@ -159,15 +155,15 @@ input, select, textarea { font-family: inherit; }
 .topbar-dept-label {
     font-size: 10px;
     font-weight: 700;
-    color: rgba(255,255,255,.45);
+    color: var(--muted-lt);
     text-transform: uppercase;
     letter-spacing: .9px;
     white-space: nowrap;
 }
 .topbar-dept-select {
-    background: rgba(255,255,255,.11);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,.22);
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 6px 30px 6px 12px;
     font-size: 13px;
@@ -176,15 +172,15 @@ input, select, textarea { font-family: inherit; }
     outline: none;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,.55)' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
     max-width: 270px;
-    transition: background-color .15s, border-color .15s;
+    transition: border-color .15s, box-shadow .15s;
 }
-.topbar-dept-select:hover  { background-color: rgba(255,255,255,.16); }
-.topbar-dept-select:focus  { background-color: rgba(255,255,255,.18); border-color: rgba(255,255,255,.38); }
-.topbar-dept-select option { background: #3b0a12; color: #fff; }
+.topbar-dept-select:hover  { border-color: var(--cr); }
+.topbar-dept-select:focus  { border-color: var(--cr); box-shadow: 0 0 0 3px rgba(192,25,43,.08); }
+.topbar-dept-select option { background: var(--white); color: var(--text); }
 
 /* Right cluster */
 .topbar-right {
@@ -196,7 +192,7 @@ input, select, textarea { font-family: inherit; }
 
 .topbar-sync {
     font-size: 11px;
-    color: rgba(255,255,255,.38);
+    color: var(--muted-lt);
     white-space: nowrap;
 }
 
@@ -207,20 +203,20 @@ input, select, textarea { font-family: inherit; }
     gap: 9px;
     font-size: 13px;
     font-weight: 500;
-    color: rgba(255,255,255,.82);
+    color: var(--text);
 }
 .topbar-avatar {
     width: 33px;
     height: 33px;
     border-radius: 50%;
-    background: rgba(255,255,255,.18);
-    border: 2px solid rgba(255,255,255,.28);
+    background: var(--cr-pale);
+    border: 2px solid rgba(192,25,43,.18);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
     font-weight: 800;
-    color: #fff;
+    color: var(--cr);
     flex-shrink: 0;
     letter-spacing: .5px;
 }
@@ -230,46 +226,40 @@ input, select, textarea { font-family: inherit; }
     display: flex;
     align-items: center;
     gap: 6px;
-    color: rgba(255,255,255,.65);
+    color: var(--muted);
     text-decoration: none;
     font-size: 12.5px;
     font-weight: 600;
     padding: 6px 11px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,.15);
+    border: 1px solid var(--border);
     transition: background .15s, color .15s, border-color .15s;
     white-space: nowrap;
     flex-shrink: 0;
 }
 .topbar-logout svg { flex-shrink: 0; }
 .topbar-logout:hover {
-    background: rgba(255,255,255,.13);
-    color: #fff;
-    border-color: rgba(255,255,255,.28);
+    background: var(--cr-pale);
+    color: var(--cr);
+    border-color: rgba(192,25,43,.20);
 }
 
 
 /* ══════════════════════════════════════════════════════════════
-   LAYOUT
-══════════════════════════════════════════════════════════════ */
-/* ══════════════════════════════════════════════════════════════
-   NAVBAR  (Assessment Office + style.css-based pages)
-   Uses .navbar / .logo / .nav-links instead of .topbar
+   NAVBAR  (Assessment Office + style.css-based pages)  —  WHITE
 ══════════════════════════════════════════════════════════════ */
 .navbar {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 200;
     height: var(--nav-h);
-    background: var(--cr-deep);
-    background-image:
-        linear-gradient(135deg, rgba(255,255,255,.04) 0%, transparent 60%),
-        linear-gradient(to right, #6b1218, #8b1a26);
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 24px;
-    box-shadow: 0 2px 20px rgba(0,0,0,.28);
+    box-shadow: 0 1px 4px rgba(0,0,0,.07);
 }
 
 .navbar .logo {
@@ -281,14 +271,13 @@ input, select, textarea { font-family: inherit; }
 .navbar .logo-icon {
     width: 30px;
     height: 30px;
-    color: var(--gold-lt);
-    filter: drop-shadow(0 0 6px rgba(232,184,75,.35));
+    color: var(--cr);
     flex-shrink: 0;
 }
 .navbar .name {
     font-size: 17px;
     font-weight: 800;
-    color: #fff;
+    color: var(--text);
     letter-spacing: -.5px;
 }
 
@@ -305,20 +294,20 @@ input, select, textarea { font-family: inherit; }
     display: flex;
     align-items: center;
     gap: 6px;
-    color: rgba(255,255,255,.65);
+    color: var(--muted);
     text-decoration: none;
     font-size: 12.5px;
     font-weight: 600;
     padding: 6px 11px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,.15);
+    border: 1px solid var(--border);
     transition: background .15s, color .15s, border-color .15s;
     white-space: nowrap;
 }
 .navbar .nav-links a:hover {
-    background: rgba(255,255,255,.13);
-    color: #fff;
-    border-color: rgba(255,255,255,.28);
+    background: var(--cr-pale);
+    color: var(--cr);
+    border-color: rgba(192,25,43,.20);
 }
 .navbar .nav-links a svg { flex-shrink: 0; }
 
@@ -333,7 +322,7 @@ body.admin-layout { padding-top: var(--nav-h); }
 }
 
 /* ══════════════════════════════════════════════════════════════
-   LAYOUT  (.layout = Admission Office / Dept Head shell)
+   LAYOUT
 ══════════════════════════════════════════════════════════════ */
 .layout {
     display: flex;
@@ -625,7 +614,6 @@ body.admin-layout { padding-top: var(--nav-h); }
     font-size: 18px;
     flex-shrink: 0;
 }
-/* Icon backgrounds */
 .kpi-icon.total,    .kpi-total     { background: #f0f9ff; }
 .kpi-icon.valid,    .kpi-qualified { background: var(--green-pale); }
 .kpi-icon.flagged                 { background: var(--red-pale); }
@@ -856,7 +844,6 @@ body.admin-layout { padding-top: var(--nav-h); }
     flex-shrink: 0;
 }
 
-/* Admission-Office badge variants */
 .badge-valid        { background: var(--green-pale); color: var(--green-dk); }
 .badge-valid::before{ background: var(--green); }
 .badge-invalid      { background: var(--red-pale);   color: var(--red); }
@@ -868,7 +855,6 @@ body.admin-layout { padding-top: var(--nav-h); }
 .badge-interviewed  { background: var(--blue-pale);  color: var(--blue); }
 .badge-interviewed::before { background: var(--blue-lt); }
 
-/* Dept-Head badge variants */
 .b-pending          { background: var(--amber-pale); color: var(--amber); }
 .b-pending::before  { background: var(--amber); }
 .b-qualified        { background: var(--green-pale); color: var(--green-dk); }
@@ -882,13 +868,11 @@ body.admin-layout { padding-top: var(--nav-h); }
 .b-flagged          { background: var(--red-pale);   color: var(--red); }
 .b-flagged::before  { background: var(--red); }
 
-/* Qualification tag */
 .qual-tag  { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
 .qual-pass, .pass-tag { background: var(--green-pale); color: var(--green-dk); }
 .qual-fail, .fail-tag { background: var(--red-pale);   color: var(--red); }
 .qual-warn             { background: var(--amber-pale); color: var(--amber); }
 
-/* OAPR score pill */
 .score-pill {
     display: inline-block;
     padding: 3px 10px;
@@ -903,7 +887,6 @@ body.admin-layout { padding-top: var(--nav-h); }
 .score-pill.low,  .sp-low  { background: var(--red-pale);   color: var(--red); }
 .score-pill.na             { background: var(--bg-dk);      color: var(--muted-lt); }
 
-/* Applicant type tag */
 .type-tag {
     display: inline-block;
     font-size: 10px;
@@ -1021,7 +1004,6 @@ body.admin-layout { padding-top: var(--nav-h); }
 .panel-key { font-size: 12px; color: var(--muted); flex-shrink: 0; padding-right: 8px; }
 .panel-val { font-size: 12.5px; font-weight: 600; color: var(--text); text-align: right; max-width: 240px; word-break: break-word; }
 
-/* DB result boxes */
 .db-result-box { border-radius: 9px; padding: 11px 13px; font-size: 13px; }
 .db-result-box.found   { background: var(--green-pale); border: 1px solid #bbf7d0; }
 .db-result-box.missing { background: var(--red-pale);   border: 1px solid #fecaca; }
@@ -1030,7 +1012,6 @@ body.admin-layout { padding-top: var(--nav-h); }
 .db-result-box.missing .dbt { color: var(--red); }
 .db-result-box .dbs { font-size: 12px; color: var(--muted); }
 
-/* OAPR display box */
 .oapr-box {
     background: var(--cr-pale);
     border: 1px solid #fecdd3;
@@ -1044,14 +1025,12 @@ body.admin-layout { padding-top: var(--nav-h); }
 .oapr-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--cr); }
 .oapr-val { font-size: 22px; font-weight: 800; color: var(--cr); }
 
-/* CET sub-score bars */
 .cet-sub-row { margin-bottom: 8px; }
 .cet-sub-lbl { font-size: 11px; color: var(--muted); font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 3px; }
 .cet-sub-val { font-weight: 700; color: var(--text); }
 .cet-bar     { height: 5px; background: var(--bg-dk); border-radius: 3px; overflow: hidden; }
 .cet-fill    { height: 100%; border-radius: 3px; transition: width .4s; }
 
-/* Qualification result box */
 .qual-result-box { border-radius: 9px; padding: 11px 13px; margin-top: 10px; }
 .qual-result-box.pass { background: var(--green-pale); border: 1px solid #bbf7d0; }
 .qual-result-box.fail { background: var(--red-pale);   border: 1px solid #fecaca; }
@@ -1060,7 +1039,6 @@ body.admin-layout { padding-top: var(--nav-h); }
 .qual-result-box.fail .qt { color: var(--red); }
 .qual-result-box .qr  { font-size: 11.5px; color: var(--muted); line-height: 1.6; }
 
-/* Panel action buttons */
 .panel-actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
 .btn-panel {
     flex: 1;
@@ -1125,7 +1103,6 @@ body.admin-layout { padding-top: var(--nav-h); }
     background: var(--cr-deep);
     background-image: linear-gradient(135deg, rgba(255,255,255,.06) 0%, transparent 60%);
 }
-/* Modal header colour variants */
 .modal-hd.accept-hd    { background: #064e3b; }
 .modal-hd.interview-hd { background: #1e3a8a; }
 .modal-hd.reject-hd    { background: #7f1d1d; }
@@ -1140,7 +1117,6 @@ body.admin-layout { padding-top: var(--nav-h); }
 .modal-body,
 .modal-body-content { padding: 20px 22px; }
 
-/* Student info box inside modal */
 .modal-student-box,
 #flagStudentInfo {
     background: var(--bg);
@@ -1152,7 +1128,6 @@ body.admin-layout { padding-top: var(--nav-h); }
 .modal-student-box strong { font-size: 14px; display: block; margin-bottom: 2px; }
 .modal-student-box span   { color: var(--muted); font-size: 12px; }
 
-/* Form fields */
 .form-field { margin-bottom: 14px; }
 .form-field label {
     display: block;
@@ -1184,13 +1159,11 @@ body.admin-layout { padding-top: var(--nav-h); }
     box-shadow: 0 0 0 3px rgba(192,25,43,.07);
 }
 
-/* Inline alert */
 .modal-alert { padding: 9px 12px; border-radius: 7px; font-size: 12.5px; margin-bottom: 12px; display: none; }
 .modal-alert.show { display: block; }
 .modal-alert.err  { background: var(--red-pale); color: #991b1b; border: 1px solid #fecaca; }
 .modal-alert.ok   { background: var(--green-pale); color: var(--green-dk); border: 1px solid #bbf7d0; }
 
-/* Modal footer */
 .modal-actions,
 .modal-footer {
     display: flex;

@@ -11,9 +11,9 @@
             position: absolute; inset: 0;
             background: linear-gradient(
                 110deg,
-                rgba(107,18,24,.90) 0%,
-                rgba(107,18,24,.82) 45%,
-                rgba(26,26,26,.70) 100%
+                rgba(192,25,43,.82) 0%,
+                rgba(192,25,43,.68) 45%,
+                rgba(26,26,26,.58) 100%
             );
         }
 
@@ -92,7 +92,7 @@
 
         /* Card top bar */
         .auth-card-top {
-            background: var(--cr-deep);
+            background: var(--crimson);
             padding: 22px 28px 20px;
             display: flex; flex-direction: column; gap: 4px;
         }
@@ -163,7 +163,7 @@
         /* Submit button */
         .lp-btn-full {
             display: block; width: 100%; padding: 13px;
-            background: var(--cr); color: #fff;
+            background: var(--crimson); color: var(--white);
             border: none; border-radius: 8px;
             font-size: 15px; font-weight: 700;
             text-align: center; text-decoration: none;
@@ -171,7 +171,7 @@
             transition: background .2s, transform .15s, box-shadow .2s;
         }
         .lp-btn-full:hover {
-            background: var(--cr-dk);
+            background: var(--crimson-dark);
             transform: translateY(-1px);
             box-shadow: 0 6px 18px rgba(192,25,43,.3);
         }
@@ -207,7 +207,7 @@
         }
         #tab-student:checked ~ .lp-auth-card .role-switch label[for="tab-student"],
         #tab-admin:checked   ~ .lp-auth-card .role-switch label[for="tab-admin"] {
-            background: var(--cr, #c0192b);
+            background: var(--cr);
             color: #fff;
         }
 
@@ -241,7 +241,7 @@
         }
         .options label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .options .forgot {
-            color: var(--cr, #c0192b);
+            color: var(--crimson);
             text-decoration: none;
             font-weight: 600;
         }
@@ -249,6 +249,86 @@
 
         /* password wrapper */
         .password-box input { width: 100%; }
+
+        /* ─── ADDITIONS FOR UNIFIED LOGIN ─────────────────────────────
+   Append these rules to login.css (or paste at the bottom).
+   Do NOT remove existing rules — these are additive only.
+────────────────────────────────────────────────────────────── */
+
+/* Role detected pill */
+.role-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: .2px;
+    background: rgba(192,25,43,.08);
+    color: var(--cr);
+    border: 1px solid rgba(192,25,43,.18);
+    transition: background .25s, color .25s, border-color .25s;
+}
+
+.role-indicator::before {
+    content: '●';
+    font-size: 8px;
+}
+
+/* Per-role color variants */
+.role-indicator.role-registrar {
+    background: rgba(26,26,80,.08);
+    color: #1a1a50;
+    border-color: rgba(26,26,80,.2);
+}
+.role-indicator.role-admin {
+    background: rgba(30,80,30,.07);
+    color: #1a5020;
+    border-color: rgba(30,80,30,.18);
+}
+.role-indicator.role-student {
+    background: rgba(192,25,43,.08);
+    color: var(--cr);
+    border-color: rgba(192,25,43,.18);
+}
+
+/* Password toggle button */
+.password-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.password-box input {
+    padding-right: 40px !important;
+}
+.pw-toggle {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--muted);
+    opacity: 0.45;
+    display: flex;
+    align-items: center;
+    transition: opacity .2s;
+}
+.pw-toggle:hover { opacity: 1; }
+
+/* Card footer note */
+.card-footer-note {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    color: rgba(255,255,255,.55);
+}
+.card-footer-note a {
+    color: rgba(255,255,255,.85);
+    font-weight: 600;
+}
 
         /* ─── ANIMATIONS ─── */
         @keyframes lp-fadeup {

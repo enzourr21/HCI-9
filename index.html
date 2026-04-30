@@ -11,18 +11,14 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     ANNOUNCEMENT BAR
-═══════════════════════════════════════════ -->
+<!-- ANNOUNCEMENT BAR -->
 <div class="lp-bar" id="announcementBar">
     <span class="lp-bar-dot"></span>
     <span id="announcementText">Checking enrollment status…</span>
     <button class="lp-bar-close" id="barClose" aria-label="Close">×</button>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     NAVBAR
-═══════════════════════════════════════════ -->
+<!-- NAVBAR -->
 <nav class="lp-nav">
     <a href="adminLandingPage.html" class="lp-nav-brand">
         <svg class="lp-nav-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -32,8 +28,6 @@
         </svg>
         <span class="lp-nav-name">WMSU-Ease</span>
     </a>
-
-    <!-- Desktop links -->
     <ul class="lp-nav-links">
         <li><a href="#lp-home">Home</a></li>
         <li><a href="#lp-paths">Enroll</a></li>
@@ -42,14 +36,11 @@
         <li><a href="#lp-faq">FAQ</a></li>
         <li><a href="login page/old student/login.html" class="lp-nav-cta">Login</a></li>
     </ul>
-
-    <!-- Hamburger -->
     <button class="lp-hamburger" id="navToggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
     </button>
 </nav>
 
-<!-- Mobile overlay + drawer -->
 <div class="lp-nav-overlay" id="navOverlay"></div>
 <ul id="navMenu">
     <li><a href="#lp-home">Home</a></li>
@@ -61,13 +52,10 @@
     <li><a href="login page/old student/login.html" class="lp-nav-cta">Login →</a></li>
 </ul>
 
-<!-- ═══════════════════════════════════════════
-     HERO — two-column layout
-═══════════════════════════════════════════ -->
+<!-- HERO -->
 <section id="lp-home" class="lp-hero">
     <div class="lp-hero-inner">
 
-        <!-- Left: Headline & dates -->
         <div class="lp-hero-left">
             <span class="lp-badge" id="semBadge">A.Y. 2025–2026 · 1st Semester</span>
             <h1 class="lp-h1">Enroll with <em>Ease</em><br>at WMSU</h1>
@@ -93,27 +81,34 @@
             </div>
         </div>
 
-        <!-- Right: Auth card -->
         <div class="lp-hero-right">
             <div class="lp-auth-card">
                 <div class="lp-auth-body">
-
                     <div class="lp-auth-header">
-                        <h3>Get Started 🎓</h3>
+                        <h3>Get Started</h3>
                         <p>Select your student type to continue.</p>
                     </div>
 
-                    <!-- Old student button -->
-                    <a href="login-pages/login.html" class="lp-btn-full" style="margin-bottom: 12px;">
-                        🎓 I'm an Old / Continuing Student →
+                    <a href="login-pages/login.html" class="lp-btn-full" style="margin-bottom:12px;">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                        I'm an Old / Continuing Student →
                     </a>
 
                     <div class="lp-auth-or">new student?</div>
 
-                    <!-- New student options -->
                     <div class="lp-apply-options">
                         <a href="login-pages/freshmen-login.html?type=freshman" class="lp-apply-opt">
-                            <span class="lp-apply-opt-icon">🎒</span>
+                            <span class="lp-apply-opt-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                            </span>
                             <div class="lp-apply-opt-text">
                                 <strong>Freshman</strong>
                                 <span>Senior high school graduate</span>
@@ -121,7 +116,14 @@
                             <span class="lp-apply-opt-arrow">›</span>
                         </a>
                         <a href="login-pages/freshmen-login.html?type=transferee" class="lp-apply-opt">
-                            <span class="lp-apply-opt-icon">📂</span>
+                            <span class="lp-apply-opt-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                </svg>
+                            </span>
                             <div class="lp-apply-opt-text">
                                 <strong>Transferee</strong>
                                 <span>Coming from another school</span>
@@ -129,7 +131,14 @@
                             <span class="lp-apply-opt-arrow">›</span>
                         </a>
                         <a href="login-pages/freshmen-login.html?type=shiftee" class="lp-apply-opt">
-                            <span class="lp-apply-opt-icon">🔁</span>
+                            <span class="lp-apply-opt-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="17 1 21 5 17 9"/>
+                                    <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                    <polyline points="7 23 3 19 7 15"/>
+                                    <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                </svg>
+                            </span>
                             <div class="lp-apply-opt-text">
                                 <strong>Shiftee</strong>
                                 <span>Changing course within WMSU</span>
@@ -145,9 +154,7 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     ENROLLMENT PATHS
-═══════════════════════════════════════════ -->
+<!-- ENROLLMENT PATHS -->
 <section id="lp-paths" class="lp-section lp-paths">
     <div class="lp-inner">
         <div class="lp-sec-hd">
@@ -161,7 +168,12 @@
             <!-- OLD STUDENTS -->
             <div class="lp-path-card">
                 <div class="lp-path-hd lp-path-hd--old">
-                    <span class="lp-path-emoji">🎓</span>
+                    <span class="lp-path-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </span>
                     <h3>Old / Continuing Students</h3>
                     <p>You have an existing WMSU Student ID and were enrolled in a previous semester.</p>
                     <div class="lp-tags">
@@ -178,14 +190,20 @@
                         <li><span class="lp-num">5</span><div><strong>Pay Fees</strong><span>Pay at the University Cashier or via GCash / bank transfer.</span></div></li>
                         <li><span class="lp-num">6</span><div><strong>Get Your COR</strong><span>Download your Certificate of Registration after payment is confirmed.</span></div></li>
                     </ul>
-                    <a href="login page/login.html" class="lp-path-cta lp-cta--dark">Login to Enroll →</a>
+                    <a href="login-pages/login.html" class="lp-path-cta lp-cta--dark">Login to Enroll →</a>
                 </div>
             </div>
 
             <!-- NEW STUDENTS -->
             <div class="lp-path-card">
                 <div class="lp-path-hd lp-path-hd--new">
-                    <span class="lp-path-emoji">🌟</span>
+                    <span class="lp-path-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <polyline points="2 17 12 22 22 17"/>
+                            <polyline points="2 12 12 17 22 12"/>
+                        </svg>
+                    </span>
                     <h3>New Students</h3>
                     <p>First time at WMSU? Your process begins with an online application before enrollment proper.</p>
                     <div class="lp-tags">
@@ -212,7 +230,14 @@
         <!-- Subtypes -->
         <div class="lp-subtypes-grid">
             <div class="lp-subtype">
-                <span class="lp-sub-emoji">🎒</span>
+                <span class="lp-sub-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </span>
                 <h4>Freshmen</h4>
                 <p>Senior high school graduates enrolling in college for the first time at WMSU.</p>
                 <ul class="lp-mini-list">
@@ -223,7 +248,14 @@
                 </ul>
             </div>
             <div class="lp-subtype">
-                <span class="lp-sub-emoji">📂</span>
+                <span class="lp-sub-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                </span>
                 <h4>Transferee</h4>
                 <p>Students from another school who wish to continue their studies at WMSU.</p>
                 <ul class="lp-mini-list">
@@ -234,7 +266,14 @@
                 </ul>
             </div>
             <div class="lp-subtype">
-                <span class="lp-sub-emoji">🔁</span>
+                <span class="lp-sub-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="17 1 21 5 17 9"/>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                        <polyline points="7 23 3 19 7 15"/>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                    </svg>
+                </span>
                 <h4>Shiftee</h4>
                 <p>Current WMSU students changing their degree program or college within the university.</p>
                 <ul class="lp-mini-list">
@@ -248,9 +287,7 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     REQUIREMENTS
-═══════════════════════════════════════════ -->
+<!-- REQUIREMENTS -->
 <section id="lp-requirements" class="lp-section lp-requirements">
     <div class="lp-inner">
         <div class="lp-sec-hd">
@@ -260,7 +297,13 @@
         </div>
         <div class="lp-req-grid">
             <div class="lp-req-block">
-                <h4>🎓 Old / Continuing Students</h4>
+                <h4>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                    Old / Continuing Students
+                </h4>
                 <ul class="lp-req-list">
                     <li>WMSU Student ID (or receipt of ID application)</li>
                     <li>Clearance form from previous semester</li>
@@ -271,19 +314,31 @@
                 </ul>
             </div>
             <div class="lp-req-block">
-                <h4>🌟 Freshmen</h4>
+                <h4>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                    </svg>
+                    Freshmen
+                </h4>
                 <ul class="lp-req-list">
                     <li>Original Senior High School Report Card (Form 138)</li>
                     <li>Original &amp; Photocopy of Birth Certificate (PSA)</li>
                     <li>Certificate of Good Moral Character</li>
                     <li>2 pcs 1×1 and 2 pcs 2×2 ID photos (white bg)</li>
-                    <li> CET Exam Result / Admission Slip</li>
+                    <li>CET Exam Result / Admission Slip</li>
                     <li>Accomplished WMSU Application Form</li>
                     <li>Medical Certificate from licensed physician</li>
                 </ul>
             </div>
             <div class="lp-req-block">
-                <h4>📂 Transferee</h4>
+                <h4>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    Transferee
+                </h4>
                 <ul class="lp-req-list">
                     <li>Honorable Dismissal from previous school</li>
                     <li>Certified True Copy of Grades (all semesters)</li>
@@ -295,7 +350,15 @@
                 </ul>
             </div>
             <div class="lp-req-block">
-                <h4>🔁 Shiftee</h4>
+                <h4>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="17 1 21 5 17 9"/>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                        <polyline points="7 23 3 19 7 15"/>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                    </svg>
+                    Shiftee
+                </h4>
                 <ul class="lp-req-list">
                     <li>Accomplished Shifting Application Form</li>
                     <li>Certified True Copy of Grades (all WMSU semesters)</li>
@@ -309,9 +372,7 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     KEY DATES
-═══════════════════════════════════════════ -->
+<!-- KEY DATES -->
 <section id="lp-dates" class="lp-section lp-dates">
     <div class="lp-inner">
         <div class="lp-sec-hd">
@@ -325,7 +386,6 @@
             <button class="lp-sem-btn" id="btn2nd" onclick="switchSem(2)">2nd Semester</button>
         </div>
 
-        <!-- 1st Semester -->
         <div id="sem1Dates" class="lp-table-wrap">
             <table class="lp-table">
                 <thead>
@@ -338,12 +398,11 @@
                     <tr><td>Enrollment — Old / Continuing Students</td><td>2nd Year and above</td><td>Jun 2 – 14, 2026</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
                     <tr><td>Enrollment — New Students</td><td>Freshmen, Transferees, Shiftees</td><td>Jun 16 – 28, 2026</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
                     <tr><td>Late Enrollment (with surcharge)</td><td>All students</td><td>Jul 1 – 5, 2026</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
-                    <tr><td>First Day of Classes</td><td>All enrolled students</ td>< td>Jul 7, 2026</ td >< td >< span class="lp-status lp-status--upcoming">Upcoming</ span ></ td ></ tr >
+                    <tr><td>First Day of Classes</td><td>All enrolled students</td><td>Jul 7, 2026</td><td><span class="lp-status lp-status--upcoming">Upcoming</span></td></tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- 2nd Semester -->
         <div id="sem2Dates" class="lp-table-wrap lp-hidden">
             <div class="lp-sem-notice" id="sem2Notice"></div>
             <table class="lp-table" id="sem2Table">
@@ -358,13 +417,10 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     FAQ
-═══════════════════════════════════════════ -->
+<!-- FAQ -->
 <section id="lp-faq" class="lp-section lp-faq">
     <div class="lp-inner">
         <div class="lp-sec-hd">
@@ -418,9 +474,7 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     HELP / CONTACT
-═══════════════════════════════════════════ -->
+<!-- HELP / CONTACT -->
 <section id="lp-help" class="lp-section lp-help">
     <div class="lp-inner">
         <div class="lp-sec-hd">
@@ -430,21 +484,39 @@
         </div>
         <div class="lp-help-grid">
             <div class="lp-help-card">
-                <div class="lp-help-ico">🏛️</div>
+                <div class="lp-help-ico">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                </div>
                 <h4>Registrar's Office</h4>
                 <p>Enrollment concerns, COR, transcript requests, and document processing.</p>
                 <a href="tel:0629911040" class="lp-help-link">(062) 991-1040</a>
                 <a href="mailto:registrar@wmsu.edu.ph" class="lp-help-link">registrar@wmsu.edu.ph</a>
             </div>
             <div class="lp-help-card">
-                <div class="lp-help-ico">💻</div>
+                <div class="lp-help-ico">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                </div>
                 <h4>ICT Help Desk</h4>
                 <p>Portal login issues, password resets, and technical problems with the system.</p>
                 <a href="mailto:ict@wmsu.edu.ph" class="lp-help-link">ict@wmsu.edu.ph</a>
                 <span class="lp-help-hours">Mon–Fri, 8AM–5PM</span>
             </div>
             <div class="lp-help-card">
-                <div class="lp-help-ico">🎓</div>
+                <div class="lp-help-ico">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
                 <h4>Office of Student Affairs</h4>
                 <p>Scholarships, student welfare, PWD accommodations, and orientation inquiries.</p>
                 <a href="mailto:osa@wmsu.edu.ph" class="lp-help-link">osa@wmsu.edu.ph</a>
@@ -454,9 +526,7 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer class="lp-footer">
     <div class="lp-footer-about">
         <div class="lp-footer-brand">

@@ -5,12 +5,378 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMSU-Ease | Freshman Application</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
     <script src="../../script/cetDatabase.js"></script>
     <script src="../../script/courseRequirements.js"></script>
-    <link rel="stylesheet" href="freshman-apply.css">
     <link rel="stylesheet" href="../../style.css">
 
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --crimson: #9b1c2e;
+            --crimson-light: #c0293f;
+            --crimson-pale: #fff0f2;
+            --crimson-border: #f5c6cc;
+            --ink: #1a1a2e;
+            --ink-soft: #3d3d5c;
+            --muted: #6b7280;
+            --surface: #ffffff;
+            --bg: #f7f8fc;
+            --border: #e5e7ef;
+            --border-focus: #9b1c2e;
+            --success: #15803d;
+            --success-bg: #f0fdf4;
+            --success-border: #bbf7d0;
+            --warn-bg: #fffbeb;
+            --warn-border: #fde68a;
+            --warn-text: #92400e;
+            --fail-bg: #fff1f2;
+            --fail-border: #fecdd3;
+            --fail-text: #9f1239;
+            --blue: #1d4ed8;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(26,26,46,0.08);
+            --shadow-lg: 0 8px 40px rgba(26,26,46,0.13);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 62px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--crimson); font-weight: 800; font-size: 17px; letter-spacing: -0.3px; }
+        .logo-icon { width: 22px; height: 22px; }
+        .nav-links { list-style: none; display: flex; gap: 8px; }
+        .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; padding: 7px 14px; border-radius: var(--radius-sm); transition: background 0.15s, color 0.15s; }
+        .nav-links a:hover { background: var(--bg); color: var(--ink); }
+
+        /* WRAPPER */
+        .apply-wrapper {
+            max-width: 660px;
+            margin: 40px auto 60px;
+            padding: 0 20px;
+        }
+
+        /* CARD */
+        .apply-card {
+            background: var(--surface);
+            border-radius: 18px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .apply-card-top {
+            background: var(--crimson);
+            background-image: linear-gradient(135deg, #9b1c2e 0%, #c0293f 100%);
+            padding: 32px 36px 28px;
+            color: #fff;
+        }
+        .apply-card-top h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 4px; }
+        .apply-card-top p { font-size: 14px; opacity: 0.82; }
+
+        /* STEPPER */
+        .stepper {
+            display: flex;
+            align-items: center;
+            padding: 24px 36px 0;
+            gap: 0;
+            position: relative;
+        }
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+            transition: background 0.3s;
+        }
+        .step-item.done:not(:last-child)::after { background: var(--crimson); }
+        .step-bubble {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700;
+            color: var(--muted);
+            transition: all 0.25s;
+            position: relative; z-index: 1;
+            border: 2px solid transparent;
+        }
+        .s-chk { display: none; width: 16px; height: 16px; }
+        .step-item.active .step-bubble { background: var(--crimson); color: #fff; border-color: var(--crimson); box-shadow: 0 0 0 4px rgba(155,28,46,0.15); }
+        .step-item.done .step-bubble { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+        .step-item.done .s-num { display: none; }
+        .step-item.done .s-chk { display: block; }
+        .step-lbl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .step-item.active .step-lbl, .step-item.done .step-lbl { color: var(--crimson); }
+
+        /* FORM BODY */
+        .apply-body { padding: 28px 36px 36px; }
+
+        .form-panel { display: none; }
+        .form-panel.active { display: block; }
+
+        .sec-head {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+        .sec-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        /* FIELDS */
+        .field-group { margin-bottom: 18px; }
+        .field-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-soft);
+            margin-bottom: 7px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--ink);
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(155,28,46,0.1); }
+        .form-control::placeholder { color: #bbb; }
+        .form-control:read-only, .form-control[readonly] { background: #f9fafb; color: var(--muted); cursor: not-allowed; }
+
+        select.form-control { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+
+        .score-note { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+
+        /* DIVIDER */
+        .divider { height: 1px; background: var(--border); margin: 22px 0; }
+
+        /* ALERTS */
+        .form-alert {
+            display: none;
+            font-size: 13px;
+            color: var(--fail-text);
+            background: var(--fail-bg);
+            border: 1px solid var(--fail-border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        /* BUTTONS */
+        .btn-crimson {
+            padding: 12px 28px;
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            letter-spacing: 0.2px;
+        }
+        .btn-crimson:hover { background: var(--crimson-light); }
+        .btn-crimson:active { transform: scale(0.98); }
+        .btn-back {
+            padding: 12px 22px;
+            background: transparent;
+            color: var(--muted);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-back:hover { border-color: var(--ink-soft); color: var(--ink); }
+        .btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+        /* COURSE CHOICES */
+        .choice-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 7px;
+        }
+        .choice-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .badge-1st { background: var(--crimson); color: #fff; }
+        .badge-2nd { background: #f3f4f6; color: var(--ink-soft); border: 1px solid var(--border); }
+        .badge-3rd { background: #f3f4f6; color: var(--ink-soft); border: 1px solid var(--border); }
+
+        .no-courses-msg {
+            background: var(--fail-bg);
+            border: 1px solid var(--fail-border);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            font-size: 13px;
+            color: var(--fail-text);
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .qualified-note {
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            border-radius: var(--radius-sm);
+            padding: 11px 14px;
+            font-size: 12.5px;
+            color: var(--success);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+        .qualified-note svg { flex-shrink: 0; margin-top: 1px; }
+
+        /* EXTRA EXAM BOX */
+        .extra-exam-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            margin-top: 14px;
+        }
+        .extra-exam-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 12px; }
+
+        /* REQ BOX */
+        .req-info-box {
+            border-radius: var(--radius-sm);
+            padding: 13px 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .req-info-box.ok { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success); }
+        .req-info-box.fail { background: var(--fail-bg); border: 1px solid var(--fail-border); color: var(--fail-text); }
+        .req-info-box.warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn-text); }
+        .req-info-box .req-info-title { font-weight: 700; margin-bottom: 4px; }
+
+        /* NAME ROW */
+        .name-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 80px;
+            gap: 12px;
+        }
+
+        /* CONTACT REMINDER */
+        .contact-reminder {
+            background: var(--warn-bg);
+            border: 1px solid var(--warn-border);
+            border-radius: var(--radius-sm);
+            padding: 13px 16px;
+            font-size: 12.5px;
+            color: var(--warn-text);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .contact-reminder strong { display: block; margin-bottom: 2px; }
+
+        /* VERIFIED BANNER */
+        .verified-banner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            border-radius: var(--radius-sm);
+            padding: 11px 14px;
+            font-size: 13px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        .verified-banner strong { font-weight: 700; }
+        .verified-banner span { color: var(--muted); font-size: 12px; }
+
+        /* COURSE HINT */
+        .course-hint {
+            background: var(--warn-bg);
+            border: 1px solid var(--warn-border);
+            border-radius: var(--radius-sm);
+            padding: 11px 14px;
+            font-size: 12.5px;
+            color: var(--warn-text);
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        /* OAPR DISPLAY */
+        .oapr-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--crimson-pale);
+            border: 1px solid var(--crimson-border);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--crimson);
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 520px) {
+            .apply-wrapper { margin: 20px auto 40px; padding: 0 12px; }
+            .apply-card-top, .apply-body { padding: 22px 20px; }
+            .stepper { padding: 20px 20px 0; }
+            .name-row { grid-template-columns: 1fr 1fr; }
+            .name-row .mi-field { grid-column: span 2; }
+        }
+    </style>
 </head>
 <body>
 
@@ -42,7 +408,7 @@
         <div class="stepper">
             <div class="step-item active" data-step="1">
                 <div class="step-bubble"><span class="s-num">1</span><svg class="s-chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <span class="step-lbl">Personal</span>
+                <span class="step-lbl">Course</span>
             </div>
             <div class="step-item" data-step="2">
                 <div class="step-bubble"><span class="s-num">2</span><svg class="s-chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -50,43 +416,17 @@
             </div>
             <div class="step-item" data-step="3">
                 <div class="step-bubble"><span class="s-num">3</span><svg class="s-chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <span class="step-lbl">Course</span>
+                <span class="step-lbl">Personal</span>
             </div>
         </div>
 
         <div class="apply-body">
             <form id="applyForm" novalidate>
 
-                <!-- ── STEP 1: Personal ── -->
+                <!-- ── STEP 1: CET Scores ── -->
                 <div class="form-panel active" id="step1">
-                    <h2 class="sec-head">Personal Information</h2>
-                    <div class="verified-banner" id="verifiedBanner" style="display:none;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                        <div><strong>CET Record Verified ✓</strong><span id="verifiedName">—</span></div>
-                    </div>
-                    <div class="field-group">
-                        <label for="appNo">CET Application Number</label>
-                        <div style="display:flex;gap:8px;">
-                            <input type="text" id="appNo" class="form-control" placeholder="e.g. 2526-00042" maxlength="10" autocomplete="off" style="flex:1;">
-                            <button type="button" id="verifyBtn" style="padding:11px 16px;background:var(--crimson);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;">Verify</button>
-                        </div>
-                        <div class="score-note">Enter your CET application number (2526-XXXXX), then click Verify</div>
-                    </div>
-                    <div id="verifyAlert" class="form-alert"></div>
-                    <div id="personalFields" style="display:none;">
-                        <div class="field-group"><label for="surname">Surname</label><input type="text" id="surname" class="form-control" placeholder="e.g. Dela Cruz" required></div>
-                        <div class="field-group"><label for="firstname">First Name</label><input type="text" id="firstname" class="form-control" placeholder="e.g. Juan" required></div>
-                        <div class="field-group"><label for="middleinitial">Middle Initial</label><input type="text" id="middleinitial" class="form-control" placeholder="e.g. R" maxlength="2" required></div>
-                        <div class="field-group"><label for="email">Email Address</label><input type="email" id="email" class="form-control" placeholder="example@mail.com" required></div>
-                        <div class="field-group"><label for="contact">Contact Number</label><input type="tel" id="contact" class="form-control" placeholder="e.g. 09123456789" required></div>
-                        <button type="button" class="btn-crimson" id="nextStep1" style="margin-top:8px;">Next →</button>
-                    </div>
-                </div>
-
-                <!-- ── STEP 2: CET Scores ── -->
-                <div class="form-panel" id="step2">
-                    <h2 class="sec-head">CET Percentile Scores</h2>
-                    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.6;">Enter your CET percentile rank scores from your official CET results slip. Values must be between 1–99.</p>
+                    <h2 class="sec-head">Your CET Percentile Scores</h2>
+                    <p class="sec-sub">Enter your scores from your official CET results slip. These determine which courses you qualify for. Values must be between 1–99.</p>
 
                     <div class="field-group"><label for="english">English Proficiency (EP)</label><input type="number" id="english" class="form-control" placeholder="e.g. 85" min="1" max="99" required></div>
                     <div class="field-group"><label for="reading">Reading Comprehension (RC)</label><input type="number" id="reading" class="form-control" placeholder="e.g. 78" min="1" max="99" required></div>
@@ -97,8 +437,89 @@
                     <div class="field-group">
                         <label for="oapr">Overall Ability Percentile Rank (OAPR)</label>
                         <input type="number" id="oapr" class="form-control" style="border-color:var(--crimson);background:#fff5f5;font-weight:700;" placeholder="e.g. 79" min="1" max="99" required>
-                        <div class="score-note">Enter the OAPR from your official CET results slip. This is the primary score used for admission qualification.</div>
+                        <div class="score-note">Your OAPR is the primary score used to determine which courses you qualify for.</div>
                     </div>
+
+                    <div id="step1Alert" class="form-alert"></div>
+                    <div class="btn-row">
+                        <button type="button" class="btn-crimson" id="nextStep1">Next: See Qualified Courses →</button>
+                    </div>
+                </div>
+
+                <!-- ── STEP 2: Course Selection ── -->
+                <div class="form-panel" id="step2">
+                    <h2 class="sec-head">Course Selection</h2>
+
+                    <div id="oaprChip" class="oapr-chip">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        OAPR: <span id="oaprDisplay">—</span>
+                    </div>
+
+                    <div class="qualified-note" id="qualifiedNote">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Only courses you qualify for (based on your OAPR) are shown below. Courses with higher OAPR requirements have been hidden.</span>
+                    </div>
+
+                    <div class="course-hint">
+                        ⚠️ Rank your top 3 course choices. Your <strong>1st choice</strong> will be processed first. You may still change while your application is under review.
+                    </div>
+
+                    <div id="noCoursesMsg" class="no-courses-msg" style="display:none;">
+                        ❌ <strong>No courses found for your OAPR score.</strong> Please contact the WMSU Admission Office for assistance.
+                    </div>
+
+                    <!-- 1st Choice -->
+                    <div class="field-group" id="choice1Group">
+                        <div class="choice-label">
+                            <label for="course1" style="margin:0;">Preferred Course</label>
+                            <span class="choice-badge badge-1st">1st Choice</span>
+                        </div>
+                        <select id="course1" class="form-control" required onchange="onCourseChange(1)">
+                            <option value="">Choose your 1st choice…</option>
+                        </select>
+                        <div id="req1Box" style="display:none;"></div>
+                        <div class="extra-exam-box" id="natBox1" style="display:none;">
+                            <div class="extra-exam-title">🩺 Nursing Aptitude Test (NAT) Score Required</div>
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label for="natScore1">NAT Score</label>
+                                <input type="number" id="natScore1" class="form-control" placeholder="e.g. 290" min="200" max="400">
+                                <div class="score-note">NAT score range: 200–400. Minimum required: 260.</div>
+                            </div>
+                        </div>
+                        <div class="extra-exam-box" id="eatBox1" style="display:none;">
+                            <div class="extra-exam-title" style="color:#1d4ed8;">⚙️ Engineering Aptitude Test (EAT) Score Required</div>
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label for="eatScore1">EAT Score</label>
+                                <input type="number" id="eatScore1" class="form-control" placeholder="e.g. 270" min="200" max="400">
+                                <div class="score-note">EAT score range: 200–400. Minimum required varies by program (230–250).</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2nd Choice -->
+                    <div class="field-group">
+                        <div class="choice-label">
+                            <label for="course2" style="margin:0;">2nd Choice <span style="font-weight:400;color:var(--muted);">(Optional)</span></label>
+                            <span class="choice-badge badge-2nd">2nd Choice</span>
+                        </div>
+                        <select id="course2" class="form-control" onchange="onCourseChange(2)">
+                            <option value="">Choose your 2nd choice…</option>
+                        </select>
+                        <div id="req2Box" style="display:none;"></div>
+                    </div>
+
+                    <!-- 3rd Choice -->
+                    <div class="field-group">
+                        <div class="choice-label">
+                            <label for="course3" style="margin:0;">3rd Choice <span style="font-weight:400;color:var(--muted);">(Optional)</span></label>
+                            <span class="choice-badge badge-3rd">3rd Choice</span>
+                        </div>
+                        <select id="course3" class="form-control" onchange="onCourseChange(3)">
+                            <option value="">Choose your 3rd choice…</option>
+                        </select>
+                        <div id="req3Box" style="display:none;"></div>
+                    </div>
+
                     <div id="step2Alert" class="form-alert"></div>
                     <div class="btn-row">
                         <button type="button" class="btn-back" id="backStep2">← Back</button>
@@ -106,99 +527,59 @@
                     </div>
                 </div>
 
-                <!-- ── STEP 3: Course ── -->
+                <!-- ── STEP 3: Personal Info ── -->
                 <div class="form-panel" id="step3">
-                    <h2 class="sec-head">Course Selection</h2>
-                    <div class="course-hint">⚠️ Choose carefully. Your application will go to the selected department for review. You may change your course while still under review.</div>
+                    <h2 class="sec-head">Personal Information</h2>
+
+                    <div class="verified-banner" id="verifiedBanner" style="display:none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        <div>
+                            <strong>CET Record Auto-filled ✓</strong>
+                            <span id="verifiedName"> —</span>
+                        </div>
+                    </div>
+
+                    <!-- Name Row -->
+                    <div class="field-group">
+                        <label>Full Name</label>
+                        <div class="name-row">
+                            <div>
+                                <input type="text" id="surname" class="form-control" placeholder="Surname" required>
+                            </div>
+                            <div>
+                                <input type="text" id="firstname" class="form-control" placeholder="First Name" required>
+                            </div>
+                            <div class="mi-field">
+                                <input type="text" id="middleinitial" class="form-control" placeholder="M.I." maxlength="2" required style="text-align:center;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="contact-reminder">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <div>
+                            <strong>⚠️ Use an active email and phone number!</strong>
+                            The Admissions Office will use these to contact you regarding your application status, interview schedules, and enrollment instructions. Make sure you can receive messages on both.
+                        </div>
+                    </div>
 
                     <div class="field-group">
-                        <label for="course">Preferred Course</label>
-                        <select id="course" class="form-control" required onchange="onCourseChange()">
-                            <option value="">Choose a course…</option>
-                            <optgroup label="College of Computing Studies">
-                                <option>BS Computer Science</option>
-                                <option>BS Information Technology</option>
-                                <option>Associate in Computer Technology major in Networking Application Development</option>
-                            </optgroup>
-                            <optgroup label="College of Engineering">
-                                <option>BS Civil Engineering</option>
-                                <option>BS Mechanical Engineering</option>
-                                <option>BS Electrical Engineering</option>
-                                <option>BS Computer Engineering</option>
-                                <option>BS Electronics Communication Engineering</option>
-                                <option>BS Industrial Engineering</option>
-                                <option>BS Geodetic Engineering</option>
-                                <option>BS Environmental Engineering</option>
-                                <option>BS Sanitary Engineering</option>
-                                <option>BS Agricultural Biosystem Engineering</option>
-                            </optgroup>
-                            <optgroup label="College of Nursing">
-                                <option>BS Nursing</option>
-                            </optgroup>
-                            <optgroup label="College of Business Administration">
-                                <option>BS Business Administration</option>
-                                <option>BS Accountancy</option>
-                                <option>BS Economics</option>
-                            </optgroup>
-                            <optgroup label="College of Arts and Sciences">
-                                <option>BA Psychology</option>
-                                <option>BA Political Science</option>
-                                <option>BS Journalism</option>
-                                <option>BA Broadcasting</option>
-                                <option>BA English Language Studies (BAELS)</option>
-                            </optgroup>
-                            <optgroup label="College of Education">
-                                <option>Bachelor of Secondary Education</option>
-                                <option>Bachelor of Elementary Education</option>
-                            </optgroup>
-                            <optgroup label="College of Agriculture">
-                                <option>BS Agriculture</option>
-                                <option>BS Agri Business</option>
-                                <option>BS Food Technology</option>
-                                <option>BS Forestry</option>
-                                <option>BS Nutrition and Dietetics</option>
-                                <option>BS Environmental Science</option>
-                                <option>BS Agro-Forestry</option>
-                                <option>BS Home Economics</option>
-                                <option>BS Hospitality Management</option>
-                            </optgroup>
-                            <optgroup label="College of Criminology">
-                                <option>BS Criminology</option>
-                            </optgroup>
-                            <optgroup label="Other Programs">
-                                <option>BS Islamic Studies</option>
-                                <option>BS Asian Studies</option>
-                            </optgroup>
-                        </select>
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="example@gmail.com" required>
+                        <div class="score-note">Make sure this inbox is active and you check it regularly.</div>
                     </div>
-
-                    <!-- Dynamic requirement info -->
-                    <div id="reqInfoBox" style="display:none;"></div>
-
-                    <!-- NAT extra fields (Nursing) -->
-                    <div class="extra-exam-box" id="natBox" style="display:none;">
-                        <div class="extra-exam-title">🩺 Nursing Aptitude Test (NAT) Score Required</div>
-                        <div class="field-group" style="margin-bottom:0;">
-                            <label for="natScore">NAT Score</label>
-                            <input type="number" id="natScore" class="form-control" placeholder="e.g. 290" min="200" max="400">
-                            <div class="score-note">NAT score range: 200–400. Minimum required: 260.</div>
-                        </div>
-                    </div>
-
-                    <!-- EAT extra fields (Engineering) -->
-                    <div class="extra-exam-box" id="eatBox" style="display:none;">
-                        <div class="extra-exam-title" style="color:#1d4ed8;">⚙️ Engineering Aptitude Test (EAT) Score Required</div>
-                        <div class="field-group" style="margin-bottom:0;">
-                            <label for="eatScore">EAT Score</label>
-                            <input type="number" id="eatScore" class="form-control" placeholder="e.g. 270" min="200" max="400">
-                            <div class="score-note">EAT score range: 200–400. Minimum required varies by program (230–250).</div>
-                        </div>
+                    <div class="field-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact" class="form-control" placeholder="e.g. 09123456789" required>
+                        <div class="score-note">Philippine mobile number. Must be active and able to receive SMS or calls.</div>
                     </div>
 
                     <div id="step3Alert" class="form-alert"></div>
                     <div class="btn-row">
                         <button type="button" class="btn-back" id="backStep3">← Back</button>
-                        <button type="submit" class="btn-crimson">Submit Application</button>
+                        <button type="submit" class="btn-crimson">Submit Application ✓</button>
                     </div>
                 </div>
 
@@ -208,6 +589,7 @@
 </div>
 
 <script>
+    /* ── Init ── */
     const loginData     = JSON.parse(localStorage.getItem('wmsuLogin') || '{}');
     const applicantType = loginData.type || 'freshman';
     if (applicantType === 'transferee') {
@@ -215,190 +597,275 @@
     }
 
     let currentStep   = 1;
-    let verifiedAppNo = null;
     let userOAPR      = 0;
+    // Try to pre-fill from login data if account creation stored CET record
+    const cetRecord   = loginData.cetRecord || null;
+    const verifiedAppNo = loginData.appNo || null;
 
-    function showStep(n) {
-        document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById('step'+n).classList.add('active');
-        document.querySelectorAll('.step-item').forEach((item, idx) => {
-            item.classList.remove('active','done');
-            if (idx+1 < n) item.classList.add('done');
-            if (idx+1 === n) item.classList.add('active');
-        });
-        window.scrollTo({top:0,behavior:'smooth'});
-    }
-
+    /* ── Alerts ── */
     function showAlert(id, msg) {
         const el = document.getElementById(id);
-        el.textContent = msg; el.style.display = 'block';
+        el.textContent = msg;
+        el.style.display = 'block';
     }
-    function hideAlert(id) { document.getElementById(id).style.display = 'none'; }
+    function hideAlert(id) {
+        document.getElementById(id).style.display = 'none';
+    }
 
-    // ── Verify ────────────────────────────────────────────────────
-    document.getElementById('verifyBtn').addEventListener('click', function() {
-        let raw = document.getElementById('appNo').value.trim();
-        if (/^\d{1,5}$/.test(raw)) raw = '2526-' + raw.padStart(5,'0');
-        if (!raw) { showAlert('verifyAlert','Please enter your application number.'); return; }
+    /* ── Step navigation ── */
+    function showStep(n) {
+        document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('step' + n).classList.add('active');
+        document.querySelectorAll('.step-item').forEach((item, idx) => {
+            item.classList.remove('active', 'done');
+            if (idx + 1 < n) item.classList.add('done');
+            if (idx + 1 === n) item.classList.add('active');
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        this.textContent = '…'; this.disabled = true;
+    /* ── All courses list ── */
+    const ALL_COURSES = [
+        'BS Computer Science',
+        'BS Information Technology',
+        'Associate in Computer Technology major in Networking Application Development',
+        'BS Civil Engineering',
+        'BS Mechanical Engineering',
+        'BS Electrical Engineering',
+        'BS Computer Engineering',
+        'BS Electronics Communication Engineering',
+        'BS Industrial Engineering',
+        'BS Geodetic Engineering',
+        'BS Environmental Engineering',
+        'BS Sanitary Engineering',
+        'BS Agricultural Biosystem Engineering',
+        'BS Nursing',
+        'BS Business Administration',
+        'BS Accountancy',
+        'BS Economics',
+        'BA Psychology',
+        'BA Political Science',
+        'BS Journalism',
+        'BA Broadcasting',
+        'BA English Language Studies (BAELS)',
+        'Bachelor of Secondary Education',
+        'Bachelor of Elementary Education',
+        'BS Agriculture',
+        'BS Agri Business',
+        'BS Food Technology',
+        'BS Forestry',
+        'BS Nutrition and Dietetics',
+        'BS Environmental Science',
+        'BS Agro-Forestry',
+        'BS Home Economics',
+        'BS Hospitality Management',
+        'BS Criminology',
+        'BS Islamic Studies',
+        'BS Asian Studies',
+    ];
 
-        setTimeout(() => {
-            this.textContent = 'Verify'; this.disabled = false;
-            if (!window.WMSU_lookupApplicant) {
-                showAlert('verifyAlert','Database not loaded. Please refresh the page.'); return;
+    /* ── Get qualified courses based on OAPR ── */
+    function getQualifiedCourses(oapr) {
+        if (!window.WMSU_COURSE_REQUIREMENTS) return ALL_COURSES;
+        return ALL_COURSES.filter(course => {
+            const req = window.WMSU_COURSE_REQUIREMENTS[course];
+            if (!req) return true; // no requirement listed = open
+            return oapr >= req.oaprMin;
+        });
+    }
+
+    /* ── Populate dropdowns ── */
+    function populateCourseDropdowns(oapr) {
+        const qualified = getQualifiedCourses(oapr);
+        const selects = ['course1', 'course2', 'course3'];
+        const placeholders = [
+            'Choose your 1st choice…',
+            'Choose your 2nd choice… (optional)',
+            'Choose your 3rd choice… (optional)',
+        ];
+
+        selects.forEach((id, i) => {
+            const sel = document.getElementById(id);
+            const prevVal = sel.value;
+            sel.innerHTML = `<option value="">${placeholders[i]}</option>`;
+            qualified.forEach(course => {
+                const opt = document.createElement('option');
+                opt.value = course;
+                opt.textContent = course;
+                sel.appendChild(opt);
+            });
+            // Restore selection if still valid
+            if (prevVal && qualified.includes(prevVal)) sel.value = prevVal;
+        });
+
+        if (qualified.length === 0) {
+            document.getElementById('noCoursesMsg').style.display = 'block';
+            document.getElementById('qualifiedNote').style.display = 'none';
+        } else {
+            document.getElementById('noCoursesMsg').style.display = 'none';
+            document.getElementById('qualifiedNote').style.display = 'flex';
+        }
+    }
+
+    /* ── Course change handler ── */
+    function onCourseChange(num) {
+        const course  = document.getElementById('course' + num).value;
+        const reqBox  = document.getElementById('req' + num + 'Box');
+        const natBox  = document.getElementById('natBox' + num);
+        const eatBox  = document.getElementById('eatBox' + num);
+
+        // Only 1st choice has extra exam boxes
+        if (natBox) { natBox.style.display = 'none'; document.getElementById('natScore1') && document.getElementById('natScore1').removeAttribute('required'); }
+        if (eatBox) { eatBox.style.display = 'none'; document.getElementById('eatScore1') && document.getElementById('eatScore1').removeAttribute('required'); }
+
+        if (!course || !window.WMSU_COURSE_REQUIREMENTS) {
+            if (reqBox) reqBox.style.display = 'none';
+            return;
+        }
+
+        const req = window.WMSU_COURSE_REQUIREMENTS[course];
+        if (!req) { if (reqBox) reqBox.style.display = 'none'; return; }
+
+        const oapr = userOAPR;
+        const meetsOAPR = oapr >= req.oaprMin;
+        const boxClass  = meetsOAPR ? 'ok' : 'fail';
+        const statusTxt = meetsOAPR
+            ? `✓ Your OAPR (${oapr}) meets the minimum of ${req.oaprMin} PR`
+            : `✗ Your OAPR (${oapr}) is below the minimum of ${req.oaprMin} PR`;
+
+        reqBox.style.display = 'block';
+        reqBox.className = 'req-info-box ' + boxClass;
+        reqBox.innerHTML = `
+            <div class="req-info-title">${req.icon || ''} ${course}</div>
+            <div>${statusTxt}<br>${req.note || ''}
+            ${req.extra === 'nat' ? `<br>📋 <strong>NAT required:</strong> min ${req.natMin}` : ''}
+            ${req.extra === 'eat' ? `<br>📋 <strong>EAT required:</strong> min ${req.eatMin}` : ''}
+            </div>`;
+
+        // Show extra exam fields only for 1st choice
+        if (num === 1) {
+            if (req.extra === 'nat' && natBox) {
+                natBox.style.display = 'block';
+                document.getElementById('natScore1').setAttribute('required', '');
+            } else if (req.extra === 'eat' && eatBox) {
+                eatBox.style.display = 'block';
+                document.getElementById('eatScore1').setAttribute('required', '');
             }
-            const record = window.WMSU_lookupApplicant(raw);
-            if (!record) {
-                showAlert('verifyAlert',
-                    `Application number "${raw}" was not found in the CET database. Please double-check your number or contact the Admission Office.`);
-                document.getElementById('personalFields').style.display = 'none';
-                document.getElementById('verifiedBanner').style.display = 'none';
-                verifiedAppNo = null; return;
-            }
-            hideAlert('verifyAlert');
-            verifiedAppNo = raw;
-            document.getElementById('verifiedBanner').style.display = 'flex';
-            document.getElementById('verifiedName').textContent = `${record.name} · App No. ${raw} · ${record.type.charAt(0).toUpperCase()+record.type.slice(1)}`;
-            document.getElementById('surname').value = record.surname;
-            document.getElementById('firstname').value = record.firstname;
-            document.getElementById('middleinitial').value = record.middleinitial;
-            document.getElementById('personalFields').style.display = 'block';
-            document.getElementById('appNo').readOnly = true;
-        }, 600);
-    });
+        }
 
-    document.getElementById('appNo').addEventListener('keydown', e => {
-        if (e.key==='Enter') document.getElementById('verifyBtn').click();
-    });
+        // Prevent duplicate choices
+        syncChoiceDropdowns();
+    }
 
-    // ── Step 1 → 2 ────────────────────────────────────────────────
+    function syncChoiceDropdowns() {
+        const v1 = document.getElementById('course1').value;
+        const v2 = document.getElementById('course2').value;
+        const v3 = document.getElementById('course3').value;
+        // Just a visual notice — don't hard-block, let submit validation handle it
+    }
+
+    /* ── Step 1 → 2: Validate CET scores ── */
     document.getElementById('nextStep1').addEventListener('click', () => {
-        if (!verifiedAppNo) { showAlert('verifyAlert','Please verify your application number first.'); return; }
+        const ids = ['english', 'reading', 'science', 'quantitative', 'abstract', 'oapr'];
+        let valid = true;
+        ids.forEach(id => {
+            const v = Number(document.getElementById(id).value);
+            if (document.getElementById(id).value === '' || isNaN(v) || v < 1 || v > 99) valid = false;
+        });
+        if (!valid) { showAlert('step1Alert', 'Please fill in all score fields with values between 1 and 99.'); return; }
+
+        userOAPR = Number(document.getElementById('oapr').value);
+        hideAlert('step1Alert');
+
+        // Update OAPR display chip
+        document.getElementById('oaprDisplay').textContent = userOAPR + ' PR';
+
+        // Populate qualified courses
+        populateCourseDropdowns(userOAPR);
+
+        currentStep = 2;
+        showStep(2);
+    });
+
+    /* ── Step 2 → 3 ── */
+    document.getElementById('nextStep2').addEventListener('click', () => {
+        const c1 = document.getElementById('course1').value;
+        const c2 = document.getElementById('course2').value;
+        const c3 = document.getElementById('course3').value;
+
+        if (!c1) { showAlert('step2Alert', 'Please select at least your 1st choice course.'); return; }
+
+        // Check duplicates
+        const chosen = [c1, c2, c3].filter(Boolean);
+        if (new Set(chosen).size !== chosen.length) {
+            showAlert('step2Alert', 'Please select different courses for each choice.'); return;
+        }
+
+        // Validate extra exam for 1st choice
+        const req1 = window.WMSU_COURSE_REQUIREMENTS?.[c1];
+        if (req1?.extra === 'nat') {
+            const nat = Number(document.getElementById('natScore1').value);
+            if (!nat || nat < 200 || nat > 400) {
+                showAlert('step2Alert', 'Please enter a valid NAT score (200–400) for BS Nursing.'); return;
+            }
+        }
+        if (req1?.extra === 'eat') {
+            const eat = Number(document.getElementById('eatScore1').value);
+            if (!eat || eat < 200 || eat > 400) {
+                showAlert('step2Alert', 'Please enter a valid EAT score (200–400) for your engineering program.'); return;
+            }
+        }
+
+        hideAlert('step2Alert');
+
+        // Pre-fill personal info from CET record if available
+        if (cetRecord) {
+            document.getElementById('surname').value    = cetRecord.surname    || '';
+            document.getElementById('firstname').value = cetRecord.firstname  || '';
+            document.getElementById('middleinitial').value = cetRecord.middleinitial || '';
+            document.getElementById('verifiedBanner').style.display = 'flex';
+            document.getElementById('verifiedName').textContent = `  ${cetRecord.surname}, ${cetRecord.firstname} · App No. ${verifiedAppNo}`;
+        }
+
+        currentStep = 3;
+        showStep(3);
+    });
+
+    /* ── Back buttons ── */
+    document.getElementById('backStep2').addEventListener('click', () => { hideAlert('step2Alert'); currentStep = 1; showStep(1); });
+    document.getElementById('backStep3').addEventListener('click', () => { hideAlert('step3Alert'); currentStep = 2; showStep(2); });
+
+    /* ── Submit ── */
+    document.getElementById('applyForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
         const surname   = document.getElementById('surname').value.trim();
         const firstname = document.getElementById('firstname').value.trim();
         const mi        = document.getElementById('middleinitial').value.trim();
         const email     = document.getElementById('email').value.trim();
         const contact   = document.getElementById('contact').value.trim();
-        if (!surname||!firstname||!mi||!email||!contact) { showAlert('verifyAlert','Please fill in all personal information fields.'); return; }
-        if (!/^[A-Za-z]\.?$/.test(mi)) { showAlert('verifyAlert','Middle initial must be a single letter (e.g. R).'); return; }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAlert('verifyAlert','Please enter a valid email address.'); return; }
-        if (!/^(09|\+639)\d{9}$/.test(contact)) { showAlert('verifyAlert','Please enter a valid PH contact number (e.g. 09123456789).'); return; }
-        hideAlert('verifyAlert');
-        currentStep=2; showStep(2);
-    });
 
-    // ── Step 2 → 3 ────────────────────────────────────────────────
-    document.getElementById('nextStep2').addEventListener('click', () => {
-        const ids = ['english','reading','science','quantitative','abstract','oapr'];
-        let valid = true;
-        ids.forEach(id => {
-            const v = Number(document.getElementById(id).value);
-            if (document.getElementById(id).value===''||isNaN(v)||v<1||v>99) valid=false;
-        });
-        if (!valid) { showAlert('step2Alert','Please fill in all score fields with values between 1 and 99.'); return; }
-        userOAPR = Number(document.getElementById('oapr').value);
-        hideAlert('step2Alert');
-        currentStep=3; showStep(3);
-        // Re-trigger course change to recalculate qualification
-        onCourseChange();
-    });
+        if (!surname || !firstname || !mi) { showAlert('step3Alert', 'Please fill in your complete name.'); return; }
+        if (!/^[A-Za-z]\.?$/.test(mi))    { showAlert('step3Alert', 'Middle initial must be a single letter (e.g. R).'); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAlert('step3Alert', 'Please enter a valid email address.'); return; }
+        if (!/^(09|\+639)\d{9}$/.test(contact)) { showAlert('step3Alert', 'Please enter a valid PH contact number (e.g. 09123456789).'); return; }
 
-    document.getElementById('backStep2').addEventListener('click', () => { hideAlert('step2Alert'); currentStep=1; showStep(1); });
-    document.getElementById('backStep3').addEventListener('click', () => { hideAlert('step3Alert'); currentStep=2; showStep(2); });
-
-    // ── Course change: show requirements & extra fields ────────────
-    function onCourseChange() {
-        const course = document.getElementById('course').value;
-        const reqBox = document.getElementById('reqInfoBox');
-        const natBox = document.getElementById('natBox');
-        const eatBox = document.getElementById('eatBox');
-
-        // Hide extras by default
-        natBox.style.display = 'none';
-        eatBox.style.display = 'none';
-        document.getElementById('natScore').removeAttribute('required');
-        document.getElementById('eatScore').removeAttribute('required');
-
-        if (!course || !window.WMSU_COURSE_REQUIREMENTS) {
-            reqBox.style.display = 'none'; return;
-        }
-        const req = window.WMSU_COURSE_REQUIREMENTS[course];
-        if (!req) { reqBox.style.display = 'none'; return; }
-
-        // Check qualification based on current OAPR (entered in step 2)
-        const oapr = userOAPR || Number(document.getElementById('oapr').value) || 0;
-        const meetsOAPR = oapr >= req.oaprMin;
-        const boxClass  = oapr === 0 ? 'warn' : (meetsOAPR ? 'ok' : 'fail');
-        const statusTxt = oapr === 0
-            ? `Minimum OAPR: ${req.oaprMin} PR`
-            : meetsOAPR
-                ? `✓ Your OAPR (${oapr}) meets the minimum requirement of ${req.oaprMin} PR`
-                : `✗ Your OAPR (${oapr}) is below the minimum requirement of ${req.oaprMin} PR`;
-
-        reqBox.style.display = 'block';
-        reqBox.className = 'req-info-box ' + boxClass;
-        reqBox.innerHTML = `
-            <div class="req-info-title">${req.icon} ${course} — Requirements</div>
-            <div class="req-info-text">
-                ${statusTxt}<br>
-                ${req.note}
-                ${req.extra==='nat'?`<br>📋 <strong>NAT score required:</strong> minimum ${req.natMin}`:''}
-                ${req.extra==='eat'?`<br>📋 <strong>EAT score required:</strong> minimum ${req.eatMin}`:''}
-            </div>
-        `;
-
-        // Show NAT or EAT fields
-        if (req.extra === 'nat') {
-            natBox.style.display = 'block';
-            document.getElementById('natScore').setAttribute('required','');
-        } else if (req.extra === 'eat') {
-            eatBox.style.display = 'block';
-            document.getElementById('eatScore').setAttribute('required','');
-        }
-    }
-
-    // ── Course → Department mapping ────────────────────────────────
-    const COURSE_DEPT = {};
-    if (window.WMSU_COURSE_REQUIREMENTS) {
-        Object.entries(window.WMSU_COURSE_REQUIREMENTS).forEach(([c,r]) => { COURSE_DEPT[c] = r.dept; });
-    }
-
-    // ── Submit ────────────────────────────────────────────────────
-    document.getElementById('applyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const course = document.getElementById('course').value;
-        if (!course) { showAlert('step3Alert','Please select a course.'); return; }
-
-        const req = window.WMSU_COURSE_REQUIREMENTS?.[course];
-
-        // Validate extra scores
-        if (req?.extra === 'nat') {
-            const nat = Number(document.getElementById('natScore').value);
-            if (!nat || nat < 200 || nat > 400) {
-                showAlert('step3Alert','Please enter a valid NAT score (200–400) for BS Nursing.'); return;
-            }
-        }
-        if (req?.extra === 'eat') {
-            const eat = Number(document.getElementById('eatScore').value);
-            if (!eat || eat < 200 || eat > 400) {
-                showAlert('step3Alert','Please enter a valid EAT score (200–400) for your engineering program.'); return;
-            }
-        }
-
-        const mi       = document.getElementById('middleinitial').value.trim().replace('.','').toUpperCase();
-        const surname  = document.getElementById('surname').value.trim();
-        const firstname= document.getElementById('firstname').value.trim();
+        const course1 = document.getElementById('course1').value;
+        const course2 = document.getElementById('course2').value;
+        const course3 = document.getElementById('course3').value;
+        const req1    = window.WMSU_COURSE_REQUIREMENTS?.[course1];
+        const miClean = mi.replace('.', '').toUpperCase();
 
         const payload = {
             appNo: verifiedAppNo,
             surname, firstname,
-            middleinitial: mi,
-            name: `${surname}, ${firstname} ${mi}.`,
-            email:    document.getElementById('email').value.trim(),
-            contact:  document.getElementById('contact').value.trim(),
-            course,
-            department: COURSE_DEPT[course] || req?.dept || 'Other',
+            middleinitial: miClean,
+            name: `${surname}, ${firstname} ${miClean}.`,
+            email, contact,
+            // Primary course is 1st choice
+            course: course1,
+            course1, course2: course2 || null, course3: course3 || null,
+            department: req1?.dept || window.WMSU_COURSE_REQUIREMENTS?.[course1]?.dept || 'Other',
             applicantType,
             cet: {
                 ep:   Number(document.getElementById('english').value),
@@ -408,8 +875,8 @@
                 ats:  Number(document.getElementById('abstract').value),
                 oapr: Number(document.getElementById('oapr').value),
             },
-            natScore: req?.extra==='nat' ? Number(document.getElementById('natScore').value)||null : null,
-            eatScore: req?.extra==='eat' ? Number(document.getElementById('eatScore').value)||null : null,
+            natScore: req1?.extra === 'nat' ? Number(document.getElementById('natScore1').value) || null : null,
+            eatScore: req1?.extra === 'eat' ? Number(document.getElementById('eatScore1').value) || null : null,
             submittedDate: new Date().toISOString(),
             status: 'pending_review',
             admissionStatus: 'valid_applicant',
@@ -420,11 +887,11 @@
 
         // Merge into shared store
         try {
-            const all = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
+            const all      = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
             const filtered = all.filter(a => a.appNo !== verifiedAppNo);
             filtered.push(payload);
             localStorage.setItem('wmsu_applications', JSON.stringify(filtered));
-        } catch(err) { /* ignore */ }
+        } catch (err) { /* ignore */ }
 
         window.location.href = 'freshman-account.html';
     });

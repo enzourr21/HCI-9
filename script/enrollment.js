@@ -10,50 +10,50 @@ window.WMSU_COURSE_REQUIREMENTS = {
   /* ── College of Computing Studies ─────────────────────────────── */
   "BS Computer Science": {
     dept: "College of Computing Studies",
-    oaprMin: 65,
+    oaprMin: 75,
     icon: "💻",
     extra: null,
-    note: "Strong Quantitative Skills (QS) preferred (≥65 PR)"
+    note: "Strong Quantitative Skills (QS) preferred (≥75 PR)"
   },
   "BS Information Technology": {
     dept: "College of Computing Studies",
-    oaprMin: 60,
+    oaprMin: 70,
     icon: "💻",
     extra: null,
-    note: "OAPR ≥60 PR required"
+    note: "OAPR ≥70 PR required"
   },
   "Associate in Computer Technology major in Networking Application Development": {
     dept: "College of Computing Studies",
-    oaprMin: 50,
+    oaprMin: 45,
     icon: "💻",
     extra: null,
-    note: "OAPR ≥50 PR required"
+    note: "OAPR ≥45 PR required"
   },
 
   /* ── College of Engineering ────────────────────────────────────── */
   "BS Civil Engineering": {
     dept: "College of Engineering",
-    oaprMin: 65,
+    oaprMin: 90,
     icon: "⚙️",
     extra: "eat",
     eatMin: 250,
-    note: "EAT ≥250 and QS ≥65 PR required"
+    note: "EAT ≥250 and QS ≥90 PR required"
   },
   "BS Mechanical Engineering": {
     dept: "College of Engineering",
-    oaprMin: 65,
+    oaprMin: 85,
     icon: "⚙️",
     extra: "eat",
     eatMin: 250,
-    note: "EAT ≥250 and QS ≥65 PR required"
+    note: "EAT ≥250 and QS ≥85 PR required"
   },
   "BS Electrical Engineering": {
     dept: "College of Engineering",
-    oaprMin: 65,
+    oaprMin: 85,
     icon: "⚙️",
     extra: "eat",
     eatMin: 250,
-    note: "EAT ≥250 and QS ≥65 PR required"
+    note: "EAT ≥250 and QS ≥85 PR required"
   },
   "BS Computer Engineering": {
     dept: "College of Engineering",
@@ -73,7 +73,7 @@ window.WMSU_COURSE_REQUIREMENTS = {
   },
   "BS Industrial Engineering": {
     dept: "College of Engineering",
-    oaprMin: 60,
+    oaprMin: 80,
     icon: "⚙️",
     extra: "eat",
     eatMin: 240,
@@ -81,7 +81,7 @@ window.WMSU_COURSE_REQUIREMENTS = {
   },
   "BS Geodetic Engineering": {
     dept: "College of Engineering",
-    oaprMin: 60,
+    oaprMin: 80,
     icon: "⚙️",
     extra: "eat",
     eatMin: 240,
@@ -97,7 +97,7 @@ window.WMSU_COURSE_REQUIREMENTS = {
   },
   "BS Sanitary Engineering": {
     dept: "College of Engineering",
-    oaprMin: 55,
+    oaprMin: 85,
     icon: "⚙️",
     extra: "eat",
     eatMin: 230,
@@ -115,27 +115,27 @@ window.WMSU_COURSE_REQUIREMENTS = {
   /* ── College of Nursing ────────────────────────────────────────── */
   "BS Nursing": {
     dept: "College of Nursing",
-    oaprMin: 70,
+    oaprMin: 83,
     icon: "🩺",
     extra: "nat",
     natMin: 260,
-    note: "NAT ≥260 required; OAPR ≥70 PR. Interview required."
+    note: "NAT ≥260 required; OAPR ≥83 PR. Interview required."
   },
 
   /* ── College of Business Administration ───────────────────────── */
   "BS Business Administration": {
     dept: "College of Business Administration",
-    oaprMin: 55,
+    oaprMin: 75,
     icon: "📊",
     extra: null,
-    note: "OAPR ≥55 PR required"
+    note: "OAPR ≥75 PR required"
   },
   "BS Accountancy": {
     dept: "College of Business Administration",
-    oaprMin: 65,
+    oaprMin: 90,
     icon: "🧮",
     extra: null,
-    note: "OAPR ≥65 PR required; QS ≥60 PR preferred"
+    note: "OAPR ≥90 PR required; QS ≥60 PR preferred"
   },
   "BS Economics": {
     dept: "College of Business Administration",
@@ -155,10 +155,10 @@ window.WMSU_COURSE_REQUIREMENTS = {
   },
   "BA Political Science": {
     dept: "College of Arts and Sciences",
-    oaprMin: 55,
+    oaprMin: 70,
     icon: "🏛️",
     extra: null,
-    note: "OAPR ≥55 PR required"
+    note: "OAPR ≥70 PR required"
   },
   "BS Journalism": {
     dept: "College of Arts and Sciences",
@@ -176,35 +176,35 @@ window.WMSU_COURSE_REQUIREMENTS = {
   },
   "BA English Language Studies (BAELS)": {
     dept: "College of Arts and Sciences",
-    oaprMin: 55,
+    oaprMin: 65,
     icon: "📖",
     extra: null,
-    note: "EP ≥60 PR preferred"
+    note: "EP ≥65 PR preferred"
   },
 
   /* ── College of Education ──────────────────────────────────────── */
   "Bachelor of Secondary Education": {
     dept: "College of Education",
-    oaprMin: 55,
+    oaprMin: 75,
     icon: "📚",
     extra: null,
-    note: "OAPR ≥55 PR required"
+    note: "OAPR ≥75 PR required"
   },
   "Bachelor of Elementary Education": {
     dept: "College of Education",
-    oaprMin: 50,
+    oaprMin: 70,
     icon: "📚",
     extra: null,
-    note: "OAPR ≥50 PR required"
+    note: "OAPR ≥70 PR required"
   },
 
   /* ── College of Agriculture ────────────────────────────────────── */
   "BS Agriculture": {
     dept: "College of Agriculture",
-    oaprMin: 50,
+    oaprMin: 60,
     icon: "🌾",
     extra: null,
-    note: "OAPR ≥50 PR required"
+    note: "OAPR ≥60 PR required"
   },
   "BS Agri Business": {
     dept: "College of Agriculture",
@@ -215,24 +215,24 @@ window.WMSU_COURSE_REQUIREMENTS = {
   },
   "BS Food Technology": {
     dept: "College of Agriculture",
-    oaprMin: 55,
+    oaprMin: 70,
     icon: "🍎",
     extra: null,
-    note: "SPS ≥55 PR preferred"
+    note: "SPS ≥70 PR preferred"
   },
   "BS Forestry": {
     dept: "College of Agriculture",
-    oaprMin: 50,
+    oaprMin: 60,
     icon: "🌲",
     extra: null,
-    note: "OAPR ≥50 PR required"
+    note: "OAPR ≥60 PR required"
   },
   "BS Nutrition and Dietetics": {
     dept: "College of Agriculture",
-    oaprMin: 55,
+    oaprMin: 75,
     icon: "🥗",
     extra: null,
-    note: "SPS ≥55 PR preferred"
+    note: "SPS ≥75 PR preferred"
   },
   "BS Environmental Science": {
     dept: "College of Agriculture",
@@ -257,19 +257,19 @@ window.WMSU_COURSE_REQUIREMENTS = {
   },
   "BS Hospitality Management": {
     dept: "College of Agriculture",
-    oaprMin: 50,
+    oaprMin: 70,
     icon: "🏨",
     extra: null,
-    note: "OAPR ≥50 PR required"
+    note: "OAPR ≥70 PR required"
   },
 
   /* ── College of Criminology ────────────────────────────────────── */
   "BS Criminology": {
     dept: "College of Criminology",
-    oaprMin: 55,
+    oaprMin: 85,
     icon: "⚖️",
     extra: null,
-    note: "OAPR ≥55 PR required. Physical fitness exam required."
+    note: "OAPR ≥85 PR required. Physical fitness exam required. No line of 8 on SHS report card."
   },
 
   /* ── Other Programs ────────────────────────────────────────────── */
