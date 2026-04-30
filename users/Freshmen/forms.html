@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMSU-Ease · Enrollment</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="forms.css">
 </head>
 
@@ -79,7 +79,10 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
                     <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
                 </svg>
-                College of Computing Studies
+                <div class="college-info">
+                    <div class="college-name" id="collegeName">College of Computing Studies</div>
+                    <div class="program-name" id="programName">Choose a program to see course and college details.</div>
+                </div>
             </div>
             <p class="panel-title">Choose Your Program</p>
             <p class="panel-subtitle">Select the course you'd like to enroll in</p>
@@ -141,15 +144,15 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Last Name <span class="req">*</span></label>
-                    <input type="text" id="lastname" placeholder="Last name" value="Dela Cruz" required>
+                    <input type="text" id="lastname" placeholder="Last name" value="" required>
                 </div>
                 <div class="form-group">
                     <label>First Name <span class="req">*</span></label>
-                    <input type="text" id="firstname" placeholder="First name" value="Juan" required>
+                    <input type="text" id="firstname" placeholder="First name" value="" required>
                 </div>
                 <div class="form-group">
                     <label>Middle Name</label>
-                    <input type="text" id="middlename" placeholder="Middle name" value="Santos">
+                    <input type="text" id="middlename" placeholder="Middle name" value="">
                 </div>
                 <div class="form-group sm">
                     <label>Suffix</label>
@@ -525,6 +528,88 @@ const STEPS = [
 
 let currentStep = 1;
 
+const COURSE_INFO = {
+    'BSCS': {
+        label: 'Bachelor of Science in Computer Science',
+        college: 'College of Computing Studies',
+        description: 'A computing program focused on algorithms, software development, and systems design.'
+    },
+    'BSIT': {
+        label: 'Bachelor of Science in Information Technology',
+        college: 'College of Computing Studies',
+        description: 'A technology program focused on systems administration, networking, and application support.'
+    },
+    'BSACT-NET': {
+        label: 'BSACT – Networking',
+        college: 'College of Computing Studies',
+        description: 'A program focused on network administration, infrastructure, and cybersecurity.'
+    },
+    'BSACT-APP': {
+        label: 'BSACT – Application Development',
+        college: 'College of Computing Studies',
+        description: 'A program focused on software development, mobile apps, and web applications.'
+    }
+};
+
+function getSelectedCourseKey() {
+    const selected = document.querySelector('input[name="course"]:checked');
+    return selected ? selected.value : '';
+}
+
+function getSelectedCourseData() {
+    return COURSE_INFO[getSelectedCourseKey()] || null;
+}
+
+function findCourseKey(value) {
+    if (!value) return null;
+    const normalized = value.toString().trim().toLowerCase();
+    if (COURSE_INFO[value]) return value;
+    for (const key of Object.keys(COURSE_INFO)) {
+        const item = COURSE_INFO[key];
+        if (key.toLowerCase() === normalized) return key;
+        if (item.label.toLowerCase() === normalized) return key;
+        if (item.label.toLowerCase().includes(normalized) || normalized.includes(item.label.toLowerCase())) return key;
+    }
+    return null;
+}
+
+function selectCourseKey(key) {
+    if (!key) return;
+    const card = document.querySelector(`.course-card[data-value="${key}"]`);
+    const input = document.querySelector(`input[name="course"][value="${key}"]`);
+    if (card && input) {
+        document.querySelectorAll('.course-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        input.checked = true;
+        updateCourseInfo(key);
+    }
+}
+
+function updateCourseInfo(key) {
+    const data = COURSE_INFO[key] || {
+        college: 'Choose a program',
+        description: 'Select a course card above to see the matching college and program details.'
+    };
+    const collegeEl = document.getElementById('collegeName');
+    const programEl = document.getElementById('programName');
+    if (collegeEl) collegeEl.textContent = data.college;
+    if (programEl) programEl.textContent = data.description;
+}
+
+function initializeCourseSelection() {
+    const savedApp = JSON.parse(localStorage.getItem('freshmanApp') || '{}');
+    const savedCourseKey = findCourseKey(savedApp.course);
+    if (savedCourseKey) {
+        selectCourseKey(savedCourseKey);
+        return;
+    }
+
+    const current = getSelectedCourseKey();
+    if (current) {
+        updateCourseInfo(current);
+    }
+}
+
 // ── BUILD STEPPER ──
 function buildStepper() {
     const el = document.getElementById('stepper');
@@ -626,8 +711,16 @@ document.querySelectorAll('.course-card').forEach(card => {
     card.addEventListener('click', () => {
         document.querySelectorAll('.course-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
-        card.querySelector('input[type="radio"]').checked = true;
+        const input = card.querySelector('input[type="radio"]');
+        if (input) {
+            input.checked = true;
+            updateCourseInfo(input.value);
+        }
     });
+});
+
+document.querySelectorAll('input[name="course"]').forEach(input => {
+    input.addEventListener('change', () => updateCourseInfo(input.value));
 });
 
 // ── FILE UPLOAD DISPLAY ──
@@ -647,12 +740,7 @@ function buildReview() {
         return el ? (el.value || '—') : '—';
     };
     const course = document.querySelector('input[name="course"]:checked');
-    const courseNames = {
-        'BSCS': 'Bachelor of Science in Computer Science',
-        'BSIT': 'Bachelor of Science in Information Technology',
-        'BSACT-NET': 'BSACT – Networking',
-        'BSACT-APP': 'BSACT – Application Development'
-    };
+    const selectedCourseData = course ? COURSE_INFO[course.value] : null;
     const idpicFile = document.getElementById('id-pic');
     const idpicName = idpicFile.files.length ? idpicFile.files[0].name : '—';
 
@@ -660,7 +748,8 @@ function buildReview() {
         {
             title: 'Program / Course',
             items: [
-                { label: 'Selected Course', value: course ? courseNames[course.value] : '—' }
+                { label: 'Selected Course', value: selectedCourseData ? selectedCourseData.label : '—' },
+                { label: 'College', value: selectedCourseData ? selectedCourseData.college : '—' }
             ]
         },
         {
@@ -719,12 +808,54 @@ function buildReview() {
 
 // ── SUBMIT ──
 function submitForm() {
+    const getValue = id => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    };
+
+    const courseInput = document.querySelector('input[name="course"]:checked');
+    const selectedCourseData = courseInput ? COURSE_INFO[courseInput.value] : null;
+    const selectedCourse = selectedCourseData ? selectedCourseData.label : '';
+
+    const savedApp = JSON.parse(localStorage.getItem('freshmanApp') || '{}');
+    const updatedApp = {
+        ...savedApp,
+        surname: getValue('lastname'),
+        firstname: getValue('firstname'),
+        middleinitial: getValue('middlename'),
+        email: getValue('email'),
+        contact: getValue('phone'),
+        course: selectedCourse || savedApp.course || '',
+        courseCollege: selectedCourseData ? selectedCourseData.college : savedApp.courseCollege || '',
+        courseDescription: selectedCourseData ? selectedCourseData.description : savedApp.courseDescription || '',
+        submittedDate: new Date().toISOString(),
+        formSubmitted: true,
+    };
+
+    localStorage.setItem('freshmanApp', JSON.stringify(updatedApp));
+    localStorage.setItem('formSubmitted', 'true');
+
+    try {
+        const allApps = JSON.parse(localStorage.getItem('wmsu_applications') || '[]');
+        const idx = allApps.findIndex(a => a.appNo === updatedApp.appNo);
+        if (idx >= 0) {
+            allApps[idx] = { ...allApps[idx], ...updatedApp };
+        } else {
+            allApps.push(updatedApp);
+        }
+        localStorage.setItem('wmsu_applications', JSON.stringify(allApps));
+    } catch (err) {
+        console.warn('Could not sync form submission to shared application store.', err);
+    }
+
     document.getElementById('successModal').classList.add('show');
 }
 
 // ── INIT ──
 buildStepper();
 updateProgress();
+initializeCourseSelection();
 </script>
+<script src="../../script/forms.js"></script>
 </body>
 </html>

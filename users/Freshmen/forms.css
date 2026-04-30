@@ -229,6 +229,21 @@ body {
     color: var(--crimson);
     margin-bottom: 20px;
 }
+.college-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.2;
+}
+.college-name {
+    font-size: 1rem;
+    font-weight: 700;
+}
+.program-name {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #831843;
+}
 
 /* ─── FORM FIELDS ─────────────────────────────────── */
 .form-row {
