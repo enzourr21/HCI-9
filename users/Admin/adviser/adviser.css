@@ -476,7 +476,6 @@ body {
     padding: 20px;
 }
 
-.modal-overlay:target,
 .modal-overlay.active,
 .modal-overlay.open { display: flex; }
 
@@ -516,6 +515,7 @@ body {
 }
 
 .close-btn {
+    user-select: none;
     font-size: 1.7rem;
     line-height: 1;
     text-decoration: none;
@@ -527,6 +527,7 @@ body {
     cursor: pointer;
     margin-left: auto;
 }
+
 .close-btn:hover { color: #c0192b; }
 
 .modal-body {

@@ -281,7 +281,7 @@
                             <td><input type="text" value="CC 104" class="id-edit"></td>
                             <td>Data Structures &amp; Algorithms</td>
                             <td>TTh</td>
-                            <td>8:00–9:30 AM</td>
+                            <td>8:00-9:30 AM</td>
                             <td>CS-101</td>
                             <td>CS-2A</td>
                             <td>3.00</td>
@@ -293,5 +293,26 @@
     </div>
 
 </body>
-<script src="../../../script/adviser.js"></script>
+<script src="../../../script/adviser.js">
+    document.addEventListener("click", function (e) {
+    const closeBtn = e.target.closest(".close-btn");
+    if (!closeBtn) return;
+
+    e.preventDefault();
+
+    // Push a clean state so :target no longer matches any modal
+    history.pushState(null, "", window.location.pathname + window.location.search);
+
+    // Also hide any .active or .open modals driven by JS
+        document.querySelectorAll(".modal-overlay").forEach(m => {
+            m.classList.remove("active", "open");
+        });
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!e.target.classList.contains("modal-overlay")) return;
+        history.pushState(null, "", window.location.pathname + window.location.search);
+        e.target.classList.remove("active", "open");
+    });
+</script>
 </html>
