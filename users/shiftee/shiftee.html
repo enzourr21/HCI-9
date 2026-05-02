@@ -1,241 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiftee Portal — WMSU-Ease</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="shiftee.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiftee Portal - WMSU-Ease</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../old student/student.css">
+    <link rel="stylesheet" href="shiftee.css">
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="nav-brand">
-      <div class="nav-logo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-        </svg>
-      </div>
-      <span class="nav-title">WMSU-Ease</span>
-      <span class="nav-divider"></span>
-      <span class="nav-subtitle">Shiftee Portal</span>
+    <!-- SIDEBAR TOGGLE -->
+    <input type="checkbox" id="sidebar-toggle">
+    <label for="sidebar-toggle" class="sidebar-overlay"></label>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="name">WMSU-Ease</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <div class="nav-student-info">
+                    <!-- Shiftee chip -->
+                    <div class="nav-student-chip">
+                        <div class="nav-chip-avatar" id="chipAvatar">MS</div>
+                        <div class="nav-chip-text">
+                            <span class="nav-chip-name" id="chipName">Maria Santos</span>
+                            <span class="nav-chip-meta shiftee-meta">Shiftee</span>
+                        </div>
+                    </div>
+
+                    <div class="nav-divider"></div>
+
+                    <!-- Log out -->
+                    <a href="../../login/login.html"
+                       style="display:flex; align-items:center; gap:6px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round"
+                             width="18" height="18">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Log Out
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="layout">
+
+        <!-- HAMBURGER -->
+        <label for="sidebar-toggle" class="hamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </label>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <label for="sidebar-toggle" class="sidebar-close">&#10005;</label>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="shiftee.html" class="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="application.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="17 1 21 5 17 9"/>
+                            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                            <polyline points="7 23 3 19 7 15"/>
+                            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                        </svg>
+                        Application
+                    </a>
+                </li>
+                <li>
+                    <a href="requirements.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                        Requirements
+                    </a>
+                </li>
+                <li>
+                    <a href="documents.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                        Documents
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- ─── MAIN ─── -->
+        <main class="main-content">
+
+            <!-- ① SHIFTING PROGRESS -->
+            <div class="card">
+                <h3 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         style="margin-right:8px;">
+                        <polyline points="17 1 21 5 17 9"/>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                        <polyline points="7 23 3 19 7 15"/>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                    </svg>
+                    Shifting Progress
+                </h3>
+
+                <div class="progress-track">
+
+                    <!-- Step 1: Application Filed — DONE -->
+                    <div class="progress-step">
+                        <div class="progress-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div class="step-line"></div>
+                        <p class="step-label">Application</p>
+                        <span class="badge green">Filed</span>
+                    </div>
+
+                    <!-- Step 2: Document Review — ACTIVE -->
+                    <div class="progress-step">
+                        <div class="progress-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                        </div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Doc. Review</p>
+                        <span class="badge yellow">In Review</span>
+                    </div>
+
+                    <!-- Step 3: Dept. Approval — PENDING -->
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Dept. Head</p>
+                        <span class="badge gray">Pending</span>
+                    </div>
+
+                    <!-- Step 4: Dean's Approval — PENDING -->
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="8" r="6"/>
+                                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                            </svg>
+                        </div>
+                        <div class="step-line gray"></div>
+                        <p class="step-label">Dean</p>
+                        <span class="badge gray">Pending</span>
+                    </div>
+
+                    <!-- Step 5: Confirmed — PENDING -->
+                    <div class="progress-step gray">
+                        <div class="progress-circle gray">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <p class="step-label">Confirmed</p>
+                        <span class="badge gray">Pending</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ② STUDENT INFO (read-only) -->
+            <div class="card">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">MS</div>
+                    <div class="profile-meta">
+                        <h2 class="profile-name" id="profileName">Santos, Maria Reyes</h2>
+                        <p class="profile-sub" id="profileSub">2023-005678 &bull; 2nd Year &bull; College of Computing Studies</p>
+                        <span class="badge yellow">Shifting Application — Under Review</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ③ SHIFTING APPLICATION -->
+            <div class="card">
+                <h3 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         style="margin-right:8px;">
+                        <polyline points="17 1 21 5 17 9"/>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                        <polyline points="7 23 3 19 7 15"/>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                    </svg>
+                    Shifting Application
+                </h3>
+
+                <!-- Status Banner -->
+                <div class="shift-status-banner" id="shiftStatusBanner">
+                    <div class="shift-status-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="shift-status-title" id="shiftStatusTitle">Application Under Review</p>
+                        <p class="shift-status-desc" id="shiftStatusDesc">
+                            Filed on <strong>April 28, 2025</strong>. Currently at Document Review stage.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- From → To Programs -->
+                <div class="program-transfer">
+                    <div class="program-box program-from">
+                        <p class="program-box-label">Currently Enrolled In</p>
+                        <p class="program-box-code" id="fromCode">BSIT</p>
+                        <p class="program-box-name" id="fromName">Bachelor of Science in Information Technology</p>
+                        <p class="program-box-college" id="fromCollege">College of Computing Studies</p>
+                    </div>
+
+                    <div class="transfer-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/>
+                            <path d="m12 5 7 7-7 7"/>
+                        </svg>
+                        <span>Shifting To</span>
+                    </div>
+
+                    <div class="program-box program-to">
+                        <p class="program-box-label">Target Program</p>
+                        <p class="program-box-code" id="toCode">BSCS</p>
+                        <p class="program-box-name" id="toName">Bachelor of Science in Computer Science</p>
+                        <p class="program-box-college" id="toCollege">College of Computing Studies</p>
+                    </div>
+                </div>
+
+                <!-- Info Grid -->
+                <div class="profile-grid" style="margin-top:18px;">
+                    <div class="profile-field">
+                        <p class="field-label">Student ID</p>
+                        <p class="field-value" id="viewStudentId">2023-005678</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Year Level</p>
+                        <p class="field-value" id="viewYear">2nd Year</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Date Filed</p>
+                        <p class="field-value" id="viewDateFiled">April 28, 2025</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Contact Number</p>
+                        <p class="field-value" id="viewContact">09187654321</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Email Address</p>
+                        <p class="field-value" id="viewEmail">2023-005678@wmsu.edu.ph</p>
+                    </div>
+                    <div class="profile-field">
+                        <p class="field-label">Application Status</p>
+                        <p class="field-value" id="viewStatus">Under Review</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ④ REQUIREMENTS CHECKLIST -->
+            <div class="card">
+                <h3 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         style="margin-right:8px;">
+                        <path d="M9 11l3 3L22 4"/>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                    Requirements Checklist
+                </h3>
+
+                <ul class="req-list">
+                    <li class="req-item req-done">
+                        <span class="req-icon req-icon-done">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div class="req-details">
+                            <span class="req-name">Shifting Application Form</span>
+                            <span class="req-note">Duly accomplished and signed</span>
+                        </div>
+                        <span class="badge green">Submitted</span>
+                    </li>
+                    <li class="req-item req-done">
+                        <span class="req-icon req-icon-done">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div class="req-details">
+                            <span class="req-name">Latest Grade Report / Transcript of Records</span>
+                            <span class="req-note">Official copy from Registrar</span>
+                        </div>
+                        <span class="badge green">Submitted</span>
+                    </li>
+                    <li class="req-item req-pending">
+                        <span class="req-icon req-icon-pending">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </span>
+                        <div class="req-details">
+                            <span class="req-name">Department Head Approval Slip</span>
+                            <span class="req-note">Signed by the current dept. head</span>
+                        </div>
+                        <span class="badge yellow">Pending</span>
+                    </li>
+                    <li class="req-item req-pending">
+                        <span class="req-icon req-icon-pending">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </span>
+                        <div class="req-details">
+                            <span class="req-name">Dean's Endorsement Letter</span>
+                            <span class="req-note">From the college dean of target program</span>
+                        </div>
+                        <span class="badge yellow">Pending</span>
+                    </li>
+                    <li class="req-item req-missing">
+                        <span class="req-icon req-icon-missing">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </span>
+                        <div class="req-details">
+                            <span class="req-name">Honorable Dismissal (if transferring college)</span>
+                            <span class="req-note">From the Registrar's Office</span>
+                        </div>
+                        <span class="badge gray">N/A</span>
+                    </li>
+                    <li class="req-item req-done">
+                        <span class="req-icon req-icon-done">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div class="req-details">
+                            <span class="req-name">1×1 ID Photo</span>
+                            <span class="req-note">2 copies, white background</span>
+                        </div>
+                        <span class="badge green">Submitted</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ⑤ REGISTRAR REMARKS -->
+            <div class="card">
+                <h3 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         style="margin-right:8px;">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Registrar Remarks
+                </h3>
+                <div class="remarks-box" id="remarksBox">
+                    <p class="remarks-text" id="remarksText">
+                        Documents are under review by the Department Head.
+                        Please ensure all required documents are complete and properly signed
+                        before proceeding to the next stage.
+                    </p>
+                    <p class="remarks-date" id="remarksDate">Last updated: April 29, 2025</p>
+                </div>
+            </div>
+
+        </main>
     </div>
-    <div class="nav-chip">
-      <div class="chip-avatar" id="chipAvatar">MD</div>
-      <div class="chip-info">
-        <span class="chip-name" id="chipName">Maria Dela Torre</span>
-        <span class="chip-meta" id="chipMeta">Shiftee · CCS</span>
-      </div>
-    </div>
-  </nav>
 
-  <div class="page-wrapper">
+    <script src="../../script/shiftee.js"></script>
 
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar">
-      <ul class="sidebar-nav">
-        <li><a href="#" class="active">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          Dashboard
-        </a></li>
-        <li><a href="#">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Profile
-        </a></li>
-        <li><a href="#">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          Subjects
-        </a></li>
-        <li><a href="#">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          Payment
-        </a></li>
-      </ul>
-
-      <div class="sidebar-help">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Need help? Visit the Registrar's Office, Building A.
-      </div>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="main-content">
-
-      <!-- PAGE HEADER -->
-      <div class="page-header">
-        <div>
-          <h1 class="page-title">Shifting Application</h1>
-          <p class="page-desc">Track your departmental shifting status in real-time.</p>
-        </div>
-        <div class="header-badge" id="headerBadge">
-          <span class="badge-dot"></span>
-          <span id="headerBadgeText">In Progress</span>
-        </div>
-      </div>
-
-      <!-- PROGRESS TRACKER -->
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Shifting Progress
-          </h2>
-        </div>
-
-        <div class="stepper" id="stepper">
-
-          <!-- Step 1 -->
-          <div class="step" id="step1">
-            <div class="step-left">
-              <div class="step-icon done">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <div class="step-line"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-top">
-                <span class="step-title">Shifting Exam Result</span>
-                <span class="step-badge done">Completed</span>
-              </div>
-              <p class="step-desc">You passed the shifting qualifying examination. Your application has been submitted to the department.</p>
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="step" id="step2">
-            <div class="step-left">
-              <div class="step-icon waiting" id="icon2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </div>
-              <div class="step-line"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-top">
-                <span class="step-title">Adviser Assignment</span>
-                <span class="step-badge waiting" id="badge2">Waiting</span>
-              </div>
-              <p class="step-desc" id="desc2">The department secretary will assign your academic adviser. Check back regularly for updates.</p>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="step" id="step3">
-            <div class="step-left">
-              <div class="step-icon locked" id="icon3">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-              <div class="step-line"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-top">
-                <span class="step-title">Dept. Head Recommendation</span>
-                <span class="step-badge locked" id="badge3">Pending</span>
-              </div>
-              <p class="step-desc" id="desc3">After advising, your department head will review and sign your shifting form.</p>
-            </div>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="step last" id="step4">
-            <div class="step-left">
-              <div class="step-icon locked" id="icon4">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              </div>
-            </div>
-            <div class="step-body">
-              <div class="step-top">
-                <span class="step-title">Dean's Approval</span>
-                <span class="step-badge locked" id="badge4">Pending</span>
-              </div>
-              <p class="step-desc" id="desc4">Final approval from the College Dean. Upon approval, your COR will be generated.</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ADVISER CARD (hidden until assigned) -->
-      <div class="card adviser-card hidden" id="adviserCard">
-        <div class="adviser-glow"></div>
-        <div class="adviser-inner">
-          <div class="adviser-avatar" id="adviserAvatar">--</div>
-          <div class="adviser-info">
-            <p class="adviser-label">Your Assigned Adviser</p>
-            <h3 class="adviser-name" id="adviserName">—</h3>
-            <div class="adviser-meta">
-              <span class="meta-chip">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span id="adviserOffice">—</span>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="next-step-box">
-          <div class="next-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <p class="next-step-text" id="nextStepText">Go to the Department Office to get your Advising Form.</p>
-        </div>
-      </div>
-
-      <!-- FINAL COR BUTTON (shown when dean approves) -->
-      <div class="card cor-card hidden" id="corCard">
-        <div class="cor-icon">🎓</div>
-        <div class="cor-info">
-          <h3 class="cor-title">Congratulations! Shifting Approved.</h3>
-          <p class="cor-desc">Your Dean has officially approved your shifting request. You may now download your Certificate of Registration.</p>
-        </div>
-        <button class="btn-cor" onclick="alert('Downloading COR... (demo)')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download Final COR
-        </button>
-      </div>
-
-      <!-- INFO CARD -->
-      <div class="card info-card" id="infoCard">
-        <div class="info-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </div>
-        <div>
-          <p class="info-title">What happens next?</p>
-          <p class="info-text" id="infoText">The department secretary will review your application and assign an academic adviser. This may take 1–3 business days.</p>
-        </div>
-      </div>
-
-    </main>
-  </div>
-
-  <!-- DEBUG PANEL -->
-  <div class="debug-panel" id="debugPanel">
-    <button class="debug-toggle" id="debugToggle">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      Admin / Debug
-    </button>
-    <div class="debug-body" id="debugBody">
-      <p class="debug-label">Simulate secretary/admin actions:</p>
-      <div class="debug-buttons">
-        <button class="dbtn" id="btnAssignAdviser">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Assign Adviser
-        </button>
-        <button class="dbtn" id="btnDeptHead">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
-          Approve Dept Head
-        </button>
-        <button class="dbtn" id="btnDean">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Approve Dean
-        </button>
-        <button class="dbtn reset" id="btnReset">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg>
-          Reset
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
 </body>
 </html>
