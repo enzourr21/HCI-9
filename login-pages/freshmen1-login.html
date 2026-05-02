@@ -78,15 +78,46 @@
             <div class="lp-auth-card">
 
                 <div class="auth-card-top">
-                    <span class="card-emoji">👋</span>
+                    <!-- Log-in / user icon replacing 👋 emoji -->
+                    <div style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 44px;
+                        height: 44px;
+                        background: rgba(255,255,255,0.15);
+                        border-radius: 10px;
+                        margin-bottom: 8px;
+                        flex-shrink: 0;
+                    ">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                             fill="none" stroke="#fff" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round"
+                             width="24" height="24">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                            <polyline points="10 17 15 12 10 7"/>
+                            <line x1="15" y1="12" x2="3" y2="12"/>
+                        </svg>
+                    </div>
                     <h2>Sign In</h2>
                     <p>Access your existing application.</p>
                 </div>
 
                 <div class="auth-card-body">
 
-                    <div class="auth-signin">
-                        No account yet? <a href="freshmen-login.html">Create one here</a>
+                    <div class="auth-signin" style="
+                        text-align: center;
+                        font-size: 13px;
+                        color: #666;
+                        margin-bottom: 18px;
+                    ">
+                        No account yet?
+                        <a href="freshmen-login.html" style="
+                            color: #c0192b;
+                            font-weight: 600;
+                            text-decoration: none;
+                            margin-left: 3px;
+                        ">Create one here</a>
                     </div>
 
                     <form id="loginForm" novalidate>
