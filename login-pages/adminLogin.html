@@ -140,7 +140,7 @@
                             <div class="select-wrap">
                                 <select id="adminRole" required>
                                     <option value="">— Select Role —</option>
-                                    <option value="MISTO">MISTO</option>
+                                    <option value="misto">MISTO</option>
                                     <option value="assessment">Assessment Office</option>
                                     <option value="admission">Admission Office</option>
                                     <option value="dean">College Dean</option>
@@ -208,6 +208,9 @@
         alertDiv.style.display = 'none';
 
         switch (role) {
+            case 'misto':
+                window.location.href = '../users/Admin/MISTO/systemAdmin.html';
+                break;
             case 'assessment':
                 window.location.href = '../users/Admin/assessment/assessment_dashboard.html';
                 break;
@@ -219,9 +222,6 @@
                 break;
             case 'admission':
                 window.location.href = '../users/Admin/admission/admission.html';
-                break;
-            case 'MISTO':
-                window.location.href = '../users/Admin/MISTO/systemAdmin.html';
                 break;
             default:
                 alertDiv.textContent   = 'This portal is currently under maintenance. Please contact MISTO.';
