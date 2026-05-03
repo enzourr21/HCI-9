@@ -35,7 +35,7 @@ const ROLES = {
     title:    'Registrar Portal',
     sub:      'Super Admin access.',
     badge:    'Super Admin',
-    redirect: '../users/admin/Registrar/registrar_dashboard.html',
+    redirect: '../users/Admin/Registrar/registrar_dashboard.html',
   },
   ADVISER: {
     label:    'Adviser',
