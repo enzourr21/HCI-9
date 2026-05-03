@@ -35,7 +35,7 @@ const ROLES = {
     title:    'Registrar Portal',
     sub:      'Super Admin access.',
     badge:    'Super Admin',
-    redirect: '../users/registrar/registrar.html',
+    redirect: '../users/admin/Registrar/registrar_dashboard.html',
   },
   ADVISER: {
     label:    'Adviser',
@@ -43,7 +43,7 @@ const ROLES = {
     title:    'Adviser Portal',
     sub:      'Advisory & student records.',
     badge:    'Adviser',
-    redirect: '../users/adviser/adviser.html',
+    redirect: '../users/Admin/adviser/adviser_dashboard.html',
   },
   DEPTHEAD: {
     label:    'Department Head',
@@ -51,7 +51,7 @@ const ROLES = {
     title:    'Department Head Portal',
     sub:      'Department management.',
     badge:    'Dept. Head',
-    redirect: '../users/depthead/dept-head.html',
+    redirect: '../users/Admin/dept-admin/dept-head.html',
   },
   ADMISSION: {
     label:    'Admission Office',
@@ -59,7 +59,7 @@ const ROLES = {
     title:    'Admission Portal',
     sub:      'Applicant & admission records.',
     badge:    'Admission',
-    redirect: '../users/admission/admission.html',
+    redirect: '../users/Admin/admission/admission.html',
   },
   ASSESSMENT: {
     label:    'Assessment Office',
@@ -67,7 +67,7 @@ const ROLES = {
     title:    'Assessment Portal',
     sub:      'Fees & assessment records.',
     badge:    'Assessment',
-    redirect: '../users/assessment/assessment.html',
+    redirect: '../users/Admin/assessment/assessment_dashboard.html',
   },
   MISTO: {
     label:    'MIS-TO',
@@ -75,7 +75,7 @@ const ROLES = {
     title:    'MIS-TO Portal',
     sub:      'System & technical operations.',
     badge:    'MIS-TO',
-    redirect: '../users/misto/misto.html',
+    redirect: '../users/Admin/MISTO/systemAdmin.html',
   },
   DEAN: {
     label:    'Dean',
@@ -83,7 +83,7 @@ const ROLES = {
     title:    'Dean Portal',
     sub:      'College administration.',
     badge:    'Dean',
-    redirect: '../users/dean/dean.html',
+    redirect: '../users/Admin/dean/dean.html',
   },
   SECRETARY: {
     label:    'Secretary',
@@ -91,7 +91,7 @@ const ROLES = {
     title:    'Secretary Portal',
     sub:      'Records & correspondence.',
     badge:    'Secretary',
-    redirect: '../users/secretary/secretary.html',
+    redirect: '../users/Admin/secretary/secretary.html',
   },
   STUDENT: {
     label:    'Student',
