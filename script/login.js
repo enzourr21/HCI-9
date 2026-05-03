@@ -214,7 +214,7 @@ const ROLES = {
     title:    'Student Portal',
     sub:      'Enrollment & records.',
     badge:    'Student Portal',
-    redirect: '../users/old student/old-student.html',
+    redirect: '../users/old student/re-enrollment.html',
   },
   UNKNOWN: {
     label:    '',
@@ -330,9 +330,20 @@ loginForm.addEventListener('submit', (e) => {
     localStorage.removeItem('wmsu_remember_id');
   }
 
-  // ── TODO: Replace with real auth API call ─────────────────
-  const redirect = ROLES[roleKey].redirect;
-  if (redirect) window.location.href = redirect;
+ // ── TODO: Replace with real auth API call ─────────────────
+if (roleKey === 'STUDENT') {
+    // Look up the student in STUDENT_DB and save their ID to session
+    const student = findStudentById(id) ||
+                    STUDENT_DB.find(s => s.email === id.toLowerCase());
+    if (!student) {
+        showAlert('Student ID not found. Check your ID and try again.');
+        return;
+    }
+    sessionStorage.setItem('loggedInStudentId', student.studentId);
+}
+
+const redirect = ROLES[roleKey].redirect;
+if (redirect) window.location.href = redirect;
 });
 
 // ─── RESTORE REMEMBERED ID ────────────────────────────────────
