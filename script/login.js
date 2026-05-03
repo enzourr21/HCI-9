@@ -144,16 +144,86 @@ const EMAIL_ROLE_MAP = {
 
 // ─── ROLE CONFIG ──────────────────────────────────────────────
 const ROLES = {
-  REGISTRAR:  { label: 'Registrar / Super Admin', title: 'Registrar Portal',     sub: 'Super Admin access.',             badge: 'Super Admin',    redirect: '../users/registrar/registrar.html' },
-  ADVISER:    { label: 'Adviser',                 title: 'Adviser Portal',        sub: 'Advisory & student records.',     badge: 'Adviser',        redirect: '../users/adviser/adviser.html' },
-  DEPTHEAD:   { label: 'Department Head',         title: 'Department Head Portal',sub: 'Department management.',          badge: 'Dept. Head',     redirect: '../users/depthead/dept-head.html' },
-  ADMISSION:  { label: 'Admission Office',        title: 'Admission Portal',      sub: 'Applicant & admission records.',  badge: 'Admission',      redirect: '../users/admission/admission.html' },
-  ASSESSMENT: { label: 'Assessment Office',       title: 'Assessment Portal',     sub: 'Fees & assessment records.',      badge: 'Assessment',     redirect: '../users/assessment/assessment.html' },
-  MISTO:      { label: 'MIS-TO',                  title: 'MIS-TO Portal',         sub: 'System & technical operations.',  badge: 'MIS-TO',         redirect: '../users/misto/misto.html' },
-  DEAN:       { label: 'Dean',                    title: 'Dean Portal',           sub: 'College administration.',         badge: 'Dean',           redirect: '../users/dean/dean.html' },
-  SECRETARY:  { label: 'Secretary',               title: 'Secretary Portal',      sub: 'Records & correspondence.',       badge: 'Secretary',      redirect: '../users/secretary/secretary.html' },
-  STUDENT:    { label: 'Student',                 title: 'Student Portal',        sub: 'Enrollment & records.',           badge: 'Student Portal', redirect: '../users/old student/old-student.html' },
-  UNKNOWN:    { label: '',                        title: 'Sign In',               sub: 'Enter your WMSU credentials to continue.', badge: 'WMSU Portal', redirect: null },
+  REGISTRAR: {
+    label:    'Registrar / Super Admin',
+    emoji:    '🏛️',
+    title:    'Registrar Portal',
+    sub:      'Super Admin access.',
+    badge:    'Super Admin',
+    redirect: '../users/Admin/Registrar/registrar_dashboard.html',
+  },
+  ADVISER: {
+    label:    'Adviser',
+    emoji:    '👨‍🏫',
+    title:    'Adviser Portal',
+    sub:      'Advisory & student records.',
+    badge:    'Adviser',
+    redirect: '../users/Admin/adviser/adviser_dashboard.html',
+  },
+  DEPTHEAD: {
+    label:    'Department Head',
+    emoji:    '🏢',
+    title:    'Department Head Portal',
+    sub:      'Department management.',
+    badge:    'Dept. Head',
+    redirect: '../users/Admin/dept-admin/dept-head.html',
+  },
+  ADMISSION: {
+    label:    'Admission Office',
+    emoji:    '📋',
+    title:    'Admission Portal',
+    sub:      'Applicant & admission records.',
+    badge:    'Admission',
+    redirect: '../users/Admin/admission/admission.html',
+  },
+  ASSESSMENT: {
+    label:    'Assessment Office',
+    emoji:    '💰',
+    title:    'Assessment Portal',
+    sub:      'Fees & assessment records.',
+    badge:    'Assessment',
+    redirect: '../users/Admin/assessment/assessment_dashboard.html',
+  },
+  MISTO: {
+    label:    'MIS-TO',
+    emoji:    '💻',
+    title:    'MIS-TO Portal',
+    sub:      'System & technical operations.',
+    badge:    'MIS-TO',
+    redirect: '../users/Admin/MISTO/systemAdmin.html',
+  },
+  DEAN: {
+    label:    'Dean',
+    emoji:    '🎩',
+    title:    'Dean Portal',
+    sub:      'College administration.',
+    badge:    'Dean',
+    redirect: '../users/Admin/dean/dean.html',
+  },
+  SECRETARY: {
+    label:    'Secretary',
+    emoji:    '📁',
+    title:    'Secretary Portal',
+    sub:      'Records & correspondence.',
+    badge:    'Secretary',
+    redirect: '../users/Admin/secretary/secretary.html',
+  },
+  STUDENT: {
+    label:    'Student',
+    emoji:    '🎓',
+    title:    'Student Portal',
+    sub:      'Enrollment & records.',
+    badge:    'Student Portal',
+    redirect: '../users/old student/old-student.html',
+  },
+  UNKNOWN: {
+    label:    '',
+    emoji:    '🎓',
+    title:    'Sign In',
+    sub:      'Enter your WMSU credentials to continue.',
+    badge:    'WMSU Portal',
+    redirect: null,
+  },
 };
 
 // ─── ROLE DETECTION ───────────────────────────────────────────
@@ -272,5 +342,13 @@ window.addEventListener('DOMContentLoaded', () => {
     loginId.value    = saved;
     rememberMe.checked = true;
     applyRole(detectRole(saved));
+  }
+});
+
+loginForm.addEventListener('submit', () => {
+  if (rememberMe.checked) {
+    localStorage.setItem('wmsu_remember_id', loginId.value.trim());
+  } else {
+    localStorage.removeItem('wmsu_remember_id');
   }
 });

@@ -7,11 +7,217 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="registrar.css">
 <link rel="stylesheet" href="../admin.css">
+<style>
+/* ── Course Offerings page-specific ── */
+.dept-curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+}
+
+.dept-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+}
+
+.dept-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+.dept-card-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.dept-card-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--black);
+}
+
+.dept-card-body { padding: 14px 16px; }
+
+.dept-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.dept-meta-row:last-child { margin-bottom: 0; }
+.dept-meta-key { color: var(--text-muted); font-size: 0.73rem; }
+
+.dept-card-footer {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    background: #fafafa;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+/* Secretary modifications banner */
+.dept-modified-banner {
+    margin: 8px 16px;
+    padding: 8px 12px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 3px solid var(--warning);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.75rem;
+    color: #78350f;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dept-modified-banner i { color: var(--warning); flex-shrink: 0; }
+
+/* Curriculum version tabs inside dept panel */
+.version-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+
+.version-tab {
+    padding: 8px 14px;
+    font-size: 0.80rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.version-tab:hover { color: var(--crimson); }
+.version-tab.active { color: var(--crimson); border-bottom-color: var(--crimson); }
+
+.version-locked-badge {
+    font-size: 0.65rem;
+    background: #f3f4f6;
+    color: #374151;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+    font-weight: 700;
+}
+
+/* Reg Rules toggles */
+.rules-section { margin-bottom: 24px; }
+
+.rules-section-title {
+    font-size: 0.80rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+.toggle-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.toggle-row:last-child { border-bottom: none; }
+
+.toggle-info { flex: 1; }
+
+.toggle-label-main {
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 3px;
+}
+
+.toggle-label-sub {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.toggle-label-sub.warn { color: var(--warning); font-weight: 600; }
+
+/* Date window row inside toggle */
+.date-window-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.date-window-row label {
+    font-size: 0.73rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.date-window-row input {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.78rem;
+    font-family: inherit;
+    color: var(--black);
+}
+
+.date-window-row input:focus { outline: none; border-color: var(--crimson); }
+
+/* Publish dependency lock */
+.toggle-row.locked-dependency .toggle {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.lock-notice {
+    font-size: 0.70rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+/* Dept live view table inside panel */
+.live-view-table { width: 100%; border-collapse: collapse; font-size: 0.80rem; }
+.live-view-table th {
+    padding: 8px 10px;
+    text-align: left;
+    background: var(--crimson);
+    color: white;
+    font-size: 0.70rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.live-view-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+.live-view-table tbody tr:last-child td { border-bottom: none; }
+.live-view-table tbody tr:hover { background: #fff8f8; }
+
+.modified-cell { color: var(--warning); font-weight: 600; }
+</style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-
+<!-- TOPBAR -->
 <header class="topbar">
     <a href="../../../index.html" class="topbar-brand">
         <svg class="topbar-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -21,7 +227,7 @@
         <span class="topbar-name">WMSU-Ease</span>
     </a>
     <div class="topbar-divider"></div>
-    <div class="topbar-term-wrap" class = "term-selector">
+    <div class="topbar-term-wrap">
         <label class="topbar-term-label">Active Term</label>
         <select id="termSelect" class="topbar-term-select" onchange="updateTermBadges()">
             <option value="2024-2S">A.Y. 2024–2025, 2nd Semester</option>
@@ -29,19 +235,15 @@
             <option value="2025-2S">A.Y. 2025–2026, 2nd Semester</option>
         </select>
     </div>
-
     <div class="topbar-right">
         <span class="topbar-sync" id="syncLabel">—</span>
         <div class="topbar-user">
             <div class="topbar-avatar" id="termAvatar">RM</div>
             <span id="termUserLabel">Registrar</span>
         </div>
-        
         <li>
-            <a href="../../../login-pages/adminLogin.html" class="topbar-logout">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    width="17" height="17">
+            <a href="../../../login-pages/login.html" class="topbar-logout">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                     <polyline points="16 17 21 12 16 7"/>
                     <line x1="21" y1="12" x2="9" y2="12"/>
@@ -63,18 +265,17 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Scheduling</div>
-      <div class="sidebar-item" onclick="showPage('term-setup', this)"><i class="fas fa-calendar-days"></i> Term & Calendar</div>
+      <div class="sidebar-item" onclick="showPage('term-setup', this)"><i class="fas fa-calendar-days"></i> Term &amp; Calendar</div>
       <div class="sidebar-item" onclick="showPage('course-offerings', this)"><i class="fas fa-table-list"></i> Course Offerings</div>
       <div class="sidebar-item" onclick="showPage('room-assignment', this)"><i class="fas fa-door-open"></i> Room Assignment</div>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Control</div>
-      <div class="sidebar-item" onclick="showPage('approval-queue', this)"><i class="fas fa-inbox"></i> Approval Queue <span class="sidebar-badge" id="approvalBadge">7</span></div>
-      <div class="sidebar-item" onclick="showPage('reg-rules', this)"><i class="fas fa-sliders"></i> Reg. Rules & Controls</div>
+      <div class="sidebar-item" onclick="showPage('reg-rules', this)"><i class="fas fa-sliders"></i> Reg. Rules &amp; Controls</div>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Insights</div>
-      <div class="sidebar-item" onclick="showPage('reports', this)"><i class="fas fa-chart-bar"></i> Reports & Analytics</div>
+      <div class="sidebar-item" onclick="showPage('reports', this)"><i class="fas fa-chart-bar"></i> Reports &amp; Analytics</div>
       <div class="sidebar-item" onclick="showPage('audit', this)"><i class="fas fa-clipboard-list"></i> Audit Trail</div>
     </div>
     <div class="sidebar-section">
@@ -87,16 +288,22 @@
   <!-- MAIN CONTENT -->
   <main class="main">
 
-    <!-- ===== DASHBOARD ===== -->
+    <!-- ══════════════════════════════════
+         DASHBOARD
+    ══════════════════════════════════ -->
     <div class="page active" id="page-dashboard">
       <div class="page-header">
         <div>
           <div class="page-title">Registrar Dashboard</div>
-          <div class="page-subtitle">A.Y. 2025–2026, 1st Semester &nbsp;·&nbsp; Registration Period: <strong style="color:var(--crimson)">Open</strong></div>
+          <div class="page-subtitle" id="dashSubtitle">A.Y. 2025–2026, 1st Semester &nbsp;·&nbsp; Registration Period: <strong style="color:var(--crimson)">Open</strong></div>
         </div>
         <div class="flex gap-2">
-          <button class="btn btn-outline btn-sm" onclick="openModal('publishModal')"><i class="fas fa-bullhorn"></i> Publish Schedule</button>
-          <button class="btn btn-primary btn-sm" onclick="showPage('approval-queue',null)"><i class="fas fa-inbox"></i> View Queue <span style="background:white;color:var(--crimson);border-radius:999px;padding:0px 6px;font-size:0.68rem;margin-left:2px">7</span></button>
+          <button class="btn btn-outline btn-sm" onclick="showPage('course-offerings', document.querySelector('[onclick*=course-offerings]'))">
+            <i class="fas fa-table-list"></i> Course Offerings
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="showPage('reg-rules', document.querySelector('[onclick*=reg-rules]'))">
+            <i class="fas fa-sliders"></i> Reg. Controls
+          </button>
         </div>
       </div>
 
@@ -104,7 +311,7 @@
       <div class="stat-grid">
         <div class="stat-card ok-card">
           <div class="stat-label">Registration Status</div>
-          <div class="stat-value" style="color:var(--success);font-size:1rem;font-weight:800;letter-spacing:-0.01em">OPEN</div>
+          <div class="stat-value" style="color:var(--success);font-size:1rem;font-weight:800;">OPEN</div>
           <div class="stat-sub">Closes Jun 30, 2025</div>
           <i class="fas fa-circle-check stat-icon" style="opacity:0.3;color:var(--success)"></i>
         </div>
@@ -114,408 +321,141 @@
           <div class="stat-sub">247 of 317 sections published</div>
           <i class="fas fa-table-list stat-icon" style="opacity:0.3;color:var(--warning)"></i>
         </div>
-        <div class="stat-card alert-card">
-          <div class="stat-label">Pending Approvals</div>
-          <div class="stat-value">7</div>
-          <div class="stat-sub">2 urgent · 5 standard</div>
-          <i class="fas fa-inbox stat-icon" style="opacity:0.3;color:var(--danger)"></i>
+        <div class="stat-card ok-card">
+          <div class="stat-label">Curriculum Distribution</div>
+          <div class="stat-value">6 / 9</div>
+          <div class="stat-sub">Departments received curriculum</div>
+          <i class="fas fa-bullhorn stat-icon" style="opacity:0.3;color:var(--success)"></i>
         </div>
-        <div class="stat-card alert-card">
-          <div class="stat-label">Schedule Conflicts</div>
-          <div class="stat-value">3</div>
-          <div class="stat-sub">Room + instructor overlaps</div>
-          <i class="fas fa-triangle-exclamation stat-icon" style="opacity:0.3;color:var(--danger)"></i>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Enrolled Students</div>
-          <div class="stat-value">2,841</div>
-          <div class="stat-sub">+128 since last week</div>
-          <i class="fas fa-users stat-icon"></i>
-        </div>
-        <div class="stat-card warn-card">
-          <div class="stat-label">Room Shortages</div>
-          <div class="stat-value">5</div>
-          <div class="stat-sub">Sections without rooms</div>
-          <i class="fas fa-door-closed stat-icon" style="opacity:0.3;color:var(--warning)"></i>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Departments Submitted</div>
-          <div class="stat-value">9/12</div>
-          <div class="stat-sub">3 pending submission</div>
-          <i class="fas fa-building-columns stat-icon"></i>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Add/Drop Deadline</div>
-          <div class="stat-value" style="font-size:1.1rem;">Jul 15</div>
-          <div class="stat-sub">16 days remaining</div>
-          <i class="fas fa-hourglass-half stat-icon"></i>
+        <div class="stat-card" id="prospectusStatusCard">
+          <div class="stat-label">Prospectus Visibility</div>
+          <div class="stat-value" style="font-size:0.88rem;font-weight:700;color:var(--warning)">Dept. Only</div>
+          <div class="stat-sub">Not yet published to students</div>
+          <i class="fas fa-eye stat-icon" style="opacity:0.3;color:var(--text-muted)"></i>
         </div>
       </div>
 
-      <div class="grid-2">
-        <!-- CONFLICTS -->
+      <!-- QUICK STATUS GRID -->
+      <div class="grid-2" style="gap:16px;">
         <div class="card">
           <div class="card-header">
-            <span class="card-title"><i class="fas fa-triangle-exclamation" style="color:var(--danger);margin-right:6px"></i>Active Conflicts</span>
-            <button class="btn btn-ghost btn-xs" onclick="showPage('course-offerings',null)">View All</button>
+            <span class="card-title"><i class="fas fa-building-columns" style="color:var(--crimson);margin-right:6px"></i>Curriculum Per Department</span>
+            <button class="btn btn-ghost btn-sm" onclick="showPage('course-offerings', document.querySelector('[onclick*=course-offerings]'))">View All</button>
           </div>
-          <div class="card-body">
-            <div class="conflict-item">
-              <i class="fas fa-door-open conflict-icon"></i>
-              <div>
-                <div class="conflict-label">Room Double-Booking</div>
-                <div class="conflict-detail">IT 301 — CAS-402 · MWF 8:00–9:00 AM<br>CS Elec 3 — CAS-402 · MWF 8:30–10:00 AM</div>
-              </div>
-              <button class="btn btn-ghost btn-xs" onclick="openModal('conflictResolveModal')" style="margin-left:auto;flex-shrink:0">Resolve</button>
-            </div>
-            <div class="conflict-item">
-              <i class="fas fa-chalkboard-user conflict-icon"></i>
-              <div>
-                <div class="conflict-label">Instructor Overlap</div>
-                <div class="conflict-detail">Prof. Dalisay — CCS 301 & BSIT 4A<br>TTh 1:00–2:30 PM (simultaneous)</div>
-              </div>
-              <button class="btn btn-ghost btn-xs" style="margin-left:auto;flex-shrink:0">Resolve</button>
-            </div>
-            <div class="conflict-item">
-              <i class="fas fa-users conflict-icon"></i>
-              <div>
-                <div class="conflict-label">Overcapacity</div>
-                <div class="conflict-detail">CS 101 Section A — 58 enrolled, 45 cap<br>Room: CAS-201</div>
-              </div>
-              <button class="btn btn-ghost btn-xs" style="margin-left:auto;flex-shrink:0">Resolve</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- CALENDAR TIMELINE -->
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="fas fa-calendar-days" style="color:var(--crimson);margin-right:6px"></i>Term Calendar</span>
-            <button class="btn btn-ghost btn-xs" onclick="showPage('term-setup',null)">Edit</button>
-          </div>
-          <div class="card-body">
-            <div class="timeline">
-              <div class="timeline-item done">
-                <div class="timeline-date">May 5, 2025</div>
-                <div class="timeline-label">Enrollment Opens</div>
-                <div class="timeline-sub">Pre-registration began</div>
-              </div>
-              <div class="timeline-item done">
-                <div class="timeline-date">Jun 2, 2025</div>
-                <div class="timeline-label">Schedule Published</div>
-                <div class="timeline-sub">Final subject offerings live</div>
-              </div>
-              <div class="timeline-item active">
-                <div class="timeline-date">Jun 10 – Jun 30, 2025</div>
-                <div class="timeline-label">Open Registration <span class="badge badge-crimson" style="font-size:0.65rem">Now</span></div>
-                <div class="timeline-sub">Students enrolling</div>
-              </div>
-              <div class="timeline-item upcoming">
-                <div class="timeline-date">Jul 15, 2025</div>
-                <div class="timeline-label">Add/Drop Deadline</div>
-                <div class="timeline-sub">Last day to change subjects</div>
-              </div>
-              <div class="timeline-item upcoming">
-                <div class="timeline-date">Aug 4, 2025</div>
-                <div class="timeline-label">Classes Begin</div>
-                <div class="timeline-sub">1st Semester start</div>
-              </div>
-              <div class="timeline-item upcoming">
-                <div class="timeline-date">Dec 12, 2025</div>
-                <div class="timeline-label">Semester Ends</div>
-                <div class="timeline-sub">Final exams week ends</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- DEPT STATUS -->
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title">Department Submission Status</span>
-          </div>
-          <div class="card-body" style="padding:0">
+          <div class="card-body" style="padding:0;">
             <table>
-              <thead><tr><th>Department</th><th>Submitted</th><th>Reviewed</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr><td>Computer Science</td><td>24 sections</td><td>24</td><td><span class="badge badge-success">Approved</span></td></tr>
-                <tr><td>Information Tech.</td><td>31 sections</td><td>29</td><td><span class="badge badge-warning">In Review</span></td></tr>
-                <tr><td>Engineering</td><td>18 sections</td><td>18</td><td><span class="badge badge-success">Approved</span></td></tr>
-                <tr><td>Education</td><td>22 sections</td><td>22</td><td><span class="badge badge-success">Approved</span></td></tr>
-                <tr><td>Business Admin.</td><td>0 sections</td><td>0</td><td><span class="badge badge-danger">Not Submitted</span></td></tr>
-                <tr><td>Natural Sciences</td><td>15 sections</td><td>10</td><td><span class="badge badge-warning">In Review</span></td></tr>
-                <tr><td>Arts & Humanities</td><td>0 sections</td><td>0</td><td><span class="badge badge-danger">Not Submitted</span></td></tr>
-              </tbody>
+              <thead><tr><th>Department</th><th>Published</th><th>Secretary Modified</th><th>Status</th></tr></thead>
+              <tbody id="deptStatusTableBody"></tbody>
             </table>
           </div>
         </div>
-
-        <!-- QUICK ACTIONS -->
         <div class="card">
-          <div class="card-header"><span class="card-title">Quick Actions</span></div>
-          <div class="card-body">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <button class="btn btn-outline" onclick="openModal('publishModal')" style="justify-content:flex-start"><i class="fas fa-bullhorn"></i> Publish Schedule</button>
-              <button class="btn btn-ghost" onclick="showPage('course-offerings',null)" style="justify-content:flex-start"><i class="fas fa-plus-circle"></i> Add Section</button>
-              <button class="btn btn-ghost" onclick="showPage('reg-rules',null)" style="justify-content:flex-start"><i class="fas fa-lock"></i> Manage Holds</button>
-              <button class="btn btn-ghost" onclick="showPage('room-assignment',null)" style="justify-content:flex-start"><i class="fas fa-door-open"></i> Assign Rooms</button>
-              <button class="btn btn-ghost" onclick="showPage('reports',null)" style="justify-content:flex-start"><i class="fas fa-file-export"></i> Export Report</button>
-              <button class="btn btn-ghost" onclick="openModal('termModal')" style="justify-content:flex-start"><i class="fas fa-calendar-plus"></i> Create New Term</button>
-            </div>
-            <div class="section-divider" style="margin-top:16px">Registration Readiness</div>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-sm text-muted" style="width:160px">Rooms Assigned</span>
-              <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar green" style="width:87%"></div></div>
-              <span class="text-sm fw-700" style="width:32px">87%</span>
-            </div>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-sm text-muted" style="width:160px">Sections Published</span>
-              <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar yellow" style="width:78%"></div></div>
-              <span class="text-sm fw-700" style="width:32px">78%</span>
-            </div>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-sm text-muted" style="width:160px">Conflicts Resolved</span>
-              <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar yellow" style="width:60%"></div></div>
-              <span class="text-sm fw-700" style="width:32px">60%</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-sm text-muted" style="width:160px">Instructor Assigned</span>
-              <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar green" style="width:94%"></div></div>
-              <span class="text-sm fw-700" style="width:32px">94%</span>
-            </div>
+          <div class="card-header">
+            <span class="card-title"><i class="fas fa-sliders" style="color:var(--crimson);margin-right:6px"></i>Active Controls</span>
+            <button class="btn btn-ghost btn-sm" onclick="showPage('reg-rules', document.querySelector('[onclick*=reg-rules]'))">Manage</button>
           </div>
+          <div class="card-body" style="padding:12px 20px;" id="activeControlsSummary"></div>
         </div>
       </div>
     </div>
 
-    <!-- ===== TERM & CALENDAR ===== -->
+
+    <!-- ══════════════════════════════════
+         TERM & CALENDAR
+    ══════════════════════════════════ -->
     <div class="page" id="page-term-setup">
       <div class="page-header">
-        <div><div class="page-title">Term & Calendar Control</div><div class="page-subtitle">Manage academic calendar, registration windows, and key deadlines</div></div>
-        <button class="btn btn-primary btn-sm" onclick="openModal('termModal')"><i class="fas fa-plus"></i> New Term</button>
-      </div>
-      <div class="grid-2" style="margin-bottom:20px">
-        <div class="card">
-          <div class="card-header"><span class="card-title">Active Term Settings</span><span class="badge badge-success">Live</span></div>
-          <div class="card-body">
-            <div class="form-group">
-              <label class="form-label">Term Name</label>
-              <input class="form-control" value="A.Y. 2025–2026, 1st Semester">
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Semester Start</label>
-                <input type="date" class="form-control" value="2025-08-04">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Semester End</label>
-                <input type="date" class="form-control" value="2025-12-12">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Enrollment Opens</label>
-                <input type="date" class="form-control" value="2025-06-10">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Enrollment Closes</label>
-                <input type="date" class="form-control" value="2025-06-30">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Add/Drop Opens</label>
-                <input type="date" class="form-control" value="2025-08-04">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Add/Drop Closes</label>
-                <input type="date" class="form-control" value="2025-08-15">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Department Submission Deadline</label>
-              <input type="date" class="form-control" value="2025-05-30">
-              <div class="form-hint">After this date, departments can no longer propose new sections.</div>
-            </div>
-            <div class="flex gap-2" style="margin-top:8px">
-              <button class="btn btn-primary btn-sm">Save Changes</button>
-              <button class="btn btn-ghost btn-sm">Cancel</button>
-            </div>
-          </div>
-        </div>
         <div>
-          <div class="card mb-3">
-            <div class="card-header"><span class="card-title">Registration Window Controls</span></div>
-            <div class="card-body">
-              <div style="display:flex;flex-direction:column;gap:14px">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <div style="font-size:0.83rem;font-weight:600">Open Registration Portal</div>
-                    <div class="text-sm text-muted">Students can currently enroll</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" checked onchange="alert('Registration portal toggled')"><span class="toggle-slider"></span></label>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div>
-                    <div style="font-size:0.83rem;font-weight:600">Add/Drop Period Active</div>
-                    <div class="text-sm text-muted">Closes Jul 15</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div>
-                    <div style="font-size:0.83rem;font-weight:600">Department Submissions Open</div>
-                    <div class="text-sm text-muted">Accept dept. section proposals</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div>
-                    <div style="font-size:0.83rem;font-weight:600">Late Enrollment (w/ penalty)</div>
-                    <div class="text-sm text-muted">Starts Jul 1 after close</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div>
-                    <div style="font-size:0.83rem;font-weight:600">Time-Ticket Enforcement</div>
-                    <div class="text-sm text-muted">Stagger registration by year</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header"><span class="card-title">Time-Ticket Schedule</span></div>
-            <div class="card-body" style="padding:0">
-              <table>
-                <thead><tr><th>Year Level</th><th>Window Opens</th><th>Window Closes</th></tr></thead>
-                <tbody>
-                  <tr><td>4th Year (Graduating)</td><td>Jun 10, 7:00 AM</td><td>Jun 14, 11:59 PM</td></tr>
-                  <tr><td>3rd Year</td><td>Jun 15, 7:00 AM</td><td>Jun 19, 11:59 PM</td></tr>
-                  <tr><td>2nd Year</td><td>Jun 20, 7:00 AM</td><td>Jun 24, 11:59 PM</td></tr>
-                  <tr><td>1st Year</td><td>Jun 25, 7:00 AM</td><td>Jun 30, 11:59 PM</td></tr>
-                  <tr><td>Shiftees / Transferees</td><td>Jun 18, 7:00 AM</td><td>Jun 30, 11:59 PM</td></tr>
-                </tbody>
-              </table>
+          <div class="page-title">Term &amp; Calendar</div>
+          <div class="page-subtitle">Define academic terms, enrollment windows, and key dates</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('addTermModal')"><i class="fas fa-plus"></i> Add Term</button>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Active Term</span></div>
+          <div class="card-body">
+            <div class="section-divider" style="margin-top:0">A.Y. 2025–2026, 1st Semester</div>
+            <div class="timeline">
+              <div class="timeline-item done"><div class="timeline-date">Jun 1, 2025</div><div class="timeline-label">Pre-enrollment Opens</div></div>
+              <div class="timeline-item done"><div class="timeline-date">Jun 10, 2025</div><div class="timeline-label">Schedule Published</div></div>
+              <div class="timeline-item active"><div class="timeline-date">Jun 15 – Jun 30, 2025</div><div class="timeline-label">Enrollment Window</div><div class="timeline-sub">Open to all students</div></div>
+              <div class="timeline-item upcoming"><div class="timeline-date">Jul 7, 2025</div><div class="timeline-label">Classes Begin</div></div>
+              <div class="timeline-item upcoming"><div class="timeline-date">Oct 31, 2025</div><div class="timeline-label">Grade Encoding Closes</div></div>
+              <div class="timeline-item upcoming"><div class="timeline-date">Nov 15, 2025</div><div class="timeline-label">Semester Ends</div></div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">Term History</span></div>
-        <div class="card-body" style="padding:0">
-          <table>
-            <thead><tr><th>Term</th><th>Enrollment Period</th><th>Enrolled</th><th>Status</th><th>Published</th><th></th></tr></thead>
-            <tbody>
-              <tr><td><strong>A.Y. 2025–26, 1st Sem</strong></td><td>Jun 10 – Jun 30</td><td>2,841</td><td><span class="badge badge-success">Active</span></td><td>Jun 2</td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-              <tr><td>A.Y. 2024–25, 2nd Sem</td><td>Nov 4 – Nov 22</td><td>3,102</td><td><span class="badge badge-neutral">Completed</span></td><td>Oct 28</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td>A.Y. 2024–25, 1st Sem</td><td>Jun 8 – Jun 28</td><td>2,987</td><td><span class="badge badge-neutral">Completed</span></td><td>Jun 1</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td>A.Y. 2023–24, 2nd Sem</td><td>Nov 6 – Nov 24</td><td>3,011</td><td><span class="badge badge-neutral">Completed</span></td><td>Oct 30</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-            </tbody>
-          </table>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Upcoming Terms</span></div>
+          <div class="card-body">
+            <div class="section-divider" style="margin-top:0">A.Y. 2025–2026, 2nd Semester</div>
+            <div class="timeline">
+              <div class="timeline-item upcoming"><div class="timeline-date">Nov 20, 2025</div><div class="timeline-label">Pre-enrollment Opens</div></div>
+              <div class="timeline-item upcoming"><div class="timeline-date">Dec 1–15, 2025</div><div class="timeline-label">Enrollment Window</div></div>
+              <div class="timeline-item upcoming"><div class="timeline-date">Jan 5, 2026</div><div class="timeline-label">Classes Begin</div></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== COURSE OFFERINGS ===== -->
+
+    <!-- ══════════════════════════════════
+         COURSE OFFERINGS (redesigned)
+    ══════════════════════════════════ -->
     <div class="page" id="page-course-offerings">
       <div class="page-header">
-        <div><div class="page-title">Course Offerings</div><div class="page-subtitle">All sections for A.Y. 2025–2026, 1st Semester</div></div>
+        <div>
+          <div class="page-title">Course Offerings</div>
+          <div class="page-subtitle">Manage and distribute curriculum per department. Secretaries build their prospectus from published versions.</div>
+        </div>
         <div class="flex gap-2">
-          <button class="btn btn-outline btn-sm" onclick="alert('Export to CSV/Excel')"><i class="fas fa-file-export"></i> Export</button>
-          <button class="btn btn-primary btn-sm" onclick="openModal('addSectionModal')"><i class="fas fa-plus"></i> Add Section</button>
+          <button class="btn btn-outline btn-sm" onclick="openModal('pullCurriculumModal')">
+            <i class="fas fa-file-import"></i> Pull from Previous Year
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('publishAllModal')">
+            <i class="fas fa-bullhorn"></i> Publish to All Departments
+          </button>
         </div>
       </div>
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'offerings-all')">All Sections <span class="tab-count">317</span></div>
-        <div class="tab" onclick="switchTab(this,'offerings-conflicts')">Conflicts <span class="tab-count" style="background:#fee2e2;color:var(--danger)">3</span></div>
-        <div class="tab" onclick="switchTab(this,'offerings-no-room')">No Room <span class="tab-count">5</span></div>
-        <div class="tab" onclick="switchTab(this,'offerings-low-enroll')">Low Enrollment <span class="tab-count">12</span></div>
-      </div>
-      <div class="filter-bar">
-        <div class="search-wrap"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Search course, section, instructor..." id="courseSearch" oninput="filterCourses(this.value)"></div>
-        <select onchange="filterCoursesByDept(this.value)">
-          <option>All Departments</option>
-          <option>Computer Science</option>
-          <option>Information Technology</option>
-          <option>Engineering</option>
-          <option>Education</option>
-        </select>
-        <select>
-          <option>All Year Levels</option>
-          <option>1st Year</option>
-          <option>2nd Year</option>
-          <option>3rd Year</option>
-          <option>4th Year</option>
-        </select>
-        <select>
-          <option>All Statuses</option>
-          <option>Published</option>
-          <option>Draft</option>
-          <option>Cancelled</option>
-        </select>
-        <select>
-          <option>All Modalities</option>
-          <option>Face-to-Face</option>
-          <option>Online</option>
-          <option>Hybrid</option>
-        </select>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table id="courseTable">
-            <thead>
-              <tr>
-                <th>Course Code</th>
-                <th>Description</th>
-                <th>Section</th>
-                <th>Units</th>
-                <th>Instructor</th>
-                <th>Schedule</th>
-                <th>Room</th>
-                <th>Enrolled</th>
-                <th>Cap</th>
-                <th>Modality</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="courseTableBody">
-            </tbody>
-          </table>
+
+      <!-- Search + filter -->
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div class="search-wrap">
+          <i class="fas fa-search"></i>
+          <input class="form-control" style="width:260px" placeholder="Search department…" oninput="filterDeptCards(this.value)">
         </div>
+        <select class="form-control" style="width:180px" onchange="filterDeptCardsByStatus(this.value)">
+          <option value="">All Status</option>
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+          <option value="modified">Secretary Modified</option>
+          <option value="unpublished">Not Published</option>
+        </select>
       </div>
+
+      <div class="dept-curriculum-grid" id="deptCurriculumGrid"></div>
     </div>
 
-    <!-- ===== ROOM ASSIGNMENT ===== -->
+
+    <!-- ══════════════════════════════════
+         ROOM ASSIGNMENT
+    ══════════════════════════════════ -->
     <div class="page" id="page-room-assignment">
       <div class="page-header">
-        <div><div class="page-title">Room Assignment</div><div class="page-subtitle">Manage classroom and lab assignments, resolve conflicts</div></div>
+        <div>
+          <div class="page-title">Room Assignment</div>
+          <div class="page-subtitle">University-managed rooms and utilization. Department-controlled rooms are managed by their Secretary.</div>
+        </div>
         <button class="btn btn-primary btn-sm" onclick="openModal('addRoomModal')"><i class="fas fa-plus"></i> Add Room</button>
       </div>
-      <div class="grid-2" style="margin-bottom:20px">
-        <div class="stat-card"><div class="stat-label">Total Rooms</div><div class="stat-value">48</div><div class="stat-sub">General + Dept. rooms</div></div>
-        <div class="stat-card ok-card"><div class="stat-label">Available Now</div><div class="stat-value">31</div><div class="stat-sub">Not fully booked</div></div>
-        <div class="stat-card warn-card"><div class="stat-label">High Utilization</div><div class="stat-value">12</div><div class="stat-sub">&gt;85% booked slots</div></div>
-        <div class="stat-card alert-card"><div class="stat-label">Unassigned Sections</div><div class="stat-value">5</div><div class="stat-sub">Need room assignment</div></div>
-      </div>
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'rooms-all')">All Rooms</div>
-        <div class="tab" onclick="switchTab(this,'rooms-schedule')">Weekly Grid</div>
-        <div class="tab" onclick="switchTab(this,'rooms-unassigned')">Unassigned Sections <span class="tab-count" style="background:#fee2e2;color:var(--danger)">5</span></div>
-      </div>
-      <div class="filter-bar">
-        <div class="search-wrap"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Search room..."></div>
-        <select>
-          <option>All Types</option>
-          <option>Lecture Room</option>
-          <option>Computer Lab</option>
-          <option>Science Lab</option>
-          <option>Auditorium</option>
-        </select>
-        <select>
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div class="search-wrap">
+          <i class="fas fa-search"></i>
+          <input class="form-control" style="width:220px" placeholder="Search room…" oninput="filterCourses(this.value)">
+        </div>
+        <select class="form-control" style="width:160px">
           <option>All Buildings</option>
           <option>CAS Building</option>
           <option>Engineering Hall</option>
@@ -526,474 +466,382 @@
       <div class="room-grid" id="roomGrid"></div>
     </div>
 
-    <!-- ===== APPROVAL QUEUE ===== -->
-    <div class="page" id="page-approval-queue">
-      <div class="page-header">
-        <div><div class="page-title">Approval Queue</div><div class="page-subtitle">Section requests, exceptions, and override approvals</div></div>
-        <div class="flex gap-2">
-          <button class="btn btn-ghost btn-sm">Approve All Standard</button>
-        </div>
-      </div>
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'queue-pending')">Pending <span class="tab-count" style="background:#fee2e2;color:var(--danger)">7</span></div>
-        <div class="tab" onclick="switchTab(this,'queue-approved')">Approved <span class="tab-count">24</span></div>
-        <div class="tab" onclick="switchTab(this,'queue-denied')">Denied <span class="tab-count">3</span></div>
-      </div>
-      <div id="approvalList">
-        <div class="approval-item urgent">
-          <div style="width:36px;height:36px;border-radius:8px;background:var(--danger-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-plus-circle" style="color:var(--danger)"></i></div>
-          <div class="approval-meta">
-            <div class="approval-type">New Section Request <span class="badge badge-danger" style="margin-left:4px">Urgent</span></div>
-            <div class="approval-title">CS Elec 4 — Sec B (CS Dept.)</div>
-            <div class="approval-detail">Requested by: Dept. Admin, CS · Reason: Overflow from Section A (58/45 enrolled) · Proposed: TTh 3:00–4:30 PM, Lab 204</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-success btn-xs" onclick="approveItem(this)"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('denyModal')"><i class="fas fa-xmark"></i> Deny</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('reviewModal')"><i class="fas fa-eye"></i></button>
-          </div>
-        </div>
-        <div class="approval-item urgent">
-          <div style="width:36px;height:36px;border-radius:8px;background:var(--warning-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-wifi" style="color:var(--warning)"></i></div>
-          <div class="approval-meta">
-            <div class="approval-type">Online Delivery Request <span class="badge badge-warning" style="margin-left:4px">Urgent</span></div>
-            <div class="approval-title">IT Elec 2 — Switch to Asynchronous Online</div>
-            <div class="approval-detail">Requested by: Dept. Admin, IT · Reason: Instructor relocation · Current: F2F, CAS-301 · New: Online (LMS)</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-success btn-xs" onclick="approveItem(this)"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('denyModal')"><i class="fas fa-xmark"></i> Deny</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('reviewModal')"><i class="fas fa-eye"></i></button>
-          </div>
-        </div>
-        <div class="approval-item">
-          <div style="width:36px;height:36px;border-radius:8px;background:var(--info-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-clock" style="color:var(--info)"></i></div>
-          <div class="approval-meta">
-            <div class="approval-type">Off-Grid Time Request</div>
-            <div class="approval-title">Math 102 — Saturday 8:00–11:00 AM</div>
-            <div class="approval-detail">Requested by: Natural Sciences · Reason: Instructor availability conflict · Section: Sec C, 32 students</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-success btn-xs" onclick="approveItem(this)"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('denyModal')"><i class="fas fa-xmark"></i> Deny</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('reviewModal')"><i class="fas fa-eye"></i></button>
-          </div>
-        </div>
-        <div class="approval-item">
-          <div style="width:36px;height:36px;border-radius:8px;background:var(--crimson-light);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-ban" style="color:var(--crimson)"></i></div>
-          <div class="approval-meta">
-            <div class="approval-type">Section Cancellation</div>
-            <div class="approval-title">PE 1 — Sec D, 4 enrolled</div>
-            <div class="approval-detail">Requested by: PE Dept. · Reason: Low enrollment (4 students) · Affected students will need re-enrollment</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-success btn-xs" onclick="approveItem(this)"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('denyModal')"><i class="fas fa-xmark"></i> Deny</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('reviewModal')"><i class="fas fa-eye"></i></button>
-          </div>
-        </div>
-        <div class="approval-item">
-          <div style="width:36px;height:36px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-user-check" style="color:#6b7280"></i></div>
-          <div class="approval-meta">
-            <div class="approval-type">Enrollment Override / Exception</div>
-            <div class="approval-title">CS 301 — Overload (23 units) for Reyes, Maria L.</div>
-            <div class="approval-detail">Requested by: CS Adviser · Reason: Graduating student needs to complete curriculum · Current load: 21 units</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-success btn-xs" onclick="approveItem(this)"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('denyModal')"><i class="fas fa-xmark"></i> Deny</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('reviewModal')"><i class="fas fa-eye"></i></button>
-          </div>
-        </div>
-        <div class="approval-item">
-          <div style="width:36px;height:36px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-arrows-rotate" style="color:#6b7280"></i></div>
-          <div class="approval-meta">
-            <div class="approval-type">Instructor Substitution</div>
-            <div class="approval-title">CS 202 — Replace Gatan, R. with Santos, J.</div>
-            <div class="approval-detail">Requested by: CS Dept. Admin · Reason: Gatan on approved leave of absence starting Aug 4</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-success btn-xs" onclick="approveItem(this)"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('denyModal')"><i class="fas fa-xmark"></i> Deny</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('reviewModal')"><i class="fas fa-eye"></i></button>
-          </div>
-        </div>
-        <div class="approval-item">
-          <div style="width:36px;height:36px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-sliders" style="color:#6b7280"></i></div>
-          <div class="approval-meta">
-            <div class="approval-type">Cap Override</div>
-            <div class="approval-title">IT 101 Sec A — Increase cap to 55 (from 45)</div>
-            <div class="approval-detail">Requested by: IT Dept. Admin · Current enrolled: 47 · Room capacity: 60 (CAS-210)</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-success btn-xs" onclick="approveItem(this)"><i class="fas fa-check"></i> Approve</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('denyModal')"><i class="fas fa-xmark"></i> Deny</button>
-            <button class="btn btn-ghost btn-xs" onclick="openModal('reviewModal')"><i class="fas fa-eye"></i></button>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ===== REG RULES & CONTROLS ===== -->
+    <!-- ══════════════════════════════════
+         REG. RULES & CONTROLS (redesigned)
+    ══════════════════════════════════ -->
     <div class="page" id="page-reg-rules">
       <div class="page-header">
-        <div><div class="page-title">Registration Rules & Controls</div><div class="page-subtitle">Holds, prerequisites, section restrictions, enrollment caps</div></div>
-        <button class="btn btn-primary btn-sm" onclick="openModal('addHoldModal')"><i class="fas fa-plus"></i> Add Hold</button>
-      </div>
-      <div class="grid-2" style="margin-bottom:20px">
-        <!-- HOLDS -->
-        <div class="card">
-          <div class="card-header"><span class="card-title">Active Holds</span><span class="badge badge-danger">23 students affected</span></div>
-          <div class="card-body" style="padding:0">
-            <table>
-              <thead><tr><th>Hold Type</th><th>Scope</th><th>Students</th><th>Lifted By</th><th></th></tr></thead>
-              <tbody>
-                <tr><td><span class="badge badge-danger">Financial Hold</span></td><td>University-wide</td><td>14</td><td>Cashier</td><td><button class="btn btn-ghost btn-xs">Manage</button></td></tr>
-                <tr><td><span class="badge badge-warning">Library Hold</span></td><td>University-wide</td><td>5</td><td>Librarian</td><td><button class="btn btn-ghost btn-xs">Manage</button></td></tr>
-                <tr><td><span class="badge badge-info">Adviser Hold</span></td><td>Per student</td><td>3</td><td>Adviser</td><td><button class="btn btn-ghost btn-xs">Manage</button></td></tr>
-                <tr><td><span class="badge badge-neutral">NSTP Hold</span></td><td>2nd year &amp; up</td><td>1</td><td>NSTP Office</td><td><button class="btn btn-ghost btn-xs">Manage</button></td></tr>
-              </tbody>
-            </table>
-          </div>
+        <div>
+          <div class="page-title">Reg. Rules &amp; Controls</div>
+          <div class="page-subtitle">Global enrollment toggles. Changes take effect immediately across all portals.</div>
         </div>
-        <!-- GLOBAL RULES -->
-        <div class="card">
-          <div class="card-header"><span class="card-title">Global Enrollment Rules</span></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:14px">
-              <div>
-                <div class="flex items-center justify-between mb-2">
-                  <div style="font-size:0.83rem;font-weight:600">Maximum Unit Load — Regular</div>
-                  <div class="flex items-center gap-2"><input class="form-control" value="21" style="width:60px;text-align:center"><span class="text-sm text-muted">units</span></div>
+      </div>
+
+      <div class="grid-2" style="gap:16px;align-items:start;">
+
+        <!-- LEFT COLUMN -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Enrollment & Course Access -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-door-open" style="color:var(--crimson);margin-right:6px"></i>Enrollment &amp; Course Access</span>
+            </div>
+            <div class="card-body">
+              <div class="rules-section" style="margin-bottom:0;">
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Global Enrollment Lock</div>
+                    <div class="toggle-label-sub">Prevents all students from submitting enrollment forms. Use during system maintenance or between registration periods.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-enrollment-lock" onchange="onToggleChange('enrollment-lock', this.checked)"><span class="toggle-slider"></span></label>
                 </div>
-              </div>
-              <div>
-                <div class="flex items-center justify-between mb-2">
-                  <div style="font-size:0.83rem;font-weight:600">Maximum Unit Load — Irregular</div>
-                  <div class="flex items-center gap-2"><input class="form-control" value="18" style="width:60px;text-align:center"><span class="text-sm text-muted">units</span></div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Prerequisite Override</div>
+                    <div class="toggle-label-sub">Allows advisers to manually enroll students in subjects they have not satisfied prerequisites for. Use sparingly — requires audit justification.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-prereq-override" onchange="onToggleChange('prereq-override', this.checked)"><span class="toggle-slider"></span></label>
                 </div>
-              </div>
-              <div>
-                <div class="flex items-center justify-between mb-2">
-                  <div style="font-size:0.83rem;font-weight:600">Overload Threshold (Dean's Approval)</div>
-                  <div class="flex items-center gap-2"><input class="form-control" value="24" style="width:60px;text-align:center"><span class="text-sm text-muted">units</span></div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Capacity Buffer</div>
+                    <div class="toggle-label-sub">Allows sections to exceed their stated cap by up to 10% before hard-blocking enrollment.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-cap-buffer" checked onchange="onToggleChange('cap-buffer', this.checked)"><span class="toggle-slider"></span></label>
                 </div>
-              </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <div style="font-size:0.83rem;font-weight:600">Strict Prerequisite Checking</div>
-                  <div class="text-sm text-muted">Block enrollment if prereq not passed</div>
-                </div>
-                <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-              </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <div style="font-size:0.83rem;font-weight:600">Residency Warning Auto-Flag</div>
-                  <div class="text-sm text-muted">Flag students exceeding 10 semesters (RA 10931)</div>
-                </div>
-                <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-              </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <div style="font-size:0.83rem;font-weight:600">Section Authorization Required</div>
-                  <div class="text-sm text-muted">Marked sections need adviser code</div>
-                </div>
-                <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="grid-2">
-        <!-- SECTION RESTRICTIONS -->
-        <div class="card">
-          <div class="card-header"><span class="card-title">Section Restrictions</span><button class="btn btn-ghost btn-xs" onclick="openModal('addRestrictionModal')"><i class="fas fa-plus"></i> Add</button></div>
-          <div class="card-body" style="padding:0">
-            <table>
-              <thead><tr><th>Section</th><th>Restriction</th><th>Value</th><th></th></tr></thead>
-              <tbody>
-                <tr><td>CS 301 Sec A</td><td>Year Level</td><td>3rd Year only</td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td>IT Elec 3 Sec A</td><td>Authorization Code</td><td>Required</td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td>ENG 401 Sec A–C</td><td>Department</td><td>BSCE only</td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td>GE 101 All Sections</td><td>Year Level</td><td>1st Year only</td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td>CS Thesis 1</td><td>Prerequisite Grade</td><td>CS 401 ≥ 2.0</td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-              </tbody>
-            </table>
+
+          <!-- Curriculum & Prospectus -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-book-open" style="color:var(--crimson);margin-right:6px"></i>Curriculum &amp; Prospectus</span>
+            </div>
+            <div class="card-body">
+              <div class="rules-section" style="margin-bottom:0;">
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Multi-Version Editing</div>
+                    <div class="toggle-label-sub">Allows Secretaries to edit a future curriculum version (e.g., planning for next A.Y.) while the current version remains locked for the active semester. Both versions are visible simultaneously.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-multiversion" checked onchange="onToggleChange('multiversion', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="toggle-row" id="toggle-row-publish-dept">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Publish to College Departments</div>
+                    <div class="toggle-label-sub">Releases the curriculum to the Dean and Secretary of each department. Secretaries may begin building their prospectus once this is enabled.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-publish-dept" checked onchange="onPublishDeptChange(this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="toggle-row locked-dependency" id="toggle-row-publish-student">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Publish to Student Portal</div>
+                    <div class="toggle-label-sub">Makes the finalized prospectus visible to students. Must publish to College Departments first.</div>
+                    <div class="lock-notice" id="studentPublishLockNotice" style="display:none;">
+                      <i class="fas fa-lock" style="font-size:0.65rem;"></i> Requires "Publish to College Departments" to be enabled first.
+                    </div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-publish-student" onchange="onToggleChange('publish-student', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <!-- STUDENT HOLDS WORKLIST -->
-        <div class="card">
-          <div class="card-header"><span class="card-title">Students with Holds</span></div>
-          <div class="filter-bar" style="padding:12px 12px 0">
-            <div class="search-wrap"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Search student..."></div>
+
+        </div><!-- /left column -->
+
+        <!-- RIGHT COLUMN -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Grade & Assessment -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-graduation-cap" style="color:var(--crimson);margin-right:6px"></i>Grade &amp; Assessment</span>
+            </div>
+            <div class="card-body">
+              <div class="rules-section" style="margin-bottom:0;">
+
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Grade Encoding Window</div>
+                    <div class="toggle-label-sub">Sets the period during which faculty may submit grades. Automatically closes on the end date.</div>
+                    <div class="date-window-row">
+                      <label>Opens</label>
+                      <input type="date" id="grade-window-open" value="2025-10-01">
+                      <label>Closes</label>
+                      <input type="date" id="grade-window-close" value="2025-10-31">
+                    </div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-grade-window" checked onchange="onToggleChange('grade-window', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Late Grade Submission Lock</div>
+                    <div class="toggle-label-sub">Prevents faculty from submitting grades after the encoding window closes, even manually. The Registrar must re-open the window for exceptions.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-late-grade-lock" checked onchange="onToggleChange('late-grade-lock', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">INC Resolution Period</div>
+                    <div class="toggle-label-sub">Separate window for resolving Incomplete grades from the previous semester. Independent of the regular grade encoding window.</div>
+                    <div class="date-window-row">
+                      <label>Opens</label>
+                      <input type="date" id="inc-window-open" value="2025-11-01">
+                      <label>Closes</label>
+                      <input type="date" id="inc-window-close" value="2025-11-30">
+                    </div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-inc-period" onchange="onToggleChange('inc-period', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Release Grades to Student Portal</div>
+                    <div class="toggle-label-sub">Controls whether students can view their finalized grades. Grades may be internally finalized before this is enabled.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-release-grades" onchange="onToggleChange('release-grades', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Grade Appeal Window</div>
+                    <div class="toggle-label-sub">Opens the formal period where students may contest a grade. Closes automatically on end date.</div>
+                    <div class="date-window-row">
+                      <label>Opens</label>
+                      <input type="date" id="appeal-window-open" value="2025-11-05">
+                      <label>Closes</label>
+                      <input type="date" id="appeal-window-close" value="2025-11-15">
+                    </div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-grade-appeal" onchange="onToggleChange('grade-appeal', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Assessment Office Access</div>
+                    <div class="toggle-label-sub">Locks or unlocks the Assessment Office's ability to generate Statements of Account. Disable during fee structure finalization.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-assessment-access" checked onchange="onToggleChange('assessment-access', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-label-main">Fee Schedule Publish</div>
+                    <div class="toggle-label-sub">Controls whether the current semester's fee table is visible to the Assessment Office. Publish only after the Registrar has finalized the fee structure.</div>
+                  </div>
+                  <label class="toggle"><input type="checkbox" id="toggle-fee-schedule" checked onchange="onToggleChange('fee-schedule', this.checked)"><span class="toggle-slider"></span></label>
+                </div>
+
+              </div>
+            </div>
           </div>
-          <div class="card-body" style="padding:0">
-            <table>
-              <thead><tr><th>Student</th><th>ID</th><th>Hold</th><th>Since</th><th></th></tr></thead>
-              <tbody>
-                <tr><td>Santos, Juan D.</td><td>2021-0011</td><td><span class="badge badge-danger">Financial</span></td><td>Mar 15</td><td><button class="btn btn-ghost btn-xs">Lift</button></td></tr>
-                <tr><td>Reyes, Ana M.</td><td>2022-0234</td><td><span class="badge badge-warning">Library</span></td><td>May 2</td><td><button class="btn btn-ghost btn-xs">Lift</button></td></tr>
-                <tr><td>Garcia, Carlo B.</td><td>2020-0087</td><td><span class="badge badge-danger">Financial</span></td><td>Feb 28</td><td><button class="btn btn-ghost btn-xs">Lift</button></td></tr>
-                <tr><td>Torres, Liza F.</td><td>2023-0315</td><td><span class="badge badge-info">Adviser</span></td><td>Jun 1</td><td><button class="btn btn-ghost btn-xs">Lift</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+
+        </div><!-- /right column -->
+
+      </div><!-- /grid-2 -->
     </div>
 
-    <!-- ===== REPORTS ===== -->
+
+    <!-- ══════════════════════════════════
+         REPORTS
+    ══════════════════════════════════ -->
     <div class="page" id="page-reports">
       <div class="page-header">
-        <div><div class="page-title">Reports & Analytics</div><div class="page-subtitle">Enrollment trends, room utilization, schedule analysis</div></div>
-        <button class="btn btn-outline btn-sm"><i class="fas fa-file-export"></i> Export All</button>
+        <div class="page-title">Reports &amp; Analytics</div>
       </div>
-      <div class="stat-grid" style="margin-bottom:20px">
-        <div class="stat-card"><div class="stat-label">Total Enrolled</div><div class="stat-value">2,841</div><div class="stat-sub">+4.5% vs last semester</div></div>
-        <div class="stat-card"><div class="stat-label">Avg. Load (units)</div><div class="stat-value">17.3</div><div class="stat-sub">Across all enrolled</div></div>
-        <div class="stat-card warn-card"><div class="stat-label">Low-Enroll Sections</div><div class="stat-value">12</div><div class="stat-sub">&lt;10 students</div></div>
-        <div class="stat-card"><div class="stat-label">Room Utilization</div><div class="stat-value">73%</div><div class="stat-sub">MWF 8am–5pm slots</div></div>
-      </div>
-      <div class="grid-2" style="margin-bottom:20px">
+      <div class="grid-2" style="gap:16px;">
         <div class="card">
           <div class="card-header"><span class="card-title">Enrollment by Department</span></div>
-          <div class="card-body">
-            <div id="deptEnrollChart" style="display:flex;flex-direction:column;gap:10px"></div>
-          </div>
+          <div class="card-body"><div id="deptEnrollChart"></div></div>
         </div>
         <div class="card">
-          <div class="card-header"><span class="card-title">Low-Enrollment Sections (Candidates for Cancellation)</span></div>
-          <div class="card-body" style="padding:0">
-            <table>
-              <thead><tr><th>Course</th><th>Section</th><th>Enrolled</th><th>Cap</th><th>Action</th></tr></thead>
-              <tbody>
-                <tr><td>PE 1</td><td>D</td><td><span style="color:var(--danger);font-weight:700">4</span></td><td>40</td><td><button class="btn btn-ghost btn-xs">Cancel</button></td></tr>
-                <tr><td>Math 102</td><td>E</td><td><span style="color:var(--danger);font-weight:700">6</span></td><td>40</td><td><button class="btn btn-ghost btn-xs">Cancel</button></td></tr>
-                <tr><td>Fil 102</td><td>C</td><td><span style="color:var(--warning);font-weight:700">8</span></td><td>40</td><td><button class="btn btn-ghost btn-xs">Cancel</button></td></tr>
-                <tr><td>IT Elec 5</td><td>A</td><td><span style="color:var(--warning);font-weight:700">9</span></td><td>35</td><td><button class="btn btn-ghost btn-xs">Cancel</button></td></tr>
-                <tr><td>CS Elec 6</td><td>B</td><td><span style="color:var(--warning);font-weight:700">9</span></td><td>35</td><td><button class="btn btn-ghost btn-xs">Cancel</button></td></tr>
-              </tbody>
-            </table>
-          </div>
+          <div class="card-header"><span class="card-title">Room Utilization</span></div>
+          <div class="card-body"><div id="roomUtilChart"></div></div>
         </div>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header"><span class="card-title">Room Utilization (Top 10)</span></div>
-          <div class="card-body">
-            <div id="roomUtilChart" style="display:flex;flex-direction:column;gap:8px"></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span class="card-title">Enrollment Trend (Last 4 Terms)</span></div>
-          <div class="card-body">
-            <div style="position:relative;width:100%;height:180px">
-              <canvas id="trendChart" role="img" aria-label="Line chart showing enrollment trend over 4 terms">Enrollment: 2,711; 2,987; 3,102; 2,841</canvas>
-            </div>
-          </div>
+        <div class="card col-span-2">
+          <div class="card-header"><span class="card-title">Enrollment Trend</span></div>
+          <div class="card-body" style="height:200px"><canvas id="trendChart"></canvas></div>
         </div>
       </div>
     </div>
 
-    <!-- ===== AUDIT ===== -->
+
+    <!-- ══════════════════════════════════
+         AUDIT TRAIL
+    ══════════════════════════════════ -->
     <div class="page" id="page-audit">
       <div class="page-header">
-        <div><div class="page-title">Audit Trail</div><div class="page-subtitle">All scheduling and registration actions logged</div></div>
-        <button class="btn btn-outline btn-sm"><i class="fas fa-file-export"></i> Export Log</button>
-      </div>
-      <div class="filter-bar">
-        <div class="search-wrap"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Search action, user, entity..."></div>
-        <select><option>All Actions</option><option>Approved</option><option>Denied</option><option>Published</option><option>Edited</option><option>Deleted</option></select>
-        <select><option>All Users</option><option>Registrar</option><option>Dept. Admin</option><option>Adviser</option><option>System</option></select>
-        <input type="date" value="2025-06-01">
-        <input type="date" value="2025-06-29">
+        <div>
+          <div class="page-title">Audit Trail</div>
+          <div class="page-subtitle">Read-only log of all registrar actions this term.</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="alert('Export as CSV')"><i class="fas fa-download"></i> Export CSV</button>
       </div>
       <div class="card">
+        <div class="card-header">
+          <span class="card-title">Activity Log</span>
+          <div class="filter-bar" style="margin:0">
+            <div class="search-wrap">
+              <i class="fas fa-search"></i>
+              <input class="form-control" style="width:220px" placeholder="Search log…" oninput="filterAuditLog(this.value)">
+            </div>
+          </div>
+        </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Timestamp</th><th>Action</th><th>Entity</th><th>User</th><th>Role</th><th>Details</th></tr></thead>
-            <tbody id="auditLogBody">
-            </tbody>
+            <thead><tr><th>Timestamp</th><th>Action</th><th>Entity</th><th>User</th><th>Role</th><th>Detail</th></tr></thead>
+            <tbody id="auditLogBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
   </main>
-</div>
+</div><!-- /layout -->
 
-<!-- ===== MODALS ===== -->
 
-<!-- Publish Modal -->
-<div class="modal-overlay" id="publishModal">
+<!-- ════════════════════════════════════════════════
+     MODALS
+════════════════════════════════════════════════ -->
+
+<!-- Pull Curriculum Modal -->
+<div class="modal-overlay" id="pullCurriculumModal">
   <div class="modal modal-md">
-    <div class="modal-header"><span class="modal-title"><i class="fas fa-bullhorn" style="color:var(--crimson);margin-right:8px"></i>Publish Schedule</span><button class="modal-close" onclick="closeModal('publishModal')"><i class="fas fa-xmark"></i></button></div>
+    <div class="modal-header">
+      <span class="modal-title">Pull Curriculum from Previous Year</span>
+      <button class="modal-close" onclick="closeModal('pullCurriculumModal')"><i class="fas fa-xmark"></i></button>
+    </div>
     <div class="modal-body">
-      <div style="background:var(--warning-bg);border:1px solid #fcd34d;border-radius:8px;padding:12px;margin-bottom:16px">
-        <div style="font-size:0.83rem;font-weight:700;color:var(--warning)"><i class="fas fa-triangle-exclamation" style="margin-right:6px"></i>3 conflicts remain unresolved</div>
-        <div class="text-sm text-muted" style="margin-top:4px">Publishing with conflicts may cause enrollment issues. Review conflicts before proceeding.</div>
+      <div class="form-group">
+        <label class="form-label">Source Academic Year</label>
+        <select class="form-control">
+          <option>A.Y. 2024–2025 (1st &amp; 2nd Semester)</option>
+          <option>A.Y. 2023–2024</option>
+          <option>A.Y. 2022–2023</option>
+        </select>
+        <div class="form-hint">This will import all curriculum files from the selected year as a starting point for the current term.</div>
       </div>
       <div class="form-group">
-        <label class="form-label">Publish Scope</label>
+        <label class="form-label">Target Departments</label>
         <select class="form-control">
-          <option>All Sections (317 sections)</option>
-          <option>Approved sections only (247 sections)</option>
-          <option>Selected departments</option>
+          <option>All Departments</option>
+          <option>Computer Science</option>
+          <option>Information Technology</option>
+          <option>Engineering</option>
+          <option>Nursing</option>
+          <option>Business Administration</option>
+          <option>Arts &amp; Sciences</option>
+          <option>Education</option>
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Publish Date / Time</label>
-        <input type="datetime-local" class="form-control" value="2025-06-29T08:00">
-        <div class="form-hint">Students will see the schedule from this date/time onwards.</div>
+        <label class="form-label">Effectivity Date <span style="color:var(--text-muted);font-weight:400">(optional — Registrar level)</span></label>
+        <input type="date" class="form-control">
+        <div class="form-hint">If set, this curriculum version becomes effective on the specified date. Secretaries are required to set their own effectivity date when creating a prospectus from this.</div>
       </div>
       <div class="form-group">
-        <label class="form-label">Notification</label>
-        <div class="flex items-center gap-2 mt-2">
-          <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-          <span class="text-sm">Notify all enrolled students via email</span>
-        </div>
-        <div class="flex items-center gap-2 mt-2">
-          <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-          <span class="text-sm">Notify department admins</span>
-        </div>
+        <label class="form-label">Edit before publishing?</label>
+        <select class="form-control" id="pullEditChoice">
+          <option value="save-draft">Save as Draft — I will review and edit before publishing</option>
+          <option value="publish-now">Pull and publish immediately</option>
+        </select>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('publishModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="alert('Schedule published!');closeModal('publishModal')"><i class="fas fa-bullhorn"></i> Publish Now</button>
+      <button class="btn btn-ghost" onclick="closeModal('pullCurriculumModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmPullCurriculum()"><i class="fas fa-file-import"></i> Pull Curriculum</button>
     </div>
   </div>
 </div>
 
-<!-- Add Section Modal -->
-<div class="modal-overlay" id="addSectionModal">
+<!-- Edit Curriculum Modal -->
+<div class="modal-overlay" id="editCurriculumModal">
   <div class="modal modal-lg">
-    <div class="modal-header"><span class="modal-title">Add New Section</span><button class="modal-close" onclick="closeModal('addSectionModal')"><i class="fas fa-xmark"></i></button></div>
+    <div class="modal-header">
+      <span class="modal-title" id="editCurriculumTitle">Edit Curriculum</span>
+      <button class="modal-close" onclick="closeModal('editCurriculumModal')"><i class="fas fa-xmark"></i></button>
+    </div>
     <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Course Code</label><input class="form-control" placeholder="e.g. CS 301"></div>
-        <div class="form-group"><label class="form-label">Section</label><input class="form-control" placeholder="e.g. A, B, C"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Course Description</label><input class="form-control" placeholder="e.g. Data Structures and Algorithms"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Department</label><select class="form-control"><option>Computer Science</option><option>Information Technology</option><option>Engineering</option></select></div>
-        <div class="form-group"><label class="form-label">Year Level</label><select class="form-control"><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Units</label><input type="number" class="form-control" value="3" min="1" max="6"></div>
-        <div class="form-group"><label class="form-label">Enrollment Cap</label><input type="number" class="form-control" value="45"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Instructor</label><input class="form-control" placeholder="Search instructor..."></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Days</label><select class="form-control"><option>MWF</option><option>TTh</option><option>Sat</option><option>MTWTHF</option></select></div>
-        <div class="form-group"><label class="form-label">Time Start</label><input type="time" class="form-control" value="08:00"></div>
-        <div class="form-group"><label class="form-label">Time End</label><input type="time" class="form-control" value="09:00"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Room</label><input class="form-control" placeholder="e.g. CAS-301, Lab 204"></div>
-        <div class="form-group"><label class="form-label">Modality</label><select class="form-control"><option>Face-to-Face</option><option>Online (Synchronous)</option><option>Online (Asynchronous)</option><option>Hybrid</option></select></div>
-      </div>
-      <div class="form-group"><label class="form-label">Prerequisites (comma-separated)</label><input class="form-control" placeholder="e.g. CS 201, CS 202"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Status</label><select class="form-control"><option>Published</option><option>Draft</option></select></div>
-        <div class="form-group"><label class="form-label">Authorization Required?</label><select class="form-control"><option>No</option><option>Yes — Adviser Code</option></select></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('addSectionModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="alert('Section saved!');closeModal('addSectionModal')"><i class="fas fa-save"></i> Save Section</button>
-    </div>
-  </div>
-</div>
-
-<!-- Term Modal -->
-<div class="modal-overlay" id="termModal">
-  <div class="modal modal-sm">
-    <div class="modal-header"><span class="modal-title">Create New Term</span><button class="modal-close" onclick="closeModal('termModal')"><i class="fas fa-xmark"></i></button></div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Term Name</label><input class="form-control" placeholder="e.g. A.Y. 2025–2026, 2nd Semester"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Start Date</label><input type="date" class="form-control"></div>
-        <div class="form-group"><label class="form-label">End Date</label><input type="date" class="form-control"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Enrollment Opens</label><input type="date" class="form-control"></div>
-        <div class="form-group"><label class="form-label">Enrollment Closes</label><input type="date" class="form-control"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('termModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="alert('Term created!');closeModal('termModal')">Create Term</button>
-    </div>
-  </div>
-</div>
-
-<!-- Conflict Resolve Modal -->
-<div class="modal-overlay" id="conflictResolveModal">
-  <div class="modal modal-md">
-    <div class="modal-header"><span class="modal-title"><i class="fas fa-triangle-exclamation" style="color:var(--danger);margin-right:6px"></i>Resolve Room Conflict</span><button class="modal-close" onclick="closeModal('conflictResolveModal')"><i class="fas fa-xmark"></i></button></div>
-    <div class="modal-body">
-      <div class="section-divider" style="margin-top:0">Conflicting Sections</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-        <div style="border:1px solid var(--danger);border-radius:8px;padding:12px;background:var(--danger-bg)">
-          <div style="font-weight:700;font-size:0.87rem">IT 301</div>
-          <div class="text-sm text-muted">Section A · MWF 8:00–9:00 AM</div>
-          <div class="text-sm text-muted">Room: CAS-402 · 38 enrolled</div>
-          <div class="text-sm text-muted">Instructor: Prof. Dela Cruz</div>
+      <!-- Version tabs -->
+      <div class="version-tabs" id="editVersionTabs">
+        <div class="version-tab active">
+          Current Version <span class="version-locked-badge"><i class="fas fa-lock" style="font-size:0.55rem"></i> LOCKED</span>
         </div>
-        <div style="border:1px solid var(--danger);border-radius:8px;padding:12px;background:var(--danger-bg)">
-          <div style="font-weight:700;font-size:0.87rem">CS Elec 3</div>
-          <div class="text-sm text-muted">Section A · MWF 8:30–10:00 AM</div>
-          <div class="text-sm text-muted">Room: CAS-402 · 22 enrolled</div>
-          <div class="text-sm text-muted">Instructor: Prof. Santos</div>
+        <div class="version-tab">Future Draft (2026–2027)</div>
+      </div>
+      <div class="section-divider" style="margin-top:0">Subject List</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Subject Code</th><th>Description</th><th>Units</th><th>Year</th><th>Semester</th><th>Prerequisites</th><th>Type</th><th>Actions</th></tr></thead>
+          <tbody id="editCurriculumBody"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:12px;" onclick="addCurriculumRow()"><i class="fas fa-plus"></i> Add Subject</button>
+      <div class="form-group" style="margin-top:16px;">
+        <label class="form-label">Effectivity Date <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
+        <input type="date" class="form-control" style="max-width:220px">
+        <div class="form-hint">Note: Secretaries are required to set their own effectivity date when building a prospectus from this curriculum.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Edit Reason</label>
+        <select class="form-control">
+          <option>BOR Directive</option>
+          <option>CHED Memorandum Order</option>
+          <option>Internal Curriculum Review</option>
+          <option>Error Correction</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('editCurriculumModal')">Cancel</button>
+      <button class="btn btn-outline" onclick="saveCurriculumDraft()"><i class="fas fa-floppy-disk"></i> Save Draft</button>
+      <button class="btn btn-primary" onclick="publishSingleDept()"><i class="fas fa-bullhorn"></i> Publish to Department</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dept Live View Panel -->
+<div class="detail-panel" id="deptLivePanel">
+  <div class="detail-panel-header">
+    <span style="font-weight:700;" id="livePanelTitle">Department Curriculum</span>
+    <button class="modal-close" onclick="closeLivePanel()"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div class="detail-panel-body">
+    <div class="section-divider" style="margin-top:0">Published by Registrar</div>
+    <div id="livePanelRegistrarView"></div>
+    <div class="section-divider">Secretary Modifications</div>
+    <div id="livePanelSecretaryView"></div>
+  </div>
+</div>
+
+<!-- Publish All Modal -->
+<div class="modal-overlay" id="publishAllModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title">Publish to All Departments</span>
+      <button class="modal-close" onclick="closeModal('publishAllModal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">
+        This will publish the current curriculum to the <strong>College Dean and Secretary</strong> of all departments simultaneously. Secretaries will be notified and may begin building their prospectus.
+      </p>
+      <div class="form-group">
+        <label class="form-label">Notify Recipients Via</label>
+        <div class="flex gap-2 flex-wrap mt-1" style="margin-top:6px;">
+          <label style="font-size:0.82rem;"><input type="checkbox" checked> System notification</label>
+          <label style="font-size:0.82rem;"><input type="checkbox" checked> WMSU email</label>
         </div>
       </div>
-      <div class="section-divider">Resolution</div>
-      <div class="form-group"><label class="form-label">Move which section?</label><select class="form-control"><option>Move CS Elec 3 (smaller class)</option><option>Move IT 301</option></select></div>
-      <div class="form-group"><label class="form-label">New Room Assignment</label><select class="form-control"><option>CAS-403 (cap: 40, available MWF 8–10)</option><option>CAS-201 (cap: 55, available MWF 8–10)</option><option>Lab 204 (cap: 40, available MWF 8–10)</option></select></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('conflictResolveModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="alert('Conflict resolved!');closeModal('conflictResolveModal')"><i class="fas fa-check"></i> Apply Resolution</button>
-    </div>
-  </div>
-</div>
-
-<!-- Deny Modal -->
-<div class="modal-overlay" id="denyModal">
-  <div class="modal modal-sm">
-    <div class="modal-header"><span class="modal-title">Deny Request</span><button class="modal-close" onclick="closeModal('denyModal')"><i class="fas fa-xmark"></i></button></div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Reason for Denial</label><textarea class="form-control" placeholder="Provide a reason to be sent back to the requesting department..."></textarea></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('denyModal')">Cancel</button>
-      <button class="btn btn-danger" onclick="closeModal('denyModal')"><i class="fas fa-xmark"></i> Deny Request</button>
-    </div>
-  </div>
-</div>
-
-<!-- Review Modal -->
-<div class="modal-overlay" id="reviewModal">
-  <div class="modal modal-md">
-    <div class="modal-header"><span class="modal-title">Request Details</span><button class="modal-close" onclick="closeModal('reviewModal')"><i class="fas fa-xmark"></i></button></div>
-    <div class="modal-body">
-      <div class="section-divider" style="margin-top:0">Request Info</div>
-      <table style="width:100%;font-size:0.83rem">
-        <tr><td class="text-muted" style="padding:5px 0;width:140px">Request Type</td><td><strong>New Section</strong></td></tr>
-        <tr><td class="text-muted" style="padding:5px 0">Subject</td><td>CS Elec 4 — Sec B</td></tr>
-        <tr><td class="text-muted" style="padding:5px 0">Department</td><td>Computer Science</td></tr>
-        <tr><td class="text-muted" style="padding:5px 0">Requested By</td><td>CS Dept. Admin (admin@cs.wmsu.edu.ph)</td></tr>
-        <tr><td class="text-muted" style="padding:5px 0">Date Submitted</td><td>Jun 25, 2025, 9:14 AM</td></tr>
-        <tr><td class="text-muted" style="padding:5px 0">Proposed Time</td><td>TTh 3:00–4:30 PM</td></tr>
-        <tr><td class="text-muted" style="padding:5px 0">Proposed Room</td><td>Lab 204 (Available)</td></tr>
-        <tr><td class="text-muted" style="padding:5px 0">Reason</td><td>Section A is overloaded (58/45 enrolled). Students cannot enroll.</td></tr>
-      </table>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('reviewModal')">Close</button>
-      <button class="btn btn-success btn-sm" onclick="closeModal('reviewModal')"><i class="fas fa-check"></i> Approve</button>
-      <button class="btn btn-danger btn-sm" onclick="closeModal('reviewModal')"><i class="fas fa-xmark"></i> Deny</button>
+      <button class="btn btn-ghost" onclick="closeModal('publishAllModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmPublishAll()"><i class="fas fa-bullhorn"></i> Publish to All</button>
     </div>
   </div>
 </div>
@@ -1009,7 +857,6 @@
         <div class="form-group"><label class="form-label">Type</label><select class="form-control"><option>Lecture Room</option><option>Computer Lab</option><option>Science Lab</option><option>Auditorium</option></select></div>
       </div>
       <div class="form-group"><label class="form-label">Capacity</label><input type="number" class="form-control" value="40"></div>
-      <div class="form-group"><label class="form-label">Features</label><div class="flex gap-2 flex-wrap mt-1"><label><input type="checkbox" checked> Projector</label><label><input type="checkbox"> AC</label><label><input type="checkbox"> Whiteboard</label><label><input type="checkbox"> PC Sets</label></div></div>
       <div class="form-group"><label class="form-label">Department-Controlled?</label><select class="form-control"><option>General Purpose (Registrar assigns)</option><option>Department-Controlled</option></select></div>
     </div>
     <div class="modal-footer">
@@ -1019,7 +866,6 @@
   </div>
 </div>
 
-<!-- Add Hold Modal -->
 <div class="modal-overlay" id="addHoldModal">
   <div class="modal modal-sm">
     <div class="modal-header"><span class="modal-title">Add Registration Hold</span><button class="modal-close" onclick="closeModal('addHoldModal')"><i class="fas fa-xmark"></i></button></div>
@@ -1028,27 +874,10 @@
       <div class="form-group"><label class="form-label">Scope</label><select class="form-control" onchange="document.getElementById('holdStudentField').style.display=this.value==='student'?'block':'none'"><option value="university">University-wide</option><option value="department">Department</option><option value="student">Specific Student</option></select></div>
       <div class="form-group" id="holdStudentField" style="display:none"><label class="form-label">Student ID or Name</label><input class="form-control" placeholder="Search student..."></div>
       <div class="form-group"><label class="form-label">Reason / Notes</label><textarea class="form-control" placeholder="Reason for hold..."></textarea></div>
-      <div class="form-group"><label class="form-label">Who Can Lift This Hold?</label><select class="form-control"><option>Registrar Only</option><option>Cashier</option><option>Librarian</option><option>Adviser</option></select></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('addHoldModal')">Cancel</button>
       <button class="btn btn-danger" onclick="alert('Hold placed!');closeModal('addHoldModal')"><i class="fas fa-lock"></i> Place Hold</button>
-    </div>
-  </div>
-</div>
-
-<!-- Add Restriction Modal -->
-<div class="modal-overlay" id="addRestrictionModal">
-  <div class="modal modal-sm">
-    <div class="modal-header"><span class="modal-title">Add Section Restriction</span><button class="modal-close" onclick="closeModal('addRestrictionModal')"><i class="fas fa-xmark"></i></button></div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Section</label><input class="form-control" placeholder="Course code + section, e.g. CS 301 Sec A"></div>
-      <div class="form-group"><label class="form-label">Restriction Type</label><select class="form-control"><option>Year Level</option><option>Department / Program</option><option>Authorization Code Required</option><option>Prerequisite Grade Threshold</option><option>Enrollment Cap Override</option></select></div>
-      <div class="form-group"><label class="form-label">Restriction Value</label><input class="form-control" placeholder="e.g. 3rd Year only, BSCE only, ≥ 2.0"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('addRestrictionModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="alert('Restriction added!');closeModal('addRestrictionModal')">Add Restriction</button>
     </div>
   </div>
 </div>

@@ -774,6 +774,19 @@
     .form-input.verified { border-color: var(--green); background: #f0fdf4; }
     .form-input.error    { border-color: var(--red); }
 
+    .filter-select {
+        padding: 7px 10px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-size: 0.82rem;
+        color: var(--text-primary);
+        font-family: var(--sans);
+        background: var(--surface);
+        outline: none;
+        cursor: pointer;
+    }
+    .filter-select:focus { border-color: var(--crimson); }
+
     .form-hint { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
 
     .autofill-row {
@@ -936,7 +949,7 @@
                 <span class="topbar-admin-role">SUPER_ADMIN · MISTO</span>
             </div>
         </div>
-        <button class="btn-logout" onclick="window.location.href='../../login page/login.html'">
+        <button class="btn-logout" onclick="window.location.href='../../../login-pages/login.html'">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             Log Out
         </button>
@@ -973,6 +986,11 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 Audit Logs
                 <span class="nav-badge" id="audit-badge">3</span>
+            </button>
+
+            <button class="nav-item" onclick="switchTab('accounts', this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Accounts
             </button>
         </nav>
 
@@ -1170,7 +1188,7 @@
                             <option value="Secretary">Secretary</option>
                             <option value="Assessment Officer">Assessment Officer</option>
                             <option value="College Dean">College Dean</option>
-                            <option value="Department Head">Department Head</option>
+                            <option value="Registrar Officer">Registrar Officer</option>
                         </select>
                         <select class="form-select" style="width:auto;padding:7px 10px;font-size:0.82rem;" id="statusFilter" onchange="filterRoles()">
                             <option value="">All Status</option>
@@ -1316,6 +1334,62 @@
 
         </div><!-- /tab-audit -->
 
+        <!-- ACCOUNTS TAB -->
+        <div class="tab-content" id="tab-accounts">
+
+            <div class="page-header">
+                <div>
+                    <div class="page-title">Account Credentials</div>
+                    <div class="page-subtitle">All WMSU-Ease employee accounts — usernames, emails, and password status.</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Employee Accounts
+                    </span>
+                    <span class="mono-text" style="font-size:0.74rem;color:var(--text-muted);" id="accounts-count">—</span>
+                </div>
+                <div class="card-header" style="border-bottom:none;padding-top:12px;padding-bottom:12px;">
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        <div class="search-bar" style="width:240px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            <input type="text" id="accountsSearch" placeholder="Search name, email, ID…"
+                                oninput="filterAccounts()" />
+                        </div>
+                        <select class="filter-select" id="accountsStatusFilter" onchange="filterAccounts()">
+                            <option value="">All Statuses</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Name / Department</th>
+                                <th>Email (Username)</th>
+                                <th>Roles</th>
+                                <th>Password</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- /tab-accounts -->
     </main>
 </div><!-- /layout -->
 
@@ -1356,6 +1430,8 @@
                         <div style="font-weight:600;font-size:0.88rem;" id="empName">—</div>
                         <div style="font-size:0.76rem;color:var(--text-secondary);font-family:var(--mono);" id="empEmail">—</div>
                         <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;" id="empPosition">—</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:1px;" id="empDept">—</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:1px;font-family:var(--mono);" id="empContact">—</div>
                     </div>
                     <span class="badge active" style="margin-left:auto;">Verified</span>
                 </div>
@@ -1376,7 +1452,7 @@
                         <option>College of Business Administration</option>
                         <option>College of Arts and Sciences</option>
                         <option>College of Education</option>
-                        <option>Assessment Office — CCS</option>
+                        <option>Assessment Office</option>
                         <option>Registrar's Office</option>
                         <option>MISTO</option>
                     </select>
@@ -1387,9 +1463,9 @@
                         <option value="">— Select Role —</option>
                         <option value="Adviser">Adviser</option>
                         <option value="Secretary">Secretary</option>
-                        <option value="Assessment Officer">Assessment Officer</option>
                         <option value="College Dean">College Dean</option>
-                        <option value="Department Head">Department Head</option>
+                        <option value="Assessment Officer">Assessment Officer</option>
+                        <option value="Registrar Officer">Registrar Officer</option>
                     </select>
                     <p class="form-hint">Roles already active in the selected department are disabled.</p>
                 </div>
@@ -1484,6 +1560,23 @@
         <button class="modal-close" onclick="closePanel()">&times;</button>
     </div>
     <div class="panel-body" id="panelBody"></div>
+</div>
+
+<!-- Password Reset Modal -->
+<div class="modal-overlay" id="passwordResetModal">
+    <div class="modal-box" style="max-width:420px;">
+        <div class="modal-header">
+            <span class="modal-title">Force Password Reset</span>
+            <button class="modal-close" onclick="closeModal('passwordResetModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;" id="resetMsg"></p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('passwordResetModal')">Cancel</button>
+            <button class="btn btn-primary" onclick="confirmPasswordReset()">Send Reset Link</button>
+        </div>
+    </div>
 </div>
 
 <!-- Toast Container -->
