@@ -8,6 +8,29 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="../style.css">
+    <style>
+        .card-icon-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .card-icon-wrap svg {
+            width: 24px;
+            height: 24px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: block;
+        }
+    </style>
 </head>
 <body>
 
@@ -77,15 +100,32 @@
             <div class="lp-auth-card">
 
                 <div class="auth-card-top">
-                    <span class="card-emoji">🌟</span>
-                    <h2>College Application</h2>
-                    <p>Enter your details to get started.</p>
+                    <!-- Default icon: graduation cap (overwritten by JS per type) -->
+                    <div class="card-icon-wrap" id="cardIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </div>
+                    <h2 id="cardTitle">College Application</h2>
+                    <p id="cardSub">Enter your details to get started.</p>
                 </div>
 
                 <div class="auth-card-body">
 
-                    <div class="auth-signin">
-                        Already have an account? <a href="account.html">Sign In</a>
+                    <div class="auth-signin" style="
+                        text-align: center;
+                        font-size: 13px;
+                        color: #666;
+                        margin-bottom: 18px;
+                    ">
+                        Already have an account?
+                        <a href="freshmen1-login.html" style="
+                            color: #c0192b;
+                            font-weight: 600;
+                            text-decoration: none;
+                            margin-left: 3px;
+                        ">Sign In</a>
                     </div>
 
                     <form id="loginForm" novalidate>
@@ -95,9 +135,9 @@
                             <div class="select-wrap">
                                 <select id="applicantType" name="applicantType" required>
                                     <option value="choose">Choose your type…</option>
-                                    <option value="freshman">🎒 Freshman</option>
-                                    <option value="shiftee">🔁 Shiftee</option>
-                                    <option value="transferee">📂 Transferee</option>
+                                    <option value="freshman">Freshman</option>
+                                    <option value="shiftee">Shiftee</option>
+                                    <option value="transferee">Transferee</option>
                                 </select>
                             </div>
                         </div>
@@ -128,44 +168,83 @@
 </div>
 
 <script>
+    // SVG icon paths per type
     const typeConfig = {
-        freshman:   { emoji: '🎒', label: 'Freshman',   route: '../users/Freshmen/freshman-apply.html' },
-        shiftee:    { emoji: '🔁', label: 'Shiftee',    route: '../users/Freshmen/shiftee-apply.html' },
-        transferee: { emoji: '📂', label: 'Transferee', route: '../users/Freshmen/transferee-apply.html' }
+        freshman: {
+            label: 'Freshman',
+            route: '../users/Freshmen/freshman-apply.html',
+            // backpack icon
+            iconSVG: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10H4V10z"/>
+                <path d="M9 6V5a3 3 0 0 1 6 0v1"/>
+                <path d="M4 15h16"/>
+                <path d="M10 12h4"/>
+            </svg>`
+        },
+        shiftee: {
+            label: 'Shiftee',
+            route: '../users/Freshmen/shiftee-apply.html',
+            // repeat / arrows icon
+            iconSVG: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <polyline points="17 1 21 5 17 9"/>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                <polyline points="7 23 3 19 7 15"/>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+            </svg>`
+        },
+        transferee: {
+            label: 'Transferee',
+            route: '../users/Freshmen/transferee-apply.html',
+            // folder open icon
+            iconSVG: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>`
+        }
     };
 
-    // Read ?type= from URL and pre-select
-    const params      = new URLSearchParams(window.location.search);
-    const preselected = params.get('type');
-    const select      = document.getElementById('applicantType');
-    const cardEmoji   = document.querySelector('.card-emoji');
-    const cardTitle   = document.querySelector('.auth-card-top h2');
-    const cardSub     = document.querySelector('.auth-card-top p');
+    // Default icon (graduation cap) for unselected state
+    const defaultIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+    </svg>`;
+
+    const select    = document.getElementById('applicantType');
+    const cardIcon  = document.getElementById('cardIcon');
+    const cardTitle = document.getElementById('cardTitle');
+    const cardSub   = document.getElementById('cardSub');
 
     function applyType(val) {
-        if (!val || !typeConfig[val]) return;
-        select.value    = val;
-        cardEmoji.textContent = typeConfig[val].emoji;
-        cardTitle.textContent = typeConfig[val].label + ' Application';
-        cardSub.textContent   = 'Enter your ID to continue as a ' + typeConfig[val].label + '.';
+        if (!val || !typeConfig[val]) {
+            cardIcon.innerHTML  = defaultIconSVG;
+            cardTitle.textContent = 'College Application';
+            cardSub.textContent   = 'Enter your details to get started.';
+            return;
+        }
+        const cfg = typeConfig[val];
+        select.value          = val;
+        cardIcon.innerHTML    = cfg.iconSVG;
+        cardTitle.textContent = cfg.label + ' Application';
+        cardSub.textContent   = 'Enter your ID to continue as a ' + cfg.label + '.';
     }
 
     // Apply from URL on load
+    const params      = new URLSearchParams(window.location.search);
+    const preselected = params.get('type');
     if (preselected) applyType(preselected);
 
     // Update card header when user changes the dropdown
-    select.addEventListener('change', function() {
+    select.addEventListener('change', function () {
         applyType(this.value);
     });
 
     // Submit
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
         e.preventDefault();
         const type     = select.value;
         const id       = document.getElementById('id').value.trim();
         const alertDiv = document.getElementById('alert');
 
-        if (!type || !id) {
+        if (!type || type === 'choose' || !id) {
             alertDiv.textContent = 'Please select an applicant type and enter your ID.';
             alertDiv.style.display = 'block';
             return;
