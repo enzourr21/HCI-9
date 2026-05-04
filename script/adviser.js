@@ -1,16 +1,3 @@
-// =============================================================
-// adviser.js — Unified Adviser Portal Script
-// Covers:
-//   · adviser_dashboard.html  (My Students — review, edit, proceed)
-//   · submitted.html          (Submission History — recall)
-//   · correction.html         (For Correction — resubmit flagged records)
-//
-// Page detection: each section's init checks for a unique
-// DOM element before running, so all three pages can safely
-// load this single file without errors.
-// =============================================================
-
-
 // ─────────────────────────────────────────────────────────────
 // SHARED HELPERS
 // ─────────────────────────────────────────────────────────────
