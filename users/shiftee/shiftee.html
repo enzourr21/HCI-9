@@ -3,454 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiftee Portal - WMSU-Ease</title>
-    <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../old student/student.css">
+    <title>WMSU-Ease | Shiftee Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="shiftee.css">
+    <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
 
-    <!-- SIDEBAR TOGGLE -->
-    <input type="checkbox" id="sidebar-toggle">
-    <label for="sidebar-toggle" class="sidebar-overlay"></label>
-
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="logo">
-            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+<!-- TOPBAR -->
+<header class="topbar">
+    <div class="topbar-left">
+        <a class="topbar-brand" href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/>
+                <path d="M6 11.5v5c0 0 2.5 2.5 6 2.5s6-2.5 6-2.5v-5"/>
+                <line x1="22" y1="8.5" x2="22" y2="14"/>
             </svg>
-            <span class="name">WMSU-Ease</span>
+            WMSU-Ease
+        </a>
+        <div class="topbar-divider"></div>
+        <span class="topbar-portal-label">Shiftee Portal</span>
+    </div>
+    <div class="topbar-right">
+        <div class="topbar-user">
+            <div class="topbar-avatar">MS</div>
+            <div class="topbar-user-info">
+                <span class="topbar-user-name">Santos, Maria R.</span>
+                <span class="topbar-user-meta">2ND YEAR · CCS</span>
+            </div>
         </div>
+        <div class="topbar-sep"></div>
+        <a class="topbar-logout" href="#">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Log Out
+        </a>
+    </div>
+</header>
 
-        <ul class="nav-links">
-            <li>
-                <div class="nav-student-info">
-                    <!-- Shiftee chip -->
-                    <div class="nav-student-chip">
-                        <div class="nav-chip-avatar" id="chipAvatar">MS</div>
-                        <div class="nav-chip-text">
-                            <span class="nav-chip-name" id="chipName">Maria Santos</span>
-                            <span class="nav-chip-meta shiftee-meta">Shiftee</span>
-                        </div>
-                    </div>
+<div class="layout">
 
-                    <div class="nav-divider"></div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <a class="s-link" onclick="showTab('profile', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Profile
+            </a>
+            <a class="s-link active" onclick="showTab('subjects', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="9" y1="13" x2="15" y2="13"/>
+                    <line x1="9" y1="17" x2="13" y2="17"/>
+                </svg>
+                Subjects
+            </a>
+            <a class="s-link" onclick="showTab('schedule', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Schedule
+            </a>
+            <a class="s-link" onclick="showTab('payment', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                Payment
+            </a>
+        </nav>
+    </aside>
 
-                    <!-- Log out -->
-                    <a href="../../login/login.html"
-                       style="display:flex; align-items:center; gap:6px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2"
-                             stroke-linecap="round" stroke-linejoin="round"
-                             width="18" height="18">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                            <polyline points="16 17 21 12 16 7"/>
-                            <line x1="21" y1="12" x2="9" y2="12"/>
-                        </svg>
-                        Log Out
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </nav>
+    <!-- MAIN CONTENT -->
+    <main class="main">
 
-    <div class="layout">
-
-        <!-- HAMBURGER -->
-        <label for="sidebar-toggle" class="hamburger" aria-label="Toggle menu">
-            <span></span><span></span><span></span>
-        </label>
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <label for="sidebar-toggle" class="sidebar-close">&#10005;</label>
-            <ul class="sidebar-links">
-                <li>
-                    <a href="shiftee.html" class="active">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7"/>
-                            <rect x="14" y="3" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/>
-                            <rect x="3" y="14" width="7" height="7"/>
-                        </svg>
-                        Overview
-                    </a>
-                </li>
-                <li>
-                    <a href="application.html">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="17 1 21 5 17 9"/>
-                            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-                            <polyline points="7 23 3 19 7 15"/>
-                            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-                        </svg>
-                        Application
-                    </a>
-                </li>
-                <li>
-                    <a href="requirements.html">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
-                        </svg>
-                        Requirements
-                    </a>
-                </li>
-                <li>
-                    <a href="documents.html">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-                        </svg>
-                        Documents
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
-        <!-- ─── MAIN ─── -->
-        <main class="main-content">
-
-            <!-- ① SHIFTING PROGRESS -->
-            <div class="card">
-                <h3 class="card-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         style="margin-right:8px;">
-                        <polyline points="17 1 21 5 17 9"/>
-                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-                        <polyline points="7 23 3 19 7 15"/>
-                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-                    </svg>
-                    Shifting Progress
-                </h3>
-
-                <div class="progress-track">
-
-                    <!-- Step 1: Application Filed — DONE -->
-                    <div class="progress-step">
-                        <div class="progress-circle">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                        </div>
-                        <div class="step-line"></div>
-                        <p class="step-label">Application</p>
-                        <span class="badge green">Filed</span>
-                    </div>
-
-                    <!-- Step 2: Document Review — ACTIVE -->
-                    <div class="progress-step">
-                        <div class="progress-circle">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"/>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                            </svg>
-                        </div>
-                        <div class="step-line gray"></div>
-                        <p class="step-label">Doc. Review</p>
-                        <span class="badge yellow">In Review</span>
-                    </div>
-
-                    <!-- Step 3: Dept. Approval — PENDING -->
-                    <div class="progress-step gray">
-                        <div class="progress-circle gray">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                            </svg>
-                        </div>
-                        <div class="step-line gray"></div>
-                        <p class="step-label">Dept. Head</p>
-                        <span class="badge gray">Pending</span>
-                    </div>
-
-                    <!-- Step 4: Dean's Approval — PENDING -->
-                    <div class="progress-step gray">
-                        <div class="progress-circle gray">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="8" r="6"/>
-                                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-                            </svg>
-                        </div>
-                        <div class="step-line gray"></div>
-                        <p class="step-label">Dean</p>
-                        <span class="badge gray">Pending</span>
-                    </div>
-
-                    <!-- Step 5: Confirmed — PENDING -->
-                    <div class="progress-step gray">
-                        <div class="progress-circle gray">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                        </div>
-                        <p class="step-label">Confirmed</p>
-                        <span class="badge gray">Pending</span>
-                    </div>
-
-                </div>
+        <!-- ═══ PROFILE TAB ═══ -->
+        <div id="tab-profile" class="tab-content">
+            <div class="page-hd">
+                <h1>Profile</h1>
+                <p>Your personal and shifting application information.</p>
             </div>
 
-            <!-- ② STUDENT INFO (read-only) -->
+            <!-- Shifting route card -->
             <div class="card">
-                <div class="profile-header">
-                    <div class="profile-avatar" id="profileAvatar">MS</div>
-                    <div class="profile-meta">
-                        <h2 class="profile-name" id="profileName">Santos, Maria Reyes</h2>
-                        <p class="profile-sub" id="profileSub">2023-005678 &bull; 2nd Year &bull; College of Computing Studies</p>
-                        <span class="badge yellow">Shifting Application — Under Review</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ③ SHIFTING APPLICATION -->
-            <div class="card">
-                <h3 class="card-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         style="margin-right:8px;">
-                        <polyline points="17 1 21 5 17 9"/>
-                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-                        <polyline points="7 23 3 19 7 15"/>
-                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                <div class="card-hd">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                        <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
                     </svg>
                     Shifting Application
-                </h3>
-
-                <!-- Status Banner -->
-                <div class="shift-status-banner" id="shiftStatusBanner">
-                    <div class="shift-status-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="8" x2="12" y2="12"/>
-                            <line x1="12" y1="16" x2="12.01" y2="16"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="shift-status-title" id="shiftStatusTitle">Application Under Review</p>
-                        <p class="shift-status-desc" id="shiftStatusDesc">
-                            Filed on <strong>April 28, 2025</strong>. Currently at Document Review stage.
-                        </p>
-                    </div>
+                    <span class="chip-amber ml-auto">Under Review</span>
                 </div>
-
-                <!-- From → To Programs -->
-                <div class="program-transfer">
-                    <div class="program-box program-from">
-                        <p class="program-box-label">Currently Enrolled In</p>
-                        <p class="program-box-code" id="fromCode">BSIT</p>
-                        <p class="program-box-name" id="fromName">Bachelor of Science in Information Technology</p>
-                        <p class="program-box-college" id="fromCollege">College of Computing Studies</p>
+                <div class="shift-route">
+                    <div class="shift-prog from">
+                        <div class="shift-prog-tag">From</div>
+                        <div class="shift-prog-code">BSIT</div>
+                        <div class="shift-prog-name">BS Information Technology</div>
+                        <div class="shift-prog-college">College of Computing Studies</div>
                     </div>
-
-                    <div class="transfer-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14"/>
-                            <path d="m12 5 7 7-7 7"/>
-                        </svg>
-                        <span>Shifting To</span>
+                    <div class="shift-arrow">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </div>
-
-                    <div class="program-box program-to">
-                        <p class="program-box-label">Target Program</p>
-                        <p class="program-box-code" id="toCode">BSCS</p>
-                        <p class="program-box-name" id="toName">Bachelor of Science in Computer Science</p>
-                        <p class="program-box-college" id="toCollege">College of Computing Studies</p>
-                    </div>
-                </div>
-
-                <!-- Info Grid -->
-                <div class="profile-grid" style="margin-top:18px;">
-                    <div class="profile-field">
-                        <p class="field-label">Student ID</p>
-                        <p class="field-value" id="viewStudentId">2023-005678</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Year Level</p>
-                        <p class="field-value" id="viewYear">2nd Year</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Date Filed</p>
-                        <p class="field-value" id="viewDateFiled">April 28, 2025</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Contact Number</p>
-                        <p class="field-value" id="viewContact">09187654321</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Email Address</p>
-                        <p class="field-value" id="viewEmail">2023-005678@wmsu.edu.ph</p>
-                    </div>
-                    <div class="profile-field">
-                        <p class="field-label">Application Status</p>
-                        <p class="field-value" id="viewStatus">Under Review</p>
+                    <div class="shift-prog to">
+                        <div class="shift-prog-tag">To</div>
+                        <div class="shift-prog-code">BSCS</div>
+                        <div class="shift-prog-name">BS Computer Science</div>
+                        <div class="shift-prog-college">College of Computing Studies</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ④ REQUIREMENTS CHECKLIST -->
+            <!-- Personal info -->
             <div class="card">
-                <h3 class="card-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         style="margin-right:8px;">
-                        <path d="M9 11l3 3L22 4"/>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                    </svg>
-                    Requirements Checklist
-                </h3>
-
-                <ul class="req-list">
-                    <li class="req-item req-done">
-                        <span class="req-icon req-icon-done">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                        </span>
-                        <div class="req-details">
-                            <span class="req-name">Shifting Application Form</span>
-                            <span class="req-note">Duly accomplished and signed</span>
-                        </div>
-                        <span class="badge green">Submitted</span>
-                    </li>
-                    <li class="req-item req-done">
-                        <span class="req-icon req-icon-done">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                        </span>
-                        <div class="req-details">
-                            <span class="req-name">Latest Grade Report / Transcript of Records</span>
-                            <span class="req-note">Official copy from Registrar</span>
-                        </div>
-                        <span class="badge green">Submitted</span>
-                    </li>
-                    <li class="req-item req-pending">
-                        <span class="req-icon req-icon-pending">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/>
-                                <line x1="12" y1="8" x2="12" y2="12"/>
-                                <line x1="12" y1="16" x2="12.01" y2="16"/>
-                            </svg>
-                        </span>
-                        <div class="req-details">
-                            <span class="req-name">Department Head Approval Slip</span>
-                            <span class="req-note">Signed by the current dept. head</span>
-                        </div>
-                        <span class="badge yellow">Pending</span>
-                    </li>
-                    <li class="req-item req-pending">
-                        <span class="req-icon req-icon-pending">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/>
-                                <line x1="12" y1="8" x2="12" y2="12"/>
-                                <line x1="12" y1="16" x2="12.01" y2="16"/>
-                            </svg>
-                        </span>
-                        <div class="req-details">
-                            <span class="req-name">Dean's Endorsement Letter</span>
-                            <span class="req-note">From the college dean of target program</span>
-                        </div>
-                        <span class="badge yellow">Pending</span>
-                    </li>
-                    <li class="req-item req-missing">
-                        <span class="req-icon req-icon-missing">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="18" y1="6" x2="6" y2="18"/>
-                                <line x1="6" y1="6" x2="18" y2="18"/>
-                            </svg>
-                        </span>
-                        <div class="req-details">
-                            <span class="req-name">Honorable Dismissal (if transferring college)</span>
-                            <span class="req-note">From the Registrar's Office</span>
-                        </div>
-                        <span class="badge gray">N/A</span>
-                    </li>
-                    <li class="req-item req-done">
-                        <span class="req-icon req-icon-done">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                        </span>
-                        <div class="req-details">
-                            <span class="req-name">1×1 ID Photo</span>
-                            <span class="req-note">2 copies, white background</span>
-                        </div>
-                        <span class="badge green">Submitted</span>
-                    </li>
-                </ul>
+                <div class="card-hd">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Personal Information
+                </div>
+                <div class="info-grid">
+                    <div class="info-item"><div class="info-label">Full Name</div><div class="info-val">Santos, Maria Reyes</div></div>
+                    <div class="info-item"><div class="info-label">Student ID</div><div class="info-val">2023-005678</div></div>
+                    <div class="info-item"><div class="info-label">Year Level</div><div class="info-val">2nd Year</div></div>
+                    <div class="info-item"><div class="info-label">Email</div><div class="info-val">2023-005678@wmsu.edu.ph</div></div>
+                    <div class="info-item"><div class="info-label">Contact</div><div class="info-val">09187654321</div></div>
+                    <div class="info-item"><div class="info-label">Date Filed</div><div class="info-val">April 28, 2025</div></div>
+                    <div class="info-item"><div class="info-label">Reference No.</div><div class="info-val">SHIFT-2025-00432</div></div>
+                    <div class="info-item"><div class="info-label">Semester</div><div class="info-val">1st Sem · A.Y. 2025–2026</div></div>
+                </div>
             </div>
 
-            <!-- ⑤ REGISTRAR REMARKS -->
+            <!-- Registrar remarks -->
             <div class="card">
-                <h3 class="card-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         style="margin-right:8px;">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
+                <div class="card-hd">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     Registrar Remarks
-                </h3>
-                <div class="remarks-box" id="remarksBox">
-                    <p class="remarks-text" id="remarksText">
-                        Documents are under review by the Department Head.
-                        Please ensure all required documents are complete and properly signed
-                        before proceeding to the next stage.
-                    </p>
-                    <p class="remarks-date" id="remarksDate">Last updated: April 29, 2025</p>
+                </div>
+                <div class="remark-box">
+                    <p>Documents are under review by the Department Head. Please ensure all required documents are complete and properly signed before proceeding to the next stage.</p>
+                    <span class="remark-date">Last updated: April 29, 2025 · Registrar's Office</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ SUBJECTS TAB ═══ -->
+        <div id="tab-subjects" class="tab-content active">
+
+            <!-- Enrollment Progress -->
+            <div class="card">
+                <div class="card-hd-plain">Enrollment Progress</div>
+                <div class="progress-track">
+                    <div class="progress-step done" data-label="Form Reviewing" data-status="COMPLETED">
+                        <div class="ps-circle">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+                        </div>
+                        <div class="ps-label">Form Reviewing</div>
+                        <span class="ps-status green">COMPLETED</span>
+                    </div>
+                    <div class="progress-connector done"></div>
+                    <div class="progress-step active" data-label="Advising" data-status="IN PROGRESS">
+                        <div class="ps-circle">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
+                        <div class="ps-label">Advising</div>
+                        <span class="ps-status amber">IN PROGRESS</span>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step pending" data-label="Assessment" data-status="">
+                        <div class="ps-circle">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                        <div class="ps-label">Assessment</div>
+                        <span class="ps-status gray"></span>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step pending" data-label="Payment" data-status="">
+                        <div class="ps-circle">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        </div>
+                        <div class="ps-label">Payment</div>
+                        <span class="ps-status gray"></span>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step pending" data-label="Enlistment" data-status="">
+                        <div class="ps-circle">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="ps-label">Enlistment</div>
+                        <span class="ps-status gray"></span>
+                    </div>
                 </div>
             </div>
 
-        </main>
+            <!-- Stats row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total Units</div>
+                    <div class="stat-num black">21</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Major Subjects</div>
+                    <div class="stat-num green">5</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Minor Subjects</div>
+                    <div class="stat-num amber">3</div>
+                </div>
+            </div>
+
+            <!-- Subjects table -->
+            <div class="card">
+                <div class="card-hd">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    Enrolled Subjects — 1st Sem 2025–2026
+                    <span class="chip-amber ml-auto">Subject to change pending shift approval</span>
+                    <button class="btn-edit-subj" onclick="openEditSubjectsModal()">+ Edit Subject</button>
+                </div>
+                <div class="table-scroll">
+                    <table class="subj-table" id="subjTable">
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Units</th>
+                                <th>Instructor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjTableBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Grade eval section (accordion-style) -->
+                <div class="grade-eval-section">
+                    <button class="grade-eval-toggle" onclick="toggleGradeEval(this)">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        View Shiftee Grade Evaluation
+                        <svg class="chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="grade-eval-body" id="gradeEvalBody" style="display:none;">
+                        <div class="eval-stats-row">
+                            <div class="eval-stat-box green"><span class="esb-num">4</span><span class="esb-lbl">Credited</span></div>
+                            <div class="eval-stat-box red"><span class="esb-num">2</span><span class="esb-lbl">Deficiencies</span></div>
+                            <div class="eval-stat-box neutral"><span class="esb-num">9</span><span class="esb-lbl">Units to take</span></div>
+                        </div>
+                        <table class="subj-table">
+                            <thead>
+                                <tr><th>Subject</th><th>Units</th><th>Grade</th><th>Evaluation</th><th>Remarks</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="s-name">Programming 1</div><div class="s-code">CS 101</div></td>
+                                    <td>3</td><td class="g-pass">1.25</td>
+                                    <td><span class="chip-green">Credited</span></td>
+                                    <td class="g-remark">Equivalent to CS 101 BSCS</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="s-name">Programming 2</div><div class="s-code">CS 102</div></td>
+                                    <td>3</td><td class="g-pass">1.50</td>
+                                    <td><span class="chip-green">Credited</span></td>
+                                    <td class="g-remark">Equivalent to CS 102 BSCS</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="s-name">Data Structures</div><div class="s-code">CS 201</div></td>
+                                    <td>3</td><td class="g-pass">1.75</td>
+                                    <td><span class="chip-green">Credited</span></td>
+                                    <td class="g-remark">Direct credit</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="s-name">Database Management</div><div class="s-code">IT 221</div></td>
+                                    <td>3</td><td class="g-pass">1.50</td>
+                                    <td><span class="chip-green">Credited</span></td>
+                                    <td class="g-remark">Equivalent to CS 221 BSCS</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="s-name">Discrete Mathematics</div><div class="s-code">CS 211</div></td>
+                                    <td>3</td><td class="g-warn">2.50</td>
+                                    <td><span class="chip-red">Deficiency</span></td>
+                                    <td class="g-remark">Must retake — grade below 2.0</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="s-name">Algorithms &amp; Complexity</div><div class="s-code">CS 301</div></td>
+                                    <td>3</td><td class="g-fail">INC</td>
+                                    <td><span class="chip-red">Deficiency</span></td>
+                                    <td class="g-remark">Incomplete — must complete</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="eval-note">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            Deficiencies must be resolved before shifting is finalized. Coordinate with your academic adviser.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ SCHEDULE TAB ═══ -->
+        <div id="tab-schedule" class="tab-content">
+            <div class="page-hd">
+                <h1>Class Schedule</h1>
+                <p>1st Semester · A.Y. 2025–2026 <span class="chip-amber" style="margin-left:8px;">Subject to change pending shift approval</span></p>
+            </div>
+            <div class="card">
+                <div class="sched-grid">
+                    <div class="sched-col">
+                        <div class="sched-day-hd">Mon</div>
+                        <div class="sched-block cr"><div class="sb-code">CS 101</div><div class="sb-time">7:30–9:00 AM</div><div class="sb-room">CCS Bldg 201</div></div>
+                        <div class="sched-block blue"><div class="sb-code">Math 101</div><div class="sb-time">1:00–2:30 PM</div><div class="sb-room">Main Bldg 301</div></div>
+                    </div>
+                    <div class="sched-col">
+                        <div class="sched-day-hd">Tue</div>
+                        <div class="sched-block green"><div class="sb-code">Eng 1</div><div class="sb-time">9:00–10:30 AM</div><div class="sb-room">Arts Bldg 105</div></div>
+                    </div>
+                    <div class="sched-col">
+                        <div class="sched-day-hd">Wed</div>
+                        <div class="sched-block cr"><div class="sb-code">CS 101</div><div class="sb-time">7:30–9:00 AM</div><div class="sb-room">CCS Bldg 201</div></div>
+                        <div class="sched-block blue"><div class="sb-code">Math 101</div><div class="sb-time">1:00–2:30 PM</div><div class="sb-room">Main Bldg 301</div></div>
+                    </div>
+                    <div class="sched-col">
+                        <div class="sched-day-hd">Thu</div>
+                        <div class="sched-block green"><div class="sb-code">Eng 1</div><div class="sb-time">9:00–10:30 AM</div><div class="sb-room">Arts Bldg 105</div></div>
+                        <div class="sched-block amber"><div class="sb-code">PE 1</div><div class="sb-time">3:00–4:30 PM</div><div class="sb-room">Gymnasium</div></div>
+                    </div>
+                    <div class="sched-col">
+                        <div class="sched-day-hd">Fri</div>
+                        <div class="sched-block cr"><div class="sb-code">CS 201</div><div class="sb-time">10:30 AM–12:00 PM</div><div class="sb-room">CCS Lab 1</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ PAYMENT TAB ═══ -->
+        <div id="tab-payment" class="tab-content">
+            <div class="page-hd">
+                <h1>Payment</h1>
+                <p>Statement of Account — 1st Sem 2025–2026</p>
+            </div>
+            <div class="card">
+                <div class="fin-list">
+                    <div class="fin-row">
+                        <span class="fin-label">Tuition fee (18 units)</span>
+                        <span class="fin-amount fin-paid">₱9,000.00 <span class="fin-tag">paid</span></span>
+                    </div>
+                    <div class="fin-row">
+                        <span class="fin-label">Miscellaneous fees</span>
+                        <span class="fin-amount fin-paid">₱1,200.00 <span class="fin-tag">paid</span></span>
+                    </div>
+                    <div class="fin-row">
+                        <span class="fin-label">Laboratory fee</span>
+                        <span class="fin-amount fin-paid">₱600.00 <span class="fin-tag">paid</span></span>
+                    </div>
+                    <div class="fin-row">
+                        <span class="fin-label">Shifting processing fee</span>
+                        <span class="fin-amount fin-due">₱250.00 <span class="fin-tag">due</span></span>
+                    </div>
+                    <div class="fin-row">
+                        <span class="fin-label">Guidance exam fee</span>
+                        <span class="fin-amount fin-due">₱150.00 <span class="fin-tag">due</span></span>
+                    </div>
+                </div>
+                <div class="fin-total">
+                    <span>Total outstanding balance</span>
+                    <span class="fin-total-amt">₱400.00</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- EDIT SUBJECTS MODAL -->
+<div class="modal-overlay" id="editSubjModal">
+    <div class="modal-box">
+        <div class="modal-hd">
+            <h3>Edit Subjects</h3>
+            <button class="modal-x" onclick="closeEditSubjectsModal()">×</button>
+        </div>
+        <div class="modal-body" id="editSubjBody"></div>
     </div>
+</div>
 
-    <script src="../../script/shiftee.js"></script>
+<div class="toast-container" id="toastContainer"></div>
 
+<script src="../../script/shiftee.js"></script>
 </body>
 </html>
