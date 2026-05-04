@@ -314,6 +314,11 @@
     color: #333;
     border-color: rgba(50,50,50,.18);
 }
+.role-indicator.role-shiftee {
+    background: rgba(10,90,140,.07);
+    color: #0a5a8c;
+    border-color: rgba(10,90,140,.18);
+}
 
 /* ─── Card footer note ─── */
 .card-footer-note {

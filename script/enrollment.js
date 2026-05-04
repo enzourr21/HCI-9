@@ -115,11 +115,11 @@ window.WMSU_COURSE_REQUIREMENTS = {
   /* ── College of Nursing ────────────────────────────────────────── */
   "BS Nursing": {
     dept: "College of Nursing",
-    oaprMin: 83,
+    oaprMin: 90,
     icon: "🩺",
     extra: "nat",
     natMin: 260,
-    note: "NAT ≥260 required; OAPR ≥83 PR. Interview required."
+    note: "NAT ≥260 required; OAPR ≥90 PR. Interview required."
   },
 
   /* ── College of Business Administration ───────────────────────── */
@@ -148,7 +148,7 @@ window.WMSU_COURSE_REQUIREMENTS = {
   /* ── College of Arts and Sciences ─────────────────────────────── */
   "BA Psychology": {
     dept: "College of Arts and Sciences",
-    oaprMin: 55,
+    oaprMin: 70,
     icon: "🧠",
     extra: null,
     note: "OAPR ≥55 PR required"

@@ -11,6 +11,7 @@
  *  - misto@wmsu.edu.ph       → MIS-TO
  *  - dean@wmsu.edu.ph        → Dean
  *  - secretary@wmsu.edu.ph   → Secretary
+ *  - shiftee@wmsu.edu.ph     → Shiftee
  *  - Numeric ID or any other @wmsu.edu.ph → Student
  */
 
@@ -108,6 +109,16 @@ const ICONS = {
     <polyline points="10 9 9 9 8 9"/>
   </svg>`,
 
+  // Shuffle/transfer arrows — Shiftee
+  SHIFTEE: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="17 1 21 5 17 9"/>
+    <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+    <polyline points="7 23 3 19 7 15"/>
+    <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+  </svg>`,
+
   // Same as student for UNKNOWN default
   UNKNOWN: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
       fill="none" stroke="currentColor" stroke-width="1.8"
@@ -128,6 +139,7 @@ const ICONS_SM = {
   MISTO:      `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
   DEAN:       `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
   SECRETARY:  `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  SHIFTEE:    `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
 };
 
 // ─── EMAIL → ROLE MAP ─────────────────────────────────────────
@@ -140,90 +152,21 @@ const EMAIL_ROLE_MAP = {
   misto:      'MISTO',
   dean:       'DEAN',
   secretary:  'SECRETARY',
+  shiftee:    'SHIFTEE',
 };
 
 // ─── ROLE CONFIG ──────────────────────────────────────────────
 const ROLES = {
-  REGISTRAR: {
-    label:    'Registrar / Super Admin',
-    emoji:    '🏛️',
-    title:    'Registrar Portal',
-    sub:      'Super Admin access.',
-    badge:    'Super Admin',
-    redirect: '../users/Admin/Registrar/registrar_dashboard.html',
-  },
-  ADVISER: {
-    label:    'Adviser',
-    emoji:    '👨‍🏫',
-    title:    'Adviser Portal',
-    sub:      'Advisory & student records.',
-    badge:    'Adviser',
-    redirect: '../users/Admin/adviser/adviser_dashboard.html',
-  },
-  DEPTHEAD: {
-    label:    'Department Head',
-    emoji:    '🏢',
-    title:    'Department Head Portal',
-    sub:      'Department management.',
-    badge:    'Dept. Head',
-    redirect: '../users/Admin/dept-admin/dept-head.html',
-  },
-  ADMISSION: {
-    label:    'Admission Office',
-    emoji:    '📋',
-    title:    'Admission Portal',
-    sub:      'Applicant & admission records.',
-    badge:    'Admission',
-    redirect: '../users/Admin/admission/admission.html',
-  },
-  ASSESSMENT: {
-    label:    'Assessment Office',
-    emoji:    '💰',
-    title:    'Assessment Portal',
-    sub:      'Fees & assessment records.',
-    badge:    'Assessment',
-    redirect: '../users/Admin/assessment/assessment_dashboard.html',
-  },
-  MISTO: {
-    label:    'MIS-TO',
-    emoji:    '💻',
-    title:    'MIS-TO Portal',
-    sub:      'System & technical operations.',
-    badge:    'MIS-TO',
-    redirect: '../users/Admin/MISTO/systemAdmin.html',
-  },
-  DEAN: {
-    label:    'Dean',
-    emoji:    '🎩',
-    title:    'Dean Portal',
-    sub:      'College administration.',
-    badge:    'Dean',
-    redirect: '../users/Admin/dean/dean.html',
-  },
-  SECRETARY: {
-    label:    'Secretary',
-    emoji:    '📁',
-    title:    'Secretary Portal',
-    sub:      'Records & correspondence.',
-    badge:    'Secretary',
-    redirect: '../users/Admin/secretary/secretary.html',
-  },
-  STUDENT: {
-    label:    'Student',
-    emoji:    '🎓',
-    title:    'Student Portal',
-    sub:      'Enrollment & records.',
-    badge:    'Student Portal',
-    redirect: '../users/old student/re-enrollment.html',
-  },
-  UNKNOWN: {
-    label:    '',
-    emoji:    '🎓',
-    title:    'Sign In',
-    sub:      'Enter your WMSU credentials to continue.',
-    badge:    'WMSU Portal',
-    redirect: null,
-  },
+  REGISTRAR:  { label: 'Registrar / Super Admin', title: 'Registrar Portal',     sub: 'Super Admin access.',             badge: 'Super Admin',    redirect: '../users/registrar/registrar.html' },
+  ADVISER:    { label: 'Adviser',                 title: 'Adviser Portal',        sub: 'Advisory & student records.',     badge: 'Adviser',        redirect: '../users/adviser/adviser.html' },
+  DEPTHEAD:   { label: 'Department Head',         title: 'Department Head Portal',sub: 'Department management.',          badge: 'Dept. Head',     redirect: '../users/depthead/dept-head.html' },
+  ADMISSION:  { label: 'Admission Office',        title: 'Admission Portal',      sub: 'Applicant & admission records.',  badge: 'Admission',      redirect: '../users/admission/admission.html' },
+  ASSESSMENT: { label: 'Assessment Office',       title: 'Assessment Portal',     sub: 'Fees & assessment records.',      badge: 'Assessment',     redirect: '../users/assessment/assessment.html' },
+  MISTO:      { label: 'MIS-TO',                  title: 'MIS-TO Portal',         sub: 'System & technical operations.',  badge: 'MIS-TO',         redirect: '../users/misto/misto.html' },
+  DEAN:       { label: 'Dean',                    title: 'Dean Portal',           sub: 'College administration.',         badge: 'Dean',           redirect: '../users/dean/dean.html' },
+  SECRETARY:  { label: 'Secretary',               title: 'Secretary Portal',      sub: 'Records & correspondence.',       badge: 'Secretary',      redirect: '../users/secretary/secretary.html' },
+  STUDENT:    { label: 'Student',                 title: 'Student Portal',        sub: 'Enrollment & records.',           badge: 'Student Portal', redirect: '../users/old student/old-student.html' },
+  UNKNOWN:    { label: '',                        title: 'Sign In',               sub: 'Enter your WMSU credentials to continue.', badge: 'WMSU Portal', redirect: null },
 };
 
 // ─── ROLE DETECTION ───────────────────────────────────────────
@@ -350,7 +293,7 @@ if (redirect) window.location.href = redirect;
 window.addEventListener('DOMContentLoaded', () => {
   const saved = localStorage.getItem('wmsu_remember_id');
   if (saved) {
-    loginId.value    = saved;
+    loginId.value      = saved;
     rememberMe.checked = true;
     applyRole(detectRole(saved));
   }

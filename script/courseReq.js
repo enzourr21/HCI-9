@@ -2,6 +2,10 @@
  * WMSU-Ease — Course Requirements
  * Defines OAPR minimums, extra requirements, department mapping, and icons.
  * Used by both Admission Office and Department Head dashboards.
+ *
+ * Composite Score Formulas (based on WMSU official records):
+ *   BS Nursing  → Composite = (OAPR × 0.40) + (NAT × 0.60)   [40% CET + 60% NAT]
+ *   Engineering → Composite = (OAPR × 0.60) + (EAT × 0.40)   [60% CET + 40% EAT]
  */
 
 (function () {
@@ -30,12 +34,12 @@
       note: 'OAPR ≥45 required for ACT applicants.',
       icon: '💻',
     },
-    'BS Information Systems': {
+    'Associate in Computer Technology major in App Development': {
       dept: 'College of Computing Studies',
-      oaprMin: 55,
+      oaprMin: 45,
       extra: null,
-      note: 'Focus on business and technology integration.',
-      icon: '📊',
+      note: 'OAPR ≥45 required for ACT applicants.',
+      icon: '💻',
     },
 
     /* ── College of Engineering ────────────────────────────── */
@@ -43,72 +47,101 @@
       dept: 'College of Engineering',
       oaprMin: 90,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Strong math and physics background needed.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Strong math and physics background needed.',
       icon: '🏗️',
     },
     'BS Electrical Engineering': {
       dept: 'College of Engineering',
       oaprMin: 85,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Emphasis on circuits and power systems.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Emphasis on circuits and power systems.',
       icon: '⚡',
     },
     'BS Mechanical Engineering': {
       dept: 'College of Engineering',
       oaprMin: 85,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Focus on thermodynamics and machine design.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Focus on thermodynamics and machine design.',
       icon: '⚙️',
     },
     'BS Sanitary Engineering': {
       dept: 'College of Engineering',
       oaprMin: 85,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Focus on sanitation and environmental systems.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Focus on sanitation and environmental systems.',
       icon: '🚰',
     },
     'BS Computer Engineering': {
       dept: 'College of Engineering',
       oaprMin: 65,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Combines hardware and software engineering.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Combines hardware and software engineering.',
       icon: '🔌',
     },
-    'BS Electronics Engineering': {
+    'BS Electronics Communication Engineering': {
       dept: 'College of Engineering',
       oaprMin: 60,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Focus on electronic systems and communications.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Focus on electronic systems and communications.',
       icon: '📡',
     },
-    'BS Chemical Engineering': {
+    'BS Environmental Engineering': {
       dept: 'College of Engineering',
       oaprMin: 65,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Strong chemistry and process design background.',
-      icon: '🧪',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT.',
+      icon: '🌿',
     },
     'BS Industrial Engineering': {
       dept: 'College of Engineering',
       oaprMin: 80,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Focus on systems optimization.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Focus on systems optimization.',
       icon: '🏭',
     },
     'BS Geodetic Engineering': {
       dept: 'College of Engineering',
       oaprMin: 80,
       extra: 'eat',
-      note: 'EAT score ≥250 required. Focus on surveying and geospatial engineering.',
+      eatMin: 250,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥250 required. Composite = 60% CET + 40% EAT. Focus on surveying and geospatial engineering.',
       icon: '🛰️',
+    },
+    'BS Agricultural Biosystem Engineering': {
+      dept: 'College of Engineering',
+      oaprMin: 65,
+      extra: 'eat',
+      eatMin: 240,
+      compositeFormula: '60% CET + 40% EAT',
+      note: 'EAT score ≥240 required. Composite = 60% CET + 40% EAT. Combines farming knowledge with engineering.',
+      icon: '🚜',
     },
 
     /* ── College of Nursing ────────────────────────────────── */
     'BS Nursing': {
       dept: 'College of Nursing',
-      oaprMin: 83,
+      oaprMin: 90,
       extra: 'nat',
-      note: 'NAT score ≥260 required. High academic and clinical standards. Requires OAPR ≥83 to qualify for NAT.',
+      natMin: 260,
+      compositeFormula: '40% CET + 60% NAT',
+      note: 'NAT score ≥260 required. Composite = 40% CET + 60% NAT. High academic and clinical standards.',
       icon: '🩺',
     },
 
@@ -127,16 +160,23 @@
       note: 'Strong quantitative skills required for CPA board exam preparation.',
       icon: '🧾',
     },
+    'BS Economics': {
+      dept: 'College of Business Administration',
+      oaprMin: 75,
+      extra: null,
+      note: 'Focus on economic analysis, policy, and quantitative methods.',
+      icon: '📈',
+    },
     'BS Management Accounting': {
       dept: 'College of Business Administration',
-      oaprMin: 55,
+      oaprMin: 70,
       extra: null,
       note: 'Focus on managerial decision-making and financial reporting.',
-      icon: '📈',
+      icon: '📊',
     },
     'BS Marketing Management': {
       dept: 'College of Business Administration',
-      oaprMin: 50,
+      oaprMin: 70,
       extra: null,
       note: 'Focus on consumer behavior, branding, and digital marketing.',
       icon: '📣',
@@ -159,10 +199,45 @@
     /* ── College of Arts and Sciences ──────────────────────── */
     'BA Psychology': {
       dept: 'College of Arts and Sciences',
-      oaprMin: 55,
+      oaprMin: 85,
       extra: null,
       note: 'Focus on human behavior, mental processes, and research methods.',
       icon: '🧠',
+    },
+    'BA Political Science': {
+      dept: 'College of Arts and Sciences',
+      oaprMin: 70,
+      extra: null,
+      note: 'Focus on governance, public policy, and political theory.',
+      icon: '🏛️',
+    },
+    'BS Journalism': {
+      dept: 'College of Arts and Sciences',
+      oaprMin: 70,
+      extra: null,
+      note: 'Training in print, broadcast, and digital media.',
+      icon: '📰',
+    },
+    'BA Broadcasting': {
+      dept: 'College of Arts and Sciences',
+      oaprMin: 70,
+      extra: null,
+      note: 'Focus on broadcast media, production, and media communications.',
+      icon: '📺',
+    },
+    'BA English Language Studies (BAELS)': {
+      dept: 'College of Arts and Sciences',
+      oaprMin: 70,
+      extra: null,
+      note: 'Focus on English linguistics, literature, and language instruction.',
+      icon: '📝',
+    },
+    'BS Asian Studies': {
+      dept: 'College of Arts and Sciences',
+      oaprMin: 65,
+      extra: null,
+      note: 'Focus on Asian history, politics, and cultures.',
+      icon: '🌏',
     },
     'BA Communication': {
       dept: 'College of Arts and Sciences',
@@ -171,16 +246,9 @@
       note: 'Emphasis on media, journalism, and public relations.',
       icon: '🎙️',
     },
-    'BS Journalism': {
-      dept: 'College of Arts and Sciences',
-      oaprMin: 50,
-      extra: null,
-      note: 'Training in print, broadcast, and digital media.',
-      icon: '📰',
-    },
     'BS Biology': {
       dept: 'College of Arts and Sciences',
-      oaprMin: 75,
+      oaprMin: 85,
       extra: null,
       note: 'Strong science background required for pre-medicine or research track.',
       icon: '🔬',
@@ -194,7 +262,7 @@
     },
     'BS Mathematics': {
       dept: 'College of Arts and Sciences',
-      oaprMin: 60,
+      oaprMin: 70,
       extra: null,
       note: 'High quantitative skills required. Prepares for research and teaching.',
       icon: '📐',
@@ -205,20 +273,6 @@
       extra: null,
       note: 'Strong math background. Focus on data analysis and research.',
       icon: '📉',
-    },
-    'BS Social Work': {
-      dept: 'College of Arts and Sciences',
-      oaprMin: 70,
-      extra: null,
-      note: 'Focus on community development and welfare services.',
-      icon: '🤝',
-    },
-    'AB Political Science': {
-      dept: 'College of Arts and Sciences',
-      oaprMin: 70,
-      extra: null,
-      note: 'Focus on governance, public policy, and political theory.',
-      icon: '🏛️',
     },
 
     /* ── College of Education ───────────────────────────────── */
@@ -238,7 +292,7 @@
     },
     'Bachelor of Physical Education': {
       dept: 'College of Education',
-      oaprMin: 45,
+      oaprMin: 70,
       extra: null,
       note: 'Focus on physical fitness, sports science, and health education.',
       icon: '🏃',
@@ -247,28 +301,14 @@
     /* ── College of Agriculture ─────────────────────────────── */
     'BS Agriculture': {
       dept: 'College of Agriculture',
-      oaprMin: 60,
+      oaprMin: 85,
       extra: null,
       note: 'Focus on crop science, animal husbandry, and sustainable farming.',
       icon: '🌾',
     },
-    'BS Forestry': {
+    'BS Agri Business': {
       dept: 'College of Agriculture',
-      oaprMin: 60,
-      extra: null,
-      note: 'Focus on sustainable forestry and natural resource management.',
-      icon: '🌲',
-    },
-    'BS Agricultural Engineering': {
-      dept: 'College of Agriculture',
-      oaprMin: 55,
-      extra: 'eat',
-      note: 'EAT score ≥240 required. Combines farming knowledge with engineering.',
-      icon: '🚜',
-    },
-    'BS Agribusiness Management': {
-      dept: 'College of Agriculture',
-      oaprMin: 48,
+      oaprMin: 65,
       extra: null,
       note: 'Focus on farm enterprise management and agricultural economics.',
       icon: '🌱',
@@ -280,12 +320,40 @@
       note: 'Focus on food science, processing, and quality control.',
       icon: '🍱',
     },
+    'BS Forestry': {
+      dept: 'College of Agriculture',
+      oaprMin: 60,
+      extra: null,
+      note: 'Focus on sustainable forestry and natural resource management.',
+      icon: '🌲',
+    },
     'BS Nutrition and Dietetics': {
       dept: 'College of Agriculture',
       oaprMin: 75,
       extra: null,
       note: 'Focus on clinical nutrition, food science, and public health dietetics.',
       icon: '🥗',
+    },
+    'BS Environmental Science': {
+      dept: 'College of Agriculture',
+      oaprMin: 65,
+      extra: null,
+      note: 'Focus on environmental management and ecological conservation.',
+      icon: '🌍',
+    },
+    'BS Agro-Forestry': {
+      dept: 'College of Agriculture',
+      oaprMin: 60,
+      extra: null,
+      note: 'Integrated study of agriculture and forest management.',
+      icon: '🌳',
+    },
+    'BS Home Economics': {
+      dept: 'College of Agriculture',
+      oaprMin: 60,
+      extra: null,
+      note: 'Focus on family and consumer sciences, nutrition, and household management.',
+      icon: '🏠',
     },
 
     /* ── College of Criminology ─────────────────────────────── */
@@ -336,24 +404,16 @@
     }
 
     if (req.extra === 'nat') {
-      const natMin = 260;
+      const natMin = req.natMin || 260;
       if (!natScore || natScore < natMin) {
         reasons.push(`NAT score ${natScore || 'not provided'} is below the required ${natMin}.`);
       }
     }
 
     if (req.extra === 'eat') {
-      const eatMin = 250;
-      if (course === 'BS Agricultural Engineering') {
-        // Lower threshold for agri engineering
-        const agriEatMin = 240;
-        if (!eatScore || eatScore < agriEatMin) {
-          reasons.push(`EAT score ${eatScore || 'not provided'} is below the required ${agriEatMin}.`);
-        }
-      } else {
-        if (!eatScore || eatScore < eatMin) {
-          reasons.push(`EAT score ${eatScore || 'not provided'} is below the required ${eatMin}.`);
-        }
+      const eatMin = req.eatMin || 250;
+      if (!eatScore || eatScore < eatMin) {
+        reasons.push(`EAT score ${eatScore || 'not provided'} is below the required ${eatMin}.`);
       }
     }
 
@@ -362,6 +422,47 @@
       reasons,
       req,
     };
+  };
+
+  /**
+   * Calculate composite score for courses with extra exams.
+   * Returns { composite: number, formula: string } or null if no extra exam.
+   *
+   * BS Nursing:    40% CET (OAPR) + 60% NAT
+   * Engineering:   60% CET (OAPR) + 40% EAT
+   */
+  window.WMSU_calcComposite = function (course, oapr, natScore, eatScore) {
+    const req = window.WMSU_COURSE_REQUIREMENTS[course];
+    if (!req) return null;
+
+    if (req.extra === 'nat' && natScore) {
+      // Normalize: OAPR is 1–99 percentile; NAT score is ~200–400 raw
+      // Convert NAT to a 0–100 scale: (natScore - 200) / 200 * 100, capped at 100
+      const natNorm = Math.min(100, Math.max(0, (natScore - 200) / 200 * 100));
+      const composite = (oapr * 0.40) + (natNorm * 0.60);
+      return {
+        composite: Math.round(composite * 10) / 10,
+        formula: '40% CET + 60% NAT',
+        cetComponent: Math.round(oapr * 0.40 * 10) / 10,
+        extraComponent: Math.round(natNorm * 0.60 * 10) / 10,
+        natNormalized: Math.round(natNorm * 10) / 10,
+      };
+    }
+
+    if (req.extra === 'eat' && eatScore) {
+      // Normalize: EAT score ~200–400 → 0–100 scale
+      const eatNorm = Math.min(100, Math.max(0, (eatScore - 200) / 200 * 100));
+      const composite = (oapr * 0.60) + (eatNorm * 0.40);
+      return {
+        composite: Math.round(composite * 10) / 10,
+        formula: '60% CET + 40% EAT',
+        cetComponent: Math.round(oapr * 0.60 * 10) / 10,
+        extraComponent: Math.round(eatNorm * 0.40 * 10) / 10,
+        eatNormalized: Math.round(eatNorm * 10) / 10,
+      };
+    }
+
+    return null;
   };
 
 })();
