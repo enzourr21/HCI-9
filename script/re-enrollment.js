@@ -120,59 +120,70 @@ function computeBlockedSubjects(gradeRecord) {
 
 // ─────────────────────────────────────────────────────────────
 // BUILD GRADES TABLE
-// Groups subjects by year and semester, renders input rows.
-// Only subjects ALREADY TAKEN (based on student's year level)
-// are shown for grade entry.
+// Shows subjects from the student's MOST RECENTLY COMPLETED
+// semester only. This applies to ALL year levels including Year 1
+// (a Year 1 student re-enrolling for 2nd sem has 1st sem grades).
+//
+// lastSem: { year: number, sem: number }
 // ─────────────────────────────────────────────────────────────
-function buildGradesTable(yearLevel) {
+function buildGradesTable(lastSem) {
     const tbody = document.getElementById("gradesTableBody");
     tbody.innerHTML = "";
 
-    // Determine which semesters to show (all completed ones)
-    // Year 2 student → show Year 1 Sem 1 + Year 1 Sem 2
-    const semestersCompleted = [];
-    for (let y = 1; y < yearLevel; y++) {
-        semestersCompleted.push({ year: y, sem: 1 });
-        semestersCompleted.push({ year: y, sem: 2 });
-    }
+    const subjects = BSCS_CURRICULUM.filter(
+        s => s.year === lastSem.year && s.sem === lastSem.sem
+    );
 
-    if (semestersCompleted.length === 0) {
+    if (!subjects.length) {
         tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:#aaa;">
-            No completed semesters to display for Year 1 students.
+            No subjects found for this semester in the curriculum.
         </td></tr>`;
         return;
     }
 
-    semestersCompleted.forEach(({ year, sem }) => {
-        const subjects = BSCS_CURRICULUM.filter(s => s.year === year && s.sem === sem);
-        if (!subjects.length) return;
+    // Single group header for the last completed semester
+    const groupRow = document.createElement("tr");
+    groupRow.className = "sem-group-row";
+    groupRow.innerHTML = `<td colspan="5">Year ${lastSem.year} — ${lastSem.sem === 1 ? "1st" : "2nd"} Semester</td>`;
+    tbody.appendChild(groupRow);
 
-        // Semester group header row
-        const groupRow = document.createElement("tr");
-        groupRow.className = "sem-group-row";
-        groupRow.innerHTML = `<td colspan="5">Year ${year} — ${sem === 1 ? "1st" : "2nd"} Semester</td>`;
-        tbody.appendChild(groupRow);
-
-        subjects.forEach(sub => {
-            const tr = document.createElement("tr");
-            tr.dataset.code = sub.code;
-            tr.innerHTML = `
-                <td><strong>${sub.code}</strong></td>
-                <td>${sub.desc}</td>
-                <td style="text-align:center;">${sub.units}</td>
-                <td style="text-align:center;">
-                    <input type="text" class="grade-input" id="grade-${sub.code.replace(/\s+/g,'-')}"
-                        data-code="${sub.code}"
-                        placeholder="e.g. 1.5"
-                        maxlength="4"
-                        oninput="onGradeInput(this)">
-                </td>
-                <td style="text-align:center;">
-                    <span class="grade-badge pending" id="badge-${sub.code.replace(/\s+/g,'-')}">—</span>
-                </td>`;
-            tbody.appendChild(tr);
-        });
+    subjects.forEach(sub => {
+        const tr = document.createElement("tr");
+        tr.dataset.code = sub.code;
+        tr.innerHTML = `
+            <td><strong>${sub.code}</strong></td>
+            <td>${sub.desc}</td>
+            <td style="text-align:center;">${sub.units}</td>
+            <td style="text-align:center;">
+                <input type="text" class="grade-input" id="grade-${sub.code.replace(/\s+/g,'-')}"
+                    data-code="${sub.code}"
+                    placeholder="e.g. 1.5 or blank"
+                    maxlength="4"
+                    oninput="onGradeInput(this)">
+            </td>
+            <td style="text-align:center;">
+                <span class="grade-badge pending" id="badge-${sub.code.replace(/\s+/g,'-')}">—</span>
+            </td>`;
+        tbody.appendChild(tr);
     });
+}
+
+// ─────────────────────────────────────────────────────────────
+// DERIVE LAST COMPLETED SEMESTER from session data.
+// Re-enrollment is always for the NEXT semester after the last one.
+// e.g. Year 1 Sem 1 completed → re-enrolling for Year 1 Sem 2
+//      Year 1 Sem 2 completed → re-enrolling for Year 2 Sem 1
+//      Year 3 Sem 1 completed → re-enrolling for Year 3 Sem 2
+// ─────────────────────────────────────────────────────────────
+function getLastCompletedSem(yearLevel, currentSem) {
+    // currentSem = the semester they are RE-ENROLLING INTO (1 or 2)
+    if (currentSem === 2) {
+        // Re-enrolling for 2nd sem → last completed was same year, 1st sem
+        return { year: yearLevel, sem: 1 };
+    } else {
+        // Re-enrolling for 1st sem → last completed was previous year, 2nd sem
+        return { year: yearLevel - 1, sem: 2 };
+    }
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -256,16 +267,54 @@ function initFileUpload() {
 // YEAR LEVEL CHANGE HANDLER
 // Rebuilds the grade table whenever the student selects a year.
 // ─────────────────────────────────────────────────────────────
-function onYearLevelChange() {
-    const sel = document.getElementById("yearLevel");
-    const year = parseInt(sel.value);
-    if (!isNaN(year) && year > 1) {
-        buildGradesTable(year);
-        document.getElementById("gradesSection").style.display = "block";
-    } else if (year === 1) {
-        // Year 1 students have no previous grades
-        document.getElementById("gradesSection").style.display = "none";
+// PRE-FILL FROM SESSION
+// Reads student identity from sessionStorage and locks Block 1.
+// Then builds the grades table for the correct last semester.
+// ─────────────────────────────────────────────────────────────
+function prefillFromSession() {
+    // Read the student ID saved by login.js
+    const savedId = sessionStorage.getItem('loggedInStudentId');
+
+    // If no session exists, send them back to login
+    if (!savedId) {
+        window.location.href = '../../login-pages/login.html';
+        return;
     }
+
+    // Look up the student in STUDENT_DB (from studentData.js)
+    const found = findStudentById(savedId);
+    if (!found) {
+        window.location.href = '../../login-pages/login.html';
+        return;
+    }
+
+    // Build the session object from the real student record
+    const session = {
+        studentId:  found.studentId,
+        fullName:   `${found.lastName.toUpperCase()}, ${found.firstName.toUpperCase()} ${found.middleInitial}.`,
+        program:    found.programFull,
+        yearLevel:  found.yearLevel,
+        currentSem: found.currentSem,
+        section:    found.section,
+    };
+
+    // Fill and lock Block 1
+    const lock = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+    };
+
+    lock("studentId", session.studentId);
+    lock("program",   session.program);
+    lock("yearLevel", `Year ${session.yearLevel}`);
+    lock("section",   session.section);
+
+    // Build grades table for last completed semester
+    const lastSem = getLastCompletedSem(session.yearLevel, session.currentSem);
+    buildGradesTable(lastSem);
+
+    // Store session on window for use during submit
+    window._studentSession = session;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -287,21 +336,19 @@ function validateField(id, condition, errorMsg) {
 function validateForm() {
     let valid = true;
 
-    // Required text fields
+    // Only validate fields the student actually fills in (Block 2 — personal/family/guardian).
+    // Block 1 fields (studentId, program, yearLevel, section) are pre-filled and locked.
     const required = [
-        { id: "lastName",       msg: "Last name is required." },
-        { id: "firstName",      msg: "First name is required." },
-        { id: "studentId",      msg: "Student ID is required." },
-        { id: "birthdate",      msg: "Birthdate is required." },
-        { id: "yearLevel",      msg: "Please select your year level." },
-        { id: "section",        msg: "Section is required." },
-        { id: "contactNumber",  msg: "Contact number is required." },
-        { id: "guardianName",   msg: "Guardian name is required." },
+        { id: "lastName",         msg: "Last name is required." },
+        { id: "firstName",        msg: "First name is required." },
+        { id: "birthdate",        msg: "Birthdate is required." },
+        { id: "contactNumber",    msg: "Contact number is required." },
+        { id: "address",          msg: "Address is required." },
+        { id: "motherName",       msg: "Mother's name is required." },
+        { id: "fatherName",       msg: "Father's name is required." },
+        { id: "guardianName",     msg: "Guardian name is required." },
         { id: "guardianRelation", msg: "Relationship is required." },
-        { id: "guardianContact", msg: "Guardian contact is required." },
-        { id: "address",        msg: "Address is required." },
-        { id: "motherName",     msg: "Mother's name is required." },
-        { id: "fatherName",     msg: "Father's name is required." },
+        { id: "guardianContact",  msg: "Guardian contact is required." },
     ];
 
     required.forEach(({ id, msg }) => {
@@ -310,17 +357,8 @@ function validateForm() {
         if (!validateField(id, el.value.trim() !== "", msg)) valid = false;
     });
 
-    // Grade screenshot required
-    const screenshotInput = document.getElementById("gradeScreenshot");
-    const yearLevel = parseInt(document.getElementById("yearLevel").value);
-    if (yearLevel > 1 && (!screenshotInput.files || screenshotInput.files.length === 0)) {
-        const err = document.getElementById("screenshot-error");
-        if (err) { err.classList.add("visible"); }
-        valid = false;
-    } else {
-        const err = document.getElementById("screenshot-error");
-        if (err) err.classList.remove("visible");
-    }
+    // Screenshot is optional — no validation required.
+    // (Per business rule: grades may not be released during re-enrollment period.)
 
     return valid;
 }
@@ -334,7 +372,6 @@ function handleSubmit(e) {
     e.preventDefault();
 
     if (!validateForm()) {
-        // Scroll to first error
         const firstError = document.querySelector(".error, .field-error.visible");
         firstError?.scrollIntoView({ behavior: "smooth", block: "center" });
         return;
@@ -344,24 +381,44 @@ function handleSubmit(e) {
     btn.disabled = true;
     btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Submitting…`;
 
-    // Collect grade record from table inputs
+    // Collect grade record from table inputs (blank entries are allowed)
     const gradeRecord = collectGradeRecord();
 
-    // Compute blocked subjects from prerequisite engine
+    // Compute blocked subjects from prerequisite engine (stored for adviser reference;
+    // blocking is NOT enforced on the student side until the blueprint is shared).
     const blockedSubjects = [...computeBlockedSubjects(gradeRecord)];
 
-    // Build enrollment data object
+    const session = window._studentSession || {};
+
     const enrollmentData = {
-        studentId:        document.getElementById("studentId").value.trim(),
-        lastName:         document.getElementById("lastName").value.trim(),
-        firstName:        document.getElementById("firstName").value.trim(),
-        middleInitial:    document.getElementById("middleInitial").value.trim(),
-        yearLevel:        parseInt(document.getElementById("yearLevel").value),
-        section:          document.getElementById("section").value.trim(),
-        program:          "BSCS",
+        // Block 1 — from session (locked, not from inputs)
+        studentId:       session.studentId,
+        program:         "BSCS",
+        yearLevel:       session.yearLevel,
+        currentSem:      session.currentSem,
+        section:         session.section,
+
+        // Block 2 — from student inputs
+        lastName:        document.getElementById("lastName").value.trim(),
+        firstName:       document.getElementById("firstName").value.trim(),
+        middleInitial:   document.getElementById("middleInitial").value.trim(),
+        birthdate:       document.getElementById("birthdate").value,
+        contactNumber:   document.getElementById("contactNumber").value.trim(),
+        address:         document.getElementById("address").value.trim(),
+        motherName:      document.getElementById("motherName").value.trim(),
+        motherOccupation:document.getElementById("motherOccupation").value.trim(),
+        fatherName:      document.getElementById("fatherName").value.trim(),
+        fatherOccupation:document.getElementById("fatherOccupation").value.trim(),
+        guardianName:    document.getElementById("guardianName").value.trim(),
+        guardianRelation:document.getElementById("guardianRelation").value,
+        guardianContact: document.getElementById("guardianContact").value.trim(),
+
+        // Block 3 — grades (may be partial or empty if not yet released)
         gradeRecord,
-        blockedSubjects,  // passed to subjects page to lock out ineligible subjects
-        formSubmittedAt:  new Date().toISOString(),
+        blockedSubjects,  // for adviser reference only — not enforced here
+        screenshotUploaded: document.getElementById("gradeScreenshot").files.length > 0,
+
+        formSubmittedAt: new Date().toISOString(),
     };
 
     // Store in sessionStorage — subjects page reads this
@@ -378,16 +435,19 @@ function handleSubmit(e) {
 // INIT
 // ─────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
+    // Pre-fill Block 1 from session and build grades table for last completed semester.
+    // Replace with real API fetch when backend is ready.
+    prefillFromSession();
+
+    // File upload preview
     initFileUpload();
 
-    document.getElementById("yearLevel")
-        .addEventListener("change", onYearLevelChange);
-
+    // Form submission
     document.getElementById("enrollmentForm")
         .addEventListener("submit", handleSubmit);
 
-    // Live validation on blur
-    document.querySelectorAll(".form-input, .form-select").forEach(el => {
+    // Live validation on blur for editable fields only
+    document.querySelectorAll(".form-input:not([readonly]), .form-select").forEach(el => {
         el.addEventListener("blur", () => {
             if (el.classList.contains("error")) {
                 validateField(el.id, el.value.trim() !== "", "This field is required.");

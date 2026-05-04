@@ -298,13 +298,26 @@ function modalStep(dir) {
                 showToast('Employee ID not found in HRIS records.', 'error');
                 return;
             }
-            verifiedEmployee = found.name ? found : { name:found.name||'Unknown', initials:(found.name||'??').split(' ').map(w=>w[0]).slice(0,2).join(''), email:found.email||'—', position:found.position||'—' };
+            verifiedEmployee = found.name ? found : { name:found.name||'Unknown', initials:(found.name||'??').split(' ').map(w=>w[0]).slice(0,2).join(''), email:found.email||'—', position:found.position||'—', dept:found.dept||'—', contact:found.contact||'—' };
             document.getElementById('empIdInput').className = 'form-input verified';
             document.getElementById('empInitials').textContent  = verifiedEmployee.initials;
             document.getElementById('empName').textContent      = verifiedEmployee.name;
             document.getElementById('empEmail').textContent     = verifiedEmployee.email;
             document.getElementById('empPosition').textContent  = verifiedEmployee.position;
+            document.getElementById('empDept').textContent      = verifiedEmployee.dept    || '—';
+            document.getElementById('empContact').textContent   = verifiedEmployee.contact || '—';
             document.getElementById('empLookupResult').style.display = 'flex';
+            // Pre-fill and filter the dept select on Step 2
+            if (verifiedEmployee.dept) {
+                const deptSel = document.getElementById('deptSelect');
+                for (let i = 0; i < deptSel.options.length; i++) {
+                    if (deptSel.options[i].value === verifiedEmployee.dept) {
+                        deptSel.value = verifiedEmployee.dept;
+                        break;
+                    }
+                }
+                filterRolesByDept(verifiedEmployee.dept);
+            }
         }
         if (modalCurrentStep === 2) {
             if (!document.getElementById('deptSelect').value || !document.getElementById('roleSelect').value) {
@@ -503,12 +516,164 @@ function nowStamp() {
 }
  
 // ─────────────────────────────────────────────────
+// ROLE FILTERING BY DEPARTMENT TYPE
+// ─────────────────────────────────────────────────
+const COLLEGE_DEPTS = [
+    'College of Computing Studies',
+    'College of Engineering',
+    'College of Nursing',
+    'College of Business Administration',
+    'College of Arts and Sciences',
+    'College of Education',
+];
+
+// Roles available per department type
+const COLLEGE_ROLES      = ['Adviser', 'Secretary', 'College Dean'];
+const NON_COLLEGE_ROLES  = ['Assessment Officer', 'Registrar Officer'];
+
+function filterRolesByDept(deptValue) {
+    const roleSelect  = document.getElementById('roleSelect');
+    const isCollege   = COLLEGE_DEPTS.includes(deptValue);
+    const allowed     = isCollege ? COLLEGE_ROLES : NON_COLLEGE_ROLES;
+
+    // Reset and re-render options
+    roleSelect.innerHTML = '<option value="">— Select Role —</option>';
+    allowed.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r;
+        roleSelect.appendChild(opt);
+    });
+}
+
+// ─────────────────────────────────────────────────
+// ACCOUNTS TAB
+// ─────────────────────────────────────────────────
+
+// Mock passwords — prototype only. Replace with hashed values from backend.
+const ACCOUNT_PASSWORDS = {
+    'EMP-20241001': 'Ana@WMSU2024',
+    'EMP-20241002': 'Maria@WMSU2024',
+    'EMP-20241003': 'Jose@WMSU2024',
+    'EMP-20241004': 'Clara@WMSU2024',
+    'EMP-20241005': 'Ramon@WMSU2024',
+    'EMP-20241006': 'Luisa@WMSU2024',
+    'EMP-20241007': 'Ben@WMSU2024',
+    'EMP-20241008': 'Rosa@WMSU2024',
+    'EMP-20241009': 'Edgar@WMSU2024',
+    'EMP-20241010': 'Patricia@WMSU2024',
+    'EMP-20241011': 'Carlos@WMSU2024',
+    'EMP-20241012': 'Diana@WMSU2024',
+};
+
+let passwordVisibility = {}; // tracks which rows are revealed
+
+function renderAccountsTable(data) {
+    const tbody = document.getElementById('accountsTableBody');
+    document.getElementById('accounts-count').textContent = `${data.length} accounts`;
+
+    if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">No accounts found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = data.map(e => {
+        const pw      = ACCOUNT_PASSWORDS[e.id] || '—';
+        const visible = passwordVisibility[e.id];
+        return `
+        <tr>
+            <td class="mono-text">${e.id}</td>
+            <td>
+                <div class="name-cell">${e.name}</div>
+                <div class="sub-cell">${e.dept}</div>
+            </td>
+            <td class="mono-text" style="font-size:0.78rem;">${e.email}</td>
+            <td>${e.roles.map(r => `<span class="badge info" style="margin-right:4px;">${r}</span>`).join('')}</td>
+            <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span class="mono-text" style="font-size:0.80rem;letter-spacing:0.04em;">
+                        ${visible ? pw : '••••••••••'}
+                    </span>
+                    <button class="btn-icon" title="${visible ? 'Hide' : 'Reveal'} password"
+                        style="color:var(--text-muted);"
+                        onclick="togglePwVisibility('${e.id}')">
+                        ${visible
+                            ? `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+                            : `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+                        }
+                    </button>
+                </div>
+            </td>
+            <td><span class="badge ${e.status === 'Active' ? 'active' : 'inactive'}">${e.status}</span></td>
+            <td onclick="event.stopPropagation()" style="white-space:nowrap;">
+                <button class="btn-icon amber" title="Force Password Reset"
+                    onclick="openPasswordResetModal(${EMPLOYEES.indexOf(e)})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function togglePwVisibility(empId) {
+    passwordVisibility[empId] = !passwordVisibility[empId];
+    filterAccounts();
+}
+
+function filterAccounts() {
+    const q  = document.getElementById('accountsSearch').value.toLowerCase();
+    const st = document.getElementById('accountsStatusFilter').value;
+    const res = EMPLOYEES.filter(e =>
+        (!q  || e.name.toLowerCase().includes(q) || e.email.toLowerCase().includes(q) || e.id.toLowerCase().includes(q)) &&
+        (!st || e.status === st)
+    );
+    renderAccountsTable(res);
+}
+
+let resetTargetIdx = null;
+
+function openPasswordResetModal(idx) {
+    resetTargetIdx = idx;
+    const e = EMPLOYEES[idx];
+    document.getElementById('resetMsg').textContent =
+        `Send a forced password reset link to ${e.name} (${e.email})? They will be required to set a new password on next login.`;
+    document.getElementById('passwordResetModal').classList.add('open');
+}
+
+function confirmPasswordReset() {
+    if (resetTargetIdx === null) return;
+    const e = EMPLOYEES[resetTargetIdx];
+    showToast(`Password reset link sent to ${e.email}.`, 'success');
+    addAuditEntry({ type:'sysevent', action:'Password Reset Forced', detail:`${e.name} (${e.id}) — reset link sent by SA-001`, time:nowStamp(), admin:'SA-001' });
+    closeModal('passwordResetModal');
+    resetTargetIdx = null;
+}
+
+// ─────────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+    // Clock
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Modal backdrop: click outside to close
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay) overlay.classList.remove('open');
+        });
+    });
+
+    // Hook dept select to role filter
+    document.getElementById('deptSelect').addEventListener('change', function() {
+        filterRolesByDept(this.value);
+    });
+
+    // Initial renders
     renderRolesTable(EMPLOYEES);
     renderRooms(ROOMS);
     renderFaculty(FACULTY);
     renderAudit([...AUDIT_LOGS].reverse());
     renderRecentActivity();
+    renderAccountsTable(EMPLOYEES);
 });
