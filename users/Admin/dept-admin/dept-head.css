@@ -245,7 +245,8 @@
 .btn-setup-sched-sm { padding: 5px 11px; font-size: 11.5px; }
 
 /* ── SCHEDULE SETUP MODAL ────────────────────────── */
-.modal-box-wide { max-width: 600px; }
+.modal-box-wide { max-width: 600px; width: min(100%, 600px); max-height: 90vh; }
+.modal-body-content { max-height: calc(90vh - 110px); overflow-y: auto; }
 .sched-setup-hd { background: #1e3a8a; }
 .sched-setup-hd h3 {
     color: #fff; font-size: 15px; font-weight: 700;
