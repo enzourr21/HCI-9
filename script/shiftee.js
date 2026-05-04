@@ -1,226 +1,185 @@
-/**
- * shiftee.js
- * Handles all logic for the Shiftee Portal.
- *
- * Responsibilities:
- *  - Populate navbar chip, profile header, and info grid
- *  - Render the program transfer section
- *  - Apply the correct status banner state
- *  - Drive the progress track highlight (step states)
- */
+/* ═══════════════════════════════════════════════════
+   WMSU-Ease — Shiftee Portal  |  shiftee.js
+═══════════════════════════════════════════════════ */
 
-// ─── SHIFTEE DATA ─────────────────────────────────────────────
-// TODO: Replace with a real API call / session data
-const SHIFTEE = {
-    firstName:      'Maria',
-    lastName:       'Santos',
-    middleName:     'Reyes',
-    studentId:      '2023-005678',
-    yearLevel:      '2nd Year',
-    dob:            'March 22, 2004',
-    sex:            'Female',
-    contact:        '09187654321',
-    email:          '2023005678@wmsu.edu.ph',
+'use strict';
 
-    // Current program
-    fromCode:       'BSIT',
-    fromName:       'Bachelor of Science in Information Technology',
-    fromCollege:    'College of Computing Studies',
+// ── Subject Data ──────────────────────────────────
+let subjects = [
+    { code: 'CC 101',  name: 'Computer Programming 1',     type: 'MAJOR',  units: 3, instructor: 'Prof. Reyes',    status: 'approved' },
+    { code: 'CC 102',  name: 'Computer Programming 2',     type: 'MAJOR',  units: 3, instructor: 'Prof. Reyes',    status: 'approved' },
+    { code: 'CS 201',  name: 'Data Structures',            type: 'MAJOR',  units: 3, instructor: 'Prof. Santos',   status: 'approved' },
+    { code: 'CS 211',  name: 'Discrete Mathematics',       type: 'MAJOR',  units: 3, instructor: 'Prof. Mendoza',  status: 'for-eval' },
+    { code: 'Math 101',name: 'Mathematics in the Modern World', type: 'MINOR', units: 3, instructor: 'Prof. Cruz',  status: 'approved' },
+    { code: 'Eng 1',   name: 'Purposive Communication',    type: 'MINOR',  units: 3, instructor: 'Prof. Dela Rosa',status: 'approved' },
+    { code: 'PE 1',    name: 'Physical Education 1',       type: 'GE',     units: 2, instructor: 'Coach Bautista', status: 'pending'  },
+    { code: 'NSTP 1',  name: 'NSTP / CWTS',               type: 'GE',     units: 3, instructor: 'Instr. Torres',  status: 'pending'  },
+];
 
-    // Target program
-    toCode:         'BSCS',
-    toName:         'Bachelor of Science in Computer Science',
-    toCollege:      'College of Computing Studies',
-
-    // Application details
-    // Statuses: 'submitted' | 'under_review' | 'dept_approved' | 'dean_approved' | 'confirmed' | 'rejected'
-    status:         'under_review',
-    dateFiled:      'April 28, 2025',
-    lastUpdated:    'April 29, 2025',
-    remarks:        'Documents are under review by the Department Head. Please ensure all required documents are complete and properly signed before proceeding to the next stage.',
-};
-
-// ─── STATUS CONFIG ────────────────────────────────────────────
-const STATUS_CONFIG = {
-    submitted: {
-        label:      'Application Submitted',
-        desc:       'Your shifting application has been received. Pending document review.',
-        bannerClass: '',
-        badgeClass:  'yellow',
-        badgeLabel:  'Submitted',
-        step:       1,
-    },
-    under_review: {
-        label:      'Application Under Review',
-        desc:       'Filed on {date}. Currently at Document Review stage.',
-        bannerClass: '',
-        badgeClass:  'yellow',
-        badgeLabel:  'Under Review',
-        step:       2,
-    },
-    dept_approved: {
-        label:      'Approved by Department Head',
-        desc:       'Forwarded to the Dean\'s Office for endorsement.',
-        bannerClass: '',
-        badgeClass:  'yellow',
-        badgeLabel:  'Dept. Approved',
-        step:       3,
-    },
-    dean_approved: {
-        label:      'Approved by Dean',
-        desc:       'Endorsement received. Awaiting Registrar final confirmation.',
-        bannerClass: 'status-approved',
-        badgeClass:  'yellow',
-        badgeLabel:  'Dean Approved',
-        step:       4,
-    },
-    confirmed: {
-        label:      'Shift Confirmed',
-        desc:       'Your program shift has been officially confirmed by the Registrar.',
-        bannerClass: 'status-approved',
-        badgeClass:  'green',
-        badgeLabel:  'Confirmed',
-        step:       5,
-    },
-    rejected: {
-        label:      'Application Rejected',
-        desc:       'Your shifting application was not approved. Please see the remarks below.',
-        bannerClass: 'status-rejected',
-        badgeClass:  'red',
-        badgeLabel:  'Rejected',
-        step:       0,
-    },
-};
-
-// ─── HELPERS ──────────────────────────────────────────────────
-function getInitials(first, last) {
-    return ((first[0] || '') + (last[0] || '')).toUpperCase();
+// ── Tab navigation ────────────────────────────────
+function showTab(tabId, linkEl) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.s-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('tab-' + tabId)?.classList.add('active');
+    if (linkEl) linkEl.classList.add('active');
 }
 
-function getEl(id) {
-    return document.getElementById(id);
+// ── Render subject table ──────────────────────────
+function renderSubjectTable() {
+    const tbody = document.getElementById('subjTableBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = subjects.map((s, i) => {
+        const typeChip = typeChipHtml(s.type);
+        const statusChip = statusChipHtml(s.status);
+        return `<tr>
+            <td><strong style="font-size:13.5px;">${s.code}</strong></td>
+            <td>${s.name}</td>
+            <td>${typeChip}</td>
+            <td>${s.units}</td>
+            <td style="color:var(--muted);font-size:13px;">${s.instructor}</td>
+            <td>${statusChip}</td>
+        </tr>`;
+    }).join('');
+
+    updateStats();
 }
 
-function setText(id, value) {
-    const el = getEl(id);
-    if (el) el.textContent = value;
+function typeChipHtml(type) {
+    const map = {
+        'MAJOR': '<span class="chip-major">MAJOR</span>',
+        'MINOR': '<span class="chip-minor">MINOR</span>',
+        'GE':    '<span class="chip-ge">GE</span>',
+    };
+    return map[type] || `<span class="chip-ge">${type}</span>`;
 }
 
-// ─── POPULATE NAVBAR CHIP ─────────────────────────────────────
-function populateChip() {
-    const initials = getInitials(SHIFTEE.firstName, SHIFTEE.lastName);
-    setText('chipAvatar', initials);
-    setText('chipName', SHIFTEE.firstName + ' ' + SHIFTEE.lastName);
-    // chipMeta is already "Shiftee" in the HTML; no change needed
+function statusChipHtml(status) {
+    const map = {
+        'approved': '<span class="chip-approved">APPROVED</span>',
+        'pending':  '<span class="chip-pending">PENDING</span>',
+        'for-eval': '<span class="chip-for-eval">FOR EVAL</span>',
+    };
+    return map[status] || `<span class="chip-pending">${status.toUpperCase()}</span>`;
 }
 
-// ─── POPULATE PROFILE HEADER ──────────────────────────────────
-function populateProfileHeader() {
-    const initials = getInitials(SHIFTEE.firstName, SHIFTEE.lastName);
-    const cfg      = STATUS_CONFIG[SHIFTEE.status] || STATUS_CONFIG.submitted;
+// ── Update stats ──────────────────────────────────
+function updateStats() {
+    const total  = subjects.reduce((s, x) => s + x.units, 0);
+    const majors = subjects.filter(x => x.type === 'MAJOR').length;
+    const minors = subjects.filter(x => x.type === 'MINOR').length;
 
-    setText('profileAvatar', initials);
-    setText('profileName', SHIFTEE.lastName + ', ' + SHIFTEE.firstName + ' ' + SHIFTEE.middleName);
-    setText('profileSub', SHIFTEE.studentId + ' \u2022 ' + SHIFTEE.yearLevel + ' \u2022 ' + SHIFTEE.fromCollege);
+    const totalEl  = document.querySelector('.stat-num.black');
+    const greenEl  = document.querySelector('.stat-num.green');
+    const amberEl  = document.querySelector('.stat-num.amber');
 
-    // Update header badge dynamically
-    const profileBadge = document.querySelector('.profile-header .badge');
-    if (profileBadge) {
-        profileBadge.className = 'badge ' + cfg.badgeClass;
-        profileBadge.textContent = 'Shifting Application — ' + cfg.badgeLabel;
+    if (totalEl) totalEl.textContent = total;
+    if (greenEl) greenEl.textContent = majors;
+    if (amberEl) amberEl.textContent = minors;
+}
+
+// ── Grade eval accordion ──────────────────────────
+function toggleGradeEval(btn) {
+    const body = document.getElementById('gradeEvalBody');
+    const isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : 'flex';
+    btn.classList.toggle('open', !isOpen);
+}
+
+// ── Edit Subjects Modal ───────────────────────────
+function openEditSubjectsModal() {
+    renderModalSubjectList();
+    document.getElementById('editSubjModal').classList.add('open');
+}
+
+function closeEditSubjectsModal() {
+    document.getElementById('editSubjModal').classList.remove('open');
+}
+
+function renderModalSubjectList() {
+    const body = document.getElementById('editSubjBody');
+    if (!body) return;
+
+    const listHtml = subjects.map((s, i) => `
+        <div class="modal-subj-item" id="modal-subj-${i}">
+            <span class="modal-subj-code">${s.code}</span>
+            <span class="modal-subj-name">${s.name} · ${s.units} units</span>
+            <span>${typeChipHtml(s.type)}</span>
+            <button class="modal-subj-remove" onclick="removeSubject(${i})" title="Remove">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>`).join('');
+
+    body.innerHTML = `
+        <div class="modal-subj-list">${listHtml || '<p style="color:var(--muted);font-size:13px;">No subjects added yet.</p>'}</div>
+
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.6px;">Add Subject</div>
+        <div class="modal-add-row">
+            <input type="text" id="newSubjCode"  placeholder="Subject code (e.g. CS 301)">
+            <input type="text" id="newSubjName"  placeholder="Description">
+        </div>
+        <div class="modal-add-row">
+            <select id="newSubjType">
+                <option value="MAJOR">Major</option>
+                <option value="MINOR">Minor</option>
+                <option value="GE">GE / Elective</option>
+            </select>
+            <input type="number" id="newSubjUnits" placeholder="Units" min="1" max="6" value="3">
+            <input type="text"   id="newSubjInstr" placeholder="Instructor">
+        </div>
+        <div style="margin-bottom:16px;">
+            <button class="btn-add-subj" onclick="addSubject()">+ Add Subject</button>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeEditSubjectsModal()">Cancel</button>
+            <button class="btn-save"   onclick="saveSubjects()">Save Changes</button>
+        </div>`;
+}
+
+function removeSubject(idx) {
+    subjects.splice(idx, 1);
+    renderModalSubjectList();
+}
+
+function addSubject() {
+    const code  = document.getElementById('newSubjCode')?.value.trim();
+    const name  = document.getElementById('newSubjName')?.value.trim();
+    const type  = document.getElementById('newSubjType')?.value;
+    const units = parseInt(document.getElementById('newSubjUnits')?.value) || 3;
+    const instr = document.getElementById('newSubjInstr')?.value.trim() || 'TBA';
+
+    if (!code || !name) {
+        showToast('Please fill in subject code and description.', 'error');
+        return;
     }
+
+    subjects.push({ code, name, type, units, instructor: instr, status: 'pending' });
+    renderModalSubjectList();
+    showToast(`${code} added.`, 'success');
 }
 
-// ─── POPULATE PROGRAM TRANSFER ────────────────────────────────
-function populateProgramTransfer() {
-    setText('fromCode',    SHIFTEE.fromCode);
-    setText('fromName',    SHIFTEE.fromName);
-    setText('fromCollege', SHIFTEE.fromCollege);
-    setText('toCode',      SHIFTEE.toCode);
-    setText('toName',      SHIFTEE.toName);
-    setText('toCollege',   SHIFTEE.toCollege);
+function saveSubjects() {
+    closeEditSubjectsModal();
+    renderSubjectTable();
+    showToast('Subject list saved.', 'success');
 }
 
-// ─── POPULATE INFO GRID ───────────────────────────────────────
-function populateInfoGrid() {
-    setText('viewStudentId', SHIFTEE.studentId);
-    setText('viewYear',      SHIFTEE.yearLevel);
-    setText('viewDateFiled', SHIFTEE.dateFiled);
-    setText('viewContact',   SHIFTEE.contact);
-    setText('viewEmail',     SHIFTEE.email);
-    setText('viewStatus',    (STATUS_CONFIG[SHIFTEE.status] || {}).badgeLabel || SHIFTEE.status);
+// ── Toast ─────────────────────────────────────────
+function showToast(msg, type = '') {
+    const c = document.getElementById('toastContainer');
+    const d = document.createElement('div');
+    d.className = 'toast' + (type ? ' ' + type : '');
+    d.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>${msg}`;
+    c.appendChild(d);
+    setTimeout(() => d.remove(), 3500);
 }
 
-// ─── APPLY STATUS BANNER ─────────────────────────────────────
-function applyStatusBanner() {
-    const cfg    = STATUS_CONFIG[SHIFTEE.status] || STATUS_CONFIG.submitted;
-    const banner = getEl('shiftStatusBanner');
-    const title  = getEl('shiftStatusTitle');
-    const desc   = getEl('shiftStatusDesc');
-
-    if (!banner) return;
-
-    // Reset modifier classes then apply the right one
-    banner.className = 'shift-status-banner';
-    if (cfg.bannerClass) banner.classList.add(cfg.bannerClass);
-
-    if (title) title.textContent = cfg.label;
-
-    if (desc) {
-        const text = cfg.desc.replace('{date}', '<strong>' + SHIFTEE.dateFiled + '</strong>');
-        desc.innerHTML = text;
-    }
-}
-
-// ─── POPULATE REMARKS ─────────────────────────────────────────
-function populateRemarks() {
-    setText('remarksText', SHIFTEE.remarks);
-    setText('remarksDate', 'Last updated: ' + SHIFTEE.lastUpdated);
-}
-
-// ─── DRIVE PROGRESS TRACK ────────────────────────────────────
-/**
- * The progress track has 5 .progress-step elements in order.
- * Steps before activeStep  → keep crimson (done)
- * Step at activeStep       → keep crimson (active / current)
- * Steps after activeStep   → add .gray class to circle + line
- */
-function applyProgressTrack() {
-    const cfg        = STATUS_CONFIG[SHIFTEE.status] || STATUS_CONFIG.submitted;
-    const activeStep = cfg.step; // 1-indexed; 0 = rejected (all gray)
-
-    const steps   = document.querySelectorAll('.progress-track .progress-step');
-    const circles = document.querySelectorAll('.progress-track .progress-circle');
-    const lines   = document.querySelectorAll('.progress-track .step-line');
-
-    circles.forEach((circle, i) => {
-        const stepNum = i + 1; // 1-indexed
-        if (activeStep === 0 || stepNum > activeStep) {
-            circle.classList.add('gray');
-            steps[i] && steps[i].classList.add('gray');
-        } else {
-            circle.classList.remove('gray');
-            steps[i] && steps[i].classList.remove('gray');
-        }
-    });
-
-    lines.forEach((line, i) => {
-        const nextStep = i + 2; // line[0] connects step1→step2
-        if (activeStep === 0 || nextStep > activeStep) {
-            line.classList.add('gray');
-        } else {
-            line.classList.remove('gray');
-        }
-    });
-}
-
-// ─── INIT ─────────────────────────────────────────────────────
+// ── Modal overlay close ───────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    populateChip();
-    populateProfileHeader();
-    populateProgramTransfer();
-    populateInfoGrid();
-    applyStatusBanner();
-    populateRemarks();
-    applyProgressTrack();
+    document.getElementById('editSubjModal')?.addEventListener('click', e => {
+        if (e.target === document.getElementById('editSubjModal')) closeEditSubjectsModal();
+    });
+
+    // Initial render
+    renderSubjectTable();
 });
