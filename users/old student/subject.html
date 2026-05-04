@@ -7,6 +7,302 @@
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="student.css">
     <link rel="stylesheet" href="subject.css">
+    <style>
+        /* ── MODAL OVERLAY ─────────────────────────────────── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.active { display: flex; }
+
+        /* ── MODAL BOX ──────────────────────────────────────── */
+        .modal {
+            background: #fff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 760px;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+            overflow: hidden;
+        }
+
+        /* ── MODAL HEADER ───────────────────────────────────── */
+        .modal-header {
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .modal-header-icon {
+            width: 40px;
+            height: 40px;
+            background: #fff0f0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: crimson;
+        }
+        .modal-header-text { flex: 1; min-width: 0; }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111;
+            margin: 0 0 2px;
+        }
+        .modal-subtitle {
+            font-size: 12px;
+            color: #888;
+            margin: 0;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #aaa;
+            padding: 4px;
+            border-radius: 6px;
+            line-height: 1;
+            transition: color 0.15s, background 0.15s;
+            flex-shrink: 0;
+        }
+        .modal-close:hover { color: #333; background: #f5f5f5; }
+
+        /* ── MODAL META BAR ─────────────────────────────────── */
+        .modal-meta {
+            padding: 10px 24px;
+            background: #fafafa;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            flex-shrink: 0;
+        }
+        .modal-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #555;
+        }
+        .modal-meta-item strong { color: #111; font-weight: 600; }
+
+        /* ── UNITS METER ─────────────────────────────────────── */
+        .units-meter {
+            padding: 12px 24px;
+            background: #fff;
+            border-bottom: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+        .units-meter-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .units-meter-label { font-size: 12px; font-weight: 600; color: #555; }
+        .units-meter-count { font-size: 13px; font-weight: 700; }
+        .units-meter-count .cur { color: crimson; }
+        .units-meter-count .max { color: #aaa; }
+        .units-bar-track {
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .units-bar-fill {
+            height: 100%;
+            background: crimson;
+            border-radius: 99px;
+            transition: width 0.3s ease;
+        }
+        .units-bar-fill.near { background: #e67e22; }
+        .units-bar-fill.full { background: #c0392b; }
+
+        /* ── SEARCH ──────────────────────────────────────────── */
+        .modal-search-wrap {
+            padding: 12px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+        .modal-search {
+            width: 100%;
+            padding: 9px 14px 9px 36px;
+            border: 1.5px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+            background: #fafafa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 12px center no-repeat;
+        }
+        .modal-search:focus { border-color: crimson; background-color: #fff; }
+
+        /* ── SCROLLABLE BODY ─────────────────────────────────── */
+        .modal-body {
+            overflow-y: auto;
+            flex: 1;
+            padding: 12px 24px 16px;
+        }
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-track { background: transparent; }
+        .modal-body::-webkit-scrollbar-thumb { background: #ddd; border-radius: 99px; }
+
+        /* ── SUBJECT ROWS ────────────────────────────────────── */
+        .available-subject {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border: 1.5px solid #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s, transform 0.15s;
+            position: relative;
+        }
+        .available-subject:hover { border-color: rgba(220,20,60,0.3); background: #fff8f8; transform: translateY(-1px); }
+        .available-subject.selected { border-color: crimson; background: #fff0f0; }
+        .available-subject.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+        .subj-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .available-subject.selected .subj-check {
+            border-color: crimson;
+            background: crimson;
+        }
+        .subj-check svg { display: none; }
+        .available-subject.selected .subj-check svg { display: block; }
+
+        .subj-info { flex: 1; min-width: 0; }
+        .subj-info-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .subj-code { font-size: 13px; font-weight: 700; color: #111; white-space: nowrap; }
+        .subj-title { font-size: 12px; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+        .subj-meta { font-size: 11px; color: #aaa; margin-top: 2px; }
+
+        .subj-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .subj-units {
+            font-size: 12px;
+            font-weight: 700;
+            color: crimson;
+            background: #fff0f0;
+            padding: 3px 9px;
+            border-radius: 20px;
+        }
+        .subj-type-pill {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: capitalize;
+        }
+        .subj-type-pill.lecture    { background:#e8f5e9; color:#2e7d32; }
+        .subj-type-pill.laboratory { background:#fff8e1; color:#f57f17; }
+        .subj-type-pill.lecture-laboratory { background:#e3f2fd; color:#1565c0; }
+        .subj-type-pill.thesis     { background:#f3e5f5; color:#6a1b9a; }
+        .subj-type-pill.ojt        { background:#fce4ec; color:#880e4f; }
+
+        /* ── EMPTY / NO-RESULTS ──────────────────────────────── */
+        .modal-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #bbb;
+            font-size: 13px;
+        }
+        .modal-empty svg { margin-bottom: 10px; opacity: 0.4; }
+
+        /* ── MODAL FOOTER ────────────────────────────────────── */
+        .modal-footer {
+            padding: 14px 24px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .modal-footer-info { font-size: 12px; color: #888; }
+        .modal-footer-info strong { color: crimson; }
+        .modal-footer-actions { display: flex; gap: 10px; }
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #555;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn-cancel:hover { background: #eee; }
+        .btn-confirm {
+            background: crimson;
+            color: #fff;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+        }
+        .btn-confirm:hover:not(:disabled) { background: darkred; transform: translateY(-1px); }
+        .btn-confirm:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        /* ── TOAST ───────────────────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            max-width: 320px;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { border-left: 4px solid #27ae60; }
+        .toast.error   { border-left: 4px solid crimson; }
+
+        /* ── CATEGORY HEADER ─────────────────────────────────── */
+        .modal-category-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #bbb;
+            margin: 14px 0 6px;
+        }
+        .modal-category-label:first-child { margin-top: 0; }
+    </style>
 </head>
 <body>
 
@@ -26,7 +322,6 @@
         <ul class="nav-links">
             <li>
                 <div class="nav-student-info">
-                    <!-- Student chip -->
                     <div class="nav-student-chip">
                         <div class="nav-chip-avatar" id="chipAvatar">JD</div>
                         <div class="nav-chip-text">
@@ -34,10 +329,7 @@
                             <span class="nav-chip-meta" id="chipMeta">1st Year &bull; CCS</span>
                         </div>
                     </div>
-
                     <div class="nav-divider"></div>
-
-                    <!-- Log out -->
                     <a id="logoutLink" href="../login.html" style="display:flex; align-items:center; gap:6px;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -51,14 +343,9 @@
         </ul>
     </nav>
 
-
     <div class="layout">
-
-        <!-- HAMBURGER -->
         <label for="sidebar-toggle" class="hamburger" aria-label="Toggle menu">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </label>
 
         <!-- SIDEBAR -->
@@ -141,26 +428,26 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <p class="stat-label">Total Units</p>
-                    <p class="stat-value black">30</p>
+                    <p class="stat-value black" id="statTotalUnits">0</p>
                 </div>
                 <div class="stat-card">
                     <p class="stat-label">Major Subjects</p>
-                    <p class="stat-value green">8</p>
+                    <p class="stat-value green" id="statMajorCount">0</p>
                 </div>
                 <div class="stat-card">
                     <p class="stat-label">Minor Subjects</p>
-                    <p class="stat-value orange">4</p>
+                    <p class="stat-value orange" id="statMinorCount">0</p>
                 </div>
             </div>
 
             <!-- SUBJECTS TABLE -->
             <div class="card">
                 <div class="section-header">
-                    <h3 class="card-title" style="margin-bottom:0;">
+                    <h3 class="card-title" style="margin-bottom:0;" id="tableTitle">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:8px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        Enrolled Subjects — 2nd Semester 2024-2025
+                        Enrolled Subjects
                     </h3>
-                    <button class="btn-add">+ Edit Subject</button>
+                    <button class="btn-add" id="btnAddSubject">+ Add Subject</button>
                 </div>
                 <br>
                 <div class="table-wrapper">
@@ -171,24 +458,11 @@
                                 <th>Description</th>
                                 <th>Type</th>
                                 <th>Units</th>
-                                <th>Instructor</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr><td>CC 102</td><td>Computer Programming <span class="type-tag lec">Lec</span></td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Reyes</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>CC 102L</td><td>Computer Programming <span class="type-tag lab">Lab</span></td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Reyes</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>OOP 112</td><td>Object Oriented Programming <span class="type-tag lec">Lec</span></td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Santos</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>OOP 112L</td><td>Object Oriented Programming <span class="type-tag lab">Lab</span></td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Garcia</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>WD 114</td><td>Web Development 1 <span class="type-tag lec">Lec</span></td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Cruz</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>WD 114L</td><td>Web Development 1 <span class="type-tag lab">Lab</span></td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Cruz</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>DS 118</td><td>Discrete Structures 2</td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Lim</td><td><span class="badge yellow">Pending</span></td></tr>
-                            <tr><td>HCI 116</td><td>Human Computer Interaction</td><td><span class="subject-type major">Major</span></td><td>3</td><td>Prof. Dela Rosa</td><td><span class="badge yellow">Pending</span></td></tr>
-                            <tr><td>PATHFIT 2</td><td>Exercise-Based Fitness Training</td><td><span class="subject-type minor">Minor</span></td><td>2</td><td>Prof. Mendoza</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>STS 100</td><td>Science, Technology &amp; Society</td><td><span class="subject-type minor">Minor</span></td><td>3</td><td>Prof. Aquino</td><td><span class="badge green">Approved</span></td></tr>
-                            <tr><td>EPIC 2</td><td>EPIC-START 2-A</td><td><span class="subject-type minor">Minor</span></td><td>3</td><td>Prof. Torres</td><td><span class="badge yellow">Pending</span></td></tr>
-                            <tr><td>CWTS 2</td><td>Civil Welfare Training Service 2</td><td><span class="subject-type minor">Minor</span></td><td>3</td><td>Prof. Ramos</td><td><span class="badge yellow">Pending</span></td></tr>
-                            <tr class="total-row"><td colspan="3"><strong>Total</strong></td><td><strong>30</strong></td><td colspan="2"></td></tr>
+                        <tbody id="subjectTableBody">
+                            <!-- Populated by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -197,5 +471,391 @@
         </main>
     </div>
 
+    <!-- ══════════════════════════════════════════════════════
+         ADD SUBJECT MODAL
+    ══════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="addSubjectModal">
+        <div class="modal">
+
+            <!-- Header -->
+            <div class="modal-header">
+                <div class="modal-header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </div>
+                <div class="modal-header-text">
+                    <p class="modal-title">Add Subject</p>
+                    <p class="modal-subtitle" id="modalSubtitle">Loading...</p>
+                </div>
+                <button class="modal-close" id="modalCloseBtn" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- Meta bar: student context -->
+            <div class="modal-meta" id="modalMeta"></div>
+
+            <!-- Units meter -->
+            <div class="units-meter">
+                <div class="units-meter-top">
+                    <span class="units-meter-label">Unit Load</span>
+                    <span class="units-meter-count">
+                        <span class="cur" id="meterCur">0</span>
+                        <span class="max"> / 30 units</span>
+                    </span>
+                </div>
+                <div class="units-bar-track">
+                    <div class="units-bar-fill" id="meterBar" style="width:0%"></div>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="modal-search-wrap">
+                <input type="text" class="modal-search" id="modalSearch" placeholder="Search by subject code or title…">
+            </div>
+
+            <!-- Scrollable subject list -->
+            <div class="modal-body" id="modalBody">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <div class="modal-footer-info">
+                    <strong id="footerSelCount">0</strong> subject(s) selected
+                </div>
+                <div class="modal-footer-actions">
+                    <button class="btn-cancel" id="modalCancelBtn">Cancel</button>
+                    <button class="btn-confirm" id="modalConfirmBtn" disabled>Add Selected</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts: order matters -->
+    <script src="../../script/old-student.js"></script>
+    <script src="../../script/subject.js"></script>
+    <script>
+    // ============================================================
+    //  PAGE CONTROLLER
+    // ============================================================
+
+    // ── State ────────────────────────────────────────────────────
+    let pendingSelection = new Set();   // IDs selected in modal but not yet confirmed
+    let availablePool    = [];          // subjects shown in modal
+
+    // ── Bootstrap ────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        hydratePage();
+        wireModal();
+    });
+
+    // ── Hydrate page from session + registrar ─────────────────────
+    function hydratePage() {
+        const s   = getStudentSession();
+        const reg = getCurrentSemester();
+
+        // Navbar chip
+        document.getElementById('chipAvatar').textContent = s.initials;
+        document.getElementById('chipName').textContent   = s.fullName;
+        document.getElementById('chipMeta').textContent   = s.yearLabel + ' • ' + s.collegeId;
+
+        // Table heading
+        document.getElementById('tableTitle').innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:8px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Enrolled Subjects &mdash; ${reg.semLabel} ${reg.schoolYear}
+        `;
+
+        renderTable();
+    }
+
+    // ── Determine if a subject is GE ─────────────────────────────
+    function isGE(sub) {
+        return sub.category === 'GE' || sub.id.startsWith('GE-');
+    }
+
+    // ── Render the main enrolled-subjects table ───────────────────
+    function renderTable() {
+        const s      = getStudentSession();
+        const tbody  = document.getElementById('subjectTableBody');
+        const ids    = s.enrolledSubjectIds;
+        const subs   = ids.map(id => getSubjectById(id)).filter(Boolean);
+
+        let totalUnits = 0, majorCount = 0, minorCount = 0;
+        let rows = '';
+
+        subs.forEach(sub => {
+            const units  = sub.units || 0;
+            const ge     = isGE(sub);
+            const cat    = ge ? 'minor' : 'major';
+            const catLbl = ge ? 'Minor'  : 'Major';
+            totalUnits += units;
+            ge ? minorCount++ : majorCount++;
+
+            rows += `<tr>
+                <td>${sub.code}</td>
+                <td>${sub.title}</td>
+                <td><span class="subject-type ${cat}">${catLbl}</span></td>
+                <td>${units}</td>
+                <td><span class="badge green">Approved</span></td>
+            </tr>`;
+        });
+
+        rows += `<tr class="total-row">
+            <td colspan="3"><strong>Total</strong></td>
+            <td><strong>${totalUnits}</strong></td>
+            <td></td>
+        </tr>`;
+
+        tbody.innerHTML = rows;
+
+        // Stats
+        document.getElementById('statTotalUnits').textContent = totalUnits;
+        document.getElementById('statMajorCount').textContent = majorCount;
+        document.getElementById('statMinorCount').textContent = minorCount;
+    }
+
+    // ── Wire modal open / close ───────────────────────────────────
+    function wireModal() {
+        document.getElementById('btnAddSubject').addEventListener('click', openModal);
+        document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+        document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+        document.getElementById('modalConfirmBtn').addEventListener('click', confirmAdd);
+        document.getElementById('addSubjectModal').addEventListener('click', e => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        document.getElementById('modalSearch').addEventListener('input', renderModalList);
+    }
+
+    // ── Open modal ───────────────────────────────────────────────
+    function openModal() {
+        const s   = getStudentSession();
+        const reg = getCurrentSemester();
+
+        pendingSelection.clear();
+
+        // Subtitle
+        document.getElementById('modalSubtitle').textContent =
+            `${s.yearLabel} · ${s.programName} · ${reg.semLabel} ${reg.schoolYear}`;
+
+        // Meta bar
+        document.getElementById('modalMeta').innerHTML = `
+            <div class="modal-meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>${s.fullName}</span>
+            </div>
+            <div class="modal-meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                <span><strong>${s.collegeName}</strong></span>
+            </div>
+            <div class="modal-meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>S.Y. <strong>${reg.schoolYear}</strong> · <strong>${reg.semLabel}</strong></span>
+            </div>
+            <div class="modal-meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Max <strong>${reg.maxUnits}</strong> units</span>
+            </div>
+        `;
+
+        // Build available pool
+        availablePool = getAvailableSubjectsForStudent();
+        document.getElementById('modalSearch').value = '';
+        renderModalList();
+        updateMeter();
+
+        document.getElementById('addSubjectModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('addSubjectModal').classList.remove('active');
+        document.body.style.overflow = '';
+        pendingSelection.clear();
+        updateConfirmButton();
+    }
+
+    // ── Render modal subject list ─────────────────────────────────
+    function renderModalList() {
+        const query   = document.getElementById('modalSearch').value.trim().toLowerCase();
+        const body    = document.getElementById('modalBody');
+        const s       = getStudentSession();
+        const reg     = getCurrentSemester();
+
+        const enrolled  = s.enrolledSubjectIds;
+        const currentU  = enrolled.map(id => getSubjectById(id)).filter(Boolean)
+                                  .reduce((sum, x) => sum + (x.units || 0), 0);
+        const pendingU  = [...pendingSelection].map(id => getSubjectById(id)).filter(Boolean)
+                                              .reduce((sum, x) => sum + (x.units || 0), 0);
+        const usedUnits = currentU + pendingU;
+
+        let filtered = availablePool;
+        if (query) {
+            filtered = filtered.filter(s =>
+                s.code.toLowerCase().includes(query) ||
+                s.title.toLowerCase().includes(query)
+            );
+        }
+
+        if (!filtered.length) {
+            body.innerHTML = `
+                <div class="modal-empty">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <p>No available subjects found.</p>
+                </div>`;
+            return;
+        }
+
+        // Split into major (program-specific) and GE
+        const majorSubs = filtered.filter(s => !isGE(s));
+        const geSubs    = filtered.filter(s => isGE(s));
+
+        let html = '';
+
+        if (majorSubs.length) {
+            html += `<div class="modal-category-label">Program Subjects</div>`;
+            majorSubs.forEach(s => {
+                const sel       = pendingSelection.has(s.id);
+                const wouldExceed = !sel && (usedUnits + s.units > reg.maxUnits);
+                const typeClass = s.type.replace(/\s+/g, '-');
+
+                html += `<div class="available-subject${sel ? ' selected' : ''}${wouldExceed ? ' disabled' : ''}"
+                              data-id="${s.id}" data-units="${s.units}">
+                    <div class="subj-check">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="subj-info">
+                        <div class="subj-info-top">
+                            <span class="subj-code">${s.code}</span>
+                            <span class="subj-title">${s.title}</span>
+                        </div>
+                        <div class="subj-meta">${s.prerequisites?.length ? 'Prereq: ' + s.prerequisites.join(', ') : 'No prerequisites'}</div>
+                    </div>
+                    <div class="subj-right">
+                        <span class="subj-type-pill ${typeClass}">${s.type}</span>
+                        <span class="subj-units">${s.units} u</span>
+                    </div>
+                </div>`;
+            });
+        }
+
+        if (geSubs.length) {
+            html += `<div class="modal-category-label">General Education</div>`;
+            geSubs.forEach(s => {
+                const sel         = pendingSelection.has(s.id);
+                const wouldExceed = !sel && (usedUnits + s.units > reg.maxUnits);
+                const typeClass   = s.type.replace(/\s+/g, '-');
+
+                html += `<div class="available-subject${sel ? ' selected' : ''}${wouldExceed ? ' disabled' : ''}"
+                              data-id="${s.id}" data-units="${s.units}">
+                    <div class="subj-check">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="subj-info">
+                        <div class="subj-info-top">
+                            <span class="subj-code">${s.code}</span>
+                            <span class="subj-title">${s.title}</span>
+                        </div>
+                        <div class="subj-meta">General Education &mdash; ${s.usualYear ? s.yearLabel || 'Year '+s.usualYear : ''}</div>
+                    </div>
+                    <div class="subj-right">
+                        <span class="subj-type-pill ${typeClass}">${s.type}</span>
+                        <span class="subj-units">${s.units} u</span>
+                    </div>
+                </div>`;
+            });
+        }
+
+        body.innerHTML = html;
+
+        // Attach click handlers
+        body.querySelectorAll('.available-subject:not(.disabled)').forEach(row => {
+            row.addEventListener('click', () => toggleSubject(row.dataset.id));
+        });
+    }
+
+    function toggleSubject(id) {
+        if (pendingSelection.has(id)) {
+            pendingSelection.delete(id);
+        } else {
+            const s   = getStudentSession();
+            const reg = getCurrentSemester();
+            const sub = getSubjectById(id);
+
+            const enrolled = s.enrolledSubjectIds
+                .map(i => getSubjectById(i)).filter(Boolean)
+                .reduce((sum, x) => sum + (x.units || 0), 0);
+            const pending = [...pendingSelection]
+                .map(i => getSubjectById(i)).filter(Boolean)
+                .reduce((sum, x) => sum + (x.units || 0), 0);
+
+            if (enrolled + pending + sub.units > reg.maxUnits) {
+                showToast(`Cannot add — would exceed the ${reg.maxUnits}-unit cap.`, 'error');
+                return;
+            }
+            pendingSelection.add(id);
+        }
+        updateMeter();
+        updateConfirmButton();
+        renderModalList();
+    }
+
+    // ── Units meter ───────────────────────────────────────────────
+    function updateMeter() {
+        const s   = getStudentSession();
+        const reg = getCurrentSemester();
+
+        const enrolled = s.enrolledSubjectIds
+            .map(id => getSubjectById(id)).filter(Boolean)
+            .reduce((sum, x) => sum + (x.units || 0), 0);
+        const pending = [...pendingSelection]
+            .map(id => getSubjectById(id)).filter(Boolean)
+            .reduce((sum, x) => sum + (x.units || 0), 0);
+
+        const total = enrolled + pending;
+        const pct   = Math.min((total / reg.maxUnits) * 100, 100);
+
+        document.getElementById('meterCur').textContent = total;
+        const bar = document.getElementById('meterBar');
+        bar.style.width = pct + '%';
+        bar.className   = 'units-bar-fill' + (pct >= 100 ? ' full' : pct >= 80 ? ' near' : '');
+    }
+
+    // ── Confirm button state ──────────────────────────────────────
+    function updateConfirmButton() {
+        const cnt = pendingSelection.size;
+        document.getElementById('footerSelCount').textContent = cnt;
+        document.getElementById('modalConfirmBtn').disabled   = cnt === 0;
+    }
+
+    // ── Confirm: add subjects to enrollment ───────────────────────
+    function confirmAdd() {
+        if (!pendingSelection.size) return;
+
+        let added = 0;
+        pendingSelection.forEach(id => {
+            const res = enrollSubject(id);  // from old-student.js
+            if (res.success) added++;
+        });
+
+        pendingSelection.clear();
+        closeModal();
+        renderTable();
+
+        showToast(`${added} subject(s) added to your enrollment list.`, 'success');
+    }
+
+    // ── Toast helper ──────────────────────────────────────────────
+    function showToast(msg, type = 'success') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className   = `toast ${type} show`;
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => { t.className = 'toast'; }, 3200);
+    }
+    </script>
 </body>
 </html>
