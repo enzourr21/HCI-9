@@ -1,14 +1,3 @@
-/* ╔═══════════════════════════════════════════════════╗
-   ║         ADMIN CONFIG — EDIT THIS ONLY             ║
-   ╠═══════════════════════════════════════════════════╣
-   ║  ACTIVE_SEM : 1  →  1st Semester                  ║
-   ║               2  →  2nd Semester                  ║
-   ║                                                   ║
-   ║  STATUS : 'open'     → enrollment is open         ║
-   ║           'upcoming' → not yet open               ║
-   ║           'closed'   → enrollment ended           ║
-   ╚═══════════════════════════════════════════════════╝ */
-
 var ACTIVE_SEM = 1;
 var STATUS     = 'upcoming';
 
