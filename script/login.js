@@ -157,16 +157,16 @@ const EMAIL_ROLE_MAP = {
 
 // ─── ROLE CONFIG ──────────────────────────────────────────────
 const ROLES = {
-  REGISTRAR:  { label: 'Registrar / Super Admin', title: 'Registrar Portal',      sub: 'Super Admin access.',             badge: 'Super Admin',    redirect: '../users/registrar/registrar.html' },
-  ADVISER:    { label: 'Adviser',                 title: 'Adviser Portal',         sub: 'Advisory & student records.',     badge: 'Adviser',        redirect: '../users/adviser/adviser.html' },
-  DEPTHEAD:   { label: 'Department Head',         title: 'Department Head Portal', sub: 'Department management.',          badge: 'Dept. Head',     redirect: '../users/depthead/dept-head.html' },
-  ADMISSION:  { label: 'Admission Office',        title: 'Admission Portal',       sub: 'Applicant & admission records.',  badge: 'Admission',      redirect: '../users/admission/admission.html' },
-  ASSESSMENT: { label: 'Assessment Office',       title: 'Assessment Portal',      sub: 'Fees & assessment records.',      badge: 'Assessment',     redirect: '../users/assessment/assessment.html' },
-  MISTO:      { label: 'MIS-TO',                  title: 'MIS-TO Portal',          sub: 'System & technical operations.',  badge: 'MIS-TO',         redirect: '../users/misto/misto.html' },
+  REGISTRAR:  { label: 'Registrar / Super Admin', title: 'Registrar Portal',      sub: 'Super Admin access.',             badge: 'Super Admin',    redirect: '../users/Admin/Registrar/registrar_dashboard.html' },
+  ADVISER:    { label: 'Adviser',                 title: 'Adviser Portal',         sub: 'Advisory & student records.',     badge: 'Adviser',        redirect: '../users/Admin/adviser/adviser_dashboard.html' },
+  DEPTHEAD:   { label: 'Department Head',         title: 'Department Head Portal', sub: 'Department management.',          badge: 'Dept. Head',     redirect: '../users/Admin/dept-admin/dept-head.html' },
+  ADMISSION:  { label: 'Admission Office',        title: 'Admission Portal',       sub: 'Applicant & admission records.',  badge: 'Admission',      redirect: '../users/Admin/admission/admission.html' },
+  ASSESSMENT: { label: 'Assessment Office',       title: 'Assessment Portal',      sub: 'Fees & assessment records.',      badge: 'Assessment',     redirect: '../users/Admin/assessment/assessment_dashboard.html' },
+  MISTO:      { label: 'MIS-TO',                  title: 'MISTO Portal',          sub: 'System & technical operations.',  badge: 'MISTO',         redirect: '../users/Admin/MISTO/systemAdmin.html' },
   DEAN:       { label: 'Dean',                    title: 'Dean Portal',            sub: 'College administration.',         badge: 'Dean',           redirect: '../users/dean/dean.html' },
   SECRETARY:  { label: 'Secretary',               title: 'Secretary Portal',       sub: 'Records & correspondence.',       badge: 'Secretary',      redirect: '../users/secretary/secretary.html' },
   SHIFTEE:    { label: 'Shiftee',                 title: 'Shiftee Portal',         sub: 'Program shifting & transfer records.', badge: 'Shiftee',   redirect: '../users/shiftee/shiftee.html' },
-  STUDENT:    { label: 'Student',                 title: 'Student Portal',         sub: 'Enrollment & records.',           badge: 'Student Portal', redirect: '../users/old student/old-student.html' },
+  STUDENT:    { label: 'Student',                 title: 'Student Portal',         sub: 'Enrollment & records.',           badge: 'Student Portal', redirect: '../users/old student/subject.html' },
   UNKNOWN:    { label: '',                        title: 'Sign In',                sub: 'Enter your WMSU credentials to continue.', badge: 'WMSU Portal', redirect: null },
 };
 
