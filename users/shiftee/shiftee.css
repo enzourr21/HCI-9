@@ -801,3 +801,34 @@ body {
     .shift-route { flex-direction: column; }
     .topbar-user-info { display: none; }
 }
+
+/* Progress Stepper Enhancements */
+.progress-step.active .ps-circle {
+    background: var(--cr) !important;
+    color: #fff !important;
+    border-color: var(--cr) !important;
+    box-shadow: 0 0 0 4px var(--cr-pale);
+    animation: pulse-red 2s infinite;
+}
+
+.progress-step.done .ps-circle {
+    background: var(--green) !important;
+    color: #fff !important;
+    border-color: var(--green) !important;
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(139, 26, 36, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(139, 26, 36, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(139, 26, 36, 0); }
+}
+
+#target-program {
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+}
+
+#target-program:focus {
+    border-color: var(--cr);
+}

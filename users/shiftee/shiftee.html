@@ -160,48 +160,48 @@
 
             <!-- Enrollment Progress -->
             <div class="card">
-                <div class="card-hd-plain">Enrollment Progress</div>
-                <div class="progress-track">
-                    <div class="progress-step done" data-label="Form Reviewing" data-status="COMPLETED">
-                        <div class="ps-circle">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
-                        </div>
-                        <div class="ps-label">Form Reviewing</div>
-                        <span class="ps-status green">COMPLETED</span>
-                    </div>
-                    <div class="progress-connector done"></div>
-                    <div class="progress-step active" data-label="Advising" data-status="IN PROGRESS">
-                        <div class="ps-circle">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        </div>
-                        <div class="ps-label">Advising</div>
-                        <span class="ps-status amber">IN PROGRESS</span>
-                    </div>
-                    <div class="progress-connector"></div>
-                    <div class="progress-step pending" data-label="Assessment" data-status="">
-                        <div class="ps-circle">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                        </div>
-                        <div class="ps-label">Assessment</div>
-                        <span class="ps-status gray"></span>
-                    </div>
-                    <div class="progress-connector"></div>
-                    <div class="progress-step pending" data-label="Payment" data-status="">
-                        <div class="ps-circle">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                        </div>
-                        <div class="ps-label">Payment</div>
-                        <span class="ps-status gray"></span>
-                    </div>
-                    <div class="progress-connector"></div>
-                    <div class="progress-step pending" data-label="Enlistment" data-status="">
-                        <div class="ps-circle">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
-                        <div class="ps-label">Enlistment</div>
-                        <span class="ps-status gray"></span>
+            <div class="card-hd">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                    <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                Shifting Application Status
+                <span class="chip-amber ml-auto" id="main-status-chip">Idle</span>
+            </div>
+            
+            <div id="shifting-action-container">
+                <div class="remark-box" style="text-align: center; padding: 30px;">
+                    <h3 id="workflow-title">Ready to Shift?</h3>
+                    <p id="workflow-desc">Start your digital shifting process by clicking the button below.</p>
+                    <div id="workflow-actions" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                        <select id="target-program" class="form-control" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; width: 250px;">
+                            <option value="">Select Target Course...</option>
+                            <option value="BSCS">BS Computer Science</option>
+                            <option value="BSIT">BS Information Technology</option>
+                            <option value="BS-CRIM">BS Criminology</option>
+                            <option value="BSN">BS Nursing</option>
+                        </select>
+                        <button onclick="processWorkflowTrigger()" id="workflow-btn" class="btn-edit-subj" style="margin: 0; width: 250px; justify-content: center;">Start Application</button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-step" id="step-1" data-label="Request">
+                <div class="ps-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                <div class="ps-label">Request</div>
+            </div>
+            <div class="progress-connector" id="conn-1"></div>
+            <div class="progress-step" id="step-2" data-label="Clearance">
+                <div class="ps-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></div>
+                <div class="ps-label">Clearance</div>
+            </div>
+            <div class="progress-connector" id="conn-2"></div>
+            <div class="progress-step" id="step-3" data-label="Exam">
+                <div class="ps-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+                <div class="ps-label">Exam</div>
+            </div>
             </div>
 
             <!-- Stats row -->
