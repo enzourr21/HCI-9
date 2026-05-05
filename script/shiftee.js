@@ -183,3 +183,103 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial render
     renderSubjectTable();
 });
+
+/* ── Digital Shifting Workflow Logic ──────────────── */
+
+let shiftingState = {
+    currentStep: 0, // 0: Idle, 1: Requested, 2: Cleared, 3: Exam Done, 4: Approved, 5: Enrolled
+    targetCourse: '',
+    gwa: 1.75 // Sample grade for validation
+};
+
+function processWorkflowTrigger() {
+    const target = document.getElementById('target-program').value;
+    
+    if (shiftingState.currentStep === 0) {
+        if (!target) {
+            showToast('Please select a target course.', 'error');
+            return;
+        }
+        // Logic: Check GWA eligibility
+        if (shiftingState.gwa > 2.5) {
+            showToast('GWA requirement not met for this course.', 'error');
+            return;
+        }
+        
+        shiftingState.targetCourse = target;
+        shiftingState.currentStep = 1;
+        showToast('Request sent to Old College Dean.', 'success');
+    } 
+    else if (shiftingState.currentStep === 2) {
+        // Simulating Exam Permit Download
+        showToast('Exam Permit Downloaded. Please go to Testing Center.', 'success');
+        // Simulate Exam Passing after 3 seconds
+        setTimeout(() => {
+            shiftingState.currentStep = 3;
+            updateWorkflowUI();
+            showToast('Exam Result: PASSED. Forwarded to New Dean.', 'success');
+        }, 3000);
+    }
+
+    updateWorkflowUI();
+}
+
+function updateWorkflowUI() {
+    const title = document.getElementById('workflow-title');
+    const desc = document.getElementById('workflow-desc');
+    const btn = document.getElementById('workflow-btn');
+    const statusChip = document.getElementById('main-status-chip');
+    const actionArea = document.getElementById('workflow-actions');
+
+    // Update Stepper Visuals (Reusable Logic)
+    for (let i = 1; i <= 5; i++) {
+        const stepEl = document.getElementById(`step-${i}`);
+        const connEl = document.getElementById(`conn-${i}`);
+        if (!stepEl) continue;
+
+        stepEl.className = 'progress-step';
+        if (i < shiftingState.currentStep) stepEl.classList.add('done');
+        if (i === shiftingState.currentStep) stepEl.classList.add('active');
+        if (connEl && i < shiftingState.currentStep) connEl.classList.add('done');
+    }
+
+    // Workflow State Content
+    switch(shiftingState.currentStep) {
+        case 1:
+            statusChip.innerText = "Under Review";
+            title.innerText = "Awaiting Old College Approval";
+            desc.innerText = "Dean of CCS is currently reviewing your outward clearance.";
+            actionArea.innerHTML = `<span class="chip-amber">Status: Digital Clearance Pending</span>`;
+            // Mock delay: Automatic approve from Old Dean
+            setTimeout(() => { 
+                shiftingState.currentStep = 2; 
+                updateWorkflowUI(); 
+                showToast('Old Dean Approved. Shifting Exam unlocked.', 'success');
+            }, 4000);
+            break;
+        case 2:
+            statusChip.innerText = "Exam Phase";
+            title.innerText = "Take the Shifting Exam";
+            desc.innerText = "You are cleared to shift. Please download your permit and take the exam.";
+            btn.innerText = "Download Exam Permit";
+            break;
+        case 3:
+            statusChip.innerText = "Evaluation";
+            title.innerText = "New College Evaluation";
+            desc.innerText = "The Dean of your target college is reviewing your exam results and credits.";
+            actionArea.innerHTML = `<span class="chip-amber">Status: Interview for ${shiftingState.targetCourse} Pending</span>`;
+            break;
+        case 5:
+            statusChip.innerText = "Finalized";
+            statusChip.className = "chip-green ml-auto";
+            title.innerText = "Shifting Complete!";
+            desc.innerText = `You are now officially a student of ${shiftingState.targetCourse}.`;
+            actionArea.innerHTML = `<button class="btn-edit-subj" onclick="location.reload()">Refresh Portal</button>`;
+            break;
+    }
+}
+
+// Initialize on Load
+document.addEventListener('DOMContentLoaded', () => {
+    updateWorkflowUI();
+});
