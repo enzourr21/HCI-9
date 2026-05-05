@@ -8,884 +8,1874 @@
 <link rel="stylesheet" href="registrar.css">
 <link rel="stylesheet" href="../admin.css">
 <style>
-/* ── Course Offerings page-specific ── */
-.dept-curriculum-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 14px;
+/* ── Registrar-specific page styles ── */
+:root {
+  --crimson: #c0192b;
+  --crimson-dark: #9b1422;
+  --crimson-deep: #6b1218;
+  --crimson-light: #fff0f1;
+  --black: #111827;
+  --light-gray: #f8f9fa;
+  --text-muted: #9ca3af;
+  --text-secondary: #6b7280;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --info: #2563eb;
+  --info-bg: #eff6ff;
+  --border: #e5e7eb;
+  --white: #fff;
+  --bg: #f9fafb;
+  --bg-dk: #f3f4f6;
+  --nav-h: 62px;
+  --sidebar-w: 242px;
+  --cr: #c0192b;
+  --cr-dk: #9b1422;
+  --cr-deep: #6b1218;
+  --cr-pale: #fff0f1;
+  --green: #16a34a;
+  --green-dk: #15803d;
+  --green-pale: #f0fdf4;
+  --amber: #d97706;
+  --amber-pale: #fffbeb;
+  --blue: #1d4ed8;
+  --blue-lt: #3b82f6;
+  --blue-pale: #eff6ff;
+  --red: #dc2626;
+  --red-pale: #fef2f2;
+  --muted: #6b7280;
+  --muted-lt: #9ca3af;
+  --text: #111827;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 14px rgba(0,0,0,.09);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --tr: .15s ease;
 }
 
-.dept-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: box-shadow 0.15s;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
+
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.topbar-brand{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.topbar-logo{width:26px;height:26px;color:var(--cr);flex-shrink:0}
+.topbar-name{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.4px}
+.topbar-divider{width:1px;height:22px;background:var(--border);flex-shrink:0}
+.topbar-pill{background:var(--cr-pale);border:1px solid rgba(192,25,43,.18);color:var(--cr);font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:3px 10px;border-radius:20px;flex-shrink:0}
+.topbar-term-wrap{display:flex;align-items:center;gap:8px}
+.topbar-term-label{font-size:10px;font-weight:700;color:var(--muted-lt);text-transform:uppercase;letter-spacing:.9px;white-space:nowrap}
+.topbar-term-select{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 28px 6px 12px;font-size:13px;font-weight:600;font-family:inherit;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;max-width:270px;transition:border-color .15s}
+.topbar-term-select:focus{border-color:var(--cr);box-shadow:0 0 0 3px rgba(192,25,43,.08)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.topbar-sync{font-size:11px;color:var(--muted-lt);white-space:nowrap}
+.topbar-user{display:flex;align-items:center;gap:8px;padding:4px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--border);cursor:pointer}
+.topbar-avatar{width:28px;height:28px;border-radius:50%;background:var(--cr-pale);border:2px solid rgba(192,25,43,.18);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;color:var(--cr)}
+.topbar-user-name{font-size:12.5px;font-weight:600;color:var(--text)}
+.topbar-logout{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:background var(--tr),color var(--tr);text-decoration:none}
+.topbar-logout:hover{background:var(--cr-pale);color:var(--cr);border-color:rgba(192,25,43,.2)}
+
+/* ── LAYOUT ── */
+.layout{display:flex;padding-top:var(--nav-h);min-height:100vh}
+
+/* ── SIDEBAR — dean-style compact ── */
+.sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);position:fixed;top:var(--nav-h);left:0;bottom:0;overflow-y:auto;padding:12px 8px 32px;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.sidebar-section-label{padding:14px 10px 4px;font-size:9.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted-lt)}
+.sidebar-section-label:first-child{padding-top:4px}
+.sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;user-select:none;transition:background var(--tr),color var(--tr);border-left:3px solid transparent;text-decoration:none}
+.sidebar-link svg,.sidebar-link i{flex-shrink:0;opacity:.6;font-size:13px;width:15px;text-align:center}
+.sidebar-link:hover{background:var(--bg-dk);color:var(--text)}
+.sidebar-link.active{background:var(--cr-pale);color:var(--cr);border-left-color:var(--cr);font-weight:700}
+.sidebar-link.active svg,.sidebar-link.active i{opacity:1}
+.sidebar-badge{margin-left:auto;min-width:20px;text-align:center;background:var(--cr);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:20px}
+.sidebar-badge.amber{background:var(--amber)}
+.sidebar-badge.green{background:var(--green)}
+.sidebar-badge.blue{background:var(--blue-lt)}
+.sidebar-divider{height:1px;background:var(--border);margin:8px 10px}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar-w);flex:1;padding:28px 32px 52px;min-width:0}
+.page{display:none}
+.page.active{display:block;animation:fade-up .18s ease both}
+@keyframes fade-up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── PAGE HEADER ── */
+.page-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.page-hd-left h1{font-size:20px;font-weight:800;color:var(--text);margin-bottom:2px}
+.page-hd-left p{font-size:12.5px;color:var(--muted)}
+.page-hd-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius-sm);border:none;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:background var(--tr),box-shadow var(--tr),transform .1s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn svg,.btn i{font-size:12px}
+.btn-primary{background:var(--cr);color:#fff;box-shadow:0 2px 8px rgba(192,25,43,.25)}
+.btn-primary:hover{background:var(--cr-dk)}
+.btn-ghost{background:var(--white);color:var(--muted);border:1.5px solid var(--border)}
+.btn-ghost:hover{background:var(--bg-dk);color:var(--text)}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:var(--green-dk)}
+.btn-amber{background:var(--amber);color:#fff}
+.btn-amber:hover{background:#b45309}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.btn-outline{background:var(--white);color:var(--cr);border:1.5px solid var(--cr)}
+.btn-outline:hover{background:var(--cr-pale)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-sm{padding:5px 11px;font-size:12px;border-radius:6px}
+.btn-xs{padding:3px 8px;font-size:11px;border-radius:5px}
+
+/* ── KPI ── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;transition:box-shadow var(--tr),transform var(--tr)}
+.kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cr)}
+.kpi-card.green::before{background:var(--green)}
+.kpi-card.amber::before{background:var(--amber)}
+.kpi-card.blue::before{background:var(--blue-lt)}
+.kpi-card.purple::before{background:#7c3aed}
+.kpi-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.kpi-num{font-size:22px;font-weight:800;color:var(--text);line-height:1}
+.kpi-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+.card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card-title{font-size:13.5px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.card-body{padding:18px}
+
+/* ── GRID ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.mb-4{margin-bottom:16px}
+.mb-6{margin-bottom:24px}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table thead tr{background:var(--cr-deep)}
+.data-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.85);white-space:nowrap}
+.data-table tbody tr{border-bottom:1px solid var(--border);transition:background var(--tr)}
+.data-table tbody tr:last-child{border-bottom:none}
+.data-table tbody tr:hover{background:#fff5f6}
+.data-table tbody td{padding:11px 14px;vertical-align:middle}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.badge-green{background:var(--green-pale);color:var(--green-dk);border:1px solid #bbf7d0}
+.badge-amber{background:var(--amber-pale);color:var(--amber);border:1px solid #fde68a}
+.badge-red{background:var(--red-pale);color:var(--red);border:1px solid #fecaca}
+.badge-blue{background:var(--blue-pale);color:var(--blue);border:1px solid #bfdbfe}
+.badge-gray{background:var(--bg-dk);color:var(--muted);border:1px solid var(--border)}
+.badge-cr{background:var(--cr-pale);color:var(--cr-dk);border:1px solid rgba(192,25,43,.2)}
+.badge-success{background:var(--green-pale);color:var(--green-dk)}
+.badge-warning{background:var(--amber-pale);color:var(--amber)}
+.badge-danger{background:var(--red-pale);color:var(--red)}
+.badge-neutral{background:var(--bg-dk);color:var(--muted)}
+.badge-info{background:var(--blue-pale);color:var(--blue)}
+.badge-crimson{background:var(--cr-pale);color:var(--cr)}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.toolbar-spacer{flex:1}
+.search-box{display:flex;align-items:center;gap:7px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 12px;flex-shrink:0;transition:border-color var(--tr)}
+.search-box:focus-within{border-color:var(--cr)}
+.search-box input{border:none;background:none;outline:none;font-size:13px;color:var(--text);width:200px}
+.search-box input::placeholder{color:var(--muted-lt)}
+.search-box i,.search-box svg{color:var(--muted-lt);flex-shrink:0}
+.filter-select{padding:7px 28px 7px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--white);font-size:13px;font-family:inherit;color:var(--text);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color var(--tr)}
+.filter-select:focus{border-color:var(--cr)}
+
+/* ── ALERTS ── */
+.alert{display:flex;gap:9px;padding:10px 13px;border-radius:var(--radius-sm);font-size:12.5px;margin-bottom:14px;align-items:flex-start}
+.alert i{flex-shrink:0;margin-top:1px}
+.alert-warn{background:var(--amber-pale);color:#92400e;border:1px solid #fde68a}
+.alert-blue{background:var(--blue-pale);color:var(--blue);border:1px solid #bfdbfe}
+.alert-green{background:var(--green-pale);color:var(--green-dk);border:1px solid #bbf7d0}
+.alert-red{background:var(--red-pale);color:var(--red);border:1px solid #fecaca}
+
+/* ── PROG BAR ── */
+.prog-wrap{margin-bottom:14px}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.prog-bar{height:6px;background:var(--bg-dk);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;background:var(--cr);transition:width .5s ease}
+.prog-fill.green{background:var(--green)}
+.prog-fill.amber{background:var(--amber)}
+.prog-fill.blue{background:var(--blue-lt)}
+
+/* ── BAR CHART ── */
+.bar-chart{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:grid;grid-template-columns:130px 1fr 48px;align-items:center;gap:10px;font-size:12.5px}
+.bar-label{color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{height:8px;background:var(--bg-dk);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;background:var(--cr);transition:width .5s ease}
+.bar-fill.green{background:var(--green)}
+.bar-fill.amber{background:var(--amber)}
+.bar-fill.blue{background:var(--blue-lt)}
+.bar-val{font-weight:700;color:var(--text);text-align:right}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.48);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active,.modal-overlay.open{display:flex}
+.modal-box,.modal{background:var(--white);border-radius:14px;width:100%;max-width:520px;box-shadow:0 24px 60px rgba(0,0,0,.22);animation:modal-in .2s ease;overflow:hidden;max-height:92vh;overflow-y:auto}
+.modal-box.wide,.modal.modal-lg{max-width:760px}
+.modal.modal-md{max-width:620px}
+.modal.modal-sm{max-width:460px}
+@keyframes modal-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.modal-hd,.modal-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cr-deep)}
+.modal-hd h3,.modal-title{font-size:15px;font-weight:700;color:#fff}
+.modal-x,.modal-close{background:none;border:none;color:rgba(255,255,255,.55);font-size:22px;cursor:pointer;line-height:1}
+.modal-x:hover,.modal-close:hover{color:#fff}
+.modal-body{padding:20px 22px}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:14px 20px;border-top:1px solid var(--border);background:var(--bg)}
+
+/* ── FORM ── */
+.form-field,.form-group{margin-bottom:14px}
+.form-field label,.form-label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.form-input,.form-select,.form-textarea,.form-control{width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;color:var(--text);background:var(--white);outline:none;transition:border-color var(--tr),box-shadow var(--tr)}
+.form-input:focus,.form-select:focus,.form-textarea:focus,.form-control:focus{border-color:var(--cr);box-shadow:0 0 0 3px rgba(192,25,43,.08)}
+.form-textarea{resize:vertical;min-height:80px}
+textarea.form-control{resize:vertical;min-height:80px}
+.form-hint{font-size:11.5px;color:var(--muted);margin-top:4px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{background:#111827;color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(0,0,0,.22);animation:toast-in .2s ease;display:flex;align-items:center;gap:9px;max-width:340px}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+.toast.warn{background:var(--amber)}
+.toast.info{background:var(--blue-lt)}
+@keyframes toast-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted-lt)}
+.empty-state i{font-size:2rem;margin-bottom:10px;display:block;opacity:.25}
+.empty-state p{font-size:13.5px;color:var(--muted)}
+
+/* ── SLIDE-OUT PANEL ── */
+.detail-panel{display:none;position:fixed;top:var(--nav-h);right:0;bottom:0;width:420px;z-index:300;background:var(--white);border-left:1px solid var(--border);box-shadow:-6px 0 28px rgba(0,0,0,.1);overflow-y:auto}
+.detail-panel.open{display:block;animation:panel-in .18s ease}
+@keyframes panel-in{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+.panel-hd{background:var(--cr-deep);padding:16px 18px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:1}
+.panel-hd h3{font-size:14px;font-weight:700;color:#fff;flex:1}
+.panel-close{background:none;border:none;color:rgba(255,255,255,.55);font-size:22px;cursor:pointer;line-height:1}
+.panel-close:hover{color:#fff}
+.panel-body{padding:18px}
+.panel-section{margin-bottom:18px}
+.panel-sec-title{font-size:9.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted-lt);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.panel-row{display:flex;justify-content:space-between;padding:5px 0}
+.panel-key{font-size:12px;color:var(--muted)}
+.panel-val{font-size:12.5px;font-weight:600;color:var(--text);text-align:right}
+
+/* ── SECTION DIVIDER ── */
+.section-divider{font-size:9.5px;font-weight:700;color:var(--muted-lt);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;border-bottom:1px solid var(--border);padding-bottom:6px}
+
+/* ── TIMELINE ── */
+.timeline{border-left:2px solid var(--border);padding-left:16px}
+.timeline-item{position:relative;margin-bottom:16px}
+.timeline-item::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--border);position:absolute;left:-21px;top:4px}
+.timeline-item.done::before{background:var(--green)}
+.timeline-item.active::before{background:var(--cr);box-shadow:0 0 0 3px var(--cr-pale)}
+.timeline-item.upcoming::before{background:var(--border);border:2px solid var(--muted-lt)}
+.timeline-date{font-size:11px;color:var(--muted);font-weight:600}
+.timeline-label{font-size:13px;font-weight:600}
+.timeline-sub{font-size:11.5px;color:var(--muted)}
+
+/* ── TOGGLE ── */
+.toggle{position:relative;display:inline-block;width:36px;height:20px}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:20px;transition:.2s}
+.toggle-slider::before{content:'';position:absolute;width:14px;height:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+.toggle input:checked+.toggle-slider{background:var(--cr)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(16px)}
+.toggle-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #f5f5f5}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info{flex:1}
+.toggle-label-main{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.toggle-label-sub{font-size:11.5px;color:var(--muted);line-height:1.5}
+.lock-notice{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px;margin-top:4px}
+.date-window-row{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.date-window-row label{font-size:11px;color:var(--muted);font-weight:600}
+.date-window-row input{border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;font-family:inherit;color:var(--text)}
+.date-window-row input:focus{outline:none;border-color:var(--cr)}
+
+/* ── PROSPECTUS ── */
+.prospectus-item{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;background:var(--white);box-shadow:var(--shadow-sm)}
+.prospectus-item-header{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.prospectus-item-title{font-size:14px;font-weight:700;color:var(--text)}
+.prospectus-item-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.prospectus-item-actions{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.prospectus-item-body{padding:16px 18px}
+
+/* ── DIFF VIEWER ── */
+.diff-viewer{background:#0d1117;border-radius:8px;overflow:hidden;font-size:12.5px;margin-bottom:14px}
+.diff-header{background:#161b22;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08)}
+.diff-header-label{font-size:11px;color:rgba(255,255,255,.4);font-weight:600}
+.diff-header-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.diff-badge-add{background:rgba(74,222,128,.15);color:#4ade80}
+.diff-badge-rem{background:rgba(248,113,113,.15);color:#f87171}
+.diff-badge-chg{background:rgba(251,191,36,.15);color:#fbbf24}
+.diff-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(255,255,255,.04);font-family:'Menlo','Consolas',monospace}
+.diff-row:last-child{border-bottom:none}
+.diff-cell{padding:7px 14px;display:flex;align-items:center;gap:8px}
+.diff-cell.old{background:rgba(248,113,113,.08);color:#fca5a5}
+.diff-cell.new{background:rgba(74,222,128,.08);color:#86efac}
+.diff-cell.unchanged{color:rgba(255,255,255,.4)}
+.diff-sign{font-weight:800;width:10px;flex-shrink:0}
+.diff-sign.minus{color:#f87171}
+.diff-sign.plus{color:#4ade80}
+
+/* ── STAT CARDS ── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:16px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm)}
+.stat-card.alert-card{border-color:#fca5a5;background:var(--red-pale)}
+.stat-card.warn-card{border-color:#fcd34d;background:var(--amber-pale)}
+.stat-card.ok-card{border-color:#86efac;background:var(--green-pale)}
+.stat-label{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:6px}
+.stat-value{font-size:1.5rem;font-weight:800;color:var(--text);line-height:1}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.stat-icon{position:absolute;right:14px;top:14px;font-size:1.1rem;opacity:.25}
+
+/* ── ROOM GRID ── */
+.room-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.room-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .15s}
+.room-card:hover{border-color:var(--cr);background:var(--cr-pale)}
+.room-card.high-util{border-color:#fca5a5;background:#fff5f5}
+.room-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.room-type{font-size:11px;color:var(--muted);margin-bottom:8px}
+.room-util{font-size:11px;font-weight:600;color:var(--muted);margin-top:6px}
+.progress-bar-wrap{background:var(--border);border-radius:99px;height:6px;overflow:hidden}
+.progress-bar{height:100%;border-radius:99px;background:var(--cr)}
+.progress-bar.green{background:var(--green)}
+.progress-bar.yellow{background:var(--amber)}
+
+/* ── STUDENT TABLE ── */
+.student-name-btn{background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--cr);cursor:pointer;padding:0;text-align:left;text-decoration:underline;text-underline-offset:3px;text-decoration-color:transparent;transition:text-decoration-color .15s}
+.student-name-btn:hover{text-decoration-color:var(--cr)}
+.student-sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+
+/* ── HISTORY BLOCK ── */
+.history-block{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:12px 14px;margin-top:12px}
+.history-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted-lt);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.history-entry{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.history-entry:last-child{border-bottom:none;padding-bottom:0}
+.history-dot{width:7px;height:7px;border-radius:50%;background:var(--cr);flex-shrink:0;margin-top:4px}
+.history-action{color:var(--text);font-weight:500}
+.history-meta{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* ── MISC ── */
+.flex{display:flex}
+.gap-2{gap:8px}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:18px 14px}
+  .detail-panel{width:100%}
+  .grid-2,.grid-3{grid-template-columns:1fr}
 }
-
-.dept-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-
-.dept-card-header {
-    padding: 14px 16px 12px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
-
-.dept-card-name {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: var(--black);
-}
-
-.dept-card-body { padding: 14px 16px; }
-
-.dept-meta-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-}
-
-.dept-meta-row:last-child { margin-bottom: 0; }
-.dept-meta-key { color: var(--text-muted); font-size: 0.73rem; }
-
-.dept-card-footer {
-    padding: 10px 16px;
-    border-top: 1px solid var(--border);
-    background: #fafafa;
-    display: flex;
-    gap: 6px;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-}
-
-/* Secretary modifications banner */
-.dept-modified-banner {
-    margin: 8px 16px;
-    padding: 8px 12px;
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    border-left: 3px solid var(--warning);
-    border-radius: 0 6px 6px 0;
-    font-size: 0.75rem;
-    color: #78350f;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.dept-modified-banner i { color: var(--warning); flex-shrink: 0; }
-
-/* Curriculum version tabs inside dept panel */
-.version-tabs {
-    display: flex;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-}
-
-.version-tab {
-    padding: 8px 14px;
-    font-size: 0.80rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    cursor: pointer;
-    transition: all 0.15s;
-}
-
-.version-tab:hover { color: var(--crimson); }
-.version-tab.active { color: var(--crimson); border-bottom-color: var(--crimson); }
-
-.version-locked-badge {
-    font-size: 0.65rem;
-    background: #f3f4f6;
-    color: #374151;
-    padding: 1px 6px;
-    border-radius: 4px;
-    margin-left: 4px;
-    font-weight: 700;
-}
-
-/* Reg Rules toggles */
-.rules-section { margin-bottom: 24px; }
-
-.rules-section-title {
-    font-size: 0.80rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-}
-
-.toggle-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px solid #f5f5f5;
-}
-
-.toggle-row:last-child { border-bottom: none; }
-
-.toggle-info { flex: 1; }
-
-.toggle-label-main {
-    font-size: 0.87rem;
-    font-weight: 600;
-    color: var(--black);
-    margin-bottom: 3px;
-}
-
-.toggle-label-sub {
-    font-size: 0.76rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
-
-.toggle-label-sub.warn { color: var(--warning); font-weight: 600; }
-
-/* Date window row inside toggle */
-.date-window-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-}
-
-.date-window-row label {
-    font-size: 0.73rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.date-window-row input {
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 0.78rem;
-    font-family: inherit;
-    color: var(--black);
-}
-
-.date-window-row input:focus { outline: none; border-color: var(--crimson); }
-
-/* Publish dependency lock */
-.toggle-row.locked-dependency .toggle {
-    opacity: 0.4;
-    pointer-events: none;
-}
-
-.lock-notice {
-    font-size: 0.70rem;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 4px;
-}
-
-/* Dept live view table inside panel */
-.live-view-table { width: 100%; border-collapse: collapse; font-size: 0.80rem; }
-.live-view-table th {
-    padding: 8px 10px;
-    text-align: left;
-    background: var(--crimson);
-    color: white;
-    font-size: 0.70rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-.live-view-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
-.live-view-table tbody tr:last-child td { border-bottom: none; }
-.live-view-table tbody tr:hover { background: #fff8f8; }
-
-.modified-cell { color: var(--warning); font-weight: 600; }
 </style>
 </head>
 <body>
 
 <!-- TOPBAR -->
 <header class="topbar">
-    <a href="../../../index.html" class="topbar-brand">
-        <svg class="topbar-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-        </svg>
-        <span class="topbar-name">WMSU-Ease</span>
+  <a href="../../../index.html" class="topbar-brand">
+    <svg class="topbar-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+      <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+    </svg>
+    <span class="topbar-name">WMSU-Ease</span>
+  </a>
+  <div class="topbar-divider"></div>
+  <span class="topbar-pill">Registrar</span>
+  <div class="topbar-divider"></div>
+  <div class="topbar-term-wrap">
+    <label class="topbar-term-label">Active Term</label>
+    <select id="termSelect" class="topbar-term-select" onchange="updateTermLabel()">
+      <option value="2024-2S">A.Y. 2024–2025, 2nd Semester</option>
+      <option value="2025-1S" selected>A.Y. 2025–2026, 1st Semester</option>
+      <option value="2025-2S">A.Y. 2025–2026, 2nd Semester</option>
+    </select>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-sync" id="syncLabel">Last saved: just now</span>
+    <div class="topbar-user">
+      <div class="topbar-avatar">RM</div>
+      <span class="topbar-user-name">Registrar</span>
+    </div>
+    <a href="../../../login-pages/login.html" class="topbar-logout">
+      <i class="fas fa-right-from-bracket"></i> Log Out
     </a>
-    <div class="topbar-divider"></div>
-    <div class="topbar-term-wrap">
-        <label class="topbar-term-label">Active Term</label>
-        <select id="termSelect" class="topbar-term-select" onchange="updateTermBadges()">
-            <option value="2024-2S">A.Y. 2024–2025, 2nd Semester</option>
-            <option value="2025-1S" selected>A.Y. 2025–2026, 1st Semester</option>
-            <option value="2025-2S">A.Y. 2025–2026, 2nd Semester</option>
-        </select>
-    </div>
-    <div class="topbar-right">
-        <span class="topbar-sync" id="syncLabel">—</span>
-        <div class="topbar-user">
-            <div class="topbar-avatar" id="termAvatar">RM</div>
-            <span id="termUserLabel">Registrar</span>
-        </div>
-        <li>
-            <a href="../../../login-pages/login.html" class="topbar-logout">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    width="17" height="17">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                Log Out
-            </a>
-        </li>
-    </div>
+  </div>
 </header>
 
 <!-- LAYOUT -->
 <div class="layout">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Overview</div>
-      <div class="sidebar-item active" onclick="showPage('dashboard', this)"><i class="fas fa-gauge-high"></i> Dashboard</div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Scheduling</div>
-      <div class="sidebar-item" onclick="showPage('term-setup', this)"><i class="fas fa-calendar-days"></i> Term &amp; Calendar</div>
-      <div class="sidebar-item" onclick="showPage('course-offerings', this)"><i class="fas fa-table-list"></i> Course Offerings</div>
-      <div class="sidebar-item" onclick="showPage('room-assignment', this)"><i class="fas fa-door-open"></i> Room Assignment</div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Control</div>
-      <div class="sidebar-item" onclick="showPage('reg-rules', this)"><i class="fas fa-sliders"></i> Reg. Rules &amp; Controls</div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Insights</div>
-      <div class="sidebar-item" onclick="showPage('reports', this)"><i class="fas fa-chart-bar"></i> Reports &amp; Analytics</div>
-      <div class="sidebar-item" onclick="showPage('audit', this)"><i class="fas fa-clipboard-list"></i> Audit Trail</div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Other Portals</div>
-      <div class="sidebar-item" onclick="alert('Opens Adviser Portal')"><i class="fas fa-chalkboard-user"></i> Adviser Portal <i class="fas fa-arrow-up-right-from-square" style="margin-left:auto;font-size:0.65rem;opacity:0.5"></i></div>
-      <div class="sidebar-item" onclick="alert('Opens Assessment Portal')"><i class="fas fa-coins"></i> Assessment Portal <i class="fas fa-arrow-up-right-from-square" style="margin-left:auto;font-size:0.65rem;opacity:0.5"></i></div>
-    </div>
-  </aside>
+<!-- SIDEBAR — compact dean-style -->
+<nav class="sidebar">
 
-  <!-- MAIN CONTENT -->
-  <main class="main">
+  <span class="sidebar-section-label">Overview</span>
+  <a class="sidebar-link active" onclick="showPage('dashboard',this)">
+    <i class="fas fa-gauge-high"></i> Dashboard
+  </a>
 
-    <!-- ══════════════════════════════════
-         DASHBOARD
-    ══════════════════════════════════ -->
-    <div class="page active" id="page-dashboard">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Registrar Dashboard</div>
-          <div class="page-subtitle" id="dashSubtitle">A.Y. 2025–2026, 1st Semester &nbsp;·&nbsp; Registration Period: <strong style="color:var(--crimson)">Open</strong></div>
-        </div>
-        <div class="flex gap-2">
-          <button class="btn btn-outline btn-sm" onclick="showPage('course-offerings', document.querySelector('[onclick*=course-offerings]'))">
-            <i class="fas fa-table-list"></i> Course Offerings
-          </button>
-          <button class="btn btn-primary btn-sm" onclick="showPage('reg-rules', document.querySelector('[onclick*=reg-rules]'))">
-            <i class="fas fa-sliders"></i> Reg. Controls
-          </button>
-        </div>
+  <div class="sidebar-divider"></div>
+  <span class="sidebar-section-label">Scheduling</span>
+  <a class="sidebar-link" onclick="showPage('term-setup',this)">
+    <i class="fas fa-calendar-days"></i> Term &amp; Calendar
+  </a>
+  <a class="sidebar-link" onclick="showPage('course-offerings',this)">
+    <i class="fas fa-table-list"></i> Course Offerings
+  </a>
+  <a class="sidebar-link" onclick="showPage('room-assignment',this)">
+    <i class="fas fa-door-open"></i> Room Assignment
+  </a>
+
+  <div class="sidebar-divider"></div>
+  <span class="sidebar-section-label">Curriculum</span>
+  <a class="sidebar-link" onclick="showPage('prospectus-review',this)">
+    <i class="fas fa-file-circle-check"></i> Prospectus Review
+    <span class="sidebar-badge amber" id="badge-prospectus">3</span>
+  </a>
+  <a class="sidebar-link" onclick="showPage('dept-submissions',this)">
+    <i class="fas fa-inbox"></i> Dept. Submissions
+    <span class="sidebar-badge" id="badge-submissions">2</span>
+  </a>
+
+  <div class="sidebar-divider"></div>
+  <span class="sidebar-section-label">Students</span>
+  <a class="sidebar-link" onclick="showPage('student-records',this)">
+    <i class="fas fa-users"></i> Student Records
+  </a>
+  <a class="sidebar-link" onclick="showPage('enrollment-monitor',this)">
+    <i class="fas fa-chart-line"></i> Enrollment Monitor
+    <span class="sidebar-badge green" id="badge-enroll">Live</span>
+  </a>
+  <a class="sidebar-link" onclick="showPage('holds',this)">
+    <i class="fas fa-lock"></i> Registration Holds
+    <span class="sidebar-badge amber" id="badge-holds">4</span>
+  </a>
+
+  <div class="sidebar-divider"></div>
+  <span class="sidebar-section-label">Control</span>
+  <a class="sidebar-link" onclick="showPage('reg-rules',this)">
+    <i class="fas fa-sliders"></i> Reg. Rules &amp; Controls
+  </a>
+
+  <div class="sidebar-divider"></div>
+  <span class="sidebar-section-label">Insights</span>
+  <a class="sidebar-link" onclick="showPage('reports',this)">
+    <i class="fas fa-chart-bar"></i> Reports &amp; Analytics
+  </a>
+  <a class="sidebar-link" onclick="showPage('audit',this)">
+    <i class="fas fa-clipboard-list"></i> Audit Trail
+  </a>
+
+  <div class="sidebar-divider"></div>
+  <span class="sidebar-section-label">Other Portals</span>
+  <a class="sidebar-link" onclick="showToast('Opens Adviser Portal','info')">
+    <i class="fas fa-chalkboard-user"></i> Adviser Portal
+    <i class="fas fa-arrow-up-right-from-square" style="margin-left:auto;font-size:10px;opacity:.5"></i>
+  </a>
+  <a class="sidebar-link" onclick="showToast('Opens Assessment Portal','info')">
+    <i class="fas fa-coins"></i> Assessment Portal
+    <i class="fas fa-arrow-up-right-from-square" style="margin-left:auto;font-size:10px;opacity:.5"></i>
+  </a>
+
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ══════════════════════════════════
+     DASHBOARD
+══════════════════════════════════ -->
+<div class="page active" id="page-dashboard">
+  <div class="page-hd">
+    <div class="page-hd-left">
+      <h1>Registrar Dashboard</h1>
+      <p id="dashSubtitle">A.Y. 2025–2026, 1st Semester &nbsp;·&nbsp; Registration: <strong style="color:var(--green)">Open</strong></p>
+    </div>
+    <div class="page-hd-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showPage('course-offerings',document.querySelector('[onclick*=course-offerings]'))"><i class="fas fa-table-list"></i> Course Offerings</button>
+      <button class="btn btn-primary btn-sm" onclick="showPage('reg-rules',document.querySelector('[onclick*=reg-rules]'))"><i class="fas fa-sliders"></i> Reg. Controls</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-icon" style="background:var(--cr-pale)">🎓</div>
+      <div><div class="kpi-num">3,241</div><div class="kpi-lbl">Total Enrolled</div></div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-icon" style="background:var(--green-pale)">✅</div>
+      <div><div class="kpi-num">2,887</div><div class="kpi-lbl">Fully Enrolled</div></div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-icon" style="background:var(--amber-pale)">⏳</div>
+      <div><div class="kpi-num">354</div><div class="kpi-lbl">Pending / In Progress</div></div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-icon" style="background:var(--blue-pale)">📋</div>
+      <div><div class="kpi-num" id="kpi-prospectus">3</div><div class="kpi-lbl">Pending Prospectus</div></div>
+    </div>
+    <div class="kpi-card" style="">
+      <div class="kpi-icon" style="background:#f5f3ff">🔒</div>
+      <div><div class="kpi-num">4</div><div class="kpi-lbl">Active Holds</div></div>
+    </div>
+  </div>
+
+  <div class="grid-2 mb-6">
+    <!-- Prospectus pending quick list -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-file-circle-check" style="color:var(--cr)"></i> Pending Prospectus from Deans</div>
+        <button class="btn btn-ghost btn-sm" onclick="showPage('prospectus-review',document.querySelector('[onclick*=prospectus-review]'))">Review All →</button>
       </div>
-
-      <!-- STAT CARDS -->
-      <div class="stat-grid">
-        <div class="stat-card ok-card">
-          <div class="stat-label">Registration Status</div>
-          <div class="stat-value" style="color:var(--success);font-size:1rem;font-weight:800;">OPEN</div>
-          <div class="stat-sub">Closes Jun 30, 2025</div>
-          <i class="fas fa-circle-check stat-icon" style="opacity:0.3;color:var(--success)"></i>
-        </div>
-        <div class="stat-card warn-card">
-          <div class="stat-label">Schedule Completeness</div>
-          <div class="stat-value">78%</div>
-          <div class="stat-sub">247 of 317 sections published</div>
-          <i class="fas fa-table-list stat-icon" style="opacity:0.3;color:var(--warning)"></i>
-        </div>
-        <div class="stat-card ok-card">
-          <div class="stat-label">Curriculum Distribution</div>
-          <div class="stat-value">6 / 9</div>
-          <div class="stat-sub">Departments received curriculum</div>
-          <i class="fas fa-bullhorn stat-icon" style="opacity:0.3;color:var(--success)"></i>
-        </div>
-        <div class="stat-card" id="prospectusStatusCard">
-          <div class="stat-label">Prospectus Visibility</div>
-          <div class="stat-value" style="font-size:0.88rem;font-weight:700;color:var(--warning)">Dept. Only</div>
-          <div class="stat-sub">Not yet published to students</div>
-          <i class="fas fa-eye stat-icon" style="opacity:0.3;color:var(--text-muted)"></i>
-        </div>
-      </div>
-
-      <!-- QUICK STATUS GRID -->
-      <div class="grid-2" style="gap:16px;">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="fas fa-building-columns" style="color:var(--crimson);margin-right:6px"></i>Curriculum Per Department</span>
-            <button class="btn btn-ghost btn-sm" onclick="showPage('course-offerings', document.querySelector('[onclick*=course-offerings]'))">View All</button>
-          </div>
-          <div class="card-body" style="padding:0;">
-            <table>
-              <thead><tr><th>Department</th><th>Published</th><th>Secretary Modified</th><th>Status</th></tr></thead>
-              <tbody id="deptStatusTableBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title"><i class="fas fa-sliders" style="color:var(--crimson);margin-right:6px"></i>Active Controls</span>
-            <button class="btn btn-ghost btn-sm" onclick="showPage('reg-rules', document.querySelector('[onclick*=reg-rules]'))">Manage</button>
-          </div>
-          <div class="card-body" style="padding:12px 20px;" id="activeControlsSummary"></div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ══════════════════════════════════
-         TERM & CALENDAR
-    ══════════════════════════════════ -->
-    <div class="page" id="page-term-setup">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Term &amp; Calendar</div>
-          <div class="page-subtitle">Define academic terms, enrollment windows, and key dates</div>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="openModal('addTermModal')"><i class="fas fa-plus"></i> Add Term</button>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header"><span class="card-title">Active Term</span></div>
-          <div class="card-body">
-            <div class="section-divider" style="margin-top:0">A.Y. 2025–2026, 1st Semester</div>
-            <div class="timeline">
-              <div class="timeline-item done"><div class="timeline-date">Jun 1, 2025</div><div class="timeline-label">Pre-enrollment Opens</div></div>
-              <div class="timeline-item done"><div class="timeline-date">Jun 10, 2025</div><div class="timeline-label">Schedule Published</div></div>
-              <div class="timeline-item active"><div class="timeline-date">Jun 15 – Jun 30, 2025</div><div class="timeline-label">Enrollment Window</div><div class="timeline-sub">Open to all students</div></div>
-              <div class="timeline-item upcoming"><div class="timeline-date">Jul 7, 2025</div><div class="timeline-label">Classes Begin</div></div>
-              <div class="timeline-item upcoming"><div class="timeline-date">Oct 31, 2025</div><div class="timeline-label">Grade Encoding Closes</div></div>
-              <div class="timeline-item upcoming"><div class="timeline-date">Nov 15, 2025</div><div class="timeline-label">Semester Ends</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span class="card-title">Upcoming Terms</span></div>
-          <div class="card-body">
-            <div class="section-divider" style="margin-top:0">A.Y. 2025–2026, 2nd Semester</div>
-            <div class="timeline">
-              <div class="timeline-item upcoming"><div class="timeline-date">Nov 20, 2025</div><div class="timeline-label">Pre-enrollment Opens</div></div>
-              <div class="timeline-item upcoming"><div class="timeline-date">Dec 1–15, 2025</div><div class="timeline-label">Enrollment Window</div></div>
-              <div class="timeline-item upcoming"><div class="timeline-date">Jan 5, 2026</div><div class="timeline-label">Classes Begin</div></div>
-            </div>
-          </div>
-        </div>
+      <div class="card-body" style="padding:0">
+        <div id="dashProspectusList"></div>
       </div>
     </div>
-
-
-    <!-- ══════════════════════════════════
-         COURSE OFFERINGS (redesigned)
-    ══════════════════════════════════ -->
-    <div class="page" id="page-course-offerings">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Course Offerings</div>
-          <div class="page-subtitle">Manage and distribute curriculum per department. Secretaries build their prospectus from published versions.</div>
-        </div>
-        <div class="flex gap-2">
-          <button class="btn btn-outline btn-sm" onclick="openModal('pullCurriculumModal')">
-            <i class="fas fa-file-import"></i> Pull from Previous Year
-          </button>
-          <button class="btn btn-primary btn-sm" onclick="openModal('publishAllModal')">
-            <i class="fas fa-bullhorn"></i> Publish to All Departments
-          </button>
-        </div>
+    <!-- Enrollment by college -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-building-columns" style="color:var(--cr)"></i> Enrollment by College</div>
       </div>
-
-      <!-- Search + filter -->
-      <div class="filter-bar" style="margin-bottom:16px;">
-        <div class="search-wrap">
-          <i class="fas fa-search"></i>
-          <input class="form-control" style="width:260px" placeholder="Search department…" oninput="filterDeptCards(this.value)">
-        </div>
-        <select class="form-control" style="width:180px" onchange="filterDeptCardsByStatus(this.value)">
-          <option value="">All Status</option>
-          <option value="published">Published</option>
-          <option value="draft">Draft</option>
-          <option value="modified">Secretary Modified</option>
-          <option value="unpublished">Not Published</option>
-        </select>
+      <div class="card-body">
+        <div class="bar-chart" id="dashEnrollChart"></div>
       </div>
-
-      <div class="dept-curriculum-grid" id="deptCurriculumGrid"></div>
     </div>
+  </div>
+
+  <!-- Recent activity -->
+  <div class="card">
+    <div class="card-header"><div class="card-title"><i class="fas fa-clock" style="color:var(--cr)"></i> Recent Activity</div></div>
+    <div class="card-body" style="padding:0"><div id="dashActivityFeed"></div></div>
+  </div>
+</div>
 
 
-    <!-- ══════════════════════════════════
-         ROOM ASSIGNMENT
-    ══════════════════════════════════ -->
-    <div class="page" id="page-room-assignment">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Room Assignment</div>
-          <div class="page-subtitle">University-managed rooms and utilization. Department-controlled rooms are managed by their Secretary.</div>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="openModal('addRoomModal')"><i class="fas fa-plus"></i> Add Room</button>
-      </div>
-      <div class="filter-bar" style="margin-bottom:16px;">
-        <div class="search-wrap">
-          <i class="fas fa-search"></i>
-          <input class="form-control" style="width:220px" placeholder="Search room…" oninput="filterCourses(this.value)">
-        </div>
-        <select class="form-control" style="width:160px">
-          <option>All Buildings</option>
-          <option>CAS Building</option>
-          <option>Engineering Hall</option>
-          <option>Main Building</option>
-          <option>Science Complex</option>
-        </select>
-      </div>
-      <div class="room-grid" id="roomGrid"></div>
+<!-- ══════════════════════════════════
+     TERM & CALENDAR
+══════════════════════════════════ -->
+<div class="page" id="page-term-setup">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Term &amp; Calendar</h1><p>Define academic terms, enrollment windows, and key dates.</p></div>
+    <div class="page-hd-actions">
+      <button class="btn btn-primary btn-sm" onclick="openModal('addTermModal')"><i class="fas fa-plus"></i> Add Term</button>
     </div>
-
-
-    <!-- ══════════════════════════════════
-         REG. RULES & CONTROLS (redesigned)
-    ══════════════════════════════════ -->
-    <div class="page" id="page-reg-rules">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Reg. Rules &amp; Controls</div>
-          <div class="page-subtitle">Global enrollment toggles. Changes take effect immediately across all portals.</div>
-        </div>
-      </div>
-
-      <div class="grid-2" style="gap:16px;align-items:start;">
-
-        <!-- LEFT COLUMN -->
-        <div style="display:flex;flex-direction:column;gap:16px;">
-
-          <!-- Enrollment & Course Access -->
-          <div class="card">
-            <div class="card-header">
-              <span class="card-title"><i class="fas fa-door-open" style="color:var(--crimson);margin-right:6px"></i>Enrollment &amp; Course Access</span>
-            </div>
-            <div class="card-body">
-              <div class="rules-section" style="margin-bottom:0;">
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Global Enrollment Lock</div>
-                    <div class="toggle-label-sub">Prevents all students from submitting enrollment forms. Use during system maintenance or between registration periods.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-enrollment-lock" onchange="onToggleChange('enrollment-lock', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Prerequisite Override</div>
-                    <div class="toggle-label-sub">Allows advisers to manually enroll students in subjects they have not satisfied prerequisites for. Use sparingly — requires audit justification.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-prereq-override" onchange="onToggleChange('prereq-override', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Capacity Buffer</div>
-                    <div class="toggle-label-sub">Allows sections to exceed their stated cap by up to 10% before hard-blocking enrollment.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-cap-buffer" checked onchange="onToggleChange('cap-buffer', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Curriculum & Prospectus -->
-          <div class="card">
-            <div class="card-header">
-              <span class="card-title"><i class="fas fa-book-open" style="color:var(--crimson);margin-right:6px"></i>Curriculum &amp; Prospectus</span>
-            </div>
-            <div class="card-body">
-              <div class="rules-section" style="margin-bottom:0;">
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Multi-Version Editing</div>
-                    <div class="toggle-label-sub">Allows Secretaries to edit a future curriculum version (e.g., planning for next A.Y.) while the current version remains locked for the active semester. Both versions are visible simultaneously.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-multiversion" checked onchange="onToggleChange('multiversion', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-                <div class="toggle-row" id="toggle-row-publish-dept">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Publish to College Departments</div>
-                    <div class="toggle-label-sub">Releases the curriculum to the Dean and Secretary of each department. Secretaries may begin building their prospectus once this is enabled.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-publish-dept" checked onchange="onPublishDeptChange(this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-                <div class="toggle-row locked-dependency" id="toggle-row-publish-student">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Publish to Student Portal</div>
-                    <div class="toggle-label-sub">Makes the finalized prospectus visible to students. Must publish to College Departments first.</div>
-                    <div class="lock-notice" id="studentPublishLockNotice" style="display:none;">
-                      <i class="fas fa-lock" style="font-size:0.65rem;"></i> Requires "Publish to College Departments" to be enabled first.
-                    </div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-publish-student" onchange="onToggleChange('publish-student', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /left column -->
-
-        <!-- RIGHT COLUMN -->
-        <div style="display:flex;flex-direction:column;gap:16px;">
-
-          <!-- Grade & Assessment -->
-          <div class="card">
-            <div class="card-header">
-              <span class="card-title"><i class="fas fa-graduation-cap" style="color:var(--crimson);margin-right:6px"></i>Grade &amp; Assessment</span>
-            </div>
-            <div class="card-body">
-              <div class="rules-section" style="margin-bottom:0;">
-
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Grade Encoding Window</div>
-                    <div class="toggle-label-sub">Sets the period during which faculty may submit grades. Automatically closes on the end date.</div>
-                    <div class="date-window-row">
-                      <label>Opens</label>
-                      <input type="date" id="grade-window-open" value="2025-10-01">
-                      <label>Closes</label>
-                      <input type="date" id="grade-window-close" value="2025-10-31">
-                    </div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-grade-window" checked onchange="onToggleChange('grade-window', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Late Grade Submission Lock</div>
-                    <div class="toggle-label-sub">Prevents faculty from submitting grades after the encoding window closes, even manually. The Registrar must re-open the window for exceptions.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-late-grade-lock" checked onchange="onToggleChange('late-grade-lock', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">INC Resolution Period</div>
-                    <div class="toggle-label-sub">Separate window for resolving Incomplete grades from the previous semester. Independent of the regular grade encoding window.</div>
-                    <div class="date-window-row">
-                      <label>Opens</label>
-                      <input type="date" id="inc-window-open" value="2025-11-01">
-                      <label>Closes</label>
-                      <input type="date" id="inc-window-close" value="2025-11-30">
-                    </div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-inc-period" onchange="onToggleChange('inc-period', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Release Grades to Student Portal</div>
-                    <div class="toggle-label-sub">Controls whether students can view their finalized grades. Grades may be internally finalized before this is enabled.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-release-grades" onchange="onToggleChange('release-grades', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Grade Appeal Window</div>
-                    <div class="toggle-label-sub">Opens the formal period where students may contest a grade. Closes automatically on end date.</div>
-                    <div class="date-window-row">
-                      <label>Opens</label>
-                      <input type="date" id="appeal-window-open" value="2025-11-05">
-                      <label>Closes</label>
-                      <input type="date" id="appeal-window-close" value="2025-11-15">
-                    </div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-grade-appeal" onchange="onToggleChange('grade-appeal', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Assessment Office Access</div>
-                    <div class="toggle-label-sub">Locks or unlocks the Assessment Office's ability to generate Statements of Account. Disable during fee structure finalization.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-assessment-access" checked onchange="onToggleChange('assessment-access', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-
-                <div class="toggle-row">
-                  <div class="toggle-info">
-                    <div class="toggle-label-main">Fee Schedule Publish</div>
-                    <div class="toggle-label-sub">Controls whether the current semester's fee table is visible to the Assessment Office. Publish only after the Registrar has finalized the fee structure.</div>
-                  </div>
-                  <label class="toggle"><input type="checkbox" id="toggle-fee-schedule" checked onchange="onToggleChange('fee-schedule', this.checked)"><span class="toggle-slider"></span></label>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /right column -->
-
-      </div><!-- /grid-2 -->
-    </div>
-
-
-    <!-- ══════════════════════════════════
-         REPORTS
-    ══════════════════════════════════ -->
-    <div class="page" id="page-reports">
-      <div class="page-header">
-        <div class="page-title">Reports &amp; Analytics</div>
-      </div>
-      <div class="grid-2" style="gap:16px;">
-        <div class="card">
-          <div class="card-header"><span class="card-title">Enrollment by Department</span></div>
-          <div class="card-body"><div id="deptEnrollChart"></div></div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span class="card-title">Room Utilization</span></div>
-          <div class="card-body"><div id="roomUtilChart"></div></div>
-        </div>
-        <div class="card col-span-2">
-          <div class="card-header"><span class="card-title">Enrollment Trend</span></div>
-          <div class="card-body" style="height:200px"><canvas id="trendChart"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Active Term</div></div>
+      <div class="card-body">
+        <div class="section-divider" style="margin-top:0">A.Y. 2025–2026, 1st Semester</div>
+        <div class="timeline">
+          <div class="timeline-item done"><div class="timeline-date">Jun 1, 2025</div><div class="timeline-label">Pre-enrollment Opens</div></div>
+          <div class="timeline-item done"><div class="timeline-date">Jun 10, 2025</div><div class="timeline-label">Schedule Published</div></div>
+          <div class="timeline-item active"><div class="timeline-date">Jun 15 – Jun 30, 2025</div><div class="timeline-label">Enrollment Window</div><div class="timeline-sub">Open to all students</div></div>
+          <div class="timeline-item upcoming"><div class="timeline-date">Jul 7, 2025</div><div class="timeline-label">Classes Begin</div></div>
+          <div class="timeline-item upcoming"><div class="timeline-date">Oct 31, 2025</div><div class="timeline-label">Grade Encoding Closes</div></div>
+          <div class="timeline-item upcoming"><div class="timeline-date">Nov 15, 2025</div><div class="timeline-label">Semester Ends</div></div>
         </div>
       </div>
     </div>
-
-
-    <!-- ══════════════════════════════════
-         AUDIT TRAIL
-    ══════════════════════════════════ -->
-    <div class="page" id="page-audit">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Audit Trail</div>
-          <div class="page-subtitle">Read-only log of all registrar actions this term.</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Upcoming Terms</div></div>
+      <div class="card-body">
+        <div class="section-divider" style="margin-top:0">A.Y. 2025–2026, 2nd Semester</div>
+        <div class="timeline">
+          <div class="timeline-item upcoming"><div class="timeline-date">Nov 20, 2025</div><div class="timeline-label">Pre-enrollment Opens</div></div>
+          <div class="timeline-item upcoming"><div class="timeline-date">Dec 1–15, 2025</div><div class="timeline-label">Enrollment Window</div></div>
+          <div class="timeline-item upcoming"><div class="timeline-date">Jan 5, 2026</div><div class="timeline-label">Classes Begin</div></div>
         </div>
-        <button class="btn btn-ghost btn-sm" onclick="alert('Export as CSV')"><i class="fas fa-download"></i> Export CSV</button>
       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     COURSE OFFERINGS
+══════════════════════════════════ -->
+<div class="page" id="page-course-offerings">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Course Offerings</h1><p>Manage and distribute curriculum per department.</p></div>
+    <div class="page-hd-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openModal('pullCurriculumModal')"><i class="fas fa-file-import"></i> Pull from Previous Year</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('publishAllModal')"><i class="fas fa-bullhorn"></i> Publish to All Departments</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search department or subject…" oninput="filterCourseOfferings(this.value)"></div>
+    <select class="filter-select" onchange="filterCourseOfferingsByStatus(this.value)">
+      <option value="">All Status</option>
+      <option value="published">Published</option>
+      <option value="draft">Draft</option>
+      <option value="modified">Secretary Modified</option>
+      <option value="unpublished">Not Published</option>
+    </select>
+    <span class="toolbar-spacer"></span>
+    <span style="font-size:12px;color:var(--muted)" id="deptCount">9 departments</span>
+  </div>
+  <div id="deptCurriculumGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px"></div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     ROOM ASSIGNMENT
+══════════════════════════════════ -->
+<div class="page" id="page-room-assignment">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Room Assignment</h1><p>University-managed rooms and utilization.</p></div>
+    <div class="page-hd-actions">
+      <button class="btn btn-primary btn-sm" onclick="openModal('addRoomModal')"><i class="fas fa-plus"></i> Add Room</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search room…" oninput="filterRooms(this.value)"></div>
+    <select class="filter-select">
+      <option>All Buildings</option>
+      <option>CAS Building</option>
+      <option>Engineering Hall</option>
+      <option>Main Building</option>
+      <option>Science Complex</option>
+    </select>
+  </div>
+  <div class="room-grid" id="roomGrid"></div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PROSPECTUS REVIEW  ← NEW
+══════════════════════════════════ -->
+<div class="page" id="page-prospectus-review">
+  <div class="page-hd">
+    <div class="page-hd-left">
+      <h1>Prospectus Review</h1>
+      <p>Curriculum drafts endorsed by College Deans. Activate, return for revision, or archive.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-blue" style="margin-bottom:18px">
+    <i class="fas fa-circle-info"></i>
+    <span>These prospectus drafts have been <strong>endorsed by a College Dean</strong> and are awaiting your final activation. Activating a prospectus makes it the official curriculum for the current term.</span>
+  </div>
+
+  <div id="prospectusList"></div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     DEPT SUBMISSIONS  ← NEW
+══════════════════════════════════ -->
+<div class="page" id="page-dept-submissions">
+  <div class="page-hd">
+    <div class="page-hd-left">
+      <h1>Department Submissions</h1>
+      <p>Faculty loading sheets and schedule submissions from department heads and secretaries, pending registrar review.</p>
+    </div>
+    <div class="page-hd-actions">
+      <button class="btn btn-success btn-sm" onclick="approveAllSubmissions()"><i class="fas fa-check-double"></i> Approve All Pending</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search department…" oninput="filterSubmissions(this.value)"></div>
+    <select class="filter-select" id="submissionFilter" onchange="renderSubmissionsTable()">
+      <option value="">All</option>
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="returned">Returned</option>
+    </select>
+    <span class="toolbar-spacer"></span>
+    <span style="font-size:12px;color:var(--muted)" id="submissionCount"></span>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>Department</th><th>Type</th><th>Submitted By</th><th>Submitted</th>
+          <th>Items</th><th>Status</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="submissionsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     STUDENT RECORDS  ← NEW
+══════════════════════════════════ -->
+<div class="page" id="page-student-records">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Student Records</h1><p>Search, view, and manage student enrollment records and transcripts.</p></div>
+    <div class="page-hd-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showToast('Export as CSV queued.','info')"><i class="fas fa-download"></i> Export</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="studentSearch" placeholder="Search name or student ID…" oninput="renderStudentTable()"></div>
+    <select class="filter-select" id="studentStatusFilter" onchange="renderStudentTable()">
+      <option value="">All Status</option>
+      <option value="enrolled">Enrolled</option>
+      <option value="pending">Pending</option>
+      <option value="hold">On Hold</option>
+      <option value="irregular">Irregular</option>
+    </select>
+    <select class="filter-select" id="studentCollegeFilter" onchange="renderStudentTable()">
+      <option value="">All Colleges</option>
+      <option value="CCS">CCS</option>
+      <option value="CAS">CAS</option>
+      <option value="COE">COE</option>
+      <option value="CBA">CBA</option>
+      <option value="CED">CED</option>
+    </select>
+    <span class="toolbar-spacer"></span>
+    <span style="font-size:12px;color:var(--muted)" id="studentCount"></span>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>Student</th><th>College</th><th>Year</th><th>Program</th>
+          <th>Units Enrolled</th><th>Status</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="studentTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     ENROLLMENT MONITOR  ← NEW
+══════════════════════════════════ -->
+<div class="page" id="page-enrollment-monitor">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Enrollment Monitor</h1><p>Live enrollment counts per college and section. Auto-refreshes every 60 seconds.</p></div>
+    <div class="page-hd-actions">
+      <span class="badge badge-green" style="font-size:12px;padding:5px 10px"><i class="fas fa-circle" style="font-size:8px"></i> Live</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card green"><div class="kpi-icon" style="background:var(--green-pale)">📗</div><div><div class="kpi-num">3,241</div><div class="kpi-lbl">Total Enrolled</div></div></div>
+    <div class="kpi-card amber"><div class="kpi-icon" style="background:var(--amber-pale)">⏳</div><div><div class="kpi-num">354</div><div class="kpi-lbl">Pending Enrollment</div></div></div>
+    <div class="kpi-card blue"><div class="kpi-icon" style="background:var(--blue-pale)">📊</div><div><div class="kpi-num">78%</div><div class="kpi-lbl">Schedule Completeness</div></div></div>
+    <div class="kpi-card"><div class="kpi-icon" style="background:var(--cr-pale)">🏫</div><div><div class="kpi-num">317</div><div class="kpi-lbl">Total Sections</div></div></div>
+  </div>
+
+  <div class="grid-2 mb-6">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Enrollment by College</div></div>
+      <div class="card-body"><div class="bar-chart" id="enrollByCollegeChart"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Section Capacity Overview</div></div>
+      <div class="card-body" id="sectionCapOverview"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title">Oversubscribed Sections</div><span class="badge badge-red">5 sections</span></div>
+    <div class="card-body" style="padding:0">
+      <table class="data-table">
+        <thead><tr><th>Subject Code</th><th>Description</th><th>Section</th><th>Enrolled</th><th>Capacity</th><th>Over By</th><th>Department</th></tr></thead>
+        <tbody id="oversubBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     REGISTRATION HOLDS  ← NEW
+══════════════════════════════════ -->
+<div class="page" id="page-holds">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Registration Holds</h1><p>Manage holds placed on student accounts that block enrollment.</p></div>
+    <div class="page-hd-actions">
+      <button class="btn btn-danger btn-sm" onclick="openModal('addHoldModal')"><i class="fas fa-lock"></i> Place New Hold</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="holdSearch" placeholder="Search student or ID…" oninput="renderHoldsTable()"></div>
+    <select class="filter-select" id="holdTypeFilter" onchange="renderHoldsTable()">
+      <option value="">All Types</option>
+      <option value="Financial">Financial</option>
+      <option value="Library">Library</option>
+      <option value="Academic">Academic</option>
+      <option value="Administrative">Administrative</option>
+    </select>
+    <span class="toolbar-spacer"></span>
+    <span style="font-size:12px;color:var(--muted)" id="holdCount"></span>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Student</th><th>Hold Type</th><th>Reason</th><th>Placed By</th><th>Date Placed</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="holdsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     REG. RULES & CONTROLS
+══════════════════════════════════ -->
+<div class="page" id="page-reg-rules">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Reg. Rules &amp; Controls</h1><p>Global enrollment toggles. Changes take effect immediately across all portals.</p></div>
+  </div>
+
+  <div class="grid-2" style="gap:16px;align-items:start">
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <!-- Enrollment & Course Access -->
       <div class="card">
-        <div class="card-header">
-          <span class="card-title">Activity Log</span>
-          <div class="filter-bar" style="margin:0">
-            <div class="search-wrap">
-              <i class="fas fa-search"></i>
-              <input class="form-control" style="width:220px" placeholder="Search log…" oninput="filterAuditLog(this.value)">
+        <div class="card-header"><div class="card-title"><i class="fas fa-door-open" style="color:var(--cr);margin-right:6px"></i>Enrollment &amp; Course Access</div></div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Global Enrollment Lock</div>
+              <div class="toggle-label-sub">Prevents all students from submitting enrollment forms. Use during maintenance or between periods.</div>
             </div>
+            <label class="toggle"><input type="checkbox" id="toggle-enrollment-lock" onchange="onToggleChange('enrollment-lock',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Prerequisite Override</div>
+              <div class="toggle-label-sub">Allows advisers to enroll students in subjects without satisfied prerequisites. Requires audit justification.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="toggle-prereq-override" onchange="onToggleChange('prereq-override',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Capacity Buffer</div>
+              <div class="toggle-label-sub">Allows sections to exceed stated cap by up to 10% before hard-blocking enrollment.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="toggle-cap-buffer" checked onchange="onToggleChange('cap-buffer',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Department Submissions Open</div>
+              <div class="toggle-label-sub">Allows Deans and Secretaries to submit faculty loads and prospectus drafts to the Registrar for review.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="toggle-dept-submissions" checked onchange="onToggleChange('dept-submissions',this.checked)"><span class="toggle-slider"></span></label>
           </div>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Timestamp</th><th>Action</th><th>Entity</th><th>User</th><th>Role</th><th>Detail</th></tr></thead>
-            <tbody id="auditLogBody"></tbody>
-          </table>
+      </div>
+
+      <!-- Curriculum & Prospectus -->
+      <div class="card">
+        <div class="card-header"><div class="card-title"><i class="fas fa-book-open" style="color:var(--cr);margin-right:6px"></i>Curriculum &amp; Prospectus</div></div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Multi-Version Editing</div>
+              <div class="toggle-label-sub">Allows Secretaries to edit a future curriculum version while the current version remains locked.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="toggle-multiversion" checked onchange="onToggleChange('multiversion',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Publish to College Departments</div>
+              <div class="toggle-label-sub">Releases curriculum to Dean and Secretary of each department. Secretaries may begin building their prospectus once enabled.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="toggle-publish-dept" checked onchange="onPublishDeptChange(this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row" id="toggle-row-publish-student">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Publish to Student Portal</div>
+              <div class="toggle-label-sub">Makes the finalized prospectus visible to students. Must publish to College Departments first.</div>
+              <div class="lock-notice" id="studentPublishLockNotice" style="display:none"><i class="fas fa-lock" style="font-size:10px"></i> Requires "Publish to College Departments" enabled first.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="toggle-publish-student" onchange="onToggleChange('publish-student',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
         </div>
       </div>
     </div>
 
-  </main>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <!-- Grade & Assessment -->
+      <div class="card">
+        <div class="card-header"><div class="card-title"><i class="fas fa-graduation-cap" style="color:var(--cr);margin-right:6px"></i>Grade &amp; Assessment</div></div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Grade Encoding Window</div>
+              <div class="toggle-label-sub">Sets the period during which faculty may submit grades.</div>
+              <div class="date-window-row">
+                <label>Opens</label><input type="date" value="2025-10-01">
+                <label>Closes</label><input type="date" value="2025-10-31">
+              </div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked onchange="onToggleChange('grade-window',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Late Grade Submission Lock</div>
+              <div class="toggle-label-sub">Prevents faculty from submitting grades after the encoding window. Registrar must re-open for exceptions.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked onchange="onToggleChange('late-grade-lock',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">INC Resolution Period</div>
+              <div class="toggle-label-sub">Separate window for resolving Incomplete grades from previous semester.</div>
+              <div class="date-window-row">
+                <label>Opens</label><input type="date" value="2025-11-01">
+                <label>Closes</label><input type="date" value="2025-11-30">
+              </div>
+            </div>
+            <label class="toggle"><input type="checkbox" onchange="onToggleChange('inc-period',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Release Grades to Student Portal</div>
+              <div class="toggle-label-sub">Controls whether students can view their finalized grades.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" onchange="onToggleChange('release-grades',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Grade Appeal Window</div>
+              <div class="toggle-label-sub">Opens the formal period where students may contest a grade.</div>
+              <div class="date-window-row">
+                <label>Opens</label><input type="date" value="2025-11-05">
+                <label>Closes</label><input type="date" value="2025-11-15">
+              </div>
+            </div>
+            <label class="toggle"><input type="checkbox" onchange="onToggleChange('grade-appeal',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Assessment Office Access</div>
+              <div class="toggle-label-sub">Locks or unlocks the Assessment Office's ability to generate Statements of Account.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked onchange="onToggleChange('assessment-access',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label-main">Fee Schedule Publish</div>
+              <div class="toggle-label-sub">Controls whether the current semester's fee table is visible to the Assessment Office.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked onchange="onToggleChange('fee-schedule',this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     REPORTS
+══════════════════════════════════ -->
+<div class="page" id="page-reports">
+  <div class="page-hd"><div class="page-hd-left"><h1>Reports &amp; Analytics</h1><p>Enrollment trends, room utilization, and college-level data.</p></div></div>
+  <div class="grid-2 mb-6">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Enrollment by Department</div></div>
+      <div class="card-body"><div id="deptEnrollChart"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Room Utilization</div></div>
+      <div class="card-body"><div id="roomUtilChart"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Enrollment Trend — Last 4 Semesters</div></div>
+    <div class="card-body">
+      <div class="bar-chart" id="enrollTrendChart"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     AUDIT TRAIL
+══════════════════════════════════ -->
+<div class="page" id="page-audit">
+  <div class="page-hd">
+    <div class="page-hd-left"><h1>Audit Trail</h1><p>Read-only log of all registrar actions this term.</p></div>
+    <div class="page-hd-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showToast('Export as CSV queued.','info')"><i class="fas fa-download"></i> Export CSV</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Activity Log</div>
+      <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search log…" oninput="filterAuditLog(this.value)"></div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Timestamp</th><th>Action</th><th>Entity</th><th>User</th><th>Role</th><th>Detail</th></tr></thead>
+        <tbody id="auditLogBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</main>
 </div><!-- /layout -->
 
 
-<!-- ════════════════════════════════════════════════
+<!-- ════════════════════
      MODALS
-════════════════════════════════════════════════ -->
+════════════════════ -->
 
-<!-- Pull Curriculum Modal -->
-<div class="modal-overlay" id="pullCurriculumModal">
-  <div class="modal modal-md">
-    <div class="modal-header">
-      <span class="modal-title">Pull Curriculum from Previous Year</span>
-      <button class="modal-close" onclick="closeModal('pullCurriculumModal')"><i class="fas fa-xmark"></i></button>
-    </div>
+<!-- Activate Prospectus -->
+<div class="modal-overlay" id="activateModal">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Activate Prospectus</h3><button class="modal-x" onclick="closeModal('activateModal')">×</button></div>
     <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">Source Academic Year</label>
-        <select class="form-control">
-          <option>A.Y. 2024–2025 (1st &amp; 2nd Semester)</option>
-          <option>A.Y. 2023–2024</option>
-          <option>A.Y. 2022–2023</option>
-        </select>
-        <div class="form-hint">This will import all curriculum files from the selected year as a starting point for the current term.</div>
+      <div class="alert alert-green"><i class="fas fa-circle-check"></i><span>Activating this prospectus will make it the <strong>official curriculum</strong> for the current term. All student enrollment and advising will reference this version.</span></div>
+      <div class="form-field"><label>Prospectus</label><input class="form-input" id="activateLabel" readonly></div>
+      <div class="form-field" style="margin-bottom:0"><label>Effectivity Date</label><input type="date" class="form-input" id="activateDate"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('activateModal')">Cancel</button>
+      <button class="btn btn-success" onclick="confirmActivate()"><i class="fas fa-circle-check"></i> Activate Prospectus</button>
+    </div>
+  </div>
+</div>
+
+<!-- Return Prospectus to Dean -->
+<div class="modal-overlay" id="returnToDeanModal">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Return to Dean</h3><button class="modal-x" onclick="closeModal('returnToDeanModal')">×</button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Describe the correction needed. This note will be sent back to the College Dean.</p>
+      <div class="form-field"><label>Prospectus</label><input class="form-input" id="returnDeanLabel" readonly></div>
+      <div class="form-field" style="margin-bottom:0"><label>Correction Note</label><textarea class="form-textarea" id="returnDeanNote" placeholder="e.g. CC 101 units must remain at 3. Revert and re-endorse."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('returnToDeanModal')">Cancel</button>
+      <button class="btn btn-amber" onclick="confirmReturnToDean()"><i class="fas fa-rotate-left"></i> Return to Dean</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Term -->
+<div class="modal-overlay" id="addTermModal">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Add Term</h3><button class="modal-x" onclick="closeModal('addTermModal')">×</button></div>
+    <div class="modal-body">
+      <div class="form-field"><label>Academic Year</label><input class="form-input" placeholder="e.g. 2026–2027"></div>
+      <div class="form-row">
+        <div class="form-field"><label>Semester</label>
+          <select class="form-select"><option>1st Semester</option><option>2nd Semester</option><option>Summer</option></select>
+        </div>
+        <div class="form-field"><label>Enrollment Opens</label><input type="date" class="form-input"></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Target Departments</label>
-        <select class="form-control">
-          <option>All Departments</option>
-          <option>Computer Science</option>
-          <option>Information Technology</option>
-          <option>Engineering</option>
-          <option>Nursing</option>
-          <option>Business Administration</option>
-          <option>Arts &amp; Sciences</option>
-          <option>Education</option>
-        </select>
+      <div class="form-row">
+        <div class="form-field"><label>Enrollment Closes</label><input type="date" class="form-input"></div>
+        <div class="form-field"><label>Classes Begin</label><input type="date" class="form-input"></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Effectivity Date <span style="color:var(--text-muted);font-weight:400">(optional — Registrar level)</span></label>
-        <input type="date" class="form-control">
-        <div class="form-hint">If set, this curriculum version becomes effective on the specified date. Secretaries are required to set their own effectivity date when creating a prospectus from this.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addTermModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="showToast('Term added.','success');closeModal('addTermModal')">Add Term</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pull Curriculum -->
+<div class="modal-overlay" id="pullCurriculumModal">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Pull Curriculum from Previous Year</h3><button class="modal-x" onclick="closeModal('pullCurriculumModal')">×</button></div>
+    <div class="modal-body">
+      <div class="form-field"><label>Source Academic Year</label>
+        <select class="form-select"><option>A.Y. 2024–2025</option><option>A.Y. 2023–2024</option></select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Edit before publishing?</label>
-        <select class="form-control" id="pullEditChoice">
-          <option value="save-draft">Save as Draft — I will review and edit before publishing</option>
-          <option value="publish-now">Pull and publish immediately</option>
-        </select>
+      <div class="form-field"><label>Target Departments</label>
+        <select class="form-select"><option>All Departments</option><option>CCS</option><option>COE</option><option>CBA</option></select>
+      </div>
+      <div class="form-field" style="margin-bottom:0"><label>Action</label>
+        <select class="form-select"><option>Save as Draft — I will review before publishing</option><option>Pull and publish immediately</option></select>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('pullCurriculumModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="confirmPullCurriculum()"><i class="fas fa-file-import"></i> Pull Curriculum</button>
+      <button class="btn btn-primary" onclick="showToast('Curriculum pulled as draft.','success');closeModal('pullCurriculumModal')"><i class="fas fa-file-import"></i> Pull Curriculum</button>
     </div>
   </div>
 </div>
 
-<!-- Edit Curriculum Modal -->
-<div class="modal-overlay" id="editCurriculumModal">
-  <div class="modal modal-lg">
-    <div class="modal-header">
-      <span class="modal-title" id="editCurriculumTitle">Edit Curriculum</span>
-      <button class="modal-close" onclick="closeModal('editCurriculumModal')"><i class="fas fa-xmark"></i></button>
-    </div>
-    <div class="modal-body">
-      <!-- Version tabs -->
-      <div class="version-tabs" id="editVersionTabs">
-        <div class="version-tab active">
-          Current Version <span class="version-locked-badge"><i class="fas fa-lock" style="font-size:0.55rem"></i> LOCKED</span>
-        </div>
-        <div class="version-tab">Future Draft (2026–2027)</div>
-      </div>
-      <div class="section-divider" style="margin-top:0">Subject List</div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Subject Code</th><th>Description</th><th>Units</th><th>Year</th><th>Semester</th><th>Prerequisites</th><th>Type</th><th>Actions</th></tr></thead>
-          <tbody id="editCurriculumBody"></tbody>
-        </table>
-      </div>
-      <button class="btn btn-ghost btn-sm" style="margin-top:12px;" onclick="addCurriculumRow()"><i class="fas fa-plus"></i> Add Subject</button>
-      <div class="form-group" style="margin-top:16px;">
-        <label class="form-label">Effectivity Date <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
-        <input type="date" class="form-control" style="max-width:220px">
-        <div class="form-hint">Note: Secretaries are required to set their own effectivity date when building a prospectus from this curriculum.</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Edit Reason</label>
-        <select class="form-control">
-          <option>BOR Directive</option>
-          <option>CHED Memorandum Order</option>
-          <option>Internal Curriculum Review</option>
-          <option>Error Correction</option>
-          <option>Other</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('editCurriculumModal')">Cancel</button>
-      <button class="btn btn-outline" onclick="saveCurriculumDraft()"><i class="fas fa-floppy-disk"></i> Save Draft</button>
-      <button class="btn btn-primary" onclick="publishSingleDept()"><i class="fas fa-bullhorn"></i> Publish to Department</button>
-    </div>
-  </div>
-</div>
-
-<!-- Dept Live View Panel -->
-<div class="detail-panel" id="deptLivePanel">
-  <div class="detail-panel-header">
-    <span style="font-weight:700;" id="livePanelTitle">Department Curriculum</span>
-    <button class="modal-close" onclick="closeLivePanel()"><i class="fas fa-xmark"></i></button>
-  </div>
-  <div class="detail-panel-body">
-    <div class="section-divider" style="margin-top:0">Published by Registrar</div>
-    <div id="livePanelRegistrarView"></div>
-    <div class="section-divider">Secretary Modifications</div>
-    <div id="livePanelSecretaryView"></div>
-  </div>
-</div>
-
-<!-- Publish All Modal -->
+<!-- Publish All -->
 <div class="modal-overlay" id="publishAllModal">
-  <div class="modal modal-sm">
-    <div class="modal-header">
-      <span class="modal-title">Publish to All Departments</span>
-      <button class="modal-close" onclick="closeModal('publishAllModal')"><i class="fas fa-xmark"></i></button>
-    </div>
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Publish to All Departments</h3><button class="modal-x" onclick="closeModal('publishAllModal')">×</button></div>
     <div class="modal-body">
-      <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">
-        This will publish the current curriculum to the <strong>College Dean and Secretary</strong> of all departments simultaneously. Secretaries will be notified and may begin building their prospectus.
-      </p>
-      <div class="form-group">
-        <label class="form-label">Notify Recipients Via</label>
-        <div class="flex gap-2 flex-wrap mt-1" style="margin-top:6px;">
-          <label style="font-size:0.82rem;"><input type="checkbox" checked> System notification</label>
-          <label style="font-size:0.82rem;"><input type="checkbox" checked> WMSU email</label>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">This will publish the current curriculum to the <strong>College Dean and Secretary</strong> of all departments simultaneously.</p>
+      <div class="form-field" style="margin-bottom:0"><label>Notify Via</label>
+        <div style="display:flex;gap:14px;margin-top:6px">
+          <label style="font-size:13px"><input type="checkbox" checked> System notification</label>
+          <label style="font-size:13px"><input type="checkbox" checked> WMSU email</label>
         </div>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('publishAllModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="confirmPublishAll()"><i class="fas fa-bullhorn"></i> Publish to All</button>
+      <button class="btn btn-primary" onclick="showToast('Published to all departments.','success');closeModal('publishAllModal')"><i class="fas fa-bullhorn"></i> Publish to All</button>
     </div>
   </div>
 </div>
 
-<!-- Add Room Modal -->
+<!-- Add Room -->
 <div class="modal-overlay" id="addRoomModal">
-  <div class="modal modal-sm">
-    <div class="modal-header"><span class="modal-title">Add Room</span><button class="modal-close" onclick="closeModal('addRoomModal')"><i class="fas fa-xmark"></i></button></div>
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Add Room</h3><button class="modal-x" onclick="closeModal('addRoomModal')">×</button></div>
     <div class="modal-body">
-      <div class="form-group"><label class="form-label">Room Name / Number</label><input class="form-control" placeholder="e.g. CAS-301, Lab 204"></div>
+      <div class="form-field"><label>Room Name / Number</label><input class="form-input" placeholder="e.g. CAS-301, Lab 204"></div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Building</label><select class="form-control"><option>CAS Building</option><option>Engineering Hall</option><option>Main Building</option><option>Science Complex</option></select></div>
-        <div class="form-group"><label class="form-label">Type</label><select class="form-control"><option>Lecture Room</option><option>Computer Lab</option><option>Science Lab</option><option>Auditorium</option></select></div>
+        <div class="form-field"><label>Building</label><select class="form-select"><option>CAS Building</option><option>Engineering Hall</option><option>Main Building</option><option>Science Complex</option></select></div>
+        <div class="form-field"><label>Type</label><select class="form-select"><option>Lecture Room</option><option>Computer Lab</option><option>Science Lab</option><option>Auditorium</option></select></div>
       </div>
-      <div class="form-group"><label class="form-label">Capacity</label><input type="number" class="form-control" value="40"></div>
-      <div class="form-group"><label class="form-label">Department-Controlled?</label><select class="form-control"><option>General Purpose (Registrar assigns)</option><option>Department-Controlled</option></select></div>
+      <div class="form-row">
+        <div class="form-field"><label>Capacity</label><input type="number" class="form-input" value="40"></div>
+        <div class="form-field"><label>Controlled By</label><select class="form-select"><option>Registrar (General)</option><option>Department-Controlled</option></select></div>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('addRoomModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="alert('Room added!');closeModal('addRoomModal')">Add Room</button>
+      <button class="btn btn-primary" onclick="showToast('Room added.','success');closeModal('addRoomModal')">Add Room</button>
     </div>
   </div>
 </div>
 
+<!-- Add Hold -->
 <div class="modal-overlay" id="addHoldModal">
-  <div class="modal modal-sm">
-    <div class="modal-header"><span class="modal-title">Add Registration Hold</span><button class="modal-close" onclick="closeModal('addHoldModal')"><i class="fas fa-xmark"></i></button></div>
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Place Registration Hold</h3><button class="modal-x" onclick="closeModal('addHoldModal')">×</button></div>
     <div class="modal-body">
-      <div class="form-group"><label class="form-label">Hold Type</label><select class="form-control"><option>Financial Hold</option><option>Library Hold</option><option>Adviser Hold</option><option>Academic Hold</option><option>Administrative Hold</option></select></div>
-      <div class="form-group"><label class="form-label">Scope</label><select class="form-control" onchange="document.getElementById('holdStudentField').style.display=this.value==='student'?'block':'none'"><option value="university">University-wide</option><option value="department">Department</option><option value="student">Specific Student</option></select></div>
-      <div class="form-group" id="holdStudentField" style="display:none"><label class="form-label">Student ID or Name</label><input class="form-control" placeholder="Search student..."></div>
-      <div class="form-group"><label class="form-label">Reason / Notes</label><textarea class="form-control" placeholder="Reason for hold..."></textarea></div>
+      <div class="form-field"><label>Hold Type</label>
+        <select class="form-select"><option>Financial Hold</option><option>Library Hold</option><option>Academic Hold</option><option>Administrative Hold</option></select>
+      </div>
+      <div class="form-field"><label>Student ID or Name</label><input class="form-input" placeholder="Search student…"></div>
+      <div class="form-field" style="margin-bottom:0"><label>Reason / Notes</label><textarea class="form-textarea" placeholder="Reason for hold…"></textarea></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('addHoldModal')">Cancel</button>
-      <button class="btn btn-danger" onclick="alert('Hold placed!');closeModal('addHoldModal')"><i class="fas fa-lock"></i> Place Hold</button>
+      <button class="btn btn-danger" onclick="showToast('Hold placed on student.','warn');closeModal('addHoldModal')"><i class="fas fa-lock"></i> Place Hold</button>
     </div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="../../../script/registrar.js"></script>
-<script src="../../../script/subject.js"></script>
+<!-- Student Detail Panel -->
+<div class="detail-panel" id="studentPanel">
+  <div class="panel-hd"><h3 id="panelStudentName">Student Detail</h3><button class="panel-close" onclick="closePanel('studentPanel')">×</button></div>
+  <div class="panel-body" id="panelStudentBody"></div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+
+<script>
+// ── MOCK DATA ────────────────────────────────────────
+
+const PROSPECTUS_DATA = [
+  {
+    id:1, title:'BSCS Curriculum v2025.2', college:'CCS',
+    endorsedBy:'Dr. Norma Santos', endorsedRole:'Dean, College of Computing Studies',
+    endorsedAt:'2025-01-15 10:42', status:'pending',
+    changes:[
+      { field:'CC 101 — Units', old:'3', new:'4', type:'change' },
+      { field:'CC 101L — Units', old:'1', new:'0', type:'remove' },
+      { field:'DS 111 — Description', old:'Discrete Structures 1', new:'Discrete Math 1', type:'change' },
+      { field:'MATH 101 — Added', old:'—', new:'Linear Algebra (3 units)', type:'add' },
+    ],
+    history:[
+      { action:'Draft created by Secretary', by:'Ms. Clara Santos', at:'2025-01-08 14:00' },
+      { action:'Reviewed and endorsed by Dean', by:'Dr. Norma Santos', at:'2025-01-15 10:42' },
+    ]
+  },
+  {
+    id:2, title:'BSIT Curriculum v2025.1', college:'CCS',
+    endorsedBy:'Dr. Norma Santos', endorsedRole:'Dean, College of Computing Studies',
+    endorsedAt:'2025-01-16 09:10', status:'pending',
+    changes:[
+      { field:'IT 401 — Title', old:'Systems Integration', new:'Systems Integration & Architecture', type:'change' },
+      { field:'NET 101L — Added', old:'—', new:'Networks Lab (1 unit)', type:'add' },
+    ],
+    history:[
+      { action:'Draft created by Secretary', by:'Prof. Maria Reyes', at:'2025-01-14 08:00' },
+      { action:'Reviewed and endorsed by Dean', by:'Dr. Norma Santos', at:'2025-01-16 09:10' },
+    ]
+  },
+  {
+    id:3, title:'BSEd-Math Curriculum v2025.1', college:'CED',
+    endorsedBy:'Dr. Ricardo Gomez', endorsedRole:'Dean, College of Education',
+    endorsedAt:'2025-01-17 14:30', status:'pending',
+    changes:[
+      { field:'EDUC 305 — Units', old:'2', new:'3', type:'change' },
+      { field:'MATH 201 — Added', old:'—', new:'Differential Equations (3 units)', type:'add' },
+      { field:'EDUC 201L — Removed', old:'Teaching Lab 1 (1 unit)', new:'—', type:'remove' },
+    ],
+    history:[
+      { action:'Draft created by Secretary', by:'Ms. Luisa Tan', at:'2025-01-12 11:00' },
+      { action:'Revised — unit adjustment', by:'Ms. Luisa Tan', at:'2025-01-13 15:30' },
+      { action:'Reviewed and endorsed by Dean', by:'Dr. Ricardo Gomez', at:'2025-01-17 14:30' },
+    ]
+  },
+];
+
+const SUBMISSIONS_DATA = [
+  { id:1, dept:'Computer Science', college:'CCS', type:'Faculty Loading', submittedBy:'Ms. Clara Santos', submittedRole:'Secretary', at:'Jan 14, 10:30 AM', items:18, status:'pending' },
+  { id:2, dept:'Information Technology', college:'CCS', type:'Faculty Loading', submittedBy:'Prof. Maria Reyes', submittedRole:'Secretary', at:'Jan 14, 11:00 AM', items:15, status:'pending' },
+  { id:3, dept:'Civil Engineering', college:'COE', type:'Schedule', submittedBy:'Engr. Paulo Dizon', submittedRole:'Secretary', at:'Jan 12, 09:00 AM', items:22, status:'approved' },
+  { id:4, dept:'Business Administration', college:'CBA', type:'Faculty Loading', submittedBy:'Ms. Rosa Cruz', submittedRole:'Secretary', at:'Jan 11, 02:15 PM', items:12, status:'approved' },
+  { id:5, dept:'Education', college:'CED', type:'Schedule', submittedBy:'Mr. Aldo Santos', submittedRole:'Secretary', at:'Jan 10, 08:45 AM', items:20, status:'returned' },
+];
+
+const STUDENTS_DATA = [
+  { id:'2021-00001', name:'Juan Dela Cruz',    college:'CCS', year:4, program:'BSCS', units:21, status:'enrolled'  },
+  { id:'2022-00145', name:'Maria Santos',       college:'CCS', year:3, program:'BSIT', units:18, status:'enrolled'  },
+  { id:'2023-00312', name:'Pedro Reyes',        college:'COE', year:2, program:'BSCE', units:15, status:'pending'   },
+  { id:'2021-00087', name:'Ana Gonzales',       college:'CBA', year:4, program:'BSBA', units:21, status:'enrolled'  },
+  { id:'2022-00200', name:'Carlo Fernandez',    college:'CED', year:3, program:'BSEd', units:18, status:'irregular' },
+  { id:'2023-00450', name:'Liza Mercado',       college:'CCS', year:2, program:'BSCS', units:0,  status:'hold'      },
+  { id:'2020-00009', name:'Rodrigo Tan',        college:'CCS', year:5, program:'BSIT', units:12, status:'irregular' },
+  { id:'2023-00501', name:'Sofia Villanueva',   college:'CAS', year:2, program:'BSED', units:21, status:'enrolled'  },
+  { id:'2024-00032', name:'Miguel Torres',      college:'COE', year:1, program:'BSEE', units:24, status:'pending'   },
+  { id:'2022-00388', name:'Rachel Aquino',      college:'CBA', year:3, program:'BSA',  units:21, status:'enrolled'  },
+];
+
+const HOLDS_DATA = [
+  { id:1, student:'Liza Mercado',    sid:'2023-00450', type:'Financial', reason:'Unpaid balance ₱12,450', placedBy:'Registrar', date:'Jan 10, 2025', status:'active'   },
+  { id:2, student:'Carlo Fernandez', sid:'2022-00200', type:'Library',   reason:'Unreturned books (3 titles)', placedBy:'Library', date:'Jan 8, 2025',  status:'active'   },
+  { id:3, student:'Rodrigo Tan',     sid:'2020-00009', type:'Academic',  reason:'GPA below 2.0 threshold', placedBy:'Registrar', date:'Jan 5, 2025',  status:'active'   },
+  { id:4, student:'Pedro Reyes',     sid:'2023-00312', type:'Administrative', reason:'Missing graduation clearance docs', placedBy:'Registrar', date:'Jan 3, 2025', status:'active' },
+  { id:5, student:'Ana Gonzales',    sid:'2021-00087', type:'Financial', reason:'Cleared — receipt submitted', placedBy:'Registrar', date:'Dec 20, 2024', status:'lifted' },
+];
+
+const AUDIT_DATA = [
+  { ts:'Jan 16, 9:14 AM', action:'Received', entity:'BSIT Curriculum v2025.1 (endorsed)', user:'Registrar', role:'Super Admin', detail:'Endorsed by Dean Norma Santos' },
+  { ts:'Jan 15, 10:42 AM',action:'Received', entity:'BSCS Curriculum v2025.2 (endorsed)', user:'Registrar', role:'Super Admin', detail:'Endorsed by Dean Norma Santos' },
+  { ts:'Jan 14, 4:02 PM', action:'Published', entity:'CCS Dept. Schedule', user:'Registrar', role:'Super Admin', detail:'24 sections published' },
+  { ts:'Jan 12, 2:45 PM', action:'Approved', entity:'Civil Eng. Faculty Loading', user:'Registrar', role:'Super Admin', detail:'22 items approved' },
+  { ts:'Jan 10, 11:00 AM',action:'Hold Placed', entity:'Liza Mercado (2023-00450)', user:'Registrar', role:'Super Admin', detail:'Financial hold — unpaid balance' },
+  { ts:'Jan 8, 9:00 AM',  action:'Returned', entity:'Education Schedule Submission', user:'Registrar', role:'Super Admin', detail:'Missing room assignments for 5 sections' },
+  { ts:'Jan 5, 3:15 PM',  action:'Activated', entity:'BSBA Curriculum v2024.3', user:'Registrar', role:'Super Admin', detail:'Effective Jan 6, 2025' },
+];
+
+const DEPT_DATA = [
+  { name:'Computer Science', college:'CCS', status:'modified', subjects:48, modifiedBy:'Ms. Clara Santos', lastPublished:'Jan 10, 2025' },
+  { name:'Information Technology', college:'CCS', status:'published', subjects:42, modifiedBy:'—', lastPublished:'Jan 10, 2025' },
+  { name:'Civil Engineering', college:'COE', status:'published', subjects:55, modifiedBy:'—', lastPublished:'Jan 8, 2025' },
+  { name:'Electrical Engineering', college:'COE', status:'draft', subjects:50, modifiedBy:'—', lastPublished:'Dec 20, 2024' },
+  { name:'Business Administration', college:'CBA', status:'published', subjects:38, modifiedBy:'—', lastPublished:'Jan 9, 2025' },
+  { name:'Accountancy', college:'CBA', status:'unpublished', subjects:40, modifiedBy:'—', lastPublished:'—' },
+  { name:'Education (Math)', college:'CED', status:'modified', subjects:45, modifiedBy:'Ms. Luisa Tan', lastPublished:'Jan 7, 2025' },
+  { name:'Nursing', college:'CON', status:'published', subjects:60, modifiedBy:'—', lastPublished:'Jan 10, 2025' },
+  { name:'Arts & Sciences', college:'CAS', status:'draft', subjects:35, modifiedBy:'—', lastPublished:'Dec 15, 2024' },
+];
+
+const RECENT_ACTIVITY = [
+  { action:'BSIT Curriculum v2025.1 received from CCS Dean', detail:'Endorsed by Dr. Norma Santos', time:'Today 09:10', type:'submit' },
+  { action:'BSCS Curriculum v2025.2 received from CCS Dean', detail:'Endorsed by Dr. Norma Santos', time:'Today 08:42', type:'submit' },
+  { action:'Civil Engineering schedule approved', detail:'22 sections approved', time:'Jan 14 16:02', type:'approve' },
+  { action:'Financial hold placed — Liza Mercado', detail:'Unpaid balance ₱12,450', time:'Jan 10 11:00', type:'warn' },
+  { action:'Education schedule returned for revision', detail:'Missing room assignments', time:'Jan 8 09:00', type:'warn' },
+];
+
+const OVERSUBSCRIBED = [
+  { code:'CS 101', desc:'Introduction to Computing', section:'A', enrolled:58, cap:45, dept:'CCS' },
+  { code:'CS Elec 3', desc:'Machine Learning', section:'A', enrolled:41, cap:35, dept:'CCS' },
+  { code:'IT 101', desc:'Fundamentals of IT', section:'B', enrolled:52, cap:45, dept:'CCS' },
+  { code:'GE 101', desc:'Understanding the Self', section:'C', enrolled:67, cap:60, dept:'CAS' },
+  { code:'Math 102', desc:'Calculus 2', section:'A', enrolled:55, cap:50, dept:'COE' },
+];
+
+const ROOMS_DATA = [
+  { name:'CAS-201', building:'CAS Building', type:'Lecture', cap:55, util:95, booked:18, total:20 },
+  { name:'CAS-301', building:'CAS Building', type:'Lecture', cap:45, util:80, booked:16, total:20 },
+  { name:'CAS-302', building:'CAS Building', type:'Lecture', cap:40, util:70, booked:14, total:20 },
+  { name:'Lab-101', building:'CAS Building', type:'Computer Lab', cap:45, util:60, booked:12, total:20 },
+  { name:'Lab-202', building:'CAS Building', type:'Computer Lab', cap:40, util:55, booked:11, total:20 },
+  { name:'Aud-1',   building:'Main Building', type:'Auditorium', cap:200, util:30, booked:6, total:20 },
+  { name:'Sci-101', building:'Science Complex', type:'Science Lab', cap:35, util:50, booked:10, total:20 },
+  { name:'Eng-201', building:'Engineering Hall', type:'Lecture', cap:50, util:85, booked:17, total:20 },
+];
+
+// ── STATE ──
+let activeActivateId = null;
+let activeReturnId = null;
+
+// ── PAGE NAV ──
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  const pg = document.getElementById('page-' + id);
+  if (pg) pg.classList.add('active');
+  if (el) el.classList.add('active');
+  else {
+    document.querySelectorAll('.sidebar-link').forEach(l => {
+      const h = l.getAttribute('onclick') || '';
+      if (h.includes("'" + id + "'")) l.classList.add('active');
+    });
+  }
+  // Render on demand
+  if (id === 'room-assignment') renderRoomGrid();
+  if (id === 'prospectus-review') renderProspectus();
+  if (id === 'dept-submissions') renderSubmissionsTable();
+  if (id === 'student-records') renderStudentTable();
+  if (id === 'enrollment-monitor') renderEnrollMonitor();
+  if (id === 'holds') renderHoldsTable();
+  if (id === 'reports') renderReports();
+  if (id === 'audit') renderAuditLog();
+  if (id === 'course-offerings') renderDeptGrid();
+}
+
+// ── MODAL ──
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function closePanel(id) { document.getElementById(id).classList.remove('open'); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.active').forEach(o => o.classList.remove('active'));
+    document.querySelectorAll('.detail-panel.open').forEach(p => p.classList.remove('open'));
+  }
+});
+
+// ── TOAST ──
+function showToast(msg, type='success') {
+  const icons = { success:'✓', warn:'⚠', error:'✕', info:'ℹ' };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span style="font-weight:800">${icons[type]||'•'}</span> ${msg}`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  // Quick prospectus list
+  const pending = PROSPECTUS_DATA.filter(p => p.status === 'pending');
+  document.getElementById('dashProspectusList').innerHTML = pending.length
+    ? pending.map(p => `
+      <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);align-items:flex-start">
+        <div style="width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;background:var(--amber)"></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${p.title}</div>
+          <div style="font-size:11.5px;color:var(--muted)">Endorsed by ${p.endorsedBy} · ${p.endorsedAt}</div>
+        </div>
+        <button class="btn btn-success btn-xs" onclick="openActivateModal(${p.id},'${p.title}')"><i class="fas fa-circle-check"></i> Activate</button>
+      </div>`).join('')
+    : `<div class="empty-state"><i class="fas fa-inbox"></i><p>No pending prospectus endorsements.</p></div>`;
+
+  // Enroll by college chart
+  const colleges = [
+    { label:'CCS', val:500, max:900 }, { label:'COE', val:423, max:900 },
+    { label:'CBA', val:287, max:900 }, { label:'CED', val:519, max:900 },
+    { label:'CAS', val:181, max:900 }, { label:'CON', val:340, max:900 },
+  ];
+  document.getElementById('dashEnrollChart').innerHTML = colleges.map(c => `
+    <div class="bar-row">
+      <span class="bar-label">${c.label}</span>
+      <div class="bar-track"><div class="bar-fill green" style="width:${Math.round(c.val/c.max*100)}%"></div></div>
+      <span class="bar-val">${c.val}</span>
+    </div>`).join('');
+
+  // Activity feed
+  document.getElementById('dashActivityFeed').innerHTML = RECENT_ACTIVITY.map(a => `
+    <div style="display:flex;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);align-items:flex-start">
+      <div style="width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;background:${a.type==='approve'?'var(--green)':a.type==='warn'?'var(--red)':'var(--blue-lt)'}"></div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${a.action}</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:1px">${a.detail}</div>
+      </div>
+      <div style="font-size:11px;color:var(--muted-lt);white-space:nowrap">${a.time}</div>
+    </div>`).join('');
+}
+
+// ── PROSPECTUS REVIEW ──
+function renderProspectus() {
+  const pending = PROSPECTUS_DATA.filter(p => p.status === 'pending');
+  const list = document.getElementById('prospectusList');
+  if (!list) return;
+
+  if (!pending.length) {
+    list.innerHTML = `<div class="empty-state"><i class="fas fa-file-circle-check"></i><p>No prospectus drafts pending review.</p></div>`;
+    return;
+  }
+
+  list.innerHTML = pending.map(p => {
+    const adds = p.changes.filter(c=>c.type==='add').length;
+    const rems = p.changes.filter(c=>c.type==='remove').length;
+    const chgs = p.changes.filter(c=>c.type==='change').length;
+
+    const diffRows = p.changes.map(c => `
+      <div class="diff-row">
+        <div class="diff-cell ${c.type==='add'?'unchanged':'old'}">
+          <span class="diff-sign ${c.type==='add'?'':'minus'}">${c.type==='add'?' ':'−'}</span>
+          <span>${c.field}: ${c.old}</span>
+        </div>
+        <div class="diff-cell ${c.type==='remove'?'unchanged':'new'}">
+          <span class="diff-sign ${c.type==='remove'?'':'plus'}">${c.type==='remove'?' ':'+'}</span>
+          <span>${c.field}: ${c.new}</span>
+        </div>
+      </div>`).join('');
+
+    const history = p.history.map(h => `
+      <div class="history-entry">
+        <div class="history-dot"></div>
+        <div>
+          <div class="history-action">${h.action}</div>
+          <div class="history-meta">${h.by} · ${h.at}</div>
+        </div>
+      </div>`).join('');
+
+    return `
+    <div class="prospectus-item" id="prosp-${p.id}">
+      <div class="prospectus-item-header">
+        <div>
+          <div class="prospectus-item-title">${p.title} <span class="badge badge-cr" style="margin-left:6px">${p.college}</span></div>
+          <div class="prospectus-item-sub">Endorsed by ${p.endorsedBy} (${p.endorsedRole}) on ${p.endorsedAt}</div>
+        </div>
+        <div class="prospectus-item-actions">
+          <button class="btn btn-amber btn-sm" onclick="openReturnModal(${p.id},'${p.title}')">
+            <i class="fas fa-rotate-left"></i> Return to Dean
+          </button>
+          <button class="btn btn-success btn-sm" onclick="openActivateModal(${p.id},'${p.title}')">
+            <i class="fas fa-circle-check"></i> Activate
+          </button>
+        </div>
+      </div>
+      <div class="prospectus-item-body">
+        <div class="diff-viewer">
+          <div class="diff-header">
+            <span class="diff-header-label">Changes vs. Previous Version</span>
+            <div style="display:flex;gap:6px">
+              ${adds?`<span class="diff-header-badge diff-badge-add">+${adds} added</span>`:''}
+              ${rems?`<span class="diff-header-badge diff-badge-rem">−${rems} removed</span>`:''}
+              ${chgs?`<span class="diff-header-badge diff-badge-chg">~${chgs} changed</span>`:''}
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:6px 14px 4px;border-bottom:1px solid rgba(255,255,255,.06)">
+            <span style="font-size:10px;color:rgba(255,255,255,.3);font-weight:700;text-transform:uppercase;letter-spacing:.5px">Previous</span>
+            <span style="font-size:10px;color:rgba(255,255,255,.3);font-weight:700;text-transform:uppercase;letter-spacing:.5px">Proposed</span>
+          </div>
+          ${diffRows}
+        </div>
+        <div class="history-block">
+          <div class="history-title"><i class="fas fa-clock" style="font-size:10px"></i> Document History</div>
+          ${history}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openActivateModal(id, title) {
+  activeActivateId = id;
+  document.getElementById('activateLabel').value = title;
+  openModal('activateModal');
+}
+function confirmActivate() {
+  const p = PROSPECTUS_DATA.find(x => x.id === activeActivateId);
+  if (p) p.status = 'activated';
+  showToast(`"${p.title}" activated as official curriculum.`, 'success');
+  closeModal('activateModal');
+  renderProspectus();
+  updateBadges();
+}
+
+function openReturnModal(id, title) {
+  activeReturnId = id;
+  document.getElementById('returnDeanLabel').value = title;
+  document.getElementById('returnDeanNote').value = '';
+  openModal('returnToDeanModal');
+}
+function confirmReturnToDean() {
+  const note = document.getElementById('returnDeanNote').value.trim();
+  if (!note) { showToast('Please enter a correction note.', 'error'); return; }
+  const p = PROSPECTUS_DATA.find(x => x.id === activeReturnId);
+  if (p) p.status = 'returned';
+  showToast(`"${p.title}" returned to Dean with correction note.`, 'warn');
+  closeModal('returnToDeanModal');
+  renderProspectus();
+  updateBadges();
+}
+
+function updateBadges() {
+  const n = PROSPECTUS_DATA.filter(p => p.status === 'pending').length;
+  document.getElementById('badge-prospectus').textContent = n || '0';
+  document.getElementById('kpi-prospectus').textContent = n;
+}
+
+// ── DEPT SUBMISSIONS ──
+function renderSubmissionsTable() {
+  const q = (document.getElementById('holdSearch')?.value || '').toLowerCase();
+  const st = document.getElementById('submissionFilter')?.value || '';
+  const filtered = SUBMISSIONS_DATA.filter(s =>
+    (!st || s.status === st) &&
+    (!q || s.dept.toLowerCase().includes(q))
+  );
+  document.getElementById('submissionCount').textContent = `${filtered.length} submissions`;
+
+  const statusBadge = s => ({
+    pending:  `<span class="badge badge-amber">Pending</span>`,
+    approved: `<span class="badge badge-green">Approved</span>`,
+    returned: `<span class="badge badge-red">Returned</span>`,
+  }[s] || `<span class="badge badge-gray">${s}</span>`);
+
+  document.getElementById('submissionsBody').innerHTML = filtered.map(s => `
+    <tr>
+      <td>
+        <div style="font-weight:600">${s.dept}</div>
+        <div style="font-size:11.5px;color:var(--muted)">${s.college}</div>
+      </td>
+      <td><span class="badge badge-blue">${s.type}</span></td>
+      <td>
+        <div style="font-weight:600">${s.submittedBy}</div>
+        <div style="font-size:11.5px;color:var(--muted)">${s.submittedRole}</div>
+      </td>
+      <td style="font-size:12px;color:var(--muted)">${s.at}</td>
+      <td style="font-weight:700">${s.items}</td>
+      <td>${statusBadge(s.status)}</td>
+      <td>
+        ${s.status === 'pending' ? `
+        <div style="display:flex;gap:5px">
+          <button class="btn btn-success btn-xs" onclick="approveSubmission(${s.id})"><i class="fas fa-check"></i> Approve</button>
+          <button class="btn btn-amber btn-xs" onclick="returnSubmission(${s.id})"><i class="fas fa-rotate-left"></i> Return</button>
+        </div>` : `<span style="font-size:12px;color:var(--muted)">${s.status === 'approved' ? '✓ Done' : 'Returned'}</span>`}
+      </td>
+    </tr>`).join('');
+}
+
+function approveSubmission(id) {
+  const s = SUBMISSIONS_DATA.find(x => x.id === id);
+  if (s) s.status = 'approved';
+  showToast(`${s.dept} ${s.type} approved.`, 'success');
+  renderSubmissionsTable();
+  document.getElementById('badge-submissions').textContent =
+    SUBMISSIONS_DATA.filter(x => x.status === 'pending').length;
+}
+function returnSubmission(id) {
+  const s = SUBMISSIONS_DATA.find(x => x.id === id);
+  if (s) s.status = 'returned';
+  showToast(`${s.dept} submission returned for revision.`, 'warn');
+  renderSubmissionsTable();
+}
+function approveAllSubmissions() {
+  SUBMISSIONS_DATA.filter(s => s.status === 'pending').forEach(s => s.status = 'approved');
+  showToast('All pending submissions approved.', 'success');
+  renderSubmissionsTable();
+  document.getElementById('badge-submissions').textContent = '0';
+}
+function filterSubmissions(q) { renderSubmissionsTable(); }
+
+// ── STUDENT RECORDS ──
+function renderStudentTable() {
+  const q = (document.getElementById('studentSearch')?.value || '').toLowerCase();
+  const st = document.getElementById('studentStatusFilter')?.value || '';
+  const col = document.getElementById('studentCollegeFilter')?.value || '';
+  const filtered = STUDENTS_DATA.filter(s =>
+    (!q || s.name.toLowerCase().includes(q) || s.id.includes(q)) &&
+    (!st || s.status === st) &&
+    (!col || s.college === col)
+  );
+  document.getElementById('studentCount').textContent = `${filtered.length} students`;
+
+  const statusBadge = s => ({
+    enrolled:  `<span class="badge badge-green">Enrolled</span>`,
+    pending:   `<span class="badge badge-amber">Pending</span>`,
+    hold:      `<span class="badge badge-red">On Hold</span>`,
+    irregular: `<span class="badge badge-blue">Irregular</span>`,
+  }[s] || `<span class="badge badge-gray">${s}</span>`);
+
+  document.getElementById('studentTableBody').innerHTML = filtered.map(s => `
+    <tr>
+      <td>
+        <button class="student-name-btn" onclick="openStudentPanel('${s.id}')">${s.name}</button>
+        <div class="student-sub">${s.id}</div>
+      </td>
+      <td><span class="badge badge-gray">${s.college}</span></td>
+      <td>Year ${s.year}</td>
+      <td>${s.program}</td>
+      <td style="font-weight:700">${s.units} <span style="font-weight:400;color:var(--muted);font-size:12px">units</span></td>
+      <td>${statusBadge(s.status)}</td>
+      <td>
+        <div style="display:flex;gap:5px">
+          <button class="btn btn-ghost btn-xs" onclick="openStudentPanel('${s.id}')"><i class="fas fa-eye"></i></button>
+          ${s.status !== 'hold' ? `<button class="btn btn-danger btn-xs" onclick="showToast('Hold placed on ${s.name}.','warn')"><i class="fas fa-lock"></i></button>` : `<button class="btn btn-success btn-xs" onclick="showToast('Hold lifted for ${s.name}.','success')"><i class="fas fa-lock-open"></i></button>`}
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function openStudentPanel(id) {
+  const s = STUDENTS_DATA.find(x => x.id === id);
+  document.getElementById('panelStudentName').textContent = s.name;
+  const hold = HOLDS_DATA.find(h => h.sid === id && h.status === 'active');
+  document.getElementById('panelStudentBody').innerHTML = `
+    <div class="panel-section">
+      <div class="panel-sec-title">Student Info</div>
+      <div class="panel-row"><span class="panel-key">Student ID</span><span class="panel-val">${s.id}</span></div>
+      <div class="panel-row"><span class="panel-key">Program</span><span class="panel-val">${s.program}</span></div>
+      <div class="panel-row"><span class="panel-key">College</span><span class="panel-val">${s.college}</span></div>
+      <div class="panel-row"><span class="panel-key">Year Level</span><span class="panel-val">Year ${s.year}</span></div>
+      <div class="panel-row"><span class="panel-key">Units Enrolled</span><span class="panel-val">${s.units}</span></div>
+      <div class="panel-row"><span class="panel-key">Status</span><span class="panel-val">${s.status.charAt(0).toUpperCase()+s.status.slice(1)}</span></div>
+    </div>
+    ${hold ? `
+    <div class="panel-section">
+      <div class="panel-sec-title">Active Hold</div>
+      <div class="alert alert-red"><i class="fas fa-lock"></i><div>
+        <strong>${hold.type} Hold</strong><br>
+        <span style="font-size:12px">${hold.reason}</span><br>
+        <span style="font-size:11px;color:var(--muted)">Placed by ${hold.placedBy} · ${hold.date}</span>
+      </div></div>
+      <button class="btn btn-success btn-sm" style="width:100%" onclick="showToast('Hold lifted for ${s.name}.','success');closePanel('studentPanel')"><i class="fas fa-lock-open"></i> Lift Hold</button>
+    </div>` : ''}
+    <div class="panel-section">
+      <div class="panel-sec-title">Quick Actions</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Transcript generated.','info')"><i class="fas fa-file-alt"></i> Generate Transcript</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Enrollment form printed.','info')"><i class="fas fa-print"></i> Print Enrollment Form</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Certificate of Registration queued.','info')"><i class="fas fa-certificate"></i> Issue COR</button>
+      </div>
+    </div>`;
+  document.getElementById('studentPanel').classList.add('open');
+}
+
+// ── ENROLLMENT MONITOR ──
+function renderEnrollMonitor() {
+  const colleges = [
+    { label:'CCS', val:500 }, { label:'COE', val:423 }, { label:'CBA', val:287 },
+    { label:'CED', val:519 }, { label:'CAS', val:181 }, { label:'CON', val:340 },
+  ];
+  const max = Math.max(...colleges.map(c=>c.val));
+  document.getElementById('enrollByCollegeChart').innerHTML = colleges.map(c => `
+    <div class="bar-row">
+      <span class="bar-label">${c.label}</span>
+      <div class="bar-track"><div class="bar-fill green" style="width:${Math.round(c.val/max*100)}%"></div></div>
+      <span class="bar-val">${c.val}</span>
+    </div>`).join('');
+
+  document.getElementById('sectionCapOverview').innerHTML = `
+    <div class="prog-wrap">
+      <div class="prog-label"><span>Sections Published</span><span style="font-weight:700">247 / 317</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:78%"></div></div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-label"><span>Sections with Conflicts</span><span style="font-weight:700;color:var(--red)">12</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:4%;background:var(--red)"></div></div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-label"><span>Oversubscribed</span><span style="font-weight:700;color:var(--amber)">5</span></div>
+      <div class="prog-bar"><div class="prog-fill amber" style="width:2%"></div></div>
+    </div>
+    <div class="prog-wrap" style="margin-bottom:0">
+      <div class="prog-label"><span>Under-enrolled (&lt;50%)</span><span style="font-weight:700">28</span></div>
+      <div class="prog-bar"><div class="prog-fill blue" style="width:9%"></div></div>
+    </div>`;
+
+  document.getElementById('oversubBody').innerHTML = OVERSUBSCRIBED.map(s => `
+    <tr>
+      <td><strong>${s.code}</strong></td>
+      <td>${s.desc}</td>
+      <td>${s.section}</td>
+      <td style="font-weight:700;color:var(--red)">${s.enrolled}</td>
+      <td>${s.cap}</td>
+      <td><span class="badge badge-red">+${s.enrolled - s.cap}</span></td>
+      <td><span class="badge badge-gray">${s.dept}</span></td>
+    </tr>`).join('');
+}
+
+// ── HOLDS ──
+function renderHoldsTable() {
+  const q = (document.getElementById('holdSearch')?.value || '').toLowerCase();
+  const t = document.getElementById('holdTypeFilter')?.value || '';
+  const filtered = HOLDS_DATA.filter(h =>
+    (!q || h.student.toLowerCase().includes(q) || h.sid.includes(q)) &&
+    (!t || h.type === t)
+  );
+  document.getElementById('holdCount').textContent = `${filtered.length} holds`;
+  document.getElementById('holdsBody').innerHTML = filtered.map(h => `
+    <tr>
+      <td>
+        <div style="font-weight:600">${h.student}</div>
+        <div style="font-size:11.5px;color:var(--muted)">${h.sid}</div>
+      </td>
+      <td><span class="badge ${h.type==='Financial'?'badge-red':h.type==='Library'?'badge-amber':h.type==='Academic'?'badge-blue':'badge-gray'}">${h.type}</span></td>
+      <td style="font-size:12.5px">${h.reason}</td>
+      <td style="font-size:12px;color:var(--muted)">${h.placedBy}</td>
+      <td style="font-size:12px;color:var(--muted)">${h.date}</td>
+      <td>${h.status==='active'?'<span class="badge badge-red">Active</span>':'<span class="badge badge-green">Lifted</span>'}</td>
+      <td>
+        ${h.status==='active'
+          ? `<button class="btn btn-success btn-xs" onclick="liftHold(${h.id})"><i class="fas fa-lock-open"></i> Lift</button>`
+          : `<span style="font-size:12px;color:var(--muted)">—</span>`}
+      </td>
+    </tr>`).join('');
+}
+
+function liftHold(id) {
+  const h = HOLDS_DATA.find(x => x.id === id);
+  if (h) h.status = 'lifted';
+  showToast(`Hold lifted for ${h.student}.`, 'success');
+  renderHoldsTable();
+  document.getElementById('badge-holds').textContent =
+    HOLDS_DATA.filter(x => x.status === 'active').length;
+}
+
+// ── ROOM GRID ──
+function renderRoomGrid() {
+  document.getElementById('roomGrid').innerHTML = ROOMS_DATA.map(r => {
+    const c = r.util >= 90 ? 'var(--red)' : r.util >= 70 ? 'var(--amber)' : 'var(--green)';
+    return `
+      <div class="room-card ${r.util>=90?'high-util':''}" onclick="showToast('${r.name} schedule view — coming soon.','info')">
+        <div class="room-name">${r.name}</div>
+        <div class="room-type">${r.type} · ${r.building}</div>
+        <div style="font-size:12px">Capacity: <strong>${r.cap}</strong></div>
+        <div class="progress-bar-wrap" style="margin-top:8px">
+          <div class="progress-bar" style="width:${r.util}%;background:${c}"></div>
+        </div>
+        <div class="room-util" style="color:${c}">${r.util}% · ${r.booked}/${r.total} slots booked</div>
+      </div>`;
+  }).join('');
+}
+function filterRooms(q) { /* filter rooms by name */ }
+
+// ── DEPT GRID ──
+function renderDeptGrid() {
+  const statusBadge = s => ({
+    published:   `<span class="badge badge-green">Published</span>`,
+    draft:       `<span class="badge badge-gray">Draft</span>`,
+    modified:    `<span class="badge badge-amber">Secretary Modified</span>`,
+    unpublished: `<span class="badge badge-red">Not Published</span>`,
+  }[s] || `<span class="badge badge-gray">${s}</span>`);
+
+  document.getElementById('deptCurriculumGrid').innerHTML = DEPT_DATA.map(d => `
+    <div class="card">
+      <div style="padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:13.5px;font-weight:700;color:var(--text)">${d.name}</div>
+          <div style="font-size:11.5px;color:var(--muted)">${d.college}</div>
+        </div>
+        ${statusBadge(d.status)}
+      </div>
+      ${d.status==='modified'?`<div style="margin:8px 16px;padding:8px 12px;background:var(--amber-pale);border:1px solid #fde68a;border-left:3px solid var(--amber);border-radius:0 6px 6px 0;font-size:11.5px;color:#78350f;display:flex;align-items:center;gap:6px"><i class="fas fa-triangle-exclamation" style="color:var(--amber);flex-shrink:0"></i> Modified by ${d.modifiedBy}</div>`:''}
+      <div style="padding:12px 16px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px"><span>Subjects</span><span style="font-weight:700;color:var(--text)">${d.subjects}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>Last Published</span><span>${d.lastPublished}</span></div>
+      </div>
+      <div style="padding:10px 16px;border-top:1px solid var(--border);background:#fafafa;display:flex;gap:6px;justify-content:flex-end">
+        <button class="btn btn-ghost btn-xs" onclick="showToast('Opening ${d.name} curriculum…','info')"><i class="fas fa-eye"></i> View</button>
+        <button class="btn btn-ghost btn-xs" onclick="showToast('Opening editor for ${d.name}…','info')"><i class="fas fa-pen"></i> Edit</button>
+        <button class="btn btn-primary btn-xs" onclick="showToast('${d.name} published to department.','success')"><i class="fas fa-bullhorn"></i> Publish</button>
+      </div>
+    </div>`).join('');
+}
+function filterCourseOfferings(q) {}
+function filterCourseOfferingsByStatus(v) {}
+
+// ── REPORTS ──
+function renderReports() {
+  const depts = [
+    { label:'Computer Science', val:612 }, { label:'Information Tech.', val:748 },
+    { label:'Engineering', val:423 }, { label:'Education', val:519 },
+    { label:'Business Admin.', val:287 }, { label:'Natural Sciences', val:181 },
+  ];
+  const max = Math.max(...depts.map(d=>d.val));
+  document.getElementById('deptEnrollChart').innerHTML = depts.map(d=>`
+    <div class="bar-row">
+      <span class="bar-label">${d.label}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(d.val/max*100)}%"></div></div>
+      <span class="bar-val">${d.val}</span>
+    </div>`).join('');
+
+  const rooms = [...ROOMS_DATA].sort((a,b)=>b.util-a.util).slice(0,6);
+  document.getElementById('roomUtilChart').innerHTML = rooms.map(r=>{
+    const c = r.util>=90?'var(--red)':r.util>=70?'var(--amber)':'var(--green)';
+    return `<div class="bar-row">
+      <span class="bar-label">${r.name}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${r.util}%;background:${c}"></div></div>
+      <span class="bar-val" style="color:${c}">${r.util}%</span>
+    </div>`;}).join('');
+
+  const trend = [
+    { label:'2023-24 2S', val:2711 }, { label:'2024-25 1S', val:2987 },
+    { label:'2024-25 2S', val:3102 }, { label:'2025-26 1S', val:3241 },
+  ];
+  const tmax = Math.max(...trend.map(t=>t.val));
+  document.getElementById('enrollTrendChart').innerHTML = trend.map(t=>`
+    <div class="bar-row">
+      <span class="bar-label">${t.label}</span>
+      <div class="bar-track"><div class="bar-fill green" style="width:${Math.round(t.val/tmax*100)}%"></div></div>
+      <span class="bar-val">${t.val}</span>
+    </div>`).join('');
+}
+
+// ── AUDIT LOG ──
+function renderAuditLog(q='') {
+  const colors = { Received:'badge-blue', Approved:'badge-green', Activated:'badge-cr', Published:'badge-cr', Returned:'badge-amber', 'Hold Placed':'badge-amber', Denied:'badge-red' };
+  const filtered = q ? AUDIT_DATA.filter(l =>
+    l.action.toLowerCase().includes(q) || l.entity.toLowerCase().includes(q) || l.user.toLowerCase().includes(q)
+  ) : AUDIT_DATA;
+  document.getElementById('auditLogBody').innerHTML = filtered.map(l=>`
+    <tr>
+      <td style="white-space:nowrap;color:var(--muted);font-size:11.5px">${l.ts}</td>
+      <td><span class="badge ${colors[l.action]||'badge-gray'}">${l.action}</span></td>
+      <td style="font-size:13px">${l.entity}</td>
+      <td>${l.user}</td>
+      <td><span class="badge badge-gray">${l.role}</span></td>
+      <td style="font-size:12px;color:var(--muted)">${l.detail}</td>
+    </tr>`).join('');
+}
+function filterAuditLog(q) { renderAuditLog(q.toLowerCase()); }
+
+// ── REG RULES LOGIC ──
+function onToggleChange(key, val) {
+  showToast(`${key.replace(/-/g,' ')} ${val?'enabled':'disabled'}.`, val?'success':'warn');
+}
+function onPublishDeptChange(val) {
+  const notice = document.getElementById('studentPublishLockNotice');
+  const studentToggle = document.getElementById('toggle-publish-student');
+  if (!val) {
+    if (studentToggle) { studentToggle.checked = false; studentToggle.disabled = true; }
+    if (notice) notice.style.display = 'flex';
+  } else {
+    if (studentToggle) studentToggle.disabled = false;
+    if (notice) notice.style.display = 'none';
+  }
+  onToggleChange('publish-dept', val);
+}
+
+// ── TERM LABEL ──
+function updateTermLabel() {
+  const sel = document.getElementById('termSelect');
+  if (sel) {
+    document.getElementById('dashSubtitle').innerHTML =
+      sel.options[sel.selectedIndex].text + ' &nbsp;·&nbsp; Registration: <strong style="color:var(--green)">Open</strong>';
+  }
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  renderDashboard();
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); });
+  });
+});
+</script>
 </body>
 </html>
