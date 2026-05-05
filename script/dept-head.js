@@ -1,6 +1,8 @@
 /* ═══════════════════════════════════════════════════
    WMSU-Ease — Department Head  |  dept-head.js
-   v2 — Auto-scheduling, composite scores, bug fixes
+   v3 — Proper interview eval flow
+   Flow: for_interview → [evaluate] → interviewed
+         (For Review)  → [accept / reject]
 ═══════════════════════════════════════════════════ */
 
 'use strict';
@@ -80,6 +82,41 @@ function getCriteria(dept) {
   ];
 }
 
+// ── Live score state for evaluation modal ─────────
+const _scores = {};
+
+function setDotScore(criteriaId, score) {
+  _scores[criteriaId] = score;
+  const dots = document.querySelectorAll(`.eval-dot-btn[data-crit="${criteriaId}"]`);
+  dots.forEach((d, i) => {
+    d.classList.toggle('filled', i < score);
+  });
+  updateEvalTotal();
+}
+
+function updateEvalTotal() {
+  const criteria = getCriteria(currentDept);
+  const totalScore = criteria.reduce((s, c) => s + (_scores[c.id] || 0), 0);
+  const maxScore   = criteria.reduce((s, c) => s + c.max, 0);
+  const pct        = maxScore ? Math.round(totalScore / maxScore * 100) : 0;
+
+  const el = document.getElementById('evalLiveTotal');
+  if (!el) return;
+  el.textContent = `${totalScore} / ${maxScore} pts (${pct}%)`;
+
+  // Auto-set recommendation
+  const recEl = document.getElementById('evalRecommendation');
+  if (recEl) {
+    if (pct >= 80)      recEl.value = 'Highly Recommended';
+    else if (pct >= 60) recEl.value = 'Recommended';
+    else if (pct >= 40) recEl.value = 'For Consideration';
+    else                recEl.value = 'Not Recommended';
+  }
+
+  // Color the total
+  el.style.color = pct >= 70 ? 'var(--green)' : pct >= 45 ? 'var(--amber)' : 'var(--red, #dc2626)';
+}
+
 // ── Schedule Storage ──────────────────────────────
 const SCHED_KEY = dept =>
   `wmsu_isched_${btoa(unescape(encodeURIComponent(dept))).replace(/=/g, '')}`;
@@ -92,7 +129,6 @@ function saveScheduleConfig(dept, cfg) {
   localStorage.setItem(SCHED_KEY(dept), JSON.stringify(cfg));
 }
 
-// Returns { "YYYY-MM-DD_AM": count, "YYYY-MM-DD_PM": count, … }
 function getSlotOccupancy(dept) {
   const occ = {};
   getDeptApps(dept)
@@ -104,7 +140,6 @@ function getSlotOccupancy(dept) {
   return occ;
 }
 
-// Returns the next available { date, session, time } or null if all full
 function getNextAvailableSlot(dept) {
   const cfg = getScheduleConfig(dept);
   if (!cfg || !cfg.days?.length) return null;
@@ -120,9 +155,7 @@ function getNextAvailableSlot(dept) {
   return null;
 }
 
-// ── Auto-assign interview slots for a dept ────────
-// Called when dept head first loads a department.
-// Sorts pending applicants by submission date and fills slots in order.
+// ── Auto-assign interview slots ───────────────────
 function autoAssignInterviewSlots(dept) {
   const cfg = getScheduleConfig(dept);
   if (!cfg || !cfg.days?.length) return;
@@ -130,32 +163,30 @@ function autoAssignInterviewSlots(dept) {
   const allApps = getApps();
   let changed = false;
 
-  // Only auto-assign apps that are valid, not yet scheduled, and not already decided
   const toSchedule = allApps
     .filter(a =>
       a.department === dept &&
       a.admissionStatus !== 'flagged' &&
       !a.interviewSlot &&
       a.deptStatus !== 'accepted' &&
-      a.deptStatus !== 'rejected'
+      a.deptStatus !== 'rejected' &&
+      a.deptStatus !== 'interviewed'
     )
     .sort((a, b) => new Date(a.submittedDate) - new Date(b.submittedDate));
 
   if (!toSchedule.length) return;
 
-  // Build a slot queue from schedule config
   const slotQueue = [];
   for (const day of cfg.days) {
     for (let i = 0; i < cfg.amCapacity; i++) slotQueue.push({ date: day.date, session: 'AM', time: cfg.amStart });
     for (let i = 0; i < cfg.pmCapacity; i++) slotQueue.push({ date: day.date, session: 'PM', time: cfg.pmStart });
   }
 
-  // Count already-occupied slots
   const occ = getSlotOccupancy(dept);
   let slotUsed = Object.values(occ).reduce((s, n) => s + n, 0);
 
   toSchedule.forEach(a => {
-    if (slotUsed >= slotQueue.length) return; // no more slots
+    if (slotUsed >= slotQueue.length) return;
     const slot = slotQueue[slotUsed];
     const idx  = allApps.findIndex(x => x.appNo === a.appNo);
     if (idx === -1) return;
@@ -167,13 +198,8 @@ function autoAssignInterviewSlots(dept) {
     changed = true;
   });
 
-  if (changed) {
-    saveApps(allApps);
-  }
+  if (changed) saveApps(allApps);
 }
-
-// ── Score state ────────────────────────────────────
-const _scores = {};
 
 // ── Data helpers ──────────────────────────────────
 function getApps() {
@@ -205,6 +231,13 @@ function isQualified(a) {
 function getComposite(a) {
   if (!window.WMSU_calcComposite) return null;
   return window.WMSU_calcComposite(a.course, a.cet?.oapr || 0, a.natScore, a.eatScore);
+}
+
+// Helper: get interview score percentage for sorting
+function getInterviewPct(a) {
+  if (!a.interviewEval) return -1;
+  const { totalScore, maxScore } = a.interviewEval;
+  return maxScore ? totalScore / maxScore : 0;
 }
 
 // ── Schedule Card ─────────────────────────────────
@@ -480,10 +513,7 @@ function saveScheduleSetup() {
     pmCapacity,
   };
   saveScheduleConfig(currentDept, cfg);
-
-  // Re-run auto-assignment with the new schedule
   autoAssignInterviewSlots(currentDept);
-
   closeScheduleSetup();
   renderScheduleCard();
   renderKPIs();
@@ -528,13 +558,10 @@ function setDept(dept) {
   document.getElementById('deptAvatar').textContent    = initials || 'DH';
   document.getElementById('deptUserLabel').textContent = dept.replace('College of ', '');
 
-  // Reset active sidebar link
   document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
   document.getElementById('nav-all')?.classList.add('active');
 
-  // Auto-assign interview slots based on submission order
   autoAssignInterviewSlots(dept);
-
   buildCourseNav(dept);
   renderKPIs();
   renderScheduleCard();
@@ -582,25 +609,27 @@ function filterByCourse(course) {
 }
 
 // ── KPI + badges ──────────────────────────────────
+// Flow: for_interview → [evaluate] → interviewed (For Review) → accepted / rejected
 function renderKPIs() {
   if (!currentDept) return;
   const apps = getDeptApps(currentDept);
 
-  const pending   = apps.filter(a => a.status === 'pending_review' && !a.deptStatus);
+  // "For Review" = already interviewed, evaluation submitted, awaiting final decision
+  const forReview = apps.filter(a => a.deptStatus === 'interviewed');
   const qualified = apps.filter(a => { const r = isQualified(a); return r && r.qualified; });
   const interview = apps.filter(a => a.deptStatus === 'for_interview');
   const accepted  = apps.filter(a => a.deptStatus === 'accepted');
   const rejected  = apps.filter(a => a.deptStatus === 'rejected');
 
   document.getElementById('kpi-total').textContent     = apps.length;
-  document.getElementById('kpi-pending').textContent   = pending.length;
+  document.getElementById('kpi-pending').textContent   = forReview.length;
   document.getElementById('kpi-qualified').textContent = qualified.length;
   document.getElementById('kpi-interview').textContent = interview.length;
   document.getElementById('kpi-accepted').textContent  = accepted.length;
   document.getElementById('kpi-rejected').textContent  = rejected.length;
 
   document.getElementById('badge-all').textContent       = apps.length;
-  document.getElementById('badge-pending').textContent   = pending.length;
+  document.getElementById('badge-pending').textContent   = forReview.length;
   document.getElementById('badge-qualified').textContent = qualified.length;
   document.getElementById('badge-interview').textContent = interview.length;
   document.getElementById('badge-accepted').textContent  = accepted.length;
@@ -624,7 +653,8 @@ function render() {
 
   if (currentCourse) rows = rows.filter(a => a.course === currentCourse);
 
-  if (currentView === 'pending')   rows = rows.filter(a => a.status === 'pending_review' && !a.deptStatus);
+  // "pending" sidebar view = interviewed (awaiting final decision)
+  if (currentView === 'pending')   rows = rows.filter(a => a.deptStatus === 'interviewed');
   if (currentView === 'qualified') rows = rows.filter(a => { const r = isQualified(a); return r && r.qualified; });
   if (currentView === 'interview') rows = rows.filter(a => a.deptStatus === 'for_interview');
   if (currentView === 'accepted')  rows = rows.filter(a => a.deptStatus === 'accepted');
@@ -643,11 +673,13 @@ function render() {
   );
 
   const sort = document.getElementById('sortSel')?.value || 'date-desc';
-  if (sort === 'oapr-desc') rows.sort((a, b) => (b.cet?.oapr || 0) - (a.cet?.oapr || 0));
-  if (sort === 'oapr-asc')  rows.sort((a, b) => (a.cet?.oapr || 0) - (b.cet?.oapr || 0));
-  if (sort === 'date-desc') rows.sort((a, b) => new Date(b.submittedDate || 0) - new Date(a.submittedDate || 0));
-  if (sort === 'date-asc')  rows.sort((a, b) => new Date(a.submittedDate || 0) - new Date(b.submittedDate || 0));
-  if (sort === 'name-asc')  rows.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  if (sort === 'oapr-desc')   rows.sort((a, b) => (b.cet?.oapr || 0) - (a.cet?.oapr || 0));
+  if (sort === 'oapr-asc')    rows.sort((a, b) => (a.cet?.oapr || 0) - (b.cet?.oapr || 0));
+  if (sort === 'date-desc')   rows.sort((a, b) => new Date(b.submittedDate || 0) - new Date(a.submittedDate || 0));
+  if (sort === 'date-asc')    rows.sort((a, b) => new Date(a.submittedDate || 0) - new Date(b.submittedDate || 0));
+  if (sort === 'name-asc')    rows.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  if (sort === 'rating-desc') rows.sort((a, b) => getInterviewPct(b) - getInterviewPct(a));
+  if (sort === 'rating-asc')  rows.sort((a, b) => getInterviewPct(a) - getInterviewPct(b));
   if (sort === 'composite-desc') rows.sort((a, b) => {
     const ca = getComposite(a)?.composite || 0;
     const cb = getComposite(b)?.composite || 0;
@@ -695,11 +727,15 @@ function renderRow(a) {
     : '—';
 
   const ds = a.deptStatus;
+
+  // Status badge
   let statusHtml = '<span class="badge b-pending">Pending</span>';
   if (ds === 'for_interview') statusHtml = '<span class="badge b-interview">For Interview</span>';
+  if (ds === 'interviewed')   statusHtml = '<span class="badge b-review">For Review</span>';
   if (ds === 'accepted')      statusHtml = '<span class="badge b-accepted">Accepted</span>';
   if (ds === 'rejected')      statusHtml = '<span class="badge b-rejected">Rejected</span>';
 
+  // Interview slot tag
   const slotHtml = a.interviewSlot
     ? `<div class="row-slot-tag">
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="9" height="9"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -708,11 +744,19 @@ function renderRow(a) {
        </div>`
     : '';
 
+  // Interview eval result tag
   const evalHtml = a.interviewEval
-    ? `<div class="row-eval-tag">${a.interviewEval.totalScore}/${a.interviewEval.maxScore} pts · ${a.interviewEval.recommendation}</div>`
+    ? (() => {
+        const pct       = Math.round(a.interviewEval.totalScore / a.interviewEval.maxScore * 100);
+        const dotClass  = pct >= 70 ? 'eval-tag-high' : pct >= 45 ? 'eval-tag-mid' : 'eval-tag-low';
+        return `<div class="row-eval-tag ${dotClass}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="9" height="9"><polyline points="20 6 9 17 4 12"/></svg>
+          ${a.interviewEval.totalScore}/${a.interviewEval.maxScore} pts · ${pct}% · ${a.interviewEval.recommendation}
+        </div>`;
+      })()
     : '';
 
-  // Composite score tag for Nursing / Engineering
+  // Composite score tag
   const compHtml = comp
     ? `<div style="font-size:10px;color:var(--blue);margin-top:2px;">⊕ ${comp.composite} (${comp.formula})</div>`
     : '';
@@ -721,17 +765,33 @@ function renderRow(a) {
     ? new Date(a.submittedDate).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })
     : '—';
 
+  // ── Action buttons based on status ──────────────
+  // for_interview  → [Evaluate] [Reschedule] [Reject]
+  // interviewed    → [View] [Accept] [Reject]
+  // accepted       → [View]
+  // rejected       → [View]
+  // (default/null) → [View] [Reject]
   let actBtns = `<button class="btn-act btn-view" onclick="openPanel('${a.appNo}')">View</button>`;
-  if (!ds || ds === 'for_interview') {
-    actBtns += `<button class="btn-act btn-accept" onclick="openActionModal('${a.appNo}','accept')">Accept</button>`;
-  }
-  if (ds !== 'accepted' && ds !== 'rejected') {
+
+  if (ds === 'for_interview') {
+    // Must evaluate first — no accept yet
+    actBtns = `
+      <button class="btn-act btn-evaluate" onclick="openActionModal('${a.appNo}','evaluate')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Evaluate
+      </button>
+      <button class="btn-act btn-interview" onclick="openActionModal('${a.appNo}','interview')">Reschedule</button>
+      <button class="btn-act btn-reject"    onclick="openActionModal('${a.appNo}','reject')">Reject</button>`;
+  } else if (ds === 'interviewed') {
+    // Evaluation done → can now accept or reject
+    actBtns += `
+      <button class="btn-act btn-accept" onclick="openActionModal('${a.appNo}','accept')">Accept</button>
+      <button class="btn-act btn-reject" onclick="openActionModal('${a.appNo}','reject')">Reject</button>`;
+  } else if (!ds) {
+    // No status yet (no slot assigned) → can only reject
     actBtns += `<button class="btn-act btn-reject" onclick="openActionModal('${a.appNo}','reject')">Reject</button>`;
   }
-  // Manual override: reassign slot
-  if (ds === 'for_interview') {
-    actBtns += `<button class="btn-act btn-interview" onclick="openActionModal('${a.appNo}','interview')">Reschedule</button>`;
-  }
+  // accepted / rejected → View only (already handled above)
 
   const courseShort = (a.course || '—').replace(/^BS |^BA |^Bachelor of /, '');
 
@@ -773,9 +833,9 @@ function setView(v, el) {
 
   const titles = {
     all:       ['All Applicants',  'All applicants assigned to your department.'],
-    pending:   ['For Review',      'New applications awaiting your decision.'],
+    pending:   ['For Review',      'Applicants whose interviews are done — ready for your final decision.'],
     qualified: ['Qualified',       'Applicants who meet the minimum OAPR requirements.'],
-    interview: ['For Interview',   'Applicants scheduled for interview.'],
+    interview: ['For Interview',   'Applicants with assigned interview slots, awaiting evaluation.'],
     accepted:  ['Accepted',        'Applicants accepted into your program.'],
     rejected:  ['Rejected',        'Applications that did not meet requirements.'],
   };
@@ -826,7 +886,6 @@ function openPanel(appNo) {
       }
     </div>` : '';
 
-  // Composite score section
   const compHtml = comp ? `
     <div class="panel-section">
       <div class="panel-sec-title">Composite Score (${comp.formula})</div>
@@ -926,6 +985,18 @@ function openPanel(appNo) {
   const ds      = a.deptStatus;
   const dateStr = a.submittedDate ? new Date(a.submittedDate).toLocaleString('en-PH') : '—';
 
+  // Panel action buttons — same logic as renderRow
+  let panelBtns = '';
+  if (ds === 'for_interview') {
+    panelBtns = `
+      <button class="btn-panel btn-panel-evaluate" onclick="openActionModal('${a.appNo}','evaluate');closePanel()">Evaluate Interview</button>
+      <button class="btn-panel btn-panel-reject"   onclick="openActionModal('${a.appNo}','reject');closePanel()">Reject</button>`;
+  } else if (ds === 'interviewed') {
+    panelBtns = `
+      <button class="btn-panel btn-panel-accept" onclick="openActionModal('${a.appNo}','accept');closePanel()">Accept</button>
+      <button class="btn-panel btn-panel-reject" onclick="openActionModal('${a.appNo}','reject');closePanel()">Reject</button>`;
+  }
+
   document.getElementById('panelBody').innerHTML = `
     <div class="panel-section">
       <div class="panel-sec-title">Personal Info</div>
@@ -947,11 +1018,7 @@ function openPanel(appNo) {
     ${slotHtml}
     ${evalHtml}
     ${rejectHtml}
-    <div class="panel-actions">
-      ${(!ds || ds === 'for_interview') ? `<button class="btn-panel btn-panel-accept" onclick="openActionModal('${a.appNo}','accept');closePanel()">Accept</button>` : ''}
-      ${(ds !== 'rejected' && ds !== 'accepted') ? `<button class="btn-panel btn-panel-reject" onclick="openActionModal('${a.appNo}','reject');closePanel()">Reject</button>` : ''}
-      ${ds === 'for_interview' ? `<button class="btn-panel btn-panel-interview" onclick="openActionModal('${a.appNo}','interview');closePanel()">Reschedule</button>` : ''}
-    </div>`;
+    ${panelBtns ? `<div class="panel-actions">${panelBtns}</div>` : ''}`;
 
   document.getElementById('detailPanel').classList.add('open');
 }
@@ -964,6 +1031,9 @@ function closePanel() {
 function openActionModal(appNo, action) {
   activeAppNo  = appNo;
   activeAction = action;
+
+  // Clear score state
+  Object.keys(_scores).forEach(k => delete _scores[k]);
 
   const apps = getApps();
   const a    = apps.find(x => x.appNo === appNo);
@@ -979,13 +1049,121 @@ function openActionModal(appNo, action) {
       <span>${a.appNo} · ${a.course || '—'} · OAPR: ${a.cet?.oapr || '—'}</span>
     </div>`;
 
-  // ── ACCEPT ───────────────────────────────────
+  // ── EVALUATE (new: submit interview scores) ────
+  if (action === 'evaluate') {
+    modalHd.className      = 'modal-hd evaluate-hd';
+    modalTitle.textContent = 'Interview Evaluation';
+
+    const criteria = getCriteria(currentDept);
+    const maxTotal = criteria.reduce((s, c) => s + c.max, 0);
+
+    // Pre-fill if re-evaluating
+    if (a.interviewEval) {
+      a.interviewEval.criteria.forEach(c => { _scores[c.id] = c.score; });
+    }
+
+    const slotInfo = a.interviewSlot ? `
+      <div class="eval-slot-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Scheduled: ${new Date(a.interviewSlot.date + 'T12:00').toLocaleDateString('en-PH', { weekday: 'short', month: 'long', day: 'numeric' })} · ${a.interviewSlot.session} · ${a.interviewSlot.time}
+      </div>` : '';
+
+    const criteriaHtml = criteria.map(c => {
+      const cur = _scores[c.id] || 0;
+      const dots = Array.from({ length: c.max }, (_, i) =>
+        `<button type="button"
+                 class="eval-dot-btn ${i < cur ? 'filled' : ''}"
+                 data-crit="${c.id}"
+                 data-val="${i + 1}"
+                 onclick="setDotScore('${c.id}', ${i + 1})"
+                 title="${i + 1}/${c.max}">
+         </button>`
+      ).join('');
+
+      return `
+        <div class="eval-criteria-row">
+          <div class="eval-crit-info">
+            <span class="eval-crit-label">${c.label}</span>
+            <span class="eval-crit-desc">${c.desc}</span>
+          </div>
+          <div class="eval-dots-wrap">
+            <div class="eval-dots" id="dots-${c.id}">${dots}</div>
+            <span class="eval-dot-score" id="dscore-${c.id}">${cur}/${c.max}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    const recVal = a.interviewEval?.recommendation || '';
+
+    body.innerHTML = `
+      ${studentBox}
+      ${slotInfo}
+      <div class="eval-live-total-wrap">
+        <span class="eval-live-label">Total Score</span>
+        <span class="eval-live-total" id="evalLiveTotal">0 / ${maxTotal} pts (0%)</span>
+      </div>
+      <div class="eval-criteria-list">${criteriaHtml}</div>
+      <div class="form-field" style="margin-top:14px;">
+        <label>Interviewer Name</label>
+        <input type="text" id="evalInterviewer" placeholder="e.g. Prof. Santos"
+               value="${a.interviewEval?.interviewer || ''}"
+               style="font-family:inherit;">
+      </div>
+      <div class="form-field">
+        <label>Recommendation</label>
+        <select id="evalRecommendation" style="font-family:inherit;">
+          <option value="Highly Recommended"  ${recVal === 'Highly Recommended'  ? 'selected' : ''}>Highly Recommended</option>
+          <option value="Recommended"         ${recVal === 'Recommended'         ? 'selected' : ''}>Recommended</option>
+          <option value="For Consideration"   ${recVal === 'For Consideration'   ? 'selected' : ''}>For Consideration</option>
+          <option value="Not Recommended"     ${recVal === 'Not Recommended'     ? 'selected' : ''}>Not Recommended</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Remarks <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <textarea id="evalRemarks" rows="2"
+                  placeholder="Overall impression, notable strengths or concerns…"
+                  style="font-family:inherit;">${a.interviewEval?.remarks || ''}</textarea>
+      </div>
+      <div class="modal-alert" id="modalAlert"></div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-confirm-evaluate" onclick="confirmAction()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Submit Evaluation
+        </button>
+      </div>`;
+
+    // Initialize total display
+    updateEvalTotal();
+    document.getElementById('actionModal').classList.add('open');
+    return;
+  }
+
+  // ── ACCEPT (only available after evaluation) ───
   if (action === 'accept') {
     modalHd.className      = 'modal-hd accept-hd';
     modalTitle.textContent = 'Accept Applicant';
 
     const ev   = a.interviewEval;
     const comp = getComposite(a);
+
+    // Guard: block accept if no eval
+    if (!ev) {
+      body.innerHTML = `
+        ${studentBox}
+        <div class="sched-gate" style="padding:24px 16px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36" style="color:var(--amber)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div class="sched-gate-title" style="color:var(--amber)">Interview Not Yet Evaluated</div>
+          <div class="sched-gate-sub">Submit the interview evaluation first before accepting this applicant. This ensures a fair and documented review process.</div>
+          <button class="btn-confirm-evaluate" style="margin-top:4px;" onclick="closeModal();openActionModal('${a.appNo}','evaluate')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Go to Evaluation
+          </button>
+        </div>
+        <div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Cancel</button></div>`;
+      document.getElementById('actionModal').classList.add('open');
+      return;
+    }
 
     const compDisplay = comp ? `
       <div class="eval-readonly-summary" style="margin-bottom:10px;padding:10px 12px;background:var(--blue-pale,#eff6ff);border-radius:8px;border:1px solid #bfdbfe;">
@@ -999,10 +1177,10 @@ function openActionModal(appNo, action) {
         Interviewed: ${new Date(a.interviewSlot.date + 'T12:00').toLocaleDateString('en-PH', { weekday: 'short', month: 'short', day: 'numeric' })} · ${a.interviewSlot.session} · ${a.interviewSlot.time}
       </div>` : '';
 
-    const evalDisplay = ev ? (() => {
-      const pct      = ev.percentage || Math.round(ev.totalScore / ev.maxScore * 100);
-      const recClass = ev.recommendation.toLowerCase().replace(/\s+/g, '-');
-      return `
+    const pct      = ev.percentage || Math.round(ev.totalScore / ev.maxScore * 100);
+    const recClass = ev.recommendation.toLowerCase().replace(/\s+/g, '-');
+
+    const evalDisplay = `
       <div class="eval-wrap">
         <div class="eval-wrap-hd">
           <span class="eval-wrap-title">
@@ -1032,12 +1210,6 @@ function openActionModal(appNo, action) {
         </div>
         ${ev.remarks ? `<div class="eval-readonly-remarks">"${ev.remarks}"</div>` : ''}
       </div>`;
-    })() : `
-      <div class="sched-gate" style="padding:18px 16px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="color:var(--muted-lt)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <div class="sched-gate-title" style="font-size:13px;">No Interview Evaluation Yet</div>
-        <div class="sched-gate-sub">The interviewer hasn't submitted an evaluation for this applicant. You can still accept without one.</div>
-      </div>`;
 
     body.innerHTML = `
       ${studentBox}
@@ -1046,7 +1218,9 @@ function openActionModal(appNo, action) {
       ${evalDisplay}
       <div class="form-field" style="margin-top:12px;">
         <label>Acceptance Remarks <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-        <textarea id="acceptRemarks" rows="2" placeholder="e.g. Highly recommended — strong communication and clear motivation.">${a.acceptRemarks || ''}</textarea>
+        <textarea id="acceptRemarks" rows="2"
+                  placeholder="e.g. Highly recommended — strong communication and clear motivation."
+                  style="font-family:inherit;">${a.acceptRemarks || ''}</textarea>
       </div>
       <div class="modal-alert" id="modalAlert"></div>
       <div class="modal-footer">
@@ -1124,7 +1298,9 @@ function openActionModal(appNo, action) {
         <p class="auto-slot-note">Slot assigned to the next available position in your configured schedule.</p>
         <div class="form-field">
           <label>Notes to Applicant <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-          <textarea id="interviewNotes" rows="2" placeholder="e.g. Bring original documents. Wear semi-formal attire.">${a.interviewNotes || ''}</textarea>
+          <textarea id="interviewNotes" rows="2"
+                    placeholder="e.g. Bring original documents. Wear semi-formal attire."
+                    style="font-family:inherit;">${a.interviewNotes || ''}</textarea>
         </div>
         <div class="modal-alert" id="modalAlert"></div>
         <div class="modal-footer">
@@ -1143,7 +1319,7 @@ function openActionModal(appNo, action) {
       ${studentBox}
       <div class="form-field">
         <label>Reason for Rejection</label>
-        <select id="rejectionReason">
+        <select id="rejectionReason" style="font-family:inherit;">
           <option value="">Select a reason…</option>
           <option value="OAPR does not meet the minimum requirement for this course">OAPR below minimum requirement</option>
           <option value="NAT score does not meet the minimum requirement">NAT score below minimum (Nursing)</option>
@@ -1153,12 +1329,15 @@ function openActionModal(appNo, action) {
           <option value="Incomplete or invalid application documents">Incomplete or invalid documents</option>
           <option value="Did not appear for scheduled interview">Did not appear for interview</option>
           <option value="Failed interview evaluation">Failed interview evaluation</option>
+          <option value="Interview score below acceptable threshold">Interview score below acceptable threshold</option>
           <option value="Other">Other</option>
         </select>
       </div>
       <div class="form-field">
         <label>Additional Notes <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-        <textarea id="rejectionNotes" rows="2" placeholder="Any additional explanation for the applicant…"></textarea>
+        <textarea id="rejectionNotes" rows="2"
+                  placeholder="Any additional explanation for the applicant…"
+                  style="font-family:inherit;"></textarea>
       </div>
       <div class="modal-alert" id="modalAlert"></div>
       <div class="modal-footer">
@@ -1185,8 +1364,68 @@ function confirmAction() {
   if (idx === -1) { closeModal(); return; }
   const a = apps[idx];
 
+  // ── EVALUATE ──────────────────────────────────
+  if (activeAction === 'evaluate') {
+    const interviewer = document.getElementById('evalInterviewer')?.value.trim();
+    if (!interviewer) {
+      alertEl.textContent = 'Please enter the interviewer\'s name.';
+      alertEl.className   = 'modal-alert show err';
+      return;
+    }
+
+    const criteria = getCriteria(currentDept);
+
+    // Check all criteria have been scored
+    const unscored = criteria.filter(c => !_scores[c.id]);
+    if (unscored.length) {
+      alertEl.textContent = `Please score all criteria. Missing: ${unscored.map(c => c.label).join(', ')}.`;
+      alertEl.className   = 'modal-alert show err';
+      return;
+    }
+
+    const totalScore = criteria.reduce((s, c) => s + (_scores[c.id] || 0), 0);
+    const maxScore   = criteria.reduce((s, c) => s + c.max, 0);
+    const percentage = Math.round(totalScore / maxScore * 100);
+
+    apps[idx].interviewEval = {
+      interviewer,
+      recommendation: document.getElementById('evalRecommendation')?.value || 'For Consideration',
+      remarks:        document.getElementById('evalRemarks')?.value.trim() || '',
+      totalScore,
+      maxScore,
+      percentage,
+      criteria: criteria.map(c => ({
+        id:    c.id,
+        label: c.label,
+        score: _scores[c.id] || 0,
+        max:   c.max,
+      })),
+      evaluatedAt: new Date().toISOString(),
+    };
+
+    // After evaluation → move to "interviewed" (For Review)
+    apps[idx].deptStatus = 'interviewed';
+    apps[idx].status     = 'reviewed';
+
+    saveApps(apps);
+    closeModal();
+    renderKPIs();
+    render();
+    showToast(
+      `Evaluation submitted for ${a.name} · ${totalScore}/${maxScore} pts (${percentage}%) · ${apps[idx].interviewEval.recommendation}`,
+      'success'
+    );
+    return;
+  }
+
   // ── ACCEPT ───────────────────────────────────
   if (activeAction === 'accept') {
+    // Double-check guard (shouldn't reach here without eval, but just in case)
+    if (!apps[idx].interviewEval) {
+      alertEl.textContent = 'Cannot accept without a completed interview evaluation.';
+      alertEl.className   = 'modal-alert show err';
+      return;
+    }
     apps[idx].deptStatus    = 'accepted';
     apps[idx].status        = 'reviewed';
     apps[idx].acceptedDate  = new Date().toISOString();
@@ -1259,12 +1498,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ── Init ──────────────────────────────────────────
 function init() {
+  // Add rating sort options to the sort dropdown if not already there
+  const sortSel = document.getElementById('sortSel');
+  if (sortSel && !sortSel.querySelector('[value="rating-desc"]')) {
+    sortSel.insertAdjacentHTML('beforeend', `
+      <option value="rating-desc">Highest Interview Rating</option>
+      <option value="rating-asc">Lowest Interview Rating</option>
+    `);
+  }
+
   const lastDept = sessionStorage.getItem('wmsu_dept_head_dept');
   if (lastDept) {
     const sel = document.getElementById('deptSelect');
     if (sel) sel.value = lastDept;
     setDept(lastDept);
   }
+
   setInterval(() => {
     if (currentDept) {
       renderKPIs();

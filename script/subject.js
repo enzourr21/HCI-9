@@ -2,12 +2,9 @@
  * ============================================================
  *  WMSU-EASE  |  subject.js  (browser build)
  *  Western Mindanao State University — Subject Prospectus DB
- *
- *  Depends on:  old-student.js  (must load first)
  * ============================================================
  */
 
-// ─── ROLE CONSTANTS ─────────────────────────────────────────
 const ROLES = {
   SECRETARY: "secretary",
   DEPT_DEAN: "dept_dean",
@@ -44,7 +41,6 @@ const GE_SUBJECTS = {
   "GE-NSTP2":    { id:"GE-NSTP2",   code:"NSTP 2",      title:"National Service Training Program 2",       units:3, type:"lecture-laboratory", category:"GE", status:STATUS.ACTIVE, usualYear:1, usualSem:SEM.SECOND },
 };
 
-// ─── Helper builder ──────────────────────────────────────────
 function sub(id, code, title, units, type, prereqs = [], description = "") {
   return { id, code, title, units, type, prerequisites: prereqs, description, status: STATUS.ACTIVE };
 }
@@ -194,29 +190,260 @@ const COLLEGES = {
           },
         },
       },
-    },
-  },
-  CET: {
-    id: "CET", name: "College of Engineering and Technology",
-    programs: {
-      BSCE: {
-        id:"BSCE", name:"BS Civil Engineering", boardExam:true,
+      BSIS: {
+        id: "BSIS", name: "BS Information Systems",
         prospectus: {
           1: {
-            [SEM.FIRST]:  [ sub("BSCE-Y1S1-001","MATH 111","Calculus 1",5,"lecture"), sub("BSCE-Y1S1-002","CHE 111","Chemistry for Engineers",3,"lecture"), sub("BSCE-Y1S1-003","CHE 111L","Chemistry for Engineers (Lab)",1,"laboratory",["BSCE-Y1S1-002"]), sub("BSCE-Y1S1-004","CE 111","Engineering Drawing 1",2,"laboratory"), sub("BSCE-Y1S1-005","CE 112","Engineering Orientation",1,"lecture"), GE_SUBJECTS["GE-US101"], GE_SUBJECTS["GE-CAS101"], GE_SUBJECTS["GE-PE101"], GE_SUBJECTS["GE-NSTP1"] ],
-            [SEM.SECOND]: [ sub("BSCE-Y1S2-001","MATH 112","Calculus 2",5,"lecture",["BSCE-Y1S1-001"]), sub("BSCE-Y1S2-002","PHY 111","Physics for Engineers",3,"lecture"), sub("BSCE-Y1S2-003","PHY 111L","Physics for Engineers (Lab)",1,"laboratory",["BSCE-Y1S2-002"]), sub("BSCE-Y1S2-004","CS 111","Computer Programming for Engineers",2,"lecture"), sub("BSCE-Y1S2-005","CE 121","Engineering Drawing 2",2,"laboratory",["BSCE-Y1S1-004"]), GE_SUBJECTS["GE-HIST101"], GE_SUBJECTS["GE-MATH100"], GE_SUBJECTS["GE-PE102"], GE_SUBJECTS["GE-NSTP2"] ],
+            [SEM.FIRST]: [
+              sub("BSIS-Y1S1-001","IS 111","Introduction to Information Systems",3,"lecture",[]),
+              sub("BSIS-Y1S1-002","IS 112","Computer Programming 1",2,"lecture",[]),
+              sub("BSIS-Y1S1-003","IS 112L","Computer Programming 1 (Lab)",1,"laboratory",["BSIS-Y1S1-002"]),
+              GE_SUBJECTS["GE-US101"], GE_SUBJECTS["GE-CAS101"],
+              GE_SUBJECTS["GE-PE101"], GE_SUBJECTS["GE-NSTP1"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSIS-Y1S2-001","IS 121","Information Systems Analysis",3,"lecture",["BSIS-Y1S1-001"]),
+              sub("BSIS-Y1S2-002","IS 122","Computer Programming 2",2,"lecture",["BSIS-Y1S1-002"]),
+              sub("BSIS-Y1S2-003","IS 123","Business Process Management",3,"lecture",[]),
+              GE_SUBJECTS["GE-HIST101"], GE_SUBJECTS["GE-MATH100"],
+              GE_SUBJECTS["GE-PE102"], GE_SUBJECTS["GE-NSTP2"],
+            ],
           },
           2: {
-            [SEM.FIRST]:  [ sub("BSCE-Y2S1-001","MATH 211","Differential Equations",3,"lecture",["BSCE-Y1S2-001"]), sub("BSCE-Y2S1-002","CE 211","Statics of Rigid Bodies",3,"lecture",["BSCE-Y1S2-002"]), sub("BSCE-Y2S1-003","CE 212","Surveying 1",2,"lecture"), sub("BSCE-Y2S1-004","CE 212L","Surveying 1 (Lab)",1,"laboratory",["BSCE-Y2S1-003"]), sub("BSCE-Y2S1-005","CE 213","Engineering Materials",3,"lecture"), GE_SUBJECTS["GE-ETHICS101"], GE_SUBJECTS["GE-AH100"], GE_SUBJECTS["GE-PE103"] ],
-            [SEM.SECOND]: [ sub("BSCE-Y2S2-001","CE 221","Dynamics of Rigid Bodies",3,"lecture",["BSCE-Y2S1-002"]), sub("BSCE-Y2S2-002","CE 222","Mechanics of Deformable Bodies",3,"lecture",["BSCE-Y2S1-002"]), sub("BSCE-Y2S2-003","CE 223","Surveying 2",2,"lecture",["BSCE-Y2S1-003"]), sub("BSCE-Y2S2-004","CE 223L","Surveying 2 (Lab)",1,"laboratory",["BSCE-Y2S1-004"]), sub("BSCE-Y2S2-005","CE 224","Engineering Economy",3,"lecture"), GE_SUBJECTS["GE-STS100"], GE_SUBJECTS["GE-CW101"], GE_SUBJECTS["GE-PE104"] ],
+            [SEM.FIRST]: [
+              sub("BSIS-Y2S1-001","IS 211","Database Management",3,"lecture",["BSIS-Y1S2-001"]),
+              sub("BSIS-Y2S1-002","IS 212","Human-Computer Interaction",3,"lecture",[]),
+              sub("BSIS-Y2S1-003","IS 213","Systems Analysis and Design",3,"lecture",[]),
+              sub("BSIS-Y2S1-004","IS 214","Accounting Information Systems",3,"lecture",[]),
+              GE_SUBJECTS["GE-ETHICS101"], GE_SUBJECTS["GE-AH100"], GE_SUBJECTS["GE-PE103"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSIS-Y2S2-001","IS 221","Enterprise Resource Planning",3,"lecture",["BSIS-Y2S1-001"]),
+              sub("BSIS-Y2S2-002","IS 222","Web Systems and Technologies",3,"lecture",[]),
+              sub("BSIS-Y2S2-003","IS 223","Quantitative Methods for IS",3,"lecture",[]),
+              GE_SUBJECTS["GE-STS100"], GE_SUBJECTS["GE-CW101"], GE_SUBJECTS["GE-PE104"],
+            ],
           },
           3: {
-            [SEM.FIRST]:  [ sub("BSCE-Y3S1-001","CE 311","Structural Theory 1",3,"lecture",["BSCE-Y2S2-002"]), sub("BSCE-Y3S1-002","CE 312","Geotechnical Engineering 1",3,"lecture"), sub("BSCE-Y3S1-003","CE 313","Hydrology",3,"lecture"), sub("BSCE-Y3S1-004","CE 314","Transportation Engineering",3,"lecture"), sub("BSCE-Y3S1-005","CE 315","Construction Planning & Scheduling",3,"lecture") ],
-            [SEM.SECOND]: [ sub("BSCE-Y3S2-001","CE 321","Reinforced Concrete Design",3,"lecture",["BSCE-Y3S1-001"]), sub("BSCE-Y3S2-002","CE 322","Hydraulics and Hydraulic Engineering",3,"lecture",["BSCE-Y3S1-003"]), sub("BSCE-Y3S2-003","CE 323","Geotechnical Engineering 2",3,"lecture",["BSCE-Y3S1-002"]), sub("BSCE-Y3S2-004","CE 324","Environmental Engineering",3,"lecture"), sub("BSCE-Y3S2-005","CE 325","Structural Theory 2",3,"lecture",["BSCE-Y3S1-001"]) ],
+            [SEM.FIRST]: [
+              sub("BSIS-Y3S1-001","IS 311","Enterprise Systems",3,"lecture",["BSIS-Y2S1-001"]),
+              sub("BSIS-Y3S1-002","IS 312","Business Intelligence",3,"lecture",[]),
+              sub("BSIS-Y3S1-003","IS 313","Systems Integration and Architecture",3,"lecture",["BSIS-Y2S1-003"]),
+              sub("BSIS-Y3S1-004","IS 314","Information Security",3,"lecture",[]),
+              sub("BSIS-Y3S1-005","IS 315","Project Management",3,"lecture",[]),
+            ],
+            [SEM.SECOND]: [
+              sub("BSIS-Y3S2-001","IS 321","E-Commerce Systems",3,"lecture",[]),
+              sub("BSIS-Y3S2-002","IS 322","IS Elective 1",3,"lecture",[]),
+              sub("BSIS-Y3S2-003","IS 323","IS Capstone Project 1",3,"thesis",["BSIS-Y3S1-003"]),
+              sub("BSIS-Y3S2-004","IS 324","Social & Professional Issues in IS",3,"lecture",[]),
+            ],
           },
           4: {
-            [SEM.FIRST]:  [ sub("BSCE-Y4S1-001","CE 411","CE Project 1 (Thesis)",3,"thesis",["BSCE-Y3S2-001"]), sub("BSCE-Y4S1-002","CE 412","Steel Design",3,"lecture",["BSCE-Y3S2-001"]), sub("BSCE-Y4S1-003","CE 413","Foundation Engineering",3,"lecture",["BSCE-Y3S2-003"]), sub("BSCE-Y4S1-004","CE 414","Construction Management",3,"lecture"), sub("BSCE-Y4S1-005","CE 415","Professional Practice and Ethics",3,"lecture") ],
-            [SEM.SECOND]: [ sub("BSCE-Y4S2-001","CE 421","CE Project 2",3,"thesis",["BSCE-Y4S1-001"]), sub("BSCE-Y4S2-002","CE 422","Quantity Surveying and Cost Estimating",3,"lecture",["BSCE-Y4S1-002"]), sub("BSCE-Y4S2-003","CE 423","Engineering Laws, Contracts, and Ethics",3,"lecture"), sub("BSCE-Y4S2-004","CE 424","Comprehensive Review / Board Exam Prep",3,"lecture") ],
+            [SEM.FIRST]: [
+              sub("BSIS-Y4S1-001","IS 411","IS Capstone Project 2",6,"thesis",["BSIS-Y3S2-003"]),
+              sub("BSIS-Y4S1-002","IS 412","IS Elective 2",3,"lecture",[]),
+              sub("BSIS-Y4S1-003","IS 413","IT Governance",3,"lecture",[]),
+              sub("BSIS-Y4S1-004","IS 414","IS Elective 3 (Data Analytics)",3,"lecture",[]),
+            ],
+            [SEM.SECOND]: [
+              sub("BSIS-Y4S2-001","IS 421","Practicum / OJT",6,"ojt",[]),
+            ],
+          },
+        },
+      },
+    },
+  },
+  CON: {
+    id: "CON", name: "College of Nursing",
+    programs: {
+      BSN: {
+        id: "BSN", name: "BS Nursing", cmoRef: "CMO No. 14, s. 2009",
+        prospectus: {
+          1: {
+            [SEM.FIRST]: [
+              sub("BSN-Y1S1-001","NURS 101","Fundamentals of Nursing",3,"lecture",[]),
+              sub("BSN-Y1S1-002","NURS 101L","Fundamentals of Nursing (Lab)",2,"laboratory",["BSN-Y1S1-001"]),
+              sub("BSN-Y1S1-003","ANAT 101","Anatomy and Physiology",3,"lecture",[]),
+              sub("BSN-Y1S1-004","CHEM 101","Biochemistry",3,"lecture",[]),
+              GE_SUBJECTS["GE-US101"], GE_SUBJECTS["GE-CAS101"],
+              GE_SUBJECTS["GE-PE101"], GE_SUBJECTS["GE-NSTP1"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSN-Y1S2-001","NURS 102","Health Assessment",3,"lecture",[]),
+              sub("BSN-Y1S2-002","NURS 102L","Health Assessment (Lab)",1,"laboratory",["BSN-Y1S2-001"]),
+              sub("BSN-Y1S2-003","MICR 101","Microbiology",3,"lecture",[]),
+              sub("BSN-Y1S2-004","PSYC 101","Psychology",3,"lecture",[]),
+              GE_SUBJECTS["GE-HIST101"], GE_SUBJECTS["GE-MATH100"],
+              GE_SUBJECTS["GE-PE102"], GE_SUBJECTS["GE-NSTP2"],
+            ],
+          },
+          2: {
+            [SEM.FIRST]: [
+              sub("BSN-Y2S1-001","NURS 201","Medical-Surgical Nursing 1",4,"lecture",[]),
+              sub("BSN-Y2S1-002","NURS 201L","Medical-Surgical Nursing 1 (Lab)",2,"laboratory",["BSN-Y2S1-001"]),
+              sub("BSN-Y2S1-003","PHAR 201","Pharmacology",3,"lecture",[]),
+              sub("BSN-Y2S1-004","PATH 201","Pathophysiology",3,"lecture",[]),
+              GE_SUBJECTS["GE-ETHICS101"], GE_SUBJECTS["GE-AH100"], GE_SUBJECTS["GE-PE103"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSN-Y2S2-001","NURS 202","Medical-Surgical Nursing 2",4,"lecture",["BSN-Y2S1-001"]),
+              sub("BSN-Y2S2-002","NURS 202L","Medical-Surgical Nursing 2 (Lab)",2,"laboratory",["BSN-Y2S1-002"]),
+              sub("BSN-Y2S2-003","NURS 203","Maternal and Child Nursing",4,"lecture",[]),
+              sub("BSN-Y2S2-004","NURS 203L","Maternal and Child Nursing (Lab)",2,"laboratory",["BSN-Y2S2-003"]),
+              GE_SUBJECTS["GE-STS100"], GE_SUBJECTS["GE-PE104"],
+            ],
+          },
+          3: {
+            [SEM.FIRST]: [
+              sub("BSN-Y3S1-001","NURS 301","Mental Health Nursing",3,"lecture",[]),
+              sub("BSN-Y3S1-002","NURS 301L","Mental Health Nursing (Lab)",1,"laboratory",["BSN-Y3S1-001"]),
+              sub("BSN-Y3S1-003","NURS 302","Community Health Nursing",3,"lecture",[]),
+              sub("BSN-Y3S1-004","NURS 302L","Community Health Nursing (Lab)",1,"laboratory",["BSN-Y3S1-003"]),
+              sub("BSN-Y3S1-005","NURS 303","Nursing Research",3,"lecture",[]),
+            ],
+            [SEM.SECOND]: [
+              sub("BSN-Y3S2-001","NURS 304","Nursing Leadership and Management",3,"lecture",[]),
+              sub("BSN-Y3S2-002","NURS 305","Emergency and Disaster Nursing",3,"lecture",[]),
+              sub("BSN-Y3S2-003","NURS 306","Critical Care Nursing",3,"lecture",[]),
+              sub("BSN-Y3S2-004","NURS 307","Geriatric Nursing",3,"lecture",[]),
+            ],
+          },
+          4: {
+            [SEM.FIRST]: [
+              sub("BSN-Y4S1-001","NURS 401","Practicum 1",6,"practicum",[]),
+              sub("BSN-Y4S1-002","NURS 402","Capstone Project",3,"lecture",[]),
+            ],
+            [SEM.SECOND]: [
+              sub("BSN-Y4S2-001","NURS 403","Practicum 2",6,"practicum",[]),
+            ],
+          },
+        },
+      },
+    },
+  },
+  COE: {
+    id: "COE", name: "College of Engineering",
+    programs: {
+      BSCE: {
+        id: "BSCE", name: "BS Civil Engineering", cmoRef: "CMO No. 35, s. 2017",
+        prospectus: {
+          1: {
+            [SEM.FIRST]: [
+              sub("BSCE-Y1S1-001","MATH 101","Calculus 1",3,"lecture",[]),
+              sub("BSCE-Y1S1-002","PHYS 101","Physics 1",3,"lecture",[]),
+              sub("BSCE-Y1S1-003","PHYS 101L","Physics 1 (Lab)",1,"laboratory",["BSCE-Y1S1-002"]),
+              sub("BSCE-Y1S1-004","CHEM 101","Chemistry for Engineers",3,"lecture",[]),
+              sub("BSCE-Y1S1-005","CHEM 101L","Chemistry for Engineers (Lab)",1,"laboratory",["BSCE-Y1S1-004"]),
+              GE_SUBJECTS["GE-US101"], GE_SUBJECTS["GE-CAS101"],
+              GE_SUBJECTS["GE-PE101"], GE_SUBJECTS["GE-NSTP1"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSCE-Y1S2-001","MATH 102","Calculus 2",3,"lecture",["BSCE-Y1S1-001"]),
+              sub("BSCE-Y1S2-002","PHYS 102","Physics 2",3,"lecture",["BSCE-Y1S1-002"]),
+              sub("BSCE-Y1S2-003","PHYS 102L","Physics 2 (Lab)",1,"laboratory",["BSCE-Y1S1-003"]),
+              sub("BSCE-Y1S2-004","CE 101","Engineering Drawing",2,"lecture",[]),
+              sub("BSCE-Y1S2-005","CE 101L","Engineering Drawing (Lab)",1,"laboratory",["BSCE-Y1S2-004"]),
+              GE_SUBJECTS["GE-HIST101"], GE_SUBJECTS["GE-MATH100"],
+              GE_SUBJECTS["GE-PE102"], GE_SUBJECTS["GE-NSTP2"],
+            ],
+          },
+          2: {
+            [SEM.FIRST]: [
+              sub("BSCE-Y2S1-001","MATH 201","Differential Equations",3,"lecture",["BSCE-Y1S2-001"]),
+              sub("BSCE-Y2S1-002","CE 201","Mechanics of Deformable Bodies",3,"lecture",[]),
+              sub("BSCE-Y2S1-003","CE 202","Fluid Mechanics",3,"lecture",[]),
+              sub("BSCE-Y2S1-004","CE 203","Engineering Geology",3,"lecture",[]),
+              GE_SUBJECTS["GE-ETHICS101"], GE_SUBJECTS["GE-AH100"], GE_SUBJECTS["GE-PE103"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSCE-Y2S2-001","CE 204","Structural Analysis",3,"lecture",["BSCE-Y2S1-002"]),
+              sub("BSCE-Y2S2-002","CE 205","Construction Materials",3,"lecture",[]),
+              sub("BSCE-Y2S2-003","CE 206","Surveying",2,"lecture",[]),
+              sub("BSCE-Y2S2-004","CE 206L","Surveying (Lab)",1,"laboratory",["BSCE-Y2S2-003"]),
+              GE_SUBJECTS["GE-STS100"], GE_SUBJECTS["GE-PE104"],
+            ],
+          },
+          3: {
+            [SEM.FIRST]: [
+              sub("BSCE-Y3S1-001","CE 301","Reinforced Concrete Design",3,"lecture",["BSCE-Y2S2-001"]),
+              sub("BSCE-Y3S1-002","CE 302","Steel Design",3,"lecture",["BSCE-Y2S2-001"]),
+              sub("BSCE-Y3S1-003","CE 303","Geotechnical Engineering",3,"lecture",["BSCE-Y2S1-003"]),
+              sub("BSCE-Y3S1-004","CE 304","Transportation Engineering",3,"lecture",[]),
+            ],
+            [SEM.SECOND]: [
+              sub("BSCE-Y3S2-001","CE 305","Water Resources Engineering",3,"lecture",["BSCE-Y2S1-003"]),
+              sub("BSCE-Y3S2-002","CE 306","Environmental Engineering",3,"lecture",[]),
+              sub("BSCE-Y3S2-003","CE 307","Construction Management",3,"lecture",[]),
+              sub("BSCE-Y3S2-004","CE 308","Engineering Economy",3,"lecture",[]),
+            ],
+          },
+          4: {
+            [SEM.FIRST]: [
+              sub("BSCE-Y4S1-001","CE 401","Design Project 1",3,"lecture",[]),
+              sub("BSCE-Y4S1-002","CE 402","Professional Practice",3,"lecture",[]),
+              sub("BSCE-Y4S1-003","CE 403","Elective 1",3,"lecture",[]),
+            ],
+            [SEM.SECOND]: [
+              sub("BSCE-Y4S2-001","CE 404","Design Project 2",3,"lecture",["BSCE-Y4S1-001"]),
+              sub("BSCE-Y4S2-002","CE 405","Practicum",6,"practicum",[]),
+            ],
+          },
+        },
+      },
+    },
+  },
+  CBA: {
+    id: "CBA", name: "College of Business Administration",
+    programs: {
+      BSBA: {
+        id: "BSBA", name: "BS Business Administration", cmoRef: "CMO No. 20, s. 2013",
+        prospectus: {
+          1: {
+            [SEM.FIRST]: [
+              sub("BSBA-Y1S1-001","MATH 101","Business Mathematics",3,"lecture",[]),
+              sub("BSBA-Y1S1-002","ECON 101","Principles of Economics",3,"lecture",[]),
+              sub("BSBA-Y1S1-003","ACCT 101","Financial Accounting",3,"lecture",[]),
+              sub("BSBA-Y1S1-004","BMGT 101","Introduction to Business",3,"lecture",[]),
+              GE_SUBJECTS["GE-US101"], GE_SUBJECTS["GE-CAS101"],
+              GE_SUBJECTS["GE-PE101"], GE_SUBJECTS["GE-NSTP1"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSBA-Y1S2-001","STAT 101","Business Statistics",3,"lecture",[]),
+              sub("BSBA-Y1S2-002","ACCT 102","Managerial Accounting",3,"lecture",["BSBA-Y1S1-003"]),
+              sub("BSBA-Y1S2-003","BMGT 102","Business Communication",3,"lecture",[]),
+              sub("BSBA-Y1S2-004","MKTG 101","Principles of Marketing",3,"lecture",[]),
+              GE_SUBJECTS["GE-HIST101"], GE_SUBJECTS["GE-MATH100"],
+              GE_SUBJECTS["GE-PE102"], GE_SUBJECTS["GE-NSTP2"],
+            ],
+          },
+          2: {
+            [SEM.FIRST]: [
+              sub("BSBA-Y2S1-001","FIN 201","Financial Management",3,"lecture",[]),
+              sub("BSBA-Y2S1-002","BMGT 201","Operations Management",3,"lecture",[]),
+              sub("BSBA-Y2S1-003","BMGT 202","Human Resource Management",3,"lecture",[]),
+              sub("BSBA-Y2S1-004","LAW 201","Business Law",3,"lecture",[]),
+              GE_SUBJECTS["GE-ETHICS101"], GE_SUBJECTS["GE-AH100"], GE_SUBJECTS["GE-PE103"],
+            ],
+            [SEM.SECOND]: [
+              sub("BSBA-Y2S2-001","BMGT 203","Strategic Management",3,"lecture",[]),
+              sub("BSBA-Y2S2-002","BMGT 204","Entrepreneurship",3,"lecture",[]),
+              sub("BSBA-Y2S2-003","MKTG 202","Marketing Management",3,"lecture",["BSBA-Y1S2-004"]),
+              sub("BSBA-Y2S2-004","FIN 202","Investment Analysis",3,"lecture",["BSBA-Y2S1-001"]),
+              GE_SUBJECTS["GE-STS100"], GE_SUBJECTS["GE-PE104"],
+            ],
+          },
+          3: {
+            [SEM.FIRST]: [
+              sub("BSBA-Y3S1-001","BMGT 301","Business Research",3,"lecture",[]),
+              sub("BSBA-Y3S1-002","BMGT 302","International Business",3,"lecture",[]),
+              sub("BSBA-Y3S1-003","BMGT 303","Business Analytics",3,"lecture",[]),
+              sub("BSBA-Y3S1-004","BMGT 304","Elective 1",3,"lecture",[]),
+            ],
+            [SEM.SECOND]: [
+              sub("BSBA-Y3S2-001","BMGT 305","Capstone Project",3,"lecture",[]),
+              sub("BSBA-Y3S2-002","BMGT 306","Practicum",6,"practicum",[]),
+            ],
           },
         },
       },
@@ -250,17 +477,30 @@ function getSubjectById(id) {
   return null;
 }
 
-function getAvailableSubjectsForStudent() {
-  const session   = getStudentSession();           // from old-student.js
-  const registrar = getCurrentSemester();          // from old-student.js
+/** Get all subjects for a given program, flat list */
+function getAllSubjectsForProgram(programId) {
+  for (const college of Object.values(COLLEGES)) {
+    const prog = college.programs[programId];
+    if (!prog) continue;
+    const all = [];
+    for (const yr of Object.values(prog.prospectus))
+      for (const sem of Object.values(yr))
+        all.push(...sem);
+    return all;
+  }
+  return [];
+}
 
-  const college = COLLEGES[session.collegeId];
-  if (!college) return [];
-  const program = college.programs[session.programId];
-  if (!program) return [];
-
-  const semSubjects = program.prospectus[session.yearLevel]?.[registrar.semester] ?? [];
-
-  // Filter: not already enrolled, not completed
-  return semSubjects.filter(s => !isEnrolled(s.id) && !hasCompleted(s.id));
+/** Get prospectus summary (total units by year) */
+function getProspectusSummary(collegeId, programId) {
+  const result = getProspectus(collegeId, programId);
+  if (result.error) return result;
+  const summary = {};
+  for (const [yr, sems] of Object.entries(result.prospectus)) {
+    let total = 0;
+    for (const subjects of Object.values(sems))
+      total += subjects.reduce((a, s) => a + s.units, 0);
+    summary[`Year ${yr}`] = total;
+  }
+  return summary;
 }

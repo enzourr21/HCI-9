@@ -1,21 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMSU-Ease | Adviser Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../../style.css">
     <link rel="stylesheet" href="adviser.css">
     <link rel="stylesheet" href="../admin.css">
 </head>
 <body>
 
-    <!-- CSS-only filter radios -->
-    <input type="radio" name="student-filter" id="all"     checked hidden>
-    <input type="radio" name="student-filter" id="pending" hidden>
-    <input type="radio" name="student-filter" id="action"  hidden>
-
-    <!-- NAVBAR -->
+    <!-- MAIN NAVBAR -->
     <nav class="navbar">
         <div class="logo">
             <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -48,23 +44,23 @@
         </ul>
     </nav>
 
-    <!-- LAYOUT -->
     <div class="adviser-layout">
 
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <nav class="nav-menu">
-                <a href="adviser_dashboard.html" class="nav-item active">
+                <a href="#dashboard" class="nav-item active" data-page="dashboard">
                     <i class="fa-solid fa-users"></i> My Students
                 </a>
-                <a href="assessment.html" class="nav-item">
+                <a href="#assessment" class="nav-item" data-page="assessment">
                     <i class="fa-solid fa-file-invoice"></i> Assessment
                 </a>
-                <a href="submitted.html" class="nav-item">
+                <a href="#submitted" class="nav-item" data-page="submitted">
                     <i class="fa-solid fa-circle-check"></i> Submitted
                 </a>
-                <a href="correction.html" class="nav-item">
+                <a href="#correction" class="nav-item correction-nav-item" data-page="correction">
                     <i class="fa-solid fa-rotate-left"></i> For Correction
+                    <span class="correction-count-badge" id="sidebarBadge"></span>
                 </a>
             </nav>
 
@@ -77,112 +73,394 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
         <main class="content">
-            <div class="content-header">
-                <div class="header-left">
-                    <h2>My Advisees</h2>
-                    <div class="section-row">
-                        <span class="label">Section:</span>
-                        <select class="section-select">
-                            <option>All</option>
-                            <option>CS-1A</option>
-                            <option>CS-3A</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <div class="control-group">
-                        <span class="label">Filter:</span>
-                        <div class="pills">
-                            <label for="all"     class="filter-btn">All</label>
-                            <label for="pending" class="filter-btn">Pending (2)</label>
-                            <label for="action"  class="filter-btn">Action Required (1)</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- STUDENT CARDS -->
-            <div id="student-list">
-
-                <!-- Card: Juan Dela Cruz -->
-                <div class="student-card pending">
-                    <div class="card-header">
-                        <div class="profile-row">
-                            <div class="avatar">JDC</div>
-                            <div class="name-container">
-                                <h3 class="student-name">
-                                    Juan Dela Cruz
-                                    <span class="badge regular">Regular</span>
-                                </h3>
-                                <p class="student-id">2024-001234 • Year 3 • CS-3B</p>
-                            </div>
-                            <div class="status-pill pending">Pending</div>
+            <!-- DASHBOARD PAGE -->
+            <section id="page-dashboard" class="page-section active">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h2>My Advisees</h2>
+                        <div class="section-row">
+                            <span class="label">Section:</span>
+                            <select class="section-select">
+                                <option>All</option>
+                                <option>CS-1A</option>
+                                <option>CS-3A</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <h4 class="enrolled-title">Enrolled Subjects (20.00 units)</h4>
-                        <div class="subject-list">
-                            <div class="subject-row">
-                                <span>DS 131 - Discrete Structures 3</span>
-                                <span class="units">3.00 units</span>
-                            </div>
-                            <div class="subject-row">
-                                <span>CS 106 - Cyber Security</span>
-                                <span class="units">5.00 units</span>
+                    <div class="header-right">
+                        <div class="control-group">
+                            <span class="label">Filter:</span>
+                            <div class="pills">
+                                <label for="all"     class="filter-btn">All</label>
+                                <label for="pending" class="filter-btn">Pending (2)</label>
+                                <label for="action"  class="filter-btn">Action Required (1)</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-btns">
-                        <a href="#modal-juan" class="btn btn-review">
-                            <i class="fas fa-pen"></i> Review &amp; Edit
-                        </a>
-                        <button class="btn btn-proceed">
-                            <i class="fas fa-check-circle"></i> Proceed
-                        </button>
                     </div>
                 </div>
 
-                <!-- Card: Cassidy Himodo -->
-                <div class="student-card action">
-                    <div class="card-header">
-                        <div class="profile-row">
-                            <div class="avatar">CH</div>
-                            <div class="name-container">
-                                <h3 class="student-name">
-                                    Cassidy Himodo
-                                    <span class="badge regular">Regular</span>
-                                </h3>
-                                <p class="student-id">2025-001234 • Year 2 • CS-2A</p>
-                            </div>
-                            <div class="status-pill action">Action Required</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="enrolled-title">Enrolled Subjects (22.00 units)</h4>
-                        <div class="subject-list">
-                            <div class="subject-row">
-                                <span>CC 104 - Data Structures &amp; Algorithms</span>
-                                <span class="units">3.00 units</span>
+                <div id="student-list">
+
+                    <div class="student-card pending">
+                        <div class="card-header">
+                            <div class="profile-row">
+                                <div class="avatar">JDC</div>
+                                <div class="name-container">
+                                    <h3 class="student-name">
+                                        Juan Dela Cruz
+                                        <span class="badge regular">Regular</span>
+                                    </h3>
+                                    <p class="student-id">2024-001234 • Year 3 • CS-3B</p>
+                                </div>
+                                <div class="status-pill pending">Pending</div>
                             </div>
                         </div>
+                        <div class="card-body">
+                            <h4 class="enrolled-title">Enrolled Subjects (20.00 units)</h4>
+                            <div class="subject-list">
+                                <div class="subject-row">
+                                    <span>DS 131 - Discrete Structures 3</span>
+                                    <span class="units">3.00 units</span>
+                                </div>
+                                <div class="subject-row">
+                                    <span>CS 106 - Cyber Security</span>
+                                    <span class="units">5.00 units</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-btns">
+                            <a href="#modal-juan" class="btn btn-review">
+                                <i class="fas fa-pen"></i> Review &amp; Edit
+                            </a>
+                            <button class="btn btn-proceed">
+                                <i class="fas fa-check-circle"></i> Proceed
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-btns">
-                        <a href="#modal-cassidy" class="btn btn-review">
-                            <i class="fas fa-pen"></i> Review &amp; Edit
-                        </a>
-                        <button class="btn btn-proceed">
-                            <i class="fas fa-check-circle"></i> Proceed
-                        </button>
+
+                    <div class="student-card action">
+                        <div class="card-header">
+                            <div class="profile-row">
+                                <div class="avatar">CH</div>
+                                <div class="name-container">
+                                    <h3 class="student-name">
+                                        Cassidy Himodo
+                                        <span class="badge regular">Regular</span>
+                                    </h3>
+                                    <p class="student-id">2025-001234 • Year 2 • CS-2A</p>
+                                </div>
+                                <div class="status-pill action">Action Required</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="enrolled-title">Enrolled Subjects (22.00 units)</h4>
+                            <div class="subject-list">
+                                <div class="subject-row">
+                                    <span>CC 104 - Data Structures &amp; Algorithms</span>
+                                    <span class="units">3.00 units</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-btns">
+                            <a href="#modal-cassidy" class="btn btn-review">
+                                <i class="fas fa-pen"></i> Review &amp; Edit
+                            </a>
+                            <button class="btn btn-proceed">
+                                <i class="fas fa-check-circle"></i> Proceed
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ASSESSMENT PAGE -->
+            <section id="page-assessment" class="page-section">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h2>Assessments</h2>
+                        <div class="section-row">
+                            <span class="label">Section:</span>
+                            <select class="section-select">
+                                <option>All</option>
+                                <option>CS-2A</option>
+                                <option>CS-3B</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="control-group">
+                            <span class="label">Filter:</span>
+                            <div class="pills">
+                                <label for="assessment-filter-all"       class="filter-btn">All</label>
+                                <label for="assessment-filter-regular"   class="filter-btn">Regular (2)</label>
+                                <label for="assessment-filter-irregular" class="filter-btn">Overloaded / Irregular (1)</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-            </div><!-- /#student-list -->
+                <input type="radio" name="assessment-filter" id="assessment-filter-all" checked hidden>
+                <input type="radio" name="assessment-filter" id="assessment-filter-regular" hidden>
+                <input type="radio" name="assessment-filter" id="assessment-filter-irregular" hidden>
+
+                <div id="assessment-student-list">
+
+                    <div class="student-card irregular"
+                         data-name="Juan Dela Cruz"
+                         data-meta="2024-001234 • Year 3 • CS-3B"
+                         data-initials="JDC"
+                         data-type="irregular"
+                         data-subjects='[
+                             {"code":"DS 131","name":"Discrete Structures 3","units":3,"schedule":"MWF 7:30–8:30AM"},
+                             {"code":"CS 106","name":"Cyber Security","units":3,"schedule":"TTh 1:00–2:30PM"},
+                             {"code":"CS 201","name":"Software Engineering","units":3,"schedule":"MWF 9:00–10:00AM"},
+                             {"code":"CS 211","name":"Operating Systems","units":3,"schedule":"TTh 4:00–5:30PM"},
+                             {"code":"GE 001","name":"Understanding the Self","units":3,"schedule":"MWF 11:00AM–12:00PM"},
+                             {"code":"PE 003","name":"Physical Education 3","units":2,"schedule":"Fri 1:00–3:00PM"},
+                             {"code":"CS 198","name":"Special Topics (Overload)","units":3,"schedule":"Sat 8:00–11:00AM"}
+                         ]'>
+                        <div class="card-header">
+                            <div class="profile-row">
+                                <div class="avatar">JDC</div>
+                                <div class="name-container">
+                                    <h3 class="student-name">Juan Dela Cruz</h3>
+                                    <p class="student-id">2024-001234 • Year 3 • CS-3B</p>
+                                </div>
+                                <div class="status-pill irregular">Overloaded / Irregular</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="enrolled-title">Subjects for Review (Preview)</h4>
+                            <ul class="subject-preview-list">
+                                <li>DS 131 - Discrete Structures 3</li>
+                                <li>CS 106 - Cyber Security</li>
+                                <li><em style="color:#aaa;font-size:.82rem;">+5 more subjects…</em></li>
+                            </ul>
+                        </div>
+                        <div class="card-btns">
+                            <button class="btn btn-outline" onclick="openModal(this)">
+                                <i class="fas fa-eye"></i> View Subjects
+                            </button>
+                            <button class="btn btn-proceed">
+                                <i class="fas fa-check-circle"></i> Submit Assessment
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="student-card regular"
+                         data-name="Cassidy Himodo"
+                         data-meta="2025-001234 • Year 2 • CS-2A"
+                         data-initials="CH"
+                         data-type="regular"
+                         data-subjects='[
+                             {"code":"CC 104","name":"Data Structures & Algorithms","units":3,"schedule":"MWF 7:30–8:30AM"},
+                             {"code":"CC 105","name":"Object-Oriented Programming","units":3,"schedule":"TTh 10:30AM–12:00PM"},
+                             {"code":"CC 106","name":"Information Management","units":3,"schedule":"MWF 1:00–2:00PM"},
+                             {"code":"GE 002","name":"Readings in Philippine History","units":3,"schedule":"TTh 1:00–2:30PM"},
+                             {"code":"PE 002","name":"Physical Education 2","units":2,"schedule":"Fri 3:00–5:00PM"},
+                             {"code":"NSTP 2","name":"National Service Training Program 2","units":3,"schedule":"Sat 8:00–11:00AM"}
+                         ]'>
+                        <div class="card-header">
+                            <div class="profile-row">
+                                <div class="avatar">CH</div>
+                                <div class="name-container">
+                                    <h3 class="student-name">Cassidy Himodo</h3>
+                                    <p class="student-id">2025-001234 • Year 2 • CS-2A</p>
+                                </div>
+                                <div class="status-pill regular">Regular</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="enrolled-title">Subjects for Review (Preview)</h4>
+                            <ul class="subject-preview-list">
+                                <li>CC 104 - Data Structures &amp; Algorithms</li>
+                                <li>CC 105 - Object-Oriented Programming</li>
+                                <li><em style="color:#aaa;font-size:.82rem;">+4 more subjects…</em></li>
+                            </ul>
+                        </div>
+                        <div class="card-btns">
+                            <button class="btn btn-outline" onclick="openModal(this)">
+                                <i class="fas fa-eye"></i> View Subjects
+                            </button>
+                            <button class="btn btn-proceed">
+                                <i class="fas fa-check-circle"></i> Submit Assessment
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="student-card regular"
+                         data-name="Mark Reyes"
+                         data-meta="2025-005678 • Year 2 • CS-2A"
+                         data-initials="MR"
+                         data-type="regular"
+                         data-subjects='[
+                             {"code":"CC 104","name":"Data Structures & Algorithms","units":3,"schedule":"MWF 7:30–8:30AM"},
+                             {"code":"CC 105","name":"Object-Oriented Programming","units":3,"schedule":"TTh 10:30AM–12:00PM"},
+                             {"code":"GE 002","name":"Readings in Philippine History","units":3,"schedule":"MWF 11:00AM–12:00PM"},
+                             {"code":"PE 002","name":"Physical Education 2","units":2,"schedule":"Fri 3:00–5:00PM"}
+                         ]'>
+                        <div class="card-header">
+                            <div class="profile-row">
+                                <div class="avatar">MR</div>
+                                <div class="name-container">
+                                    <h3 class="student-name">Mark Reyes</h3>
+                                    <p class="student-id">2025-005678 • Year 2 • CS-2A</p>
+                                </div>
+                                <div class="status-pill regular">Regular</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="enrolled-title">Subjects for Review (Preview)</h4>
+                            <ul class="subject-preview-list">
+                                <li>CC 104 - Data Structures &amp; Algorithms</li>
+                                <li>GE 002 - Readings in Philippine History</li>
+                                <li><em style="color:#aaa;font-size:.82rem;">+2 more subjects…</em></li>
+                            </ul>
+                        </div>
+                        <div class="card-btns">
+                            <button class="btn btn-outline" onclick="openModal(this)">
+                                <i class="fas fa-eye"></i> View Subjects
+                            </button>
+                            <button class="btn btn-proceed">
+                                <i class="fas fa-check-circle"></i> Submit Assessment
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SUBMITTED PAGE -->
+            <section id="page-submitted" class="page-section">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h2>Submission History</h2>
+                        <p style="margin:0;font-size:0.85rem;color:#777;">All students forwarded to the Assessment Office.</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" placeholder="Search name or ID…" class="search-input">
+                        </div>
+                        <div class="control-group">
+                            <span class="label">Section:</span>
+                            <select class="section-select" id="sectionFilter">
+                                <option value="">All</option>
+                                <option value="CS-2A">CS-2A</option>
+                                <option value="CS-3B">CS-3B</option>
+                                <option value="CS-4A">CS-4A</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-strip">
+                    <div class="strip-item">
+                        <span class="strip-val" id="statTotal">—</span>
+                        <span class="strip-label">Total Submitted</span>
+                    </div>
+                    <div class="strip-item">
+                        <span class="strip-val" id="statRegular">—</span>
+                        <span class="strip-label">Regular</span>
+                    </div>
+                    <div class="strip-item">
+                        <span class="strip-val" id="statIrregular">—</span>
+                        <span class="strip-label">Irregular / Overloaded</span>
+                    </div>
+                    <div class="strip-item">
+                        <span class="strip-val" id="statRecalled">—</span>
+                        <span class="strip-label">Recalled</span>
+                    </div>
+                </div>
+
+                <section class="table-wrapper">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Student Name</th>
+                                <th>ID Number</th>
+                                <th>Section</th>
+                                <th>Year</th>
+                                <th>Type</th>
+                                <th>Total Units</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                    <div class="empty-state" id="emptyState" style="display:none;">
+                        <i class="fas fa-inbox"></i>
+                        <p>No submitted records found.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- CORRECTION PAGE -->
+            <section id="page-correction" class="page-section">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h2>For Correction</h2>
+                        <p class="correction-subtitle">
+                            Students returned by the Assessment Office. Review the note, correct the record, and resubmit.
+                        </p>
+                    </div>
+                    <div class="header-right">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="correctionSearch" placeholder="Search name or ID…" class="search-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="correction-list" class="correction-list"></div>
+
+                <div class="empty-correction" id="emptyCorrection" style="display:none;">
+                    <i class="fas fa-check-circle"></i>
+                    <p>No flagged records. You're all clear.</p>
+                </div>
+            </section>
+
         </main>
     </div>
 
-    <!-- ── MODAL: Juan Dela Cruz ── -->
+    <!-- ASSESSMENT MODAL -->
+    <div class="modal-overlay" id="subjectsModal">
+        <div class="modal-card" style="max-width:560px;">
+            <div class="modal-header">
+                <div class="modal-avatar" id="modalAvatar"></div>
+                <div>
+                    <h3 id="modalStudentName" style="margin:0;font-size:1rem;font-weight:700;color:#1a1a1a;"></h3>
+                    <p id="modalStudentMeta" style="margin:0;font-size:0.8rem;color:#777;"></p>
+                </div>
+                <button class="close-btn" onclick="closeModal()" style="margin-left:auto;">&times;</button>
+            </div>
+            <div class="modal-body" style="margin-top:16px;">
+                <table class="edit-table" id="modalSubjectsTable">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Subject</th>
+                            <th>Units</th>
+                            <th>Schedule</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalSubjectsBody"></tbody>
+                </table>
+                <div style="margin-top:14px;padding-top:12px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:0.82rem;color:#555;">Total Units: <strong id="assessmentModalTotalUnits" style="color:#d32f2f;"></strong></span>
+                    <span id="assessmentModalStatusBadge" style="font-size:0.75rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD MODALS -->
     <div id="modal-juan" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
@@ -250,7 +528,6 @@
         </div>
     </div>
 
-    <!-- ── MODAL: Cassidy Himodo ── -->
     <div id="modal-cassidy" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
@@ -281,7 +558,7 @@
                             <td><input type="text" value="CC 104" class="id-edit"></td>
                             <td>Data Structures &amp; Algorithms</td>
                             <td>TTh</td>
-                            <td>8:00-9:30 AM</td>
+                            <td>8:00–9:30 AM</td>
                             <td>CS-101</td>
                             <td>CS-2A</td>
                             <td>3.00</td>
@@ -292,27 +569,218 @@
         </div>
     </div>
 
-</body>
-<script src="../../../script/adviser.js">
-    document.addEventListener("click", function (e) {
-    const closeBtn = e.target.closest(".close-btn");
-    if (!closeBtn) return;
+    <!-- SUBMITTED RECALL MODAL -->
+    <div class="modal-overlay" id="recallModal">
+        <div class="modal-card recall-modal-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-undo" style="color:#d32f2f;margin-right:6px;"></i>Recall Student</h3>
+                <button class="close-btn" id="closeRecallModal">&times;</button>
+            </div>
+            <div class="modal-body recall-body" style="padding-top:6px;">
+                <p>Are you sure you want to recall <strong id="recallStudentName"></strong> from the Assessment Office?</p>
+                <p class="recall-note">This will move the student back to <em>Pending</em> status in your dashboard.</p>
+            </div>
+            <div class="recall-actions">
+                <button class="btn btn-outline" id="cancelRecall" style="flex:0 0 auto;padding:9px 20px;">Cancel</button>
+                <button class="btn-recall-confirm" id="confirmRecall">
+                    <i class="fas fa-undo"></i> Confirm Recall
+                </button>
+            </div>
+        </div>
+    </div>
 
-    e.preventDefault();
+    <!-- CORRECTION MODALS -->
+    <div class="modal-overlay" id="resubmitModal">
+        <div class="modal-card resubmit-modal-card">
+            <div class="modal-header">
+                <h3 id="resubmitModalTitle">Correct &amp; Resubmit</h3>
+                <button class="btn-add" id="addSubjectBtn">
+                    <i class="fas fa-plus"></i> Add Subject
+                </button>
+                <button class="close-btn" id="closeResubmitModal">&times;</button>
+            </div>
+            <div class="modal-note-banner" id="modalNoteBanner">
+                <div class="modal-note-label">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    Note from Assessment Office
+                </div>
+                <div class="modal-note-text" id="modalNoteText"></div>
+            </div>
+            <div class="modal-body">
+                <table class="edit-table" id="resubmitTable">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>Subject ID</th>
+                            <th>Subject Description</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Room</th>
+                            <th>Section</th>
+                            <th>Units</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resubmitTableBody"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer-bar">
+                <span class="modal-units-count">
+                    Total: <strong id="modalTotalUnits">0</strong> units
+                </span>
+                <div class="modal-footer-actions">
+                    <button class="btn btn-outline" id="cancelResubmitBtn">Cancel</button>
+                    <button class="btn btn-resubmit" id="confirmResubmitBtn">
+                        <i class="fas fa-paper-plane"></i> Resubmit to Assessment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // Push a clean state so :target no longer matches any modal
-    history.pushState(null, "", window.location.pathname + window.location.search);
+    <div class="modal-overlay" id="confirmModal">
+        <div class="confirm-modal-card">
+            <div class="confirm-icon">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <h3>Confirm Resubmission?</h3>
+            <p>
+                You are about to resubmit <strong id="confirmStudentName"></strong>
+                back to the Assessment Office queue. Make sure all corrections have been made.
+            </p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" id="cancelConfirmBtn">Go Back</button>
+                <button class="btn btn-resubmit" id="finalResubmitBtn">
+                    <i class="fas fa-check"></i> Yes, Resubmit
+                </button>
+            </div>
+        </div>
+    </div>
 
-    // Also hide any .active or .open modals driven by JS
-        document.querySelectorAll(".modal-overlay").forEach(m => {
-            m.classList.remove("active", "open");
+    <script src="../../../script/adviser.js"></script>
+    <script>
+        function openModal(btn) {
+            const card = btn.closest('#page-assessment .student-card');
+            if (!card) return;
+            const subjects = JSON.parse(card.dataset.subjects);
+            const type = card.dataset.type;
+
+            document.getElementById('modalAvatar').textContent = card.dataset.initials;
+            document.getElementById('modalAvatar').style.cssText =
+                'width:40px;height:40px;border-radius:50%;background:#d32f2f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;';
+            document.getElementById('modalStudentName').textContent = card.dataset.name;
+            document.getElementById('modalStudentMeta').textContent = card.dataset.meta;
+
+            const badge = document.getElementById('assessmentModalStatusBadge');
+            if (type === 'irregular') {
+                badge.textContent = 'Overloaded / Irregular';
+                badge.style.cssText = 'font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;background:#fff4e5;color:#b05d00;';
+            } else {
+                badge.textContent = 'Regular';
+                badge.style.cssText = 'font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;background:#d4edda;color:#155724;';
+            }
+
+            let totalUnits = 0;
+            const tbody = document.getElementById('modalSubjectsBody');
+            tbody.innerHTML = '';
+            subjects.forEach(s => {
+                totalUnits += s.units;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${s.code}</strong></td>
+                        <td>${s.name}</td>
+                        <td style="color:#d32f2f;font-weight:700;text-align:center;">${s.units}</td>
+                        <td style="color:#555;font-size:.82rem;">${s.schedule}</td>
+                    </tr>`;
+            });
+            document.getElementById('assessmentModalTotalUnits').textContent = totalUnits + ' units';
+
+            document.getElementById('subjectsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('subjectsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('subjectsModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
         });
-    });
 
-    document.addEventListener("click", function (e) {
-        if (!e.target.classList.contains("modal-overlay")) return;
-        history.pushState(null, "", window.location.pathname + window.location.search);
-        e.target.classList.remove("active", "open");
-    });
-</script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        const assessmentFilterRadios = document.querySelectorAll('#page-assessment input[name="assessment-filter"]');
+        const assessmentCards = document.querySelectorAll('#page-assessment .student-card');
+
+        assessmentFilterRadios.forEach(radio => {
+            radio.addEventListener('change', applyAssessmentFilter);
+        });
+
+        function applyAssessmentFilter() {
+            const active = document.querySelector('#page-assessment input[name="assessment-filter"]:checked').id;
+            assessmentCards.forEach(card => {
+                if (active === 'assessment-filter-all') {
+                    card.style.display = '';
+                } else if (active === 'assessment-filter-regular') {
+                    card.style.display = card.classList.contains('regular') ? '' : 'none';
+                } else if (active === 'assessment-filter-irregular') {
+                    card.style.display = card.classList.contains('irregular') ? '' : 'none';
+                }
+            });
+        }
+
+        const assessmentFilterLabels = document.querySelectorAll('#page-assessment .filter-btn');
+        assessmentFilterRadios.forEach((radio, i) => {
+            radio.addEventListener('change', () => {
+                assessmentFilterLabels.forEach(label => label.classList.remove('active-filter'));
+                assessmentFilterLabels[i].classList.add('active-filter');
+            });
+        });
+
+        assessmentFilterLabels[0]?.classList.add('active-filter');
+    </script>
+    <script>
+        (function() {
+            const validPages = ['dashboard','assessment','submitted','correction'];
+            const links = document.querySelectorAll('.sidebar .nav-item[data-page]');
+            const sections = document.querySelectorAll('.page-section');
+
+            function setActivePage(page) {
+                sections.forEach(section => {
+                    section.classList.toggle('active', section.id === 'page-' + page);
+                });
+                links.forEach(link => {
+                    link.classList.toggle('active', link.dataset.page === page);
+                });
+            }
+
+            function getPageFromHash(hash) {
+                if (!hash || hash === '#') return 'dashboard';
+                const page = hash.slice(1);
+                return validPages.includes(page) ? page : 'dashboard';
+            }
+
+            function handleHashChange() {
+                const hash = window.location.hash;
+                if (hash.startsWith('#modal-')) return;
+                setActivePage(getPageFromHash(hash));
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', event => {
+                    event.preventDefault();
+                    const page = link.dataset.page;
+                    if (!page) return;
+                    history.pushState(null, '', '#' + page);
+                    setActivePage(page);
+                });
+            });
+
+            window.addEventListener('hashchange', handleHashChange);
+            handleHashChange();
+        })();
+    </script>
+</body>
 </html>
