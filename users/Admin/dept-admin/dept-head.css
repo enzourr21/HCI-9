@@ -785,3 +785,189 @@
     .sched-day-row { flex-direction: column; gap: 8px; }
     .modal-box { max-width: 100%; }
 }
+
+
+/* ═══════════════════════════════════════════════════
+   dept-head.css  —  v3 additions
+   Paste these at the bottom of your dept-head.css
+═══════════════════════════════════════════════════ */
+
+/* ── "For Review" badge (interviewed state) ──── */
+.badge.b-review {
+    background: #fef9c3;
+    color: #854d0e;
+    border: 1px solid #fde047;
+}
+
+/* ── Evaluate button (table) ──────────────────── */
+.btn-act.btn-evaluate {
+    background: #eff6ff;
+    color: var(--blue, #2563eb);
+    border: 1px solid #bfdbfe;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.btn-act.btn-evaluate:hover {
+    background: #dbeafe;
+}
+
+/* ── Evaluate modal header ────────────────────── */
+.modal-hd.evaluate-hd {
+    background: #eff6ff;
+    border-bottom: 1px solid #bfdbfe;
+}
+.modal-hd.evaluate-hd h3 {
+    color: var(--blue, #2563eb);
+}
+
+/* ── Confirm evaluate button ──────────────────── */
+.btn-confirm-evaluate {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    background: var(--blue, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+}
+.btn-confirm-evaluate:hover {
+    background: #1d4ed8;
+}
+
+/* ── Panel evaluate button ────────────────────── */
+.btn-panel.btn-panel-evaluate {
+    background: var(--blue, #2563eb);
+    color: #fff;
+    border: none;
+}
+.btn-panel.btn-panel-evaluate:hover {
+    background: #1d4ed8;
+}
+
+/* ── Live total display ───────────────────────── */
+.eval-live-total-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+}
+.eval-live-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.eval-live-total {
+    font-size: 15px;
+    font-weight: 700;
+    transition: color .2s;
+}
+
+/* ── Evaluation criteria rows ─────────────────── */
+.eval-criteria-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border, #e5e7eb);
+}
+.eval-criteria-row:last-child {
+    border-bottom: none;
+}
+.eval-crit-info {
+    flex: 1;
+    min-width: 0;
+}
+.eval-crit-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text, #111827);
+}
+.eval-crit-desc {
+    display: block;
+    font-size: 11px;
+    color: var(--muted, #6b7280);
+    margin-top: 1px;
+}
+.eval-dots-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.eval-dot-score {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--muted, #6b7280);
+    min-width: 28px;
+    text-align: right;
+}
+
+/* ── Clickable dot buttons ────────────────────── */
+.eval-dot-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #d1d5db;
+    background: transparent;
+    cursor: pointer;
+    transition: background .12s, border-color .12s, transform .1s;
+    padding: 0;
+}
+.eval-dot-btn:hover {
+    border-color: var(--blue, #2563eb);
+    background: #dbeafe;
+    transform: scale(1.15);
+}
+.eval-dot-btn.filled {
+    background: var(--blue, #2563eb);
+    border-color: var(--blue, #2563eb);
+}
+.eval-dot-btn.filled:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+/* ── Row eval tag color variants ─────────────── */
+.row-eval-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: var(--muted, #6b7280);
+    border: 1px solid #e2e8f0;
+}
+.row-eval-tag.eval-tag-high {
+    background: #dcfce7;
+    color: #166534;
+    border-color: #86efac;
+}
+.row-eval-tag.eval-tag-mid {
+    background: #fef9c3;
+    color: #854d0e;
+    border-color: #fde047;
+}
+.row-eval-tag.eval-tag-low {
+    background: #fee2e2;
+    color: #991b1b;
+    border-color: #fca5a5;
+}

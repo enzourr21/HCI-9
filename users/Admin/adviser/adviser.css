@@ -1,4 +1,4 @@
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    WMSU-Ease â€” Adviser Dashboard Stylesheet
    adviser.css  (layered on top of admin.css)
    Fixes: sidebar positioning, content offset, stat-item, modal
@@ -190,8 +190,15 @@ body {
     min-width: 0;           /* prevent flex child from overflowing */
 }
 
+.page-section {
+    display: none;
+}
+.page-section.active {
+    display: block;
+}
 
-/* â”€â”€ CONTENT HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+/* â”€â”€ CONTENT HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 .content-header {
     display: flex;
     align-items: flex-start;
@@ -863,9 +870,9 @@ body {
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 /* Sidebar correction nav item */
-.correction-nav-item.active  { background: #e65100; }
-.correction-nav-item:hover   { background: #fff3e0; color: #e65100; }
-.correction-nav-item:hover::before { background: #e65100; }
+.correction-nav-item.active  { background: crimson; }
+.correction-nav-item:hover   { background: crimson; }
+.correction-nav-item:hover::before { background: crimson; }
 
 .correction-count-badge {
     display: inline-flex;
@@ -876,7 +883,7 @@ body {
     padding: 0 5px;
     border-radius: 20px;
     background: var(--white);
-    color: #e65100;
+    color: crimson;
     font-size: 0.65rem;
     font-weight: 800;
     margin-left: auto;
@@ -903,14 +910,14 @@ body {
 
 /* Correction card */
 .correction-card {
-    border-color: #e65100;
+    border-color: crimson;
     border-width: 1.5px;
     padding: 0;
 }
 .correction-card .card-header { padding: 20px 20px 14px; }
 .correction-card .card-body   { padding: 0 20px 12px; }
 
-.status-pill.correction { background: #fff3e0; color: #e65100; }
+.status-pill.correction { background: #fff3e0; color: crimson; }
 
 /* Reason tags row */
 .correction-reasons-row {
@@ -929,7 +936,7 @@ body {
     padding: 3px 10px;
     border-radius: 20px;
     background: #fff3e0;
-    color: #e65100;
+    color: crimson;
     border: 1px solid #ffcc80;
 }
 
@@ -955,7 +962,7 @@ body {
     gap: 7px;
     font-size: 0.82rem;
     font-weight: 600;
-    color: #e65100;
+    color: crimson;
     user-select: none;
 }
 
@@ -976,7 +983,7 @@ body {
     padding: 12px 14px;
     background: #fff8f5;
     border: 1.5px solid #ffcc80;
-    border-left: 3px solid #e65100;
+    border-left: 3px solid crimson;
     border-radius: 0 8px 8px 0;
 }
 
@@ -985,7 +992,7 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .08em;
-    color: #e65100;
+    color: crimson;
     margin-bottom: 6px;
     display: flex;
     align-items: center;

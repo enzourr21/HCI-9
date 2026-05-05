@@ -187,7 +187,7 @@ function initAdviserDashboard() {
     }
 
     // ── PROCEED BUTTON ────────────────────────────────────────
-    document.querySelectorAll(".btn-proceed").forEach((btn, i) => {
+    document.querySelectorAll("#page-dashboard .btn-proceed").forEach((btn, i) => {
         btn.addEventListener("click", () => {
             const student = students[i];
             if (!student) return;
@@ -259,8 +259,8 @@ function initAdviserDashboard() {
         });
     });
 
-    // Tag each card with its student id for targeting
-    document.querySelectorAll(".student-card").forEach((card, i) => {
+    // Tag each dashboard card with its student id for targeting
+    document.querySelectorAll("#page-dashboard .student-card").forEach((card, i) => {
         if (students[i]) card.dataset.id = students[i].id;
     });
 }
