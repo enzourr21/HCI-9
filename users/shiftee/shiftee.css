@@ -802,33 +802,59 @@ body {
     .topbar-user-info { display: none; }
 }
 
-/* Progress Stepper Enhancements */
+/* ════════════════════════════════════════════════════
+   NEW — Progress Stepper State Overrides
+   Added for the 5-step shifting workflow.
+   All colours use existing CSS variables — no new
+   colour values introduced.
+════════════════════════════════════════════════════ */
+
+/* Active step: crimson pulse (matches brand) */
 .progress-step.active .ps-circle {
     background: var(--cr) !important;
-    color: #fff !important;
     border-color: var(--cr) !important;
     box-shadow: 0 0 0 4px var(--cr-pale);
-    animation: pulse-red 2s infinite;
+    animation: pulse-step 2s infinite;
+}
+.progress-step.active .ps-circle svg { stroke: #fff; }
+
+/* Active label: highlighted */
+.progress-step.active .ps-label {
+    color: var(--cr);
+    font-weight: 700;
 }
 
+/* Done step: green fill */
 .progress-step.done .ps-circle {
     background: var(--green) !important;
-    color: #fff !important;
     border-color: var(--green) !important;
 }
+.progress-step.done .ps-circle svg { stroke: #fff; }
 
-@keyframes pulse-red {
-    0% { box-shadow: 0 0 0 0 rgba(139, 26, 36, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(139, 26, 36, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(139, 26, 36, 0); }
+/* Done label */
+.progress-step.done .ps-label {
+    color: var(--green);
+    font-weight: 600;
 }
 
+/* Done connector: crimson line matches active-step colour */
+.progress-connector.done {
+    background: var(--green);
+}
+
+/* Pulse keyframes for active step */
+@keyframes pulse-step {
+    0%   { box-shadow: 0 0 0 0   rgba(139, 26, 36, 0.40); }
+    70%  { box-shadow: 0 0 0 10px rgba(139, 26, 36, 0.00); }
+    100% { box-shadow: 0 0 0 0   rgba(139, 26, 36, 0.00); }
+}
+
+/* Target-program select focus ring */
 #target-program {
     border: 1px solid var(--border);
     font-family: 'DM Sans', sans-serif;
     outline: none;
 }
-
 #target-program:focus {
     border-color: var(--cr);
 }

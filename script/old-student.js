@@ -1,23 +1,26 @@
 /**
  * ============================================================
  *  WMSU-EASE  |  old-student.js
- *  Registrar & Student Session Data
+ *  Registrar & Student Session Data  (Old Students — 2nd Year+)
  *
- *  Simulates data that would come from the Registrar's Office:
+ *  Simulates data from the Registrar's Office:
  *    - Current academic calendar (school year + semester)
  *    - Logged-in student's profile, college, program, year level
  *    - Already-enrolled subjects (to prevent duplicates)
- *  ============================================================
+ *
+ *  NOTE: Old students (2nd year and above) enroll starting
+ *  2nd Semester. Freshmen are handled by a separate portal.
+ * ============================================================
  */
 
 // ─── CURRENT ACADEMIC CALENDAR (from Registrar) ─────────────
 const REGISTRAR = {
-  schoolYear:    "2024-2025",
-  semester:      "2nd",          // "1st" | "2nd" | "summer"
-  semLabel:      "2nd Semester",
+  schoolYear:     "2026-2027",
+  semester:       "1st",            // "1st" | "2nd" | "summer"
+  semLabel:       "1st Semester",
   enrollmentOpen: true,
-  maxUnits:      30,
-  minUnits:      15,
+  maxUnits:       30,
+  minUnits:       15,
 };
 
 // ─── LOGGED-IN STUDENT SESSION ───────────────────────────────
@@ -28,16 +31,30 @@ const CURRENT_STUDENT = {
   middleName:  "Santos",
   fullName:    "Juan Dela Cruz",
   initials:    "JD",
-  yearLevel:   1,               // 1 | 2 | 3 | 4
-  yearLabel:   "1st Year",
+  yearLevel:   2,               // 2 | 3 | 4  (old students only)
+  yearLabel:   "2nd Year",
   collegeId:   "CCS",
   collegeName: "College of Computing Studies",
   programId:   "BSCS",
   programName: "BS Computer Science",
 
-  // IDs of subjects already confirmed/enrolled this semester
-  enrolledSubjectIds: [
-    "BSCS-Y1S2-001",   // CS 113 – Computer Programming 2
+  // Empty — student is now enrolling for 1st Sem S.Y. 2026-2027
+  enrolledSubjectIds: [],
+
+  // All subjects passed from 1st Year (using IDs from subject.js)
+  completedSubjectIds: [
+    // ── 1st Year, 1st Semester ──────────────────────────────
+    "BSCS-Y1S1-001",   // CS 111  – Introduction to Computing
+    "BSCS-Y1S1-002",   // CS 112  – Computer Programming 1 (Lec)
+    "BSCS-Y1S1-003",   // CS 112L – Computer Programming 1 (Lab)
+    "BSCS-Y1S1-004",   // MATH 111 – Discrete Structures 1
+    "GE-US101",        // Understanding the Self
+    "GE-CAS101",       // Purposive Communication
+    "GE-PE101",        // PathFit 1
+    "GE-NSTP1",        // NSTP 1
+
+    // ── 1st Year, 2nd Semester ──────────────────────────────
+    "BSCS-Y1S2-001",   // CS 113  – Computer Programming 2 (Lec)
     "BSCS-Y1S2-002",   // CS 113L – Computer Programming 2 (Lab)
     "BSCS-Y1S2-003",   // MATH 112 – Discrete Structures 2
     "BSCS-Y1S2-004",   // MATH 113 – Calculus for Computing
@@ -45,18 +62,6 @@ const CURRENT_STUDENT = {
     "GE-MATH100",      // Mathematics in the Modern World
     "GE-PE102",        // PathFit 2
     "GE-NSTP2",        // NSTP 2
-  ],
-
-  // IDs of subjects already passed (for prerequisite checking)
-  completedSubjectIds: [
-    "BSCS-Y1S1-001",   // CS 111
-    "BSCS-Y1S1-002",   // CS 112
-    "BSCS-Y1S1-003",   // CS 112L
-    "BSCS-Y1S1-004",   // MATH 111
-    "GE-US101",
-    "GE-CAS101",
-    "GE-PE101",
-    "GE-NSTP1",
   ],
 };
 
@@ -96,7 +101,7 @@ function hasCompleted(subjectId) {
 
 /**
  * getEnrolledUnits(subjectList)
- * Given an array of subject objects, sums the units of enrolled subjects.
+ * Sums the units of currently enrolled subjects.
  * @param {Array} subjectList - flat array of subject objects with .id and .units
  */
 function getEnrolledUnits(subjectList) {
@@ -108,7 +113,6 @@ function getEnrolledUnits(subjectList) {
 /**
  * canAddSubject(subject, currentEnrolledUnits)
  * Returns { allowed: bool, reason: string }
- * Checks: already enrolled, already completed, units cap.
  */
 function canAddSubject(subject, currentEnrolledUnits) {
   if (isEnrolled(subject.id)) {
@@ -150,4 +154,51 @@ function removeSubject(subjectId) {
   }
   CURRENT_STUDENT.enrolledSubjectIds.splice(idx, 1);
   return { success: true, message: "Subject removed." };
+}
+
+/**
+ * getAvailableSubjectsForStudent()
+ * Returns subjects from the student's prospectus for the current semester
+ * that they haven't enrolled in or already completed.
+ *
+ * Depends on getProspectus() and getSubjectById() from subject.js.
+ * Both scripts must be loaded before this is called (runtime call is safe).
+ */
+function getAvailableSubjectsForStudent() {
+  const s   = getStudentSession();
+  const reg = getCurrentSemester();
+
+  const college = COLLEGES?.[s.collegeId];
+  if (!college) return [];
+  const program = college.programs?.[s.programId];
+  if (!program) return [];
+
+  const all = [];
+
+  // Loop through all years up to the student's current year level
+  for (let yr = 1; yr <= s.yearLevel; yr++) {
+    const yearData = program.prospectus[yr];
+    if (!yearData) continue;
+
+    // For years below current year: include both sems
+    // For current year: include up to and including current sem
+    const semsToInclude = yr < s.yearLevel
+      ? [SEM.FIRST, SEM.SECOND]
+      : reg.semester === SEM.SECOND
+        ? [SEM.FIRST, SEM.SECOND]
+        : [SEM.FIRST];
+
+    for (const sem of semsToInclude) {
+      const subjects = yearData[sem] ?? [];
+      for (const sub of subjects) {
+        // Skip already completed or enrolled
+        if (isEnrolled(sub.id) || hasCompleted(sub.id)) continue;
+        // Skip duplicates (GE subjects appear in multiple programs)
+        if (all.find(x => x.id === sub.id)) continue;
+        all.push(sub);
+      }
+    }
+  }
+
+  return all;
 }

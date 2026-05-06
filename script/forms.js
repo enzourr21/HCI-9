@@ -354,6 +354,26 @@
         return el ? el.value.trim() : '';
     }
 
+    function getQueryParameter(name) {
+        if (typeof URLSearchParams === 'undefined') return '';
+        return new URLSearchParams(window.location.search).get(name) || '';
+    }
+
+    function normalizeStudentType(type) {
+        if (!type) return '';
+        const normalized = type.toString().trim().toLowerCase();
+        if (normalized === 'freshman') return 'Freshman';
+        if (normalized === 'transferee') return 'Transferee';
+        if (normalized === 'shiftee' || normalized === 'shift') return 'Shiftee';
+        return type.toString().trim();
+    }
+
+    function applyStudentType(app) {
+        const type = normalizeStudentType(getQueryParameter('type') || app.studentType || app.applicantType || '');
+        if (!type) return;
+        setField('student_type', type);
+    }
+
     /* ─── DETECT STUDENT TYPE ──────────────────────────────────── */
 
     /**
@@ -772,6 +792,11 @@
         setField('email',  app.email   || '');
         setField('phone',  app.contact || '');
 
+        const savedType = app.studentType || app.applicantType || '';
+        if (savedType) {
+            setField('student_type', normalizeStudentType(savedType));
+        }
+
         const oapr = (app.cet && app.cet.oapr !== undefined) ? app.cet.oapr
                    : (app.cetOapr !== undefined ? app.cetOapr : null);
         injectOAPR(oapr);
@@ -970,6 +995,7 @@
 
         // Pre-fill form fields
         prefillForm(app);
+        applyStudentType(app);
 
         // Auto-select saved course
         if (app.course) {

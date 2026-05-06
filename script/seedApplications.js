@@ -11,9 +11,7 @@
 
     const REQ = window.WMSU_COURSE_REQUIREMENTS;
 
-    /* ── Target distribution per department ──────────────────
-       Total = 950
-    ─────────────────────────────────────────────────────── */
+    /* ── Target distribution per department (Total = 950) ── */
     const DEPT_DISTRIBUTION = {
       'College of Computing Studies':          114,
       'College of Engineering':                190,
@@ -25,13 +23,12 @@
       'College of Criminology':                 52,
       'College of Islamic and Arabic Studies':  37,
     };
-    // Total = 950 ✓
 
-    /* ── Course weights ── */
+    /* ── Course weights per department ── */
     const COURSE_WEIGHTS = {
       'College of Computing Studies': {
-        'BS Computer Science':        0.48,
-        'BS Information Technology':  0.40,
+        'BS Computer Science':       0.48,
+        'BS Information Technology': 0.40,
         'Associate in Computer Technology major in Networking Application Development': 0.12,
       },
       'College of Engineering': {
@@ -50,9 +47,9 @@
         'BS Nursing': 1.00,
       },
       'College of Business Administration': {
-        'BS Business Administration':  0.30,
-        'BS Accountancy':              0.28,
-        'BS Economics':                0.42,
+        'BS Business Administration': 0.30,
+        'BS Accountancy':             0.28,
+        'BS Economics':               0.42,
       },
       'College of Arts and Sciences': {
         'BA Psychology':                       0.24,
@@ -87,113 +84,113 @@
       },
     };
 
-    /* ── Weighted random course picker ── */
-    function pickCourse(dept, rng) {
-      const weights = COURSE_WEIGHTS[dept];
-      if (!weights) return null;
-      const roll = rng();
-      let cumulative = 0;
-      for (const [course, w] of Object.entries(weights)) {
-        cumulative += w;
-        if (roll < cumulative) return course;
-      }
-      return Object.keys(weights)[0];
-    }
-
     /* ── Seeded RNG ── */
-    function rng(seed) {
+    function makeRng(seed) {
       let s = seed;
-      return () => {
+      return function () {
         s = (s * 1664525 + 1013904223) & 0xffffffff;
         return (s >>> 0) / 4294967295;
       };
     }
 
-    /* ── Build all applications first (no status assignment yet) ── */
+    /* ── Weighted course picker ── */
+    function pickCourse(dept, r) {
+      const weights = COURSE_WEIGHTS[dept];
+      if (!weights) return null;
+      const roll = r();
+      let acc = 0;
+      for (const [course, w] of Object.entries(weights)) {
+        acc += w;
+        if (roll < acc) return course;
+      }
+      return Object.keys(weights)[0];
+    }
+
+    /* ── Build raw app list ── */
     const rawApps = [];
-    const usedAppNos = new Set(stored.map(a => a.appNo));
-    let appCounter = 1;
+    const usedNos = new Set(stored.map(a => a.appNo));
+    let counter   = 1;
 
     function nextAppNo() {
-      while (usedAppNos.has(`2526-${String(appCounter).padStart(5, '0')}`)) appCounter++;
-      const no = `2526-${String(appCounter).padStart(5, '0')}`;
-      usedAppNos.add(no);
-      appCounter++;
+      let no;
+      do {
+        no = `2526-${String(counter).padStart(5, '0')}`;
+        counter++;
+      } while (usedNos.has(no));
+      usedNos.add(no);
       return no;
     }
 
     let globalIdx = 0;
-    for (const [dept, targetCount] of Object.entries(DEPT_DISTRIBUTION)) {
-      for (let i = 0; i < targetCount; i++) {
+
+    for (const [dept, count] of Object.entries(DEPT_DISTRIBUTION)) {
+      for (let i = 0; i < count; i++) {
         globalIdx++;
-        const r     = rng(globalIdx * 137 + 29);
+        const r     = makeRng(globalIdx * 137 + 29);
         const appNo = nextAppNo();
-        const rec   = window.WMSU_lookupApplicant(appNo);
+
+        // CET DB is the source of truth for all personal info and scores
+        const rec = window.WMSU_lookupApplicant(appNo);
         if (!rec) continue;
 
         const course = pickCourse(dept, r);
         if (!course) continue;
 
-        const req     = REQ[course];
-        // Spread submissions over last 60 days — earlier applicants submitted first
-        const daysAgo = Math.floor(r() * 60) + 1;
+        const req = REQ[course];
+
+        // Only attach nat/eat scores if the course actually requires them
+        // Pull directly from CET DB record (already generated there)
+        const natScore = req && req.extra === 'nat' ? rec.natScore : null;
+        const eatScore = req && req.extra === 'eat' ? rec.eatScore : null;
+
+        // Submission spread: last 60 days, earlier = lower daysAgo
+        const daysAgo   = Math.floor(r() * 60) + 1;
         const submitted = new Date(Date.now() - daysAgo * 86400000).toISOString();
-
-        const natScore = req?.extra === 'nat'
-          ? Math.floor(240 + r() * 130)
-          : null;
-        const eatScore = req?.extra === 'eat'
-          ? Math.floor(230 + r() * 140)
-          : null;
-
-        const oapr = rec.cet.oapr;
 
         const emailFirst = rec.firstname.toLowerCase().replace(/[^a-z]/g, '');
         const emailLast  = rec.surname.toLowerCase().replace(/\s+/g, '').replace(/[^a-z]/g, '');
 
         rawApps.push({
           appNo,
-          surname:         rec.surname,
-          firstname:       rec.firstname,
-          middleinitial:   rec.middleinitial,
-          name:            rec.name,
-          email:           `${emailFirst}.${emailLast}@email.com`,
-          contact:         `09${String(Math.floor(100000000 + r() * 899999999))}`,
+          surname:       rec.surname,
+          firstname:     rec.firstname,
+          middleinitial: rec.middleinitial,
+          name:          rec.name,
+          email:         `${emailFirst}.${emailLast}@email.com`,
+          contact:       `09${String(Math.floor(100000000 + r() * 899999999))}`,
           course,
-          department:      dept,
-          applicantType:   rec.type,
-          cet:             rec.cet,
+          department:    dept,
+          applicantType: rec.type,
+          cet:           rec.cet,
           natScore,
           eatScore,
-          submittedDate:   submitted,
-          _rngState:       globalIdx, // for later use
+          submittedDate: submitted,
+          _idx:          globalIdx,
         });
       }
     }
 
-    /* ── Sort all apps by submission date (earliest first) ── */
+    /* ── Sort by submission date ascending ── */
     rawApps.sort((a, b) => new Date(a.submittedDate) - new Date(b.submittedDate));
 
-    /* ── Auto-schedule interview slots based on submission order ──
-       Each department gets auto-generated interview days.
-       40 AM + 40 PM per day = 80/day.
-       Schedule starts 7 days from now.
-    ── */
-    function buildDeptAutoSchedule(dept, deptApps) {
-      const totalApps = deptApps.length;
-      const perDay    = 80; // 40 AM + 40 PM
-      const daysNeeded = Math.ceil(totalApps / perDay);
+    /* ── Group by department ── */
+    const byDept = {};
+    for (const a of rawApps) {
+      if (!byDept[a.department]) byDept[a.department] = [];
+      byDept[a.department].push(a);
+    }
 
-      const days = [];
-      for (let d = 0; d < daysNeeded; d++) {
-        const dt = new Date(Date.now() + (7 + d) * 86400000);
-        // Skip weekends
-        while (dt.getDay() === 0 || dt.getDay() === 6) {
-          dt.setDate(dt.getDate() + 1);
-        }
-        days.push(dt.toISOString().slice(0, 10));
+    /* ── Build auto-schedule (skip if dept already has one) ── */
+    function buildSchedule(apps) {
+      const perDay     = 80;
+      const daysNeeded = Math.ceil(apps.length / perDay);
+      const days       = [];
+      const dt         = new Date(Date.now() + 7 * 86400000);
+      while (days.length < daysNeeded) {
+        const dow = dt.getDay();
+        if (dow !== 0 && dow !== 6) days.push(dt.toISOString().slice(0, 10));
+        dt.setDate(dt.getDate() + 1);
       }
-
       return {
         days:       days.map(date => ({ date })),
         amStart:    '08:00',
@@ -205,60 +202,43 @@
       };
     }
 
-    /* ── Group apps by dept and assign interview slots in order ── */
-    const deptAppsMap = {};
-    for (const a of rawApps) {
-      if (!deptAppsMap[a.department]) deptAppsMap[a.department] = [];
-      deptAppsMap[a.department].push(a);
+    function getSchedKey(dept) {
+      return `wmsu_isched_${btoa(unescape(encodeURIComponent(dept))).replace(/=/g, '')}`;
     }
 
-    // Save auto-schedule configs per dept (only if not already configured)
-    for (const [dept, apps] of Object.entries(deptAppsMap)) {
-      const schedKey = `wmsu_isched_${btoa(unescape(encodeURIComponent(dept))).replace(/=/g, '')}`;
-      if (!localStorage.getItem(schedKey)) {
-        const cfg = buildDeptAutoSchedule(dept, apps);
-        localStorage.setItem(schedKey, JSON.stringify(cfg));
+    for (const [dept, apps] of Object.entries(byDept)) {
+      const key = getSchedKey(dept);
+      if (!localStorage.getItem(key)) {
+        localStorage.setItem(key, JSON.stringify(buildSchedule(apps)));
       }
     }
 
-    /* ── Assign interview slots to all applicants in submission order ── */
+    /* ── Assign interview slots in submission order ── */
     function assignSlots(dept, apps) {
-      const schedKey = `wmsu_isched_${btoa(unescape(encodeURIComponent(dept))).replace(/=/g, '')}`;
       let cfg;
-      try { cfg = JSON.parse(localStorage.getItem(schedKey)); } catch(e) { cfg = null; }
-      if (!cfg) return apps; // no schedule, leave as-is
+      try { cfg = JSON.parse(localStorage.getItem(getSchedKey(dept))); }
+      catch (e) { cfg = null; }
+      if (!cfg) return apps.map(a => ({ ...a, interviewSlot: null }));
 
-      let slotIdx = 0; // global slot index across all days/sessions
+      const amCap  = cfg.amCapacity || 40;
+      const pmCap  = cfg.pmCapacity || 40;
+      const perDay = amCap + pmCap;
 
       return apps.map((a, i) => {
-        // Determine which day/session this applicant falls in
-        const amCap = cfg.amCapacity || 40;
-        const pmCap = cfg.pmCapacity || 40;
-        const perDay = amCap + pmCap;
-
-        const dayIdx     = Math.floor(slotIdx / perDay);
-        const withinDay  = slotIdx % perDay;
-        const isAM       = withinDay < amCap;
-        const session    = isAM ? 'AM' : 'PM';
-        const time       = isAM ? cfg.amStart : cfg.pmStart;
-        const dayEntry   = cfg.days[dayIdx];
-
-        slotIdx++;
-
-        if (!dayEntry) return { ...a, interviewSlot: null };
-
+        const dayIdx   = Math.floor(i / perDay);
+        const within   = i % perDay;
+        const isAM     = within < amCap;
+        const dayEntry = cfg.days[dayIdx];
         return {
           ...a,
-          interviewSlot: {
-            date: dayEntry.date,
-            session,
-            time,
-          },
+          interviewSlot: dayEntry
+            ? { date: dayEntry.date, session: isAM ? 'AM' : 'PM', time: isAM ? cfg.amStart : cfg.pmStart }
+            : null,
         };
       });
     }
 
-    /* ── Status distribution ── */
+    /* ── Rejection reasons pool ── */
     const REJECTION_REASONS = [
       'OAPR does not meet the minimum requirement for this course',
       'No available slots for this program',
@@ -266,80 +246,88 @@
       'Did not appear for scheduled interview',
     ];
 
-    function pickStatus(seed, course, oapr, natScore, eatScore) {
-      const r = rng(seed * 7 + 13);
-      const roll = r();
-
-      const qr = window.WMSU_checkQualification
-        ? window.WMSU_checkQualification(course, oapr, natScore, eatScore)
-        : { qualified: true };
-
-      // Most are pending_review (awaiting decision by dept head)
-      if (roll < 0.55) return { status: 'pending_review', deptStatus: null, admissionStatus: 'valid_applicant' };
-      if (roll < 0.70) return { status: 'reviewed',       deptStatus: 'accepted', admissionStatus: 'valid_applicant' };
-      if (roll < 0.78) return { status: 'pending_review', deptStatus: 'rejected', admissionStatus: 'valid_applicant' };
-      if (roll < 0.83) {
-        return {
-          status: 'pending_review', deptStatus: null, admissionStatus: 'flagged',
-          flagReason: !qr.qualified
-            ? 'OAPR does not meet course minimum requirement'
-            : 'Suspicious or inconsistent data',
-        };
-      }
-      return { status: 'pending_review', deptStatus: null, admissionStatus: 'valid_applicant' };
-    }
-
-    /* ── Combine: assign slots, then assign statuses ── */
+    /* ── Assign statuses and finalize ── */
     const finalApps = [];
 
-    for (const [dept, apps] of Object.entries(deptAppsMap)) {
+    for (const [dept, apps] of Object.entries(byDept)) {
       const withSlots = assignSlots(dept, apps);
 
-      withSlots.forEach((a, i) => {
-        const seed    = a._rngState || (i + 1);
-        const r       = rng(seed * 137 + 29);
-        const statObj = pickStatus(seed, a.course, a.cet?.oapr || 0, a.natScore, a.eatScore);
+      withSlots.forEach(a => {
+        const r = makeRng(a._idx * 53 + 7);
 
-        const acceptedDate = statObj.deptStatus === 'accepted'
-          ? new Date(Date.now() - Math.floor(r() * 5) * 86400000).toISOString()
-          : null;
+        const { _idx, ...clean } = a;
 
-        const rejectedDate = statObj.deptStatus === 'rejected'
-          ? new Date(Date.now() - Math.floor(r() * 7) * 86400000).toISOString()
-          : null;
+        // ~5% flagged
+        if (r() < 0.05) {
+          finalApps.push({
+            ...clean,
+            status:          'pending_review',
+            admissionStatus: 'flagged',
+            deptStatus:      null,
+            flagReason:      'Suspicious or inconsistent application data',
+            flagNotes:       null,
+            courseLocked:    false,
+            acceptedDate:    null,
+            rejectedDate:    null,
+            rejectionReason: null,
+            rejectionNotes:  null,
+            interviewNotes:  null,
+            acceptRemarks:   null,
+            interviewEval:   null,
+          });
+          return;
+        }
 
-        const rejectionReason = statObj.deptStatus === 'rejected'
-          ? REJECTION_REASONS[Math.floor(r() * REJECTION_REASONS.length)]
-          : null;
+        // Status roll for remaining 95%
+        const roll          = r();
+        let status          = 'pending_review';
+        let deptStatus      = 'for_interview';
+        let acceptedDate    = null;
+        let rejectedDate    = null;
+        let rejectionReason = null;
+        let acceptRemarks   = null;
+        let courseLocked    = false;
 
-        // Remove internal _rngState
-        const { _rngState, ...cleanApp } = a;
+        if (roll < 0.15) {
+          // ~15% already accepted
+          deptStatus    = 'accepted';
+          status        = 'reviewed';
+          acceptedDate  = new Date(Date.now() - (Math.floor(r() * 5) + 1) * 86400000).toISOString();
+          acceptRemarks = 'Congratulations! Please prepare your enrollment documents.';
+          courseLocked  = true;
+        } else if (roll < 0.22) {
+          // ~7% rejected
+          deptStatus      = 'rejected';
+          status          = 'pending_review';
+          rejectedDate    = new Date(Date.now() - (Math.floor(r() * 7) + 1) * 86400000).toISOString();
+          rejectionReason = REJECTION_REASONS[Math.floor(r() * REJECTION_REASONS.length)];
+        }
+        // ~73% stay as for_interview — waiting for seedInterviewEvals.js
 
         finalApps.push({
-          ...cleanApp,
-          status:          statObj.status,
-          admissionStatus: statObj.admissionStatus,
-          deptStatus:      statObj.deptStatus,
-          flagReason:      statObj.flagReason  || null,
+          ...clean,
+          status,
+          admissionStatus: 'valid_applicant',
+          deptStatus,
+          flagReason:      null,
           flagNotes:       null,
-          courseLocked:    statObj.deptStatus === 'accepted',
+          courseLocked,
           acceptedDate,
           rejectedDate,
           rejectionReason,
           rejectionNotes:  null,
           interviewNotes:  null,
-          acceptRemarks:   statObj.deptStatus === 'accepted'
-            ? 'Congratulations! Please prepare your enrollment documents.'
-            : null,
+          acceptRemarks,
+          interviewEval:   null,
         });
       });
     }
 
     /* ── Persist ── */
     localStorage.setItem('wmsu_applications', JSON.stringify([...stored, ...finalApps]));
-
     console.log(
-      `[WMSU-Ease] Seeded ${finalApps.length} applications across ${Object.keys(DEPT_DISTRIBUTION).length} departments with auto-interview slots.`
+      `[WMSU-Ease] ✅ Seeded ${finalApps.length} applications across ${Object.keys(DEPT_DISTRIBUTION).length} departments.` +
+      `\n➡ Now run seedInterviewEvals.js to mark ~50% as interviewed with evaluation scores.`
     );
   }
 

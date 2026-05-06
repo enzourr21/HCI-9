@@ -591,9 +591,12 @@
 <script>
     /* ── Init ── */
     const loginData     = JSON.parse(localStorage.getItem('wmsuLogin') || '{}');
-    const applicantType = loginData.type || 'freshman';
+    const urlParams     = new URLSearchParams(window.location.search);
+    const applicantType = (urlParams.get('type') || loginData.type || 'freshman').toLowerCase();
     if (applicantType === 'transferee') {
         document.getElementById('cardTitle').textContent = 'Transferee Application';
+    } else if (applicantType === 'shiftee') {
+        document.getElementById('cardTitle').textContent = 'Shiftee Application';
     }
 
     let currentStep   = 1;

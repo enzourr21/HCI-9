@@ -165,7 +165,8 @@ const ROLES = {
   MISTO:      { label: 'MIS-TO',                  title: 'MIS-TO Portal',         sub: 'System & technical operations.',  badge: 'MIS-TO',         redirect: '../users/Admin/MISTO/systemAdmin.html' },
   DEAN:       { label: 'Dean',                    title: 'Dean Portal',           sub: 'College administration.',         badge: 'Dean',           redirect: '../users/Admin/dean/dean.html' },
   SECRETARY:  { label: 'Secretary',               title: 'Secretary Portal',      sub: 'Records & correspondence.',       badge: 'Secretary',      redirect: '../users/Admin/secretary/secretary.html' },
-  STUDENT:    { label: 'Student',                 title: 'Student Portal',        sub: 'Enrollment & records.',           badge: 'Student Portal', redirect: '../users/old student/subject.html' },
+  STUDENT:    { label: 'Student',                 title: 'Student Portal',        sub: 'Enrollment & records.',           badge: 'Student Portal', redirect: '../users/old student/old-student.html' },
+  SHIFTEE:    { label: 'Shiftee',                 title: 'Shiftee Portal',        sub: 'Enrollment & records.',           badge: 'Shiftee Portal', redirect: '../users/shiftee/shiftee.html' },
   UNKNOWN:    { label: '',                        title: 'Sign In',               sub: 'Enter your WMSU credentials to continue.', badge: 'WMSU Portal', redirect: null },
 };
 
