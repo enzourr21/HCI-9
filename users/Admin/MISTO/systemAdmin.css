@@ -1,4 +1,4 @@
- *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
         --crimson:      #c0192b;
@@ -374,6 +374,7 @@
 
     .badge.active   { background: var(--green-bg);  color: #14532d; }
     .badge.inactive { background: var(--amber-bg);  color: #78350f; }
+    .badge.warning  { background: var(--amber-pale); color: #92400e; }
     .badge.danger   { background: var(--red-bg);    color: #7f1d1d; }
     .badge.info     { background: var(--blue-bg);   color: #1e3a8a; }
     .badge.neutral  { background: var(--surface-3); color: var(--text-secondary); }
@@ -597,8 +598,10 @@
         border-radius: var(--radius-lg);
         width: 100%;
         max-width: 540px;
+        max-height: calc(100vh - 80px);
         box-shadow: var(--shadow-lg);
-        overflow: hidden;
+        display: flex;
+        flex-direction: column;
         animation: modal-in 0.2s ease;
     }
 
@@ -613,11 +616,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-shrink: 0;
     }
 
     .modal-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
-    .modal-body  { padding: 24px; }
-    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+    .modal-body  { padding: 24px; overflow-y: auto; flex: 1 1 auto; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0; }
 
     .modal-close {
         background: none;

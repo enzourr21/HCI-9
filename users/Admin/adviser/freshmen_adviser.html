@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WMSU-Ease | Adviser Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../admin.css">
+<link rel="stylesheet" href="adviser.css">
+<style>
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:#fff;border-right:1px solid var(--border);padding:24px 16px;position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto;display:flex;flex-direction:column;gap:24px;z-index:200;transition:transform .3s,box-shadow .3s;}
+.nav-menu{display:flex;flex-direction:column;gap:4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:.88rem;font-weight:500;color:#555;transition:all .2s;position:relative;cursor:pointer;}
+.nav-item i{font-size:.95rem;width:18px;text-align:center;flex-shrink:0;}
+.nav-item:hover{background:var(--cr);color:#fff;padding-left:18px;}
+.nav-item.active{background:var(--cr);color:#fff;font-weight:700;}
+.correction-count-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:20px;background:#fff;color:crimson;font-size:.65rem;font-weight:800;margin-left:auto;line-height:1;}
+.nav-item.active .correction-count-badge{background:rgba(255,255,255,.25);color:#fff;}
+
+/* QUICK STATS */
+.quick-stats{background:var(--cr-pale);border:1.5px solid #fecaca;border-radius:var(--radius);padding:16px;margin-top:auto;}
+.quick-stats h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cr);margin:0 0 12px;}
+.stat-item{display:flex;justify-content:space-between;align-items:center;font-size:.83rem;color:#555;padding:5px 0;border-bottom:1px solid #fecaca;}
+.stat-item:last-child{border-bottom:none;}
+.stat-item strong{color:var(--cr);font-weight:700;}
+
+/* CONTENT */
+.content{flex:1;padding:30px;background:var(--bg);overflow-y:auto;min-width:0;}
+.page-section{display:none;}
+.page-section.active{display:block;}
+
+/* CONTENT HEADER */
+.content-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px;}
+.header-left h2{font-size:1.4rem;font-weight:700;color:var(--text);}
+.header-left p{margin:4px 0 0;font-size:.82rem;color:#777;}
+.header-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.action-bar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.label{font-size:.83rem;font-weight:600;color:var(--muted);white-space:nowrap;}
+.control-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pills{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-btn{cursor:pointer;padding:7px 15px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:.82rem;font-weight:500;font-family:inherit;color:#555;transition:all .2s;display:inline-block;user-select:none;white-space:nowrap;}
+.filter-btn:hover{border-color:var(--cr);color:var(--cr);}
+.filter-btn.active-filter{background:var(--cr);color:#fff;border-color:var(--cr);}
+.section-select{padding:7px 32px 7px 12px;border:1.5px solid var(--cr);border-radius:8px;background:#fff;color:var(--text);font-size:.85rem;font-weight:500;font-family:inherit;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d32f2f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 10px center;background-size:14px;transition:border-color .2s;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:9px 16px;border-radius:8px;font-weight:700;font-size:.84rem;font-family:inherit;cursor:pointer;border:2px solid transparent;transition:all .2s;gap:6px;white-space:nowrap;text-decoration:none;}
+.btn:disabled{opacity:.45;cursor:not-allowed;pointer-events:none;}
+.btn-primary{background:var(--cr);color:#fff;border-color:var(--cr);}
+.btn-primary:hover{background:var(--cr-deep);border-color:var(--cr-deep);}
+.btn-outline{background:transparent;color:var(--cr);border-color:var(--cr);}
+.btn-outline:hover{background:var(--cr-pale);}
+.btn-proceed-confirm{background:var(--green);color:#fff;border-color:var(--green);display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;font-weight:700;font-size:.84rem;font-family:inherit;cursor:pointer;border:none;transition:all .2s;}
+.btn-proceed-confirm:hover{background:var(--green-dk);}
+.btn-recall-confirm{padding:9px 20px;border-radius:8px;border:none;background:var(--cr);color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:background .2s;}
+.btn-recall-confirm:hover{background:#b71c1c;}
+.btn-resubmit{padding:9px 18px;border-radius:8px;font-weight:700;font-size:.88rem;font-family:inherit;cursor:pointer;border:none;background:#e65100;color:#fff;display:inline-flex;align-items:center;gap:6px;transition:background .2s;white-space:nowrap;}
+.btn-resubmit:hover{background:#bf360c;}
+.btn-add{padding:6px 14px;border-radius:7px;border:1.5px solid var(--cr);background:#fff;color:var(--cr);font-size:.82rem;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap;}
+.btn-add:hover{background:var(--cr);color:#fff;}
+.btn-recall{background:#fff3f3;color:var(--cr);border:1.5px solid var(--cr);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:700;font-family:inherit;display:inline-flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap;}
+.btn-recall:hover{background:var(--cr);color:#fff;}
+.btn-view{background:#e3f2fd;color:#1565c0;border:1.5px solid #90caf9;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:700;font-family:inherit;display:inline-flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap;}
+.btn-view:hover{background:#1565c0;color:#fff;}
+
+/* STUDENT CARDS */
+#student-list{display:flex;flex-direction:column;gap:18px;}
+.student-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s,border-color .2s;overflow:hidden;}
+.student-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.card-header{padding:18px 20px 14px;border-bottom:1px solid var(--border);}
+.profile-row{display:flex;align-items:center;gap:14px;position:relative;}
+.avatar{width:46px;height:46px;border-radius:50%;background:var(--cr);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;flex-shrink:0;}
+.name-container{flex:1;min-width:0;}
+.student-name{font-size:1rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.student-id{font-size:.82rem;color:#777;margin-top:2px;}
+.status-pill{position:absolute;top:0;right:0;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+.status-pill.pending{background:#fff3cd;color:#856404;}
+.status-pill.form_submitted{background:#d1ecf1;color:#0c5460;}
+.status-pill.submitted{background:#d4edda;color:#155724;}
+.status-pill.correction{background:#fff3e0;color:crimson;}
+.card-body{padding:12px 20px;}
+.enrolled-title{font-size:.82rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.05em;margin:0 0 8px;}
+.subject-preview-list{padding-left:22px;}
+.subject-preview-list li{font-size:.85rem;color:#555;margin-bottom:5px;line-height:1.4;}
+.subject-preview-list li::marker{color:var(--cr);}
+.no-subjects{font-size:.85rem;color:#aaa;font-style:italic;}
+.card-btns{display:flex;gap:8px;flex-wrap:wrap;padding:12px 20px 16px;border-top:1px solid #f5f5f5;}
+.units-badge{font-size:.78rem;color:#888;background:#f5f5f5;border-radius:6px;padding:3px 10px;font-weight:600;}
+
+/* SUBMITTED TABLE */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.strip-item{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:16px 20px;display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow-sm);transition:box-shadow .2s;}
+.strip-item:hover{box-shadow:var(--shadow-md);}
+.strip-val{font-size:1.7rem;font-weight:800;color:var(--cr);line-height:1;}
+.strip-label{font-size:.75rem;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+.table-wrapper{background:#fff;border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;}
+.history-table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:600px;}
+.history-table thead tr{background:var(--cr);}
+.history-table th{padding:13px 16px;text-align:left;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#fff;white-space:nowrap;}
+.history-table td{padding:13px 16px;color:var(--text);border-bottom:1px solid #f5f5f5;vertical-align:middle;}
+.history-table tbody tr:last-child td{border-bottom:none;}
+.history-table tbody tr:hover{background:var(--cr-pale);}
+.row-num{font-size:.75rem;color:#bbb;font-weight:600;}
+.student-cell{display:flex;align-items:center;gap:10px;}
+.table-avatar{width:34px;height:34px;border-radius:50%;background:var(--cr);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0;}
+.student-full-name{font-weight:600;color:var(--text);}
+.status-badge{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.status-badge.submitted{background:#d4edda;color:#155724;}
+.status-badge.recalled{background:#f8d7da;color:#721c24;}
+.status-badge.processing{background:#fff3cd;color:#856404;}
+.table-overflow{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+/* EMPTY STATES */
+.empty-state,.empty-correction{text-align:center;padding:60px 20px;color:#ccc;}
+.empty-state i,.empty-correction i{font-size:3rem;margin-bottom:12px;display:block;}
+.empty-correction i{color:#2e7d32;}
+.empty-state p,.empty-correction p{font-size:.95rem;font-weight:500;}
+
+/* SEARCH */
+.search-container{position:relative;display:flex;align-items:center;}
+.search-icon{position:absolute;left:11px;color:#bbb;pointer-events:none;font-size:.82rem;}
+.search-input{padding:9px 12px 9px 34px;font-size:.87rem;border:1.5px solid #ddd;border-radius:8px;background:#fff;color:var(--text);width:240px;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s;}
+.search-input:focus{border-color:var(--cr);box-shadow:0 0 0 3px rgba(192,25,43,.08);}
+
+/* CORRECTION PAGE */
+.correction-list{display:flex;flex-direction:column;gap:18px;}
+.correction-card{background:#fff;border:1.5px solid crimson;border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;}
+.correction-note-toggle{padding:10px 20px;border-top:1px solid #f5f5f5;cursor:pointer;transition:background .2s;}
+.correction-note-toggle:hover{background:#fff8f5;}
+.toggle-label{display:flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:crimson;user-select:none;}
+.toggle-icon{font-size:.75rem;transition:transform .25s;}
+.correction-note-body{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;}
+.correction-note-body.open{max-height:300px;}
+.correction-note-inner{margin:0 20px 14px;padding:12px 14px;background:#fff8f5;border:1.5px solid #ffcc80;border-left:3px solid crimson;border-radius:0 8px 8px 0;}
+.correction-note-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:crimson;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.correction-note-text{font-size:.83rem;color:#444;line-height:1.6;}
+.correction-reasons-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:0 20px 12px;}
+.correction-reason-tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:#fff3e0;color:crimson;border:1px solid #ffcc80;}
+.correction-subtitle{font-size:.83rem;color:#777;margin-top:4px;}
+.correction-meta{font-size:.72rem;color:#aaa;margin-left:auto;white-space:nowrap;}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px;overflow-y:auto;}
+.modal-overlay.active{display:flex;}
+.modal-card{background:#fff;border-radius:14px;padding:28px;width:95%;max-width:980px;box-shadow:0 12px 40px rgba(0,0,0,.2);position:relative;max-height:90vh;display:flex;flex-direction:column;animation:modalIn .22s ease;margin:auto;}
+@keyframes modalIn{from{transform:scale(.95) translateY(10px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.modal-header{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+.modal-header h3{font-size:1.05rem;font-weight:700;color:var(--text);margin:0;flex:1;min-width:0;}
+.close-btn{font-size:1.7rem;line-height:1;color:#888;padding:0 4px;transition:color .2s;background:none;border:none;cursor:pointer;margin-left:auto;flex-shrink:0;}
+.close-btn:hover{color:var(--cr);}
+.modal-body{overflow-x:auto;overflow-y:auto;flex:1;margin-top:16px;-webkit-overflow-scrolling:touch;}
+
+/* FORM VIEW MODAL */
+.fvm-section{margin-bottom:20px;}
+.fvm-section-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cr);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.fvm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fvm-field{display:flex;flex-direction:column;gap:3px;}
+.fvm-label{font-size:.7rem;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:.05em;}
+.fvm-val{font-size:.9rem;color:var(--text);font-weight:500;}
+.fvm-subjects-table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:480px;}
+.fvm-subjects-table th{padding:8px 12px;background:#f5f5f5;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#888;}
+.fvm-subjects-table td{padding:8px 12px;border-bottom:1px solid #f5f5f5;color:var(--text);}
+.fvm-subjects-table tbody tr:last-child td{border-bottom:none;}
+.fvm-banner{flex-shrink:0;padding:10px 20px;font-size:.82rem;display:flex;align-items:center;gap:8px;}
+
+/* RESUBMIT MODAL */
+.resubmit-modal-card{width:95%;max-width:1000px;max-height:90vh;display:flex;flex-direction:column;}
+.modal-note-banner{margin:14px 28px 0;padding:10px 14px;background:#fff8f5;border:1.5px solid #ffcc80;border-left:3px solid #e65100;border-radius:0 8px 8px 0;flex-shrink:0;}
+.modal-note-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#e65100;margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.modal-note-text{font-size:.82rem;color:#555;line-height:1.6;}
+.modal-footer-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;gap:10px;}
+.modal-units-count{font-size:.85rem;color:#555;}
+.modal-units-count strong{color:var(--cr);font-size:1rem;}
+.modal-footer-actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* EDIT TABLE */
+.edit-table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:640px;}
+.edit-table th{background:var(--cr);color:#fff;padding:10px 12px;text-align:left;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.edit-table th:first-child{border-radius:8px 0 0 0;}
+.edit-table th:last-child{border-radius:0 8px 0 0;}
+.edit-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+.edit-table tbody tr:hover{background:var(--cr-pale);}
+.edit-table tbody tr:last-child td{border-bottom:none;}
+.id-edit{border:1px solid #ddd;border-radius:5px;padding:4px 8px;font-size:.83rem;font-family:inherit;width:100%;min-width:60px;outline:none;transition:border-color .15s;}
+.id-edit:focus{border-color:var(--cr);}
+.action-cell{display:flex;gap:6px;}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid var(--border);border-radius:6px;background:var(--bg);font-size:.8rem;cursor:pointer;transition:all .15s;color:#666;flex-shrink:0;}
+.icon-btn.delete{color:var(--cr);}
+.icon-btn.delete:hover{background:var(--cr-pale);border-color:var(--cr);}
+.icon-btn.edit{color:#1976d2;}
+.icon-btn.edit:hover{background:#e3f0ff;border-color:#1976d2;}
+.icon-btn.save{color:var(--green);}
+.icon-btn.save:hover{background:#e8f5e9;border-color:var(--green);}
+
+/* CONFIRM MODALS */
+#confirmModal,#proceedModal,#recallModal{z-index:10001;}
+.confirm-modal-card{background:#fff;border-radius:14px;padding:32px 28px;width:90%;max-width:420px;box-shadow:0 12px 40px rgba(0,0,0,.2);text-align:center;margin:auto;}
+.confirm-icon{width:52px;height:52px;border-radius:50%;background:#fff3e0;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;color:#e65100;}
+.confirm-modal-card h3{font-size:1.05rem;font-weight:700;margin:0 0 10px;}
+.confirm-modal-card p{font-size:.88rem;color:#555;line-height:1.6;margin:0 0 22px;}
+.confirm-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.recall-modal-card{max-width:440px;}
+.recall-body{padding:12px 0 6px;}
+.recall-body p{font-size:.88rem;color:#444;line-height:1.6;margin-bottom:6px;}
+.recall-note{font-size:.82rem;color:#888;font-style:italic;}
+.recall-actions{display:flex;gap:10px;justify-content:flex-end;padding:14px 28px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:28px;right:28px;z-index:99999;display:flex;flex-direction:column;gap:8px;}
+.toast{min-width:260px;max-width:380px;padding:13px 20px;border-radius:8px;font-size:.88rem;font-weight:600;box-shadow:var(--shadow-md);opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none;display:flex;align-items:center;gap:10px;}
+.toast.visible{opacity:1;transform:translateY(0);}
+.toast.success{background:#e8f5e9;color:#2e7d32;border-left:4px solid #2e7d32;}
+.toast.error{background:#ffebee;color:#c62828;border-left:4px solid #c62828;}
+.toast.info{background:#e3f2fd;color:#1565c0;border-left:4px solid #1565c0;}
+
+/* SIDEBAR BACKDROP */
+.sidebar-backdrop{display:none;position:fixed;inset:0;top:var(--nav-h);background:rgba(0,0,0,.4);z-index:199;}
+.sidebar-backdrop.visible{display:block;}
+
+/* SCROLLBARS */
+::-webkit-scrollbar{width:7px;height:7px;}
+::-webkit-scrollbar-track{background:#f5f5f5;}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:8px;border:2px solid #f5f5f5;}
+::-webkit-scrollbar-thumb:hover{background:#aaa;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.sidebar{width:200px;}:root{--sidebar-w:200px;}.content{padding:24px 20px;}.stats-strip{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){
+  .sidebar-toggle{display:flex;}
+  .sidebar{position:fixed;top:var(--nav-h);left:0;height:calc(100vh - var(--nav-h));width:260px;transform:translateX(-100%);box-shadow:none;}
+  .sidebar.open{transform:translateX(0);box-shadow:4px 0 24px rgba(0,0,0,.15);}
+  .content{padding:20px 16px;}
+  .content-header{flex-direction:column;}
+  .header-right{width:100%;}
+  .modal-overlay{padding:0;align-items:flex-end;}
+  .modal-card{border-radius:18px 18px 0 0;max-height:92vh;max-width:100%;width:100%;padding:20px 16px;}
+  .adviser-text{display:none;}
+}
+@media(max-width:480px){
+  .content{padding:16px 12px;}
+  .stats-strip{grid-template-columns:1fr 1fr;gap:10px;}
+  .strip-val{font-size:1.4rem;}
+  .filter-btn{padding:6px 12px;font-size:.78rem;}
+  .confirm-modal-card{padding:24px 16px;}
+  .card-btns{flex-direction:column;}
+  .card-btns .btn,.card-btns .btn-proceed-confirm,.card-btns .btn-view{width:100%;justify-content:center;}
+  .action-bar{flex-direction:column;align-items:stretch;}
+  .action-bar .btn{width:100%;justify-content:center;}
+  .search-input{width:100%;}
+  .header-right{width:100%;}
+  .search-container{width:100%;}
+  .correction-meta{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">
+    <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+      <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+    </svg>
+    <span class="name">WMSU-Ease</span>
+  </div>
+  <ul class="nav-links">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    <li class="adviser-info">
+      <div class="adviser-avatar">AD</div>
+      <div class="adviser-text">
+        <span class="adviser-name">Dr. Ana Dizon</span>
+        <span class="adviser-role">Adviser · CCS Freshmen</span>
+      </div>
+    </li>
+    <li>
+      <a href="#" onclick="if(confirm('Log out?'))location.reload()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Log Out
+      </a>
+    </li>
+  </ul>
+</nav>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="adviser-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="nav-menu">
+      <a class="nav-item active" data-page="dashboard">
+        <i class="fa-solid fa-users"></i> My Students
+      </a>
+      <a class="nav-item" data-page="submitted">
+        <i class="fa-solid fa-circle-check"></i> Submitted
+      </a>
+      <a class="nav-item" data-page="correction">
+        <i class="fa-solid fa-rotate-left"></i> For Correction
+        <span class="correction-count-badge" id="sidebarBadge"></span>
+      </a>
+    </nav>
+    <div class="quick-stats">
+      <h4>Quick Stats</h4>
+      <div class="stat-item"><span>Total Accepted</span><strong id="stat-total">—</strong></div>
+      <div class="stat-item"><span>Form Submitted</span><strong id="stat-form-submitted">—</strong></div>
+      <div class="stat-item"><span>Awaiting Form</span><strong id="stat-awaiting">—</strong></div>
+      <div class="stat-item"><span>Processed</span><strong id="stat-processed">—</strong></div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- DASHBOARD PAGE -->
+    <section id="page-dashboard" class="page-section active">
+      <div class="content-header">
+        <div class="header-left">
+          <h2>My Advisees</h2>
+          <p>College of Computing Studies — Freshmen</p>
+        </div>
+        <div class="header-right">
+          <div class="control-group">
+            <span class="label">Filter:</span>
+            <div class="pills">
+              <label class="filter-btn active-filter" data-filter="all">All</label>
+              <label class="filter-btn" data-filter="form_submitted">Form Submitted</label>
+              <label class="filter-btn" data-filter="awaiting_form">Awaiting Form</label>
+              <label class="filter-btn" data-filter="submitted">Submitted</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="bulkEnlistFreshmen()"><i class="fas fa-layer-group"></i> Bulk Enlist All Freshmen</button>
+        <button class="btn btn-outline" onclick="downloadMasterList()"><i class="fas fa-download"></i> Download Master List</button>
+      </div>
+      <div id="student-list"></div>
+      <div class="empty-state" id="dashEmptyState" style="display:none;"><i class="fas fa-inbox"></i><p>No accepted freshmen students found.</p></div>
+    </section>
+
+    <!-- SUBMITTED PAGE -->
+    <section id="page-submitted" class="page-section">
+      <div class="content-header">
+        <div class="header-left">
+          <h2>Submission History</h2>
+          <p>Students forwarded to the Assessment Office.</p>
+        </div>
+        <div class="header-right">
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search name or ID…" class="search-input">
+          </div>
+          <div class="control-group">
+            <span class="label">Course:</span>
+            <select class="section-select" id="sectionFilter">
+              <option value="">All</option>
+              <option value="BS Computer Science">BSCS</option>
+              <option value="BS Information Technology">BSIT</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="stats-strip">
+        <div class="strip-item"><span class="strip-val" id="statTotal">0</span><span class="strip-label">Total Submitted</span></div>
+        <div class="strip-item"><span class="strip-val" id="statBSCS">0</span><span class="strip-label">BSCS</span></div>
+        <div class="strip-item"><span class="strip-val" id="statBSIT">0</span><span class="strip-label">BSIT / Other</span></div>
+        <div class="strip-item"><span class="strip-val" id="statRecalled">0</span><span class="strip-label">Recalled</span></div>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-overflow">
+          <table class="history-table">
+            <thead><tr>
+              <th>#</th><th>Student Name</th><th>App No.</th><th>Course</th>
+              <th>Date Submitted</th><th>Status</th><th>Action</th>
+            </tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none;"><i class="fas fa-inbox"></i><p>No submitted records found.</p></div>
+      </div>
+    </section>
+
+    <!-- CORRECTION PAGE -->
+    <section id="page-correction" class="page-section">
+      <div class="content-header">
+        <div class="header-left">
+          <h2>For Correction</h2>
+          <p class="correction-subtitle">Students returned by the Assessment Office. Review the note, correct the record, and resubmit.</p>
+        </div>
+        <div class="header-right">
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="correctionSearch" placeholder="Search name or ID…" class="search-input">
+          </div>
+        </div>
+      </div>
+      <div id="correction-list" class="correction-list"></div>
+      <div class="empty-correction" id="emptyCorrection" style="display:none;"><i class="fas fa-check-circle"></i><p>No flagged records. You're all clear.</p></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FORM VIEW MODAL -->
+<div class="modal-overlay" id="formViewModal">
+  <div class="modal-card" style="max-width:680px;">
+    <div class="modal-header">
+      <div id="fvmAvatar" style="width:40px;height:40px;border-radius:50%;background:#d32f2f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;"></div>
+      <div style="flex:1;min-width:0;">
+        <h3 id="fvmName" style="margin:0;font-size:1rem;font-weight:700;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></h3>
+        <p id="fvmMeta" style="margin:0;font-size:0.78rem;color:#777;"></p>
+      </div>
+      <span id="fvmStatusBadge" style="font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;"></span>
+      <button class="close-btn" onclick="closeFvModal()">&times;</button>
+    </div>
+    <div id="fvmBanner" class="fvm-banner"></div>
+    <div class="modal-body" id="fvmBody"></div>
+  </div>
+</div>
+
+<!-- RECALL MODAL -->
+<div class="modal-overlay" id="recallModal">
+  <div class="modal-card recall-modal-card">
+    <div class="modal-header">
+      <h3><i class="fas fa-undo" style="color:#d32f2f;margin-right:6px;"></i>Recall Student</h3>
+      <button class="close-btn" id="closeRecallModal">&times;</button>
+    </div>
+    <div class="modal-body recall-body">
+      <p>Are you sure you want to recall <strong id="recallStudentName"></strong> from the Assessment Office?</p>
+      <p class="recall-note">This will move the student back to <em>Pending</em> status in your dashboard.</p>
+    </div>
+    <div class="recall-actions">
+      <button class="btn btn-outline" id="cancelRecall">Cancel</button>
+      <button class="btn-recall-confirm" id="confirmRecall"><i class="fas fa-undo"></i> Confirm Recall</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESUBMIT MODAL -->
+<div class="modal-overlay" id="resubmitModal">
+  <div class="modal-card resubmit-modal-card">
+    <div class="modal-header">
+      <h3 id="resubmitModalTitle">Correct &amp; Resubmit</h3>
+      <button class="btn-add" id="addSubjectBtn"><i class="fas fa-plus"></i> Add Subject</button>
+      <button class="close-btn" id="closeResubmitModal">&times;</button>
+    </div>
+    <div class="modal-note-banner" id="modalNoteBanner">
+      <div class="modal-note-label"><i class="fas fa-triangle-exclamation"></i> Note from Assessment Office</div>
+      <div class="modal-note-text" id="modalNoteText"></div>
+    </div>
+    <div class="modal-body">
+      <table class="edit-table" id="resubmitTable">
+        <thead><tr>
+          <th>Actions</th><th>Subject ID</th><th>Subject Description</th>
+          <th>Day</th><th>Time</th><th>Room</th><th>Section</th><th>Units</th>
+        </tr></thead>
+        <tbody id="resubmitTableBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer-bar">
+      <span class="modal-units-count">Total: <strong id="modalTotalUnits">0</strong> units</span>
+      <div class="modal-footer-actions">
+        <button class="btn btn-outline" id="cancelResubmitBtn">Cancel</button>
+        <button class="btn-resubmit" id="confirmResubmitBtn"><i class="fas fa-paper-plane"></i> Resubmit to Assessment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM RESUBMIT MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-modal-card">
+    <div class="confirm-icon"><i class="fas fa-paper-plane"></i></div>
+    <h3>Confirm Resubmission?</h3>
+    <p>You are about to resubmit <strong id="confirmStudentName"></strong> back to the Assessment Office. Make sure all corrections have been made.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" id="cancelConfirmBtn">Go Back</button>
+      <button class="btn-resubmit" id="finalResubmitBtn"><i class="fas fa-check"></i> Yes, Resubmit</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROCEED MODAL -->
+<div class="modal-overlay" id="proceedModal">
+  <div class="confirm-modal-card">
+    <div class="confirm-icon" style="background:#e8f5e9;color:#2e7d32;"><i class="fas fa-paper-plane"></i></div>
+    <h3>Submit to Assessment Office?</h3>
+    <p>You are about to forward <strong id="proceedStudentName"></strong> to the Assessment Office. This action cannot be undone without a recall.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" id="cancelProceedBtn">Cancel</button>
+      <button class="btn-proceed-confirm" id="confirmProceedBtn"><i class="fas fa-check"></i> Confirm &amp; Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ================================================================
+//  STORAGE HELPERS
+// ================================================================
+const STORE_KEY = 'wmsu_applications';
+function getApps() { try { return JSON.parse(localStorage.getItem(STORE_KEY)||'[]'); } catch(e){ return []; } }
+function saveApps(arr) { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+
+// ================================================================
+//  SEED DATA  (runs once if storage is empty)
+// ================================================================
+(function seedIfEmpty(){
+  if(getApps().length) return;
+  const names = [
+    'Maria Santos','Juan dela Cruz','Ana Reyes','Carlo Mendoza',
+    'Lea Bautista','Mark Villanueva','Cris Fernandez','Joy Aquino',
+    'Ryan Torres','Ella Gomez'
+  ];
+  const apps = names.map((name,i) => ({
+    appNo:'APP-2024-'+String(i+1).padStart(4,'0'),
+    name,
+    course: i<7?'BS Computer Science':'BS Information Technology',
+    department:'College of Computing Studies',
+    deptStatus:'accepted',
+    adviserStatus: i===3?'submitted': i===5?'correction': i===7?'submitted': 'pending',
+    dateForwarded: i===3||i===7? new Date(Date.now()-86400000*((i+1))).toISOString(): null,
+    correctionNote: i===5?'Subject CS 112 schedule conflicts with MATH 111 on Monday 8:00–10:00 AM. Please adjust schedule.':null,
+    correctionDate: i===5? new Date(Date.now()-3600000*5).toISOString(): null,
+    enrolledSubjects: i!==1&&i!==6 ? DEFAULT_SUBJECTS.map(s=>({...s})) : [],
+    totalUnits: i!==1&&i!==6 ? DEFAULT_SUBJECTS.reduce((a,b)=>a+b.units,0) : 0,
+  }));
+  saveApps(apps);
+})();
+
+const DEFAULT_SUBJECTS = [
+  {code:'CS 111',   title:'Introduction to Computing',                day:'MWF', time:'7:30–8:30 AM',  room:'CCS-101', section:'CS1A', units:3},
+  {code:'CS 112',   title:'Computer Programming 1',                   day:'TTh', time:'8:00–9:30 AM',  room:'CCS-Lab1',section:'CS1A', units:2},
+  {code:'CS 112L',  title:'Computer Programming 1 (Lab)',             day:'Sat', time:'8:00–11:00 AM', room:'CCS-Lab2',section:'CS1A', units:1},
+  {code:'MATH 111', title:'Discrete Structures 1',                    day:'MWF', time:'9:30–10:30 AM', room:'CCS-201', section:'CS1A', units:3},
+  {code:'US 101',   title:'Understanding the Self',                   day:'TTh', time:'10:00–11:30 AM',room:'GE-101',  section:'CS1A', units:3},
+  {code:'CAS 101',  title:'Purposive Communication',                  day:'MWF', time:'11:30–12:30 PM',room:'GE-201', section:'CS1A', units:3},
+  {code:'PE 101',   title:'PathFit 1 – Movement Competency Training', day:'TTh', time:'1:00–3:00 PM',  room:'Gym',    section:'CS1A', units:2},
+  {code:'NSTP 1',   title:'National Service Training Program 1',      day:'Sat', time:'1:00–4:00 PM',  room:'MPH',    section:'CS1A', units:3},
+];
+
+// Seed must run before apps are referenced elsewhere - re-run now that DEFAULT_SUBJECTS is defined
+(function seedWithSubjects(){
+  const existing = getApps();
+  if(existing.length) return;
+  const names = ['Maria Santos','Juan dela Cruz','Ana Reyes','Carlo Mendoza','Lea Bautista','Mark Villanueva','Cris Fernandez','Joy Aquino','Ryan Torres','Ella Gomez'];
+  const apps = names.map((name,i) => ({
+    appNo:'APP-2024-'+String(i+1).padStart(4,'0'),
+    name,
+    course: i<7?'BS Computer Science':'BS Information Technology',
+    department:'College of Computing Studies',
+    deptStatus:'accepted',
+    adviserStatus: i===3?'submitted': i===5?'correction': i===7?'submitted': 'pending',
+    dateForwarded: i===3||i===7? new Date(Date.now()-86400000*(i+1)).toISOString(): null,
+    correctionNote: i===5?'Subject CS 112 schedule conflicts with MATH 111 on Monday 8:00–10:00 AM. Please adjust schedule.':null,
+    correctionDate: i===5? new Date(Date.now()-3600000*5).toISOString(): null,
+    enrolledSubjects: i!==1&&i!==6 ? DEFAULT_SUBJECTS.map(s=>({...s})) : [],
+    totalUnits: i!==1&&i!==6 ? DEFAULT_SUBJECTS.reduce((a,b)=>a+b.units,0) : 0,
+  }));
+  saveApps(apps);
+})();
+
+// ================================================================
+//  TOAST
+// ================================================================
+function showToast(msg, type='success'){
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  const icon = type==='success'?'fa-check-circle':type==='error'?'fa-times-circle':'fa-info-circle';
+  t.innerHTML = `<i class="fas ${icon}"></i><span>${msg}</span>`;
+  c.appendChild(t);
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>t.classList.add('visible')); });
+  setTimeout(()=>{ t.classList.remove('visible'); setTimeout(()=>t.remove(),350); },3200);
+}
+
+// ================================================================
+//  PAGE NAVIGATION
+// ================================================================
+const validPages = ['dashboard','submitted','correction'];
+document.querySelectorAll('.sidebar .nav-item[data-page]').forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    setActivePage(link.dataset.page);
+    closeSidebar();
+  });
+});
+function setActivePage(page){
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.toggle('active', s.id==='page-'+page));
+  document.querySelectorAll('.sidebar .nav-item[data-page]').forEach(l=>l.classList.toggle('active', l.dataset.page===page));
+  if(page==='dashboard') renderDashboard('all');
+  if(page==='submitted') renderSubmitted();
+  if(page==='correction') renderCorrection();
+}
+// Init
+setActivePage('dashboard');
+
+// ================================================================
+//  SIDEBAR MOBILE
+// ================================================================
+document.getElementById('sidebarToggle').addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarBackdrop').classList.toggle('visible');
+});
+document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarBackdrop').classList.remove('visible');
+}
+
+// ================================================================
+//  FILTER PILLS
+// ================================================================
+document.querySelectorAll('#page-dashboard .filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#page-dashboard .filter-btn').forEach(b=>b.classList.remove('active-filter'));
+    btn.classList.add('active-filter');
+    renderDashboard(btn.dataset.filter);
+  });
+});
+
+// ================================================================
+//  HELPERS
+// ================================================================
+function initials(name){ return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function fmtDate(iso){ if(!iso) return '—'; const d=new Date(iso); return d.toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'}); }
+function getMyStudents(){ return getApps().filter(a=>a.department==='College of Computing Studies' && a.deptStatus==='accepted'); }
+function updateSidebarStats(){
+  const students = getMyStudents();
+  const submitted = students.filter(a=>a.adviserStatus==='submitted').length;
+  const correction = students.filter(a=>a.adviserStatus==='correction').length;
+  document.getElementById('stat-total').textContent = students.length;
+  document.getElementById('stat-form-submitted').textContent = students.filter(a=>a.enrolledSubjects&&a.enrolledSubjects.length>0).length;
+  document.getElementById('stat-awaiting').textContent = students.filter(a=>!a.enrolledSubjects||a.enrolledSubjects.length===0).length;
+  document.getElementById('stat-processed').textContent = submitted;
+  const badge = document.getElementById('sidebarBadge');
+  badge.textContent = correction||'';
+  badge.style.display = correction?'inline-flex':'none';
+}
+
+// ================================================================
+//  DASHBOARD RENDER
+// ================================================================
+function renderDashboard(filter='all'){
+  updateSidebarStats();
+  let students = getMyStudents();
+  if(filter==='form_submitted') students = students.filter(a=>a.enrolledSubjects&&a.enrolledSubjects.length>0&&a.adviserStatus!=='submitted');
+  else if(filter==='awaiting_form') students = students.filter(a=>(!a.enrolledSubjects||a.enrolledSubjects.length===0)&&a.adviserStatus!=='submitted');
+  else if(filter==='submitted') students = students.filter(a=>a.adviserStatus==='submitted');
+  const list = document.getElementById('student-list');
+  const empty = document.getElementById('dashEmptyState');
+  if(!students.length){ list.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  list.innerHTML = students.map(s=>renderStudentCard(s)).join('');
+}
+
+function renderStudentCard(s){
+  const hasSubjects = s.enrolledSubjects&&s.enrolledSubjects.length>0;
+  const isSubmitted = s.adviserStatus==='submitted';
+  const isCorrection = s.adviserStatus==='correction';
+  let pillClass = 'pending', pillText = 'Awaiting Form';
+  if(hasSubjects && !isSubmitted && !isCorrection){ pillClass='form_submitted'; pillText='Form Submitted'; }
+  if(isSubmitted){ pillClass='submitted'; pillText='Submitted'; }
+  if(isCorrection){ pillClass='correction'; pillText='For Correction'; }
+  const subjectList = hasSubjects
+    ? `<p class="enrolled-title"><i class="fas fa-book-open" style="margin-right:5px;"></i>Enrolled Subjects</p>
+       <ul class="subject-preview-list">${s.enrolledSubjects.slice(0,4).map(sub=>`<li><strong>${sub.code}</strong> — ${sub.title} <span class="units-badge">${sub.units} units</span></li>`).join('')}${s.enrolledSubjects.length>4?`<li style="color:#aaa;font-style:italic;">+${s.enrolledSubjects.length-4} more subjects…</li>`:''}</ul>`
+    : `<p class="no-subjects"><i class="fas fa-clock" style="margin-right:5px;"></i>No subjects assigned yet.</p>`;
+
+  let btns = '';
+  if(isSubmitted){
+    btns = `<span style="display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:700;color:#2e7d32;background:#e8f5e9;border:1.5px solid #a5d6a7;padding:8px 16px;border-radius:8px;"><i class="fas fa-check-circle"></i>Submitted — ${fmtDate(s.dateForwarded)}</span>
+            <button class="btn-view" onclick="openFormView('${s.appNo}')"><i class="fas fa-eye"></i> View Form</button>`;
+  } else if(isCorrection){
+    btns = `<button class="btn btn-outline" onclick="openResubmitModal('${s.appNo}')"><i class="fas fa-edit"></i> Correct &amp; Resubmit</button>
+            <button class="btn-view" onclick="openFormView('${s.appNo}')"><i class="fas fa-eye"></i> View Form</button>`;
+  } else {
+    btns = `<button class="btn-view" onclick="openFormView('${s.appNo}')"><i class="fas fa-eye"></i> View Form</button>`;
+    if(hasSubjects) btns += `<button class="btn-proceed-confirm btn-proceed-student" data-appno="${s.appNo}"><i class="fas fa-paper-plane"></i> Submit to Assessment</button>`;
+  }
+
+  return `<div class="student-card" data-appno="${s.appNo}">
+    <div class="card-header">
+      <div class="profile-row">
+        <div class="avatar">${initials(s.name)}</div>
+        <div class="name-container">
+          <p class="student-name">${s.name}</p>
+          <p class="student-id"><i class="fas fa-id-card" style="margin-right:4px;"></i>${s.appNo} &nbsp;|&nbsp; ${s.course}</p>
+        </div>
+        <span class="status-pill ${pillClass}">${pillText}</span>
+      </div>
+    </div>
+    <div class="card-body">${subjectList}</div>
+    <div class="card-btns">${btns}</div>
+  </div>`;
+}
+
+// Re-attach delegation after each render
+document.getElementById('student-list').addEventListener('click', e=>{
+  const btn = e.target.closest('.btn-proceed-student');
+  if(!btn) return;
+  e.stopPropagation();
+  openProceedModal(btn.dataset.appno);
+});
+
+// ================================================================
+//  SUBMITTED PAGE
+// ================================================================
+function renderSubmitted(){
+  const apps = getApps();
+  const submitted = apps.filter(a=>a.department==='College of Computing Studies' && (a.adviserStatus==='submitted'||a.adviserStatus==='recalled'));
+  const search = (document.getElementById('searchInput').value||'').toLowerCase();
+  const course = document.getElementById('sectionFilter').value;
+  let filtered = submitted;
+  if(search) filtered = filtered.filter(a=>a.name.toLowerCase().includes(search)||a.appNo.toLowerCase().includes(search));
+  if(course) filtered = filtered.filter(a=>a.course===course);
+  const bscs = filtered.filter(a=>a.course==='BS Computer Science').length;
+  const other = filtered.filter(a=>a.course!=='BS Computer Science').length;
+  const recalled = filtered.filter(a=>a.adviserStatus==='recalled').length;
+  document.getElementById('statTotal').textContent = filtered.length;
+  document.getElementById('statBSCS').textContent = bscs;
+  document.getElementById('statBSIT').textContent = other;
+  document.getElementById('statRecalled').textContent = recalled;
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+  if(!filtered.length){ tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  tbody.innerHTML = filtered.map((s,i)=>{
+    const statusClass = s.adviserStatus==='recalled'?'recalled':'submitted';
+    const statusText = s.adviserStatus==='recalled'?'Recalled':'Submitted';
+    const isRecalled = s.adviserStatus==='recalled';
+    return `<tr>
+      <td class="row-num">${i+1}</td>
+      <td><div class="student-cell"><div class="table-avatar">${initials(s.name)}</div><span class="student-full-name">${s.name}</span></div></td>
+      <td style="font-size:.82rem;color:#888;">${s.appNo}</td>
+      <td><span style="font-size:.78rem;font-weight:600;">${s.course==='BS Computer Science'?'BSCS':'BSIT'}</span></td>
+      <td style="font-size:.82rem;color:#666;">${fmtDate(s.dateForwarded)}</td>
+      <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn-view" onclick="openFormView('${s.appNo}')"><i class="fas fa-eye"></i> View</button>
+          ${!isRecalled?`<button class="btn-recall" onclick="openRecallModal('${s.appNo}')"><i class="fas fa-undo"></i> Recall</button>`:''}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+document.getElementById('searchInput').addEventListener('input', renderSubmitted);
+document.getElementById('sectionFilter').addEventListener('change', renderSubmitted);
+
+// ================================================================
+//  CORRECTION PAGE
+// ================================================================
+function renderCorrection(){
+  const search = (document.getElementById('correctionSearch').value||'').toLowerCase();
+  let students = getMyStudents().filter(a=>a.adviserStatus==='correction');
+  if(search) students = students.filter(a=>a.name.toLowerCase().includes(search)||a.appNo.toLowerCase().includes(search));
+  const list = document.getElementById('correction-list');
+  const empty = document.getElementById('emptyCorrection');
+  if(!students.length){ list.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  list.innerHTML = students.map(s=>`
+    <div class="correction-card student-card" data-appno="${s.appNo}">
+      <div class="card-header">
+        <div class="profile-row">
+          <div class="avatar">${initials(s.name)}</div>
+          <div class="name-container">
+            <p class="student-name">${s.name}</p>
+            <p class="student-id"><i class="fas fa-id-card" style="margin-right:4px;"></i>${s.appNo} &nbsp;|&nbsp; ${s.course}</p>
+          </div>
+          <span class="status-pill correction">For Correction</span>
+        </div>
+      </div>
+      ${s.correctionNote?`
+      <div class="correction-note-toggle" onclick="toggleNote(this)">
+        <div class="toggle-label">
+          <i class="fas fa-triangle-exclamation"></i>
+          Note from Assessment Office
+          <i class="fas fa-chevron-down toggle-icon"></i>
+          <span class="correction-meta">${fmtDate(s.correctionDate)}</span>
+        </div>
+      </div>
+      <div class="correction-note-body">
+        <div class="correction-note-inner">
+          <div class="correction-note-label"><i class="fas fa-triangle-exclamation"></i> Assessment Note</div>
+          <p class="correction-note-text">${s.correctionNote}</p>
+        </div>
+      </div>`:''}
+      <div class="card-btns">
+        <button class="btn btn-outline" onclick="openResubmitModal('${s.appNo}')"><i class="fas fa-edit"></i> Correct &amp; Resubmit</button>
+        <button class="btn-view" onclick="openFormView('${s.appNo}')"><i class="fas fa-eye"></i> View Form</button>
+      </div>
+    </div>`).join('');
+}
+document.getElementById('correctionSearch').addEventListener('input', renderCorrection);
+
+function toggleNote(el){
+  const body = el.nextElementSibling;
+  const icon = el.querySelector('.toggle-icon');
+  body.classList.toggle('open');
+  if(icon) icon.style.transform = body.classList.contains('open')?'rotate(180deg)':'rotate(0)';
+}
+
+// ================================================================
+//  FORM VIEW MODAL
+// ================================================================
+function openFormView(appNo){
+  const apps = getApps();
+  const s = apps.find(a=>a.appNo===appNo);
+  if(!s) return;
+  document.getElementById('fvmAvatar').textContent = initials(s.name);
+  document.getElementById('fvmName').textContent = s.name;
+  document.getElementById('fvmMeta').textContent = `${s.appNo} · ${s.course}`;
+  const badge = document.getElementById('fvmStatusBadge');
+  const statusMap = {submitted:'✓ Submitted',correction:'⚠ For Correction',pending:'Pending',recalled:'Recalled'};
+  const colorMap = {submitted:'background:#d4edda;color:#155724;',correction:'background:#fff3e0;color:crimson;',pending:'background:#fff3cd;color:#856404;',recalled:'background:#f8d7da;color:#721c24;'};
+  badge.textContent = statusMap[s.adviserStatus]||s.adviserStatus||'Pending';
+  badge.style.cssText = colorMap[s.adviserStatus]||colorMap.pending;
+  const banner = document.getElementById('fvmBanner');
+  if(s.adviserStatus==='correction'&&s.correctionNote){
+    banner.style.cssText = 'background:#fff8f5;border-bottom:1px solid #ffcc80;';
+    banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color:#e65100;flex-shrink:0;"></i><span style="color:#555;">${s.correctionNote}</span>`;
+  } else if(s.adviserStatus==='submitted'){
+    banner.style.cssText = 'background:#e8f5e9;border-bottom:1px solid #a5d6a7;';
+    banner.innerHTML = `<i class="fas fa-check-circle" style="color:#2e7d32;flex-shrink:0;"></i><span style="color:#2e7d32;font-weight:600;">Submitted to Assessment Office on ${fmtDate(s.dateForwarded)}</span>`;
+  } else { banner.style.cssText='display:none;'; banner.innerHTML=''; }
+  const hasSubjects = s.enrolledSubjects&&s.enrolledSubjects.length>0;
+  const total = hasSubjects ? s.enrolledSubjects.reduce((a,b)=>a+b.units,0) : 0;
+  document.getElementById('fvmBody').innerHTML = `
+    <div class="fvm-section">
+      <div class="fvm-section-title"><i class="fas fa-user-graduate"></i> Student Information</div>
+      <div class="fvm-grid">
+        <div class="fvm-field"><span class="fvm-label">Full Name</span><span class="fvm-val">${s.name}</span></div>
+        <div class="fvm-field"><span class="fvm-label">Application No.</span><span class="fvm-val">${s.appNo}</span></div>
+        <div class="fvm-field"><span class="fvm-label">Course</span><span class="fvm-val">${s.course}</span></div>
+        <div class="fvm-field"><span class="fvm-label">Department</span><span class="fvm-val">${s.department}</span></div>
+        <div class="fvm-field"><span class="fvm-label">Status</span><span class="fvm-val">${s.adviserStatus||'pending'}</span></div>
+        <div class="fvm-field"><span class="fvm-label">Date Forwarded</span><span class="fvm-val">${fmtDate(s.dateForwarded)}</span></div>
+      </div>
+    </div>
+    <div class="fvm-section">
+      <div class="fvm-section-title"><i class="fas fa-book-open"></i> Enrolled Subjects <span style="margin-left:auto;font-size:.8rem;color:#888;font-weight:400;text-transform:none;">${total} total units</span></div>
+      ${hasSubjects?`<div style="overflow-x:auto;"><table class="fvm-subjects-table">
+        <thead><tr><th>#</th><th>Code</th><th>Description</th><th>Day</th><th>Time</th><th>Room</th><th>Section</th><th>Units</th></tr></thead>
+        <tbody>${s.enrolledSubjects.map((sub,i)=>`<tr><td style="color:#bbb;font-size:.75rem;">${i+1}</td><td><strong>${sub.code}</strong></td><td>${sub.title}</td><td>${sub.day||'—'}</td><td style="white-space:nowrap;">${sub.time||'—'}</td><td>${sub.room||'—'}</td><td>${sub.section||'—'}</td><td><strong>${sub.units}</strong></td></tr>`).join('')}</tbody>
+      </table></div>`:`<p style="color:#aaa;font-style:italic;font-size:.88rem;">No subjects assigned.</p>`}
+    </div>`;
+  document.getElementById('formViewModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeFvModal(){
+  document.getElementById('formViewModal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.getElementById('formViewModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeFvModal(); });
+
+// ================================================================
+//  PROCEED / SUBMIT TO ASSESSMENT
+// ================================================================
+let _proceedTarget = null;
+function openProceedModal(appNo){
+  _proceedTarget = appNo;
+  const s = getApps().find(a=>a.appNo===appNo);
+  if(!s) return;
+  document.getElementById('proceedStudentName').textContent = s.name;
+  document.getElementById('proceedModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeProceedModal(){
+  _proceedTarget=null;
+  document.getElementById('proceedModal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.getElementById('cancelProceedBtn').addEventListener('click', closeProceedModal);
+document.getElementById('proceedModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeProceedModal(); });
+document.getElementById('confirmProceedBtn').addEventListener('click',()=>{
+  if(!_proceedTarget) return;
+  const apps = getApps();
+  const idx = apps.findIndex(a=>a.appNo===_proceedTarget);
+  if(idx===-1){ closeProceedModal(); return; }
+  apps[idx].adviserStatus = 'submitted';
+  apps[idx].adviserName = 'Dr. Ana Dizon';
+  apps[idx].dateForwarded = new Date().toISOString();
+  saveApps(apps);
+  const name = apps[idx].name;
+  closeProceedModal();
+  showToast(`✓ ${name} forwarded to Assessment Office.`,'success');
+  renderDashboard(document.querySelector('#page-dashboard .filter-btn.active-filter')?.dataset.filter||'all');
+});
+
+// ================================================================
+//  RECALL
+// ================================================================
+let _recallTarget = null;
+function openRecallModal(appNo){
+  _recallTarget = appNo;
+  const s = getApps().find(a=>a.appNo===appNo);
+  if(!s) return;
+  document.getElementById('recallStudentName').textContent = s.name;
+  document.getElementById('recallModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeRecallModal(){
+  _recallTarget=null;
+  document.getElementById('recallModal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.getElementById('closeRecallModal').addEventListener('click', closeRecallModal);
+document.getElementById('cancelRecall').addEventListener('click', closeRecallModal);
+document.getElementById('recallModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeRecallModal(); });
+document.getElementById('confirmRecall').addEventListener('click',()=>{
+  if(!_recallTarget) return;
+  const apps = getApps();
+  const idx = apps.findIndex(a=>a.appNo===_recallTarget);
+  if(idx===-1){ closeRecallModal(); return; }
+  apps[idx].adviserStatus = 'pending';
+  apps[idx].dateForwarded = null;
+  saveApps(apps);
+  const name = apps[idx].name;
+  closeRecallModal();
+  showToast(`${name} recalled from Assessment Office.`,'info');
+  renderSubmitted();
+  updateSidebarStats();
+});
+
+// ================================================================
+//  RESUBMIT MODAL
+// ================================================================
+let _resubmitTarget = null;
+let _editingRow = null;
+let _tempSubjects = [];
+
+function openResubmitModal(appNo){
+  _resubmitTarget = appNo;
+  const s = getApps().find(a=>a.appNo===appNo);
+  if(!s) return;
+  _tempSubjects = (s.enrolledSubjects||[]).map(sub=>({...sub}));
+  document.getElementById('resubmitModalTitle').textContent = `Correct & Resubmit — ${s.name}`;
+  document.getElementById('modalNoteText').textContent = s.correctionNote||'No specific note provided. Please review and resubmit.';
+  renderResubmitTable();
+  document.getElementById('resubmitModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeResubmitModal(){
+  _resubmitTarget=null; _editingRow=null; _tempSubjects=[];
+  document.getElementById('resubmitModal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.getElementById('closeResubmitModal').addEventListener('click', closeResubmitModal);
+document.getElementById('cancelResubmitBtn').addEventListener('click', closeResubmitModal);
+document.getElementById('resubmitModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeResubmitModal(); });
+
+function renderResubmitTable(){
+  const total = _tempSubjects.reduce((a,b)=>a+(parseInt(b.units)||0),0);
+  document.getElementById('modalTotalUnits').textContent = total;
+  document.getElementById('resubmitTableBody').innerHTML = _tempSubjects.map((sub,i)=>{
+    const isEditing = _editingRow===i;
+    if(isEditing){
+      return `<tr data-idx="${i}">
+        <td class="action-cell">
+          <button class="icon-btn save" onclick="saveEditRow(${i})" title="Save"><i class="fas fa-check"></i></button>
+          <button class="icon-btn delete" onclick="cancelEditRow()" title="Cancel"><i class="fas fa-times"></i></button>
+        </td>
+        <td><input class="id-edit" id="edit_code_${i}" value="${sub.code||''}" style="min-width:80px;"></td>
+        <td><input class="id-edit" id="edit_title_${i}" value="${sub.title||''}" style="min-width:180px;"></td>
+        <td><input class="id-edit" id="edit_day_${i}" value="${sub.day||''}" style="min-width:50px;"></td>
+        <td><input class="id-edit" id="edit_time_${i}" value="${sub.time||''}" style="min-width:100px;"></td>
+        <td><input class="id-edit" id="edit_room_${i}" value="${sub.room||''}" style="min-width:60px;"></td>
+        <td><input class="id-edit" id="edit_section_${i}" value="${sub.section||''}" style="min-width:60px;"></td>
+        <td><input class="id-edit" id="edit_units_${i}" type="number" value="${sub.units||0}" style="min-width:50px;max-width:60px;"></td>
+      </tr>`;
+    }
+    return `<tr data-idx="${i}">
+      <td class="action-cell">
+        <button class="icon-btn edit" onclick="editRow(${i})" title="Edit"><i class="fas fa-pen"></i></button>
+        <button class="icon-btn delete" onclick="deleteRow(${i})" title="Delete"><i class="fas fa-trash"></i></button>
+      </td>
+      <td><strong>${sub.code}</strong></td>
+      <td>${sub.title}</td>
+      <td>${sub.day||'—'}</td>
+      <td style="white-space:nowrap;">${sub.time||'—'}</td>
+      <td>${sub.room||'—'}</td>
+      <td>${sub.section||'—'}</td>
+      <td><strong>${sub.units}</strong></td>
+    </tr>`;
+  }).join('');
+}
+function editRow(i){ _editingRow=i; renderResubmitTable(); }
+function cancelEditRow(){ _editingRow=null; renderResubmitTable(); }
+function saveEditRow(i){
+  _tempSubjects[i] = {
+    code: document.getElementById(`edit_code_${i}`).value.trim(),
+    title: document.getElementById(`edit_title_${i}`).value.trim(),
+    day: document.getElementById(`edit_day_${i}`).value.trim(),
+    time: document.getElementById(`edit_time_${i}`).value.trim(),
+    room: document.getElementById(`edit_room_${i}`).value.trim(),
+    section: document.getElementById(`edit_section_${i}`).value.trim(),
+    units: parseInt(document.getElementById(`edit_units_${i}`).value)||0,
+  };
+  _editingRow=null;
+  renderResubmitTable();
+}
+function deleteRow(i){ _tempSubjects.splice(i,1); if(_editingRow===i) _editingRow=null; renderResubmitTable(); }
+document.getElementById('addSubjectBtn').addEventListener('click',()=>{
+  _tempSubjects.push({code:'',title:'New Subject',day:'',time:'',room:'',section:'',units:3});
+  _editingRow = _tempSubjects.length-1;
+  renderResubmitTable();
+});
+document.getElementById('confirmResubmitBtn').addEventListener('click',()=>{
+  if(!_resubmitTarget) return;
+  if(_editingRow!==null){ showToast('Please save or cancel the row being edited first.','error'); return; }
+  if(!_tempSubjects.length){ showToast('Please add at least one subject.','error'); return; }
+  const s = getApps().find(a=>a.appNo===_resubmitTarget);
+  if(!s) return;
+  document.getElementById('confirmStudentName').textContent = s.name;
+  document.getElementById('confirmModal').classList.add('active');
+});
+document.getElementById('cancelConfirmBtn').addEventListener('click',()=>{ document.getElementById('confirmModal').classList.remove('active'); });
+document.getElementById('confirmModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) document.getElementById('confirmModal').classList.remove('active'); });
+document.getElementById('finalResubmitBtn').addEventListener('click',()=>{
+  if(!_resubmitTarget) return;
+  const apps = getApps();
+  const idx = apps.findIndex(a=>a.appNo===_resubmitTarget);
+  if(idx===-1) return;
+  apps[idx].enrolledSubjects = _tempSubjects;
+  apps[idx].totalUnits = _tempSubjects.reduce((a,b)=>a+(parseInt(b.units)||0),0);
+  apps[idx].adviserStatus = 'submitted';
+  apps[idx].correctionNote = null;
+  apps[idx].correctionDate = null;
+  apps[idx].dateForwarded = new Date().toISOString();
+  saveApps(apps);
+  const name = apps[idx].name;
+  document.getElementById('confirmModal').classList.remove('active');
+  closeResubmitModal();
+  showToast(`✓ ${name} resubmitted to Assessment Office.`,'success');
+  renderDashboard(document.querySelector('#page-dashboard .filter-btn.active-filter')?.dataset.filter||'all');
+  renderCorrection();
+  updateSidebarStats();
+});
+
+// ================================================================
+//  BULK ENLIST
+// ================================================================
+function bulkEnlistFreshmen(){
+  const apps = getApps();
+  const pending = apps.filter(a=>
+    a.department==='College of Computing Studies' &&
+    a.deptStatus==='accepted' &&
+    a.adviserStatus!=='submitted' &&
+    (!a.enrolledSubjects||a.enrolledSubjects.length===0)
+  );
+  if(!pending.length){ showToast('All students already have subjects assigned.','info'); return; }
+  if(!confirm(`Assign default Year 1 Sem 1 subjects to ${pending.length} student(s)?`)) return;
+  pending.forEach(s=>{
+    const idx = apps.findIndex(a=>a.appNo===s.appNo);
+    if(idx!==-1){
+      apps[idx].enrolledSubjects = DEFAULT_SUBJECTS.map(sub=>({...sub}));
+      apps[idx].totalUnits = DEFAULT_SUBJECTS.reduce((a,b)=>a+b.units,0);
+    }
+  });
+  saveApps(apps);
+  showToast(`✓ ${pending.length} student(s) assigned default Year 1 subjects.`,'success');
+  renderDashboard(document.querySelector('#page-dashboard .filter-btn.active-filter')?.dataset.filter||'all');
+}
+
+// ================================================================
+//  DOWNLOAD MASTER LIST (CSV)
+// ================================================================
+function downloadMasterList(){
+  const students = getMyStudents();
+  if(!students.length){ alert('No students to export.'); return; }
+  const rows = [['App No','Name','Course','Status','Total Units','Subjects']];
+  students.forEach(s=>{
+    const subjects = (s.enrolledSubjects||[]).map(sub=>sub.code).join('; ');
+    rows.push([s.appNo, s.name, s.course, s.adviserStatus||'pending', s.totalUnits||0, subjects]);
+  });
+  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='CCS_Freshmen_MasterList.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Master list downloaded.','success');
+}
+
+// ================================================================
+//  ESCAPE KEY
+// ================================================================
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    closeFvModal(); closeProceedModal(); closeRecallModal();
+    if(document.getElementById('resubmitModal').classList.contains('active')) closeResubmitModal();
+    if(document.getElementById('confirmModal').classList.contains('active')) document.getElementById('confirmModal').classList.remove('active');
+  }
+});
+</script>
+</body>
+</html>
