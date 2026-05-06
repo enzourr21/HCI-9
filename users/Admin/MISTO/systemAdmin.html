@@ -211,12 +211,18 @@
             <div class="page-header">
                 <div>
                     <div class="page-title">Student Records</div>
-                    <div class="page-subtitle">All enrolled students — regular, freshmen, and transferees</div>
+                    <div class="page-subtitle">Students enrolled through the official registration process</div>
                 </div>
-                <button class="btn btn-primary" onclick="openRegisterStudentModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Register New Student
-                </button>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                    <button class="btn btn-outline" onclick="openBatchCORModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                        Batch Generate COR
+                    </button>
+                    <button class="btn btn-primary" onclick="pullStudentRecords()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+                        Pull Records from Registrar
+                    </button>
+                </div>
             </div>
 
             <!-- Quick stats -->
@@ -263,17 +269,27 @@
                             <option value="3">3rd Year</option>
                             <option value="4">4th Year</option>
                         </select>
-                        <select class="filter-select" id="studentStatusFilter" onchange="filterStudentsTable()">
-                            <option value="">All Status</option>
-                            <option value="Enrolled">Enrolled</option>
-                            <option value="Irregular">Irregular</option>
+                        <select class="filter-select" id="studentEnrollFilter" onchange="filterStudentsTable()">
+                            <option value="">All Enrollment</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Enlisted">Enlisted</option>
                             <option value="On Leave">On Leave</option>
                         </select>
-                        <select class="filter-select" id="studentTypeFilter" onchange="filterStudentsTable()">
-                            <option value="">All Types</option>
+                        <select class="filter-select" id="studentAcadFilter" onchange="filterStudentsTable()">
+                            <option value="">All Academic Status</option>
                             <option value="Regular">Regular</option>
+                            <option value="Irregular">Irregular</option>
                             <option value="Freshmen">Freshmen</option>
                             <option value="Transferee">Transferee</option>
+                        </select>
+                        <select class="filter-select" id="studentSectionFilter" onchange="filterStudentsTable()">
+                            <option value="">All Sections</option>
+                            <option value="A">Section A</option>
+                            <option value="B">Section B</option>
+                            <option value="C">Section C</option>
+                            <option value="D">Section D</option>
+                            <option value="E">Section E</option>
+                            <option value="F">Section F</option>
                         </select>
                     </div>
                 </div>
@@ -325,9 +341,11 @@
                             <option value="4">4th Year</option>
                         </select>
                         <select class="filter-select" id="prospectus-sem">
-                            <option value="">Both Semesters</option>
-                            <option value="1st">1st Semester</option>
-                            <option value="2nd">2nd Semester</option>
+                            <option value="">All Semesters</option>
+                            <option value="1st">1st Sem</option>
+                            <option value="2nd">2nd Sem</option>
+                            <option value="both">1st &amp; 2nd Sem</option>
+                            <option value="summer">Summer</option>
                         </select>
                     </div>
                 </div>
@@ -366,6 +384,7 @@
                             <option value="Adviser">Adviser</option>
                             <option value="Secretary">Secretary</option>
                             <option value="Assessment Officer">Assessment Officer</option>
+                            <option value="Registrar Officer">Registrar Officer</option>
                             <option value="College Dean">College Dean</option>
                         </select>
                         <select class="filter-select" id="statusFilter" onchange="filterRoles()">
@@ -391,25 +410,13 @@
             <div class="page-header">
                 <div>
                     <div class="page-title">Resources</div>
-                    <div class="page-subtitle">Manage rooms, buildings, and the faculty master list</div>
+                    <div class="page-subtitle">Employee master list synced from HRIS</div>
                 </div>
-                <button class="btn btn-primary" onclick="openAddRoomModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Add Room / Lab
-                </button>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Rooms &amp; Laboratories</div>
-                    <div class="search-bar"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="roomSearch" placeholder="Search room or building…" oninput="filterRooms()"></div>
-                </div>
-                <div class="card-body"><div class="room-grid" id="roomGrid"></div></div>
-            </div>
-            <div class="section-gap"></div>
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Faculty Master List<span style="font-size:0.70rem;color:var(--text-muted);font-weight:400;">Synced from HRIS</span></div>
-                    <div class="search-bar"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="facultySearch" placeholder="Search faculty…" oninput="filterFaculty()"></div>
+                    <div class="card-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Employee Master List<span style="font-size:0.70rem;color:var(--text-muted);font-weight:400;">Synced from HRIS</span></div>
+                    <div class="search-bar"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="facultySearch" placeholder="Search employees…" oninput="filterFaculty()"></div>
                 </div>
                 <div style="overflow-x:auto;">
                     <table class="data-table">
@@ -609,6 +616,102 @@
             <button class="btn btn-outline" id="nsBackBtn" onclick="nsStep(-1)" style="display:none;">← Back</button>
             <button class="btn btn-outline" onclick="closeModal('registerStudentModal')">Cancel</button>
             <button class="btn btn-primary" id="nsNextBtn" onclick="nsStep(1)">Next →</button>
+        </div>
+    </div>
+</div>
+
+<!-- Batch Generate COR Modal -->
+<div class="modal-overlay" id="batchCORModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">Batch Generate COR</span>
+            <button class="modal-close" onclick="closeModal('batchCORModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:16px;">Select a Program, Year Level, and Section to generate CORs for a group of students. Optionally filter by enrollment and academic status.</p>
+            <div class="form-field">
+                <label class="form-label">Program <span class="req">*</span></label>
+                <select class="form-select" id="batch-cor-program" onchange="updateBatchCORPreview()">
+                    <option value="">— Select Program —</option>
+                </select>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-field">
+                    <label class="form-label">Year Level <span class="req">*</span></label>
+                    <select class="form-select" id="batch-cor-year" onchange="updateBatchCORPreview()">
+                        <option value="">— All Years —</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label class="form-label">Section</label>
+                    <select class="form-select" id="batch-cor-section" onchange="updateBatchCORPreview()">
+                        <option value="">— All Sections —</option>
+                        <option value="A">Section A</option>
+                        <option value="B">Section B</option>
+                        <option value="C">Section C</option>
+                        <option value="D">Section D</option>
+                        <option value="E">Section E</option>
+                        <option value="F">Section F</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-field">
+                    <label class="form-label">Enrollment Status</label>
+                    <select class="form-select" id="batch-cor-enroll" onchange="updateBatchCORPreview()">
+                        <option value="">All</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Enlisted">Enlisted</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label class="form-label">Academic Status</label>
+                    <select class="form-select" id="batch-cor-acad" onchange="updateBatchCORPreview()">
+                        <option value="">All</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Irregular">Irregular</option>
+                        <option value="Freshmen">Freshmen</option>
+                        <option value="Transferee">Transferee</option>
+                    </select>
+                </div>
+            </div>
+            <div id="batch-cor-preview" style="margin-top:4px;padding:12px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;color:var(--text-secondary);">
+                Select a program to preview the student count.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('batchCORModal')">Cancel</button>
+            <button class="btn btn-primary" id="batchCORConfirmBtn" onclick="confirmBatchCOR()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Generate CORs
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Pull Student Records from Registrar Modal -->
+<div class="modal-overlay" id="pullRecordsModal">
+    <div class="modal-box" style="max-width:460px;">
+        <div class="modal-header">
+            <span class="modal-title">Pull Student Records from Registrar</span>
+            <button class="modal-close" onclick="closeModal('pullRecordsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">This will pull the latest enrolled student records from the Registrar's Office database into the MISTO system. Only students who have completed the official enrollment process will appear.</p>
+            <div style="margin-top:14px;padding:12px 14px;background:var(--amber-pale);border:1px solid var(--amber);border-radius:var(--radius-sm);font-size:0.80rem;color:#92400e;">
+                <strong>Note:</strong> Student records can only be pulled after the Registrar has finalized enrollment for the current semester. Pulling overwrites any existing unverified records.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('pullRecordsModal')">Cancel</button>
+            <button class="btn btn-primary" onclick="confirmPullRecords()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+                Pull Records
+            </button>
         </div>
     </div>
 </div>

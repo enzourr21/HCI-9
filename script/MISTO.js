@@ -7,18 +7,23 @@
 // MOCK DATA
 // ─────────────────────────────────────────────────
 const EMPLOYEES = [
-    { id:"EMP-20241001", name:"Dr. Ana Dizon",       initials:"AD", position:"Associate Professor II", dept:"College of Computing Studies", roles:["Adviser"],             status:"Active",   email:"ana.dizon@wmsu.edu.ph",       contact:"09171234567", lastActive:"2026-05-01" },
-    { id:"EMP-20241002", name:"Prof. Maria Reyes",   initials:"MR", position:"Assistant Professor I",  dept:"College of Computing Studies", roles:["Adviser","Secretary"], status:"Active",   email:"maria.reyes@wmsu.edu.ph",     contact:"09182345678", lastActive:"2026-05-02" },
-    { id:"EMP-20241003", name:"Prof. Jose Rizal",    initials:"JR", position:"Instructor I",           dept:"College of Computing Studies", roles:["Adviser"],             status:"Active",   email:"jose.rizal@wmsu.edu.ph",      contact:"09193456789", lastActive:"2026-04-28" },
-    { id:"EMP-20241004", name:"Ms. Clara Santos",    initials:"CS", position:"Administrative Staff",   dept:"College of Computing Studies", roles:["Secretary"],           status:"Active",   email:"clara.santos@wmsu.edu.ph",    contact:"09204567890", lastActive:"2026-05-02" },
-    { id:"EMP-20241005", name:"Dr. Ramon Dela Cruz", initials:"RD", position:"Professor III",          dept:"College of Computing Studies", roles:["Department Head"],      status:"Active",   email:"ramon.delacruz@wmsu.edu.ph",  contact:"09215678901", lastActive:"2026-04-30" },
-    { id:"EMP-20241006", name:"Dr. Luisa Fernandez", initials:"LF", position:"Professor IV",           dept:"College of Computing Studies", roles:["College Dean"],         status:"Active",   email:"luisa.fernandez@wmsu.edu.ph", contact:"09226789012", lastActive:"2026-05-01" },
-    { id:"EMP-20241007", name:"Mr. Ben Aquino",      initials:"BA", position:"Assessment Officer",     dept:"Assessment Office — CCS",      roles:["Assessment Officer"],   status:"Active",   email:"ben.aquino@wmsu.edu.ph",      contact:"09237890123", lastActive:"2026-05-02" },
-    { id:"EMP-20241008", name:"Ms. Rosa Mendoza",    initials:"RM", position:"Assessment Officer",     dept:"Assessment Office — CCS",      roles:["Assessment Officer"],   status:"Inactive", email:"rosa.mendoza@wmsu.edu.ph",    contact:"09248901234", lastActive:"2025-11-15" },
-    { id:"EMP-20241009", name:"Prof. Edgar Tan",     initials:"ET", position:"Associate Professor I",  dept:"College of Engineering",       roles:["Adviser"],             status:"Active",   email:"edgar.tan@wmsu.edu.ph",       contact:"09259012345", lastActive:"2026-04-29" },
-    { id:"EMP-20241010", name:"Dr. Patricia Lim",    initials:"PL", position:"Professor II",           dept:"College of Engineering",       roles:["College Dean"],         status:"Active",   email:"patricia.lim@wmsu.edu.ph",    contact:"09260123456", lastActive:"2026-04-27" },
-    { id:"EMP-20241011", name:"Mr. Carlos Bautista", initials:"CB", position:"Instructor II",          dept:"College of Nursing",           roles:["Adviser"],             status:"Active",   email:"carlos.bautista@wmsu.edu.ph", contact:"09271234567", lastActive:"2026-05-02" },
-    { id:"EMP-20241012", name:"Ms. Diana Suarez",    initials:"DS", position:"Administrative Staff",   dept:"Registrar's Office",           roles:["Secretary"],           status:"Inactive", email:"diana.suarez@wmsu.edu.ph",    contact:"09282345678", lastActive:"2025-09-30" },
+    { id:"EMP-20241001", name:"Dr. Ana Dizon",         initials:"AD", position:"Associate Professor II",  dept:"College of Computing Studies", roles:["Adviser"],              status:"Active",   email:"ana.dizon@wmsu.edu.ph",         contact:"09171234567", lastActive:"2026-05-01" },
+    { id:"EMP-20241002", name:"Prof. Maria Reyes",     initials:"MR", position:"Assistant Professor I",   dept:"College of Computing Studies", roles:["Adviser","Secretary"],  status:"Active",   email:"maria.reyes@wmsu.edu.ph",       contact:"09182345678", lastActive:"2026-05-02" },
+    { id:"EMP-20241003", name:"Prof. Jose Rizal",      initials:"JR", position:"Instructor I",            dept:"College of Computing Studies", roles:["Adviser"],              status:"Active",   email:"jose.rizal@wmsu.edu.ph",        contact:"09193456789", lastActive:"2026-04-28" },
+    { id:"EMP-20241004", name:"Ms. Clara Santos",      initials:"CS", position:"Administrative Staff",    dept:"College of Computing Studies", roles:["Secretary"],            status:"Active",   email:"clara.santos@wmsu.edu.ph",      contact:"09204567890", lastActive:"2026-05-02" },
+    { id:"EMP-20241005", name:"Dr. Ramon Dela Cruz",   initials:"RD", position:"Professor III",           dept:"College of Computing Studies", roles:["Department Head"],      status:"Active",   email:"ramon.delacruz@wmsu.edu.ph",    contact:"09215678901", lastActive:"2026-04-30" },
+    { id:"EMP-20241006", name:"Dr. Luisa Fernandez",   initials:"LF", position:"Professor IV",            dept:"College of Computing Studies", roles:["College Dean"],         status:"Active",   email:"luisa.fernandez@wmsu.edu.ph",   contact:"09226789012", lastActive:"2026-05-01" },
+    { id:"EMP-20241007", name:"Mr. Ben Aquino",        initials:"BA", position:"Assessment Officer",      dept:"Assessment Office — CCS",      roles:["Assessment Officer"],   status:"Active",   email:"ben.aquino@wmsu.edu.ph",        contact:"09237890123", lastActive:"2026-05-02" },
+    { id:"EMP-20241008", name:"Ms. Rosa Mendoza",      initials:"RM", position:"Assessment Officer",      dept:"Assessment Office — CCS",      roles:["Assessment Officer"],   status:"Inactive", email:"rosa.mendoza@wmsu.edu.ph",      contact:"09248901234", lastActive:"2025-11-15" },
+    { id:"EMP-20241009", name:"Prof. Edgar Tan",       initials:"ET", position:"Associate Professor I",   dept:"College of Engineering",       roles:["Adviser"],              status:"Active",   email:"edgar.tan@wmsu.edu.ph",         contact:"09259012345", lastActive:"2026-04-29" },
+    { id:"EMP-20241010", name:"Dr. Patricia Lim",      initials:"PL", position:"Professor II",            dept:"College of Engineering",       roles:["College Dean"],         status:"Active",   email:"patricia.lim@wmsu.edu.ph",      contact:"09260123456", lastActive:"2026-04-27" },
+    { id:"EMP-20241011", name:"Mr. Carlos Bautista",   initials:"CB", position:"Instructor II",           dept:"College of Nursing",           roles:["Adviser"],              status:"Active",   email:"carlos.bautista@wmsu.edu.ph",   contact:"09271234567", lastActive:"2026-05-02" },
+    { id:"EMP-20241012", name:"Ms. Diana Suarez",      initials:"DS", position:"Administrative Staff",    dept:"Registrar's Office",           roles:["Secretary"],            status:"Inactive", email:"diana.suarez@wmsu.edu.ph",      contact:"09282345678", lastActive:"2025-09-30" },
+    // ── Registrar's Office ───────────────────────────────────────────────────────────────────────
+    { id:"EMP-20241013", name:"Mr. Roberto Alcantara", initials:"RA", position:"University Registrar",    dept:"Registrar's Office",           roles:["Registrar Officer"],    status:"Active",   email:"roberto.alcantara@wmsu.edu.ph", contact:"09291234567", lastActive:"2026-05-05" },
+    { id:"EMP-20241014", name:"Ms. Felicia Uy",        initials:"FU", position:"Deputy Registrar",        dept:"Registrar's Office",           roles:["Registrar Officer"],    status:"Active",   email:"felicia.uy@wmsu.edu.ph",        contact:"09302345678", lastActive:"2026-05-04" },
+    { id:"EMP-20241015", name:"Mr. Dante Villanueva",  initials:"DV", position:"Records Officer I",       dept:"Registrar's Office",           roles:["Registrar Officer"],    status:"Active",   email:"dante.villanueva@wmsu.edu.ph",  contact:"09313456789", lastActive:"2026-05-03" },
+    { id:"EMP-20241016", name:"Ms. Grace Palma",       initials:"GP", position:"Records Officer II",      dept:"Registrar's Office",           roles:["Registrar Officer"],    status:"Inactive", email:"grace.palma@wmsu.edu.ph",       contact:"09324567890", lastActive:"2025-12-10" },
 ];
 
 const HRIS_LOOKUP = {
@@ -40,13 +45,22 @@ const ROOMS = [
 ];
 
 const FACULTY = [
-    { id:"EMP-20241001", name:"Dr. Ana Dizon",       position:"Associate Professor II", dept:"College of Computing Studies", email:"ana.dizon@wmsu.edu.ph",       hrisStatus:"Active" },
-    { id:"EMP-20241002", name:"Prof. Maria Reyes",   position:"Assistant Professor I",  dept:"College of Computing Studies", email:"maria.reyes@wmsu.edu.ph",     hrisStatus:"Active" },
-    { id:"EMP-20241003", name:"Prof. Jose Rizal",    position:"Instructor I",           dept:"College of Computing Studies", email:"jose.rizal@wmsu.edu.ph",      hrisStatus:"Active" },
-    { id:"EMP-20241005", name:"Dr. Ramon Dela Cruz", position:"Professor III",          dept:"College of Computing Studies", email:"ramon.delacruz@wmsu.edu.ph",  hrisStatus:"Active" },
-    { id:"EMP-20241009", name:"Prof. Edgar Tan",     position:"Associate Professor I",  dept:"College of Engineering",       email:"edgar.tan@wmsu.edu.ph",       hrisStatus:"Active" },
-    { id:"EMP-20241010", name:"Dr. Patricia Lim",    position:"Professor II",           dept:"College of Engineering",       email:"patricia.lim@wmsu.edu.ph",    hrisStatus:"Active" },
-    { id:"EMP-20241011", name:"Mr. Carlos Bautista", position:"Instructor II",          dept:"College of Nursing",           email:"carlos.bautista@wmsu.edu.ph", hrisStatus:"Active" },
+    { id:"EMP-20241001", name:"Dr. Ana Dizon",         position:"Associate Professor II", dept:"College of Computing Studies", email:"ana.dizon@wmsu.edu.ph",         hrisStatus:"Active"   },
+    { id:"EMP-20241002", name:"Prof. Maria Reyes",     position:"Assistant Professor I",  dept:"College of Computing Studies", email:"maria.reyes@wmsu.edu.ph",       hrisStatus:"Active"   },
+    { id:"EMP-20241003", name:"Prof. Jose Rizal",      position:"Instructor I",           dept:"College of Computing Studies", email:"jose.rizal@wmsu.edu.ph",        hrisStatus:"Active"   },
+    { id:"EMP-20241004", name:"Ms. Clara Santos",      position:"Administrative Staff",   dept:"College of Computing Studies", email:"clara.santos@wmsu.edu.ph",      hrisStatus:"Active"   },
+    { id:"EMP-20241005", name:"Dr. Ramon Dela Cruz",   position:"Professor III",          dept:"College of Computing Studies", email:"ramon.delacruz@wmsu.edu.ph",    hrisStatus:"Active"   },
+    { id:"EMP-20241006", name:"Dr. Luisa Fernandez",   position:"Professor IV",           dept:"College of Computing Studies", email:"luisa.fernandez@wmsu.edu.ph",   hrisStatus:"Active"   },
+    { id:"EMP-20241007", name:"Mr. Ben Aquino",        position:"Assessment Officer",     dept:"Assessment Office — CCS",      email:"ben.aquino@wmsu.edu.ph",        hrisStatus:"Active"   },
+    { id:"EMP-20241008", name:"Ms. Rosa Mendoza",      position:"Assessment Officer",     dept:"Assessment Office — CCS",      email:"rosa.mendoza@wmsu.edu.ph",      hrisStatus:"Inactive" },
+    { id:"EMP-20241009", name:"Prof. Edgar Tan",       position:"Associate Professor I",  dept:"College of Engineering",       email:"edgar.tan@wmsu.edu.ph",         hrisStatus:"Active"   },
+    { id:"EMP-20241010", name:"Dr. Patricia Lim",      position:"Professor II",           dept:"College of Engineering",       email:"patricia.lim@wmsu.edu.ph",      hrisStatus:"Active"   },
+    { id:"EMP-20241011", name:"Mr. Carlos Bautista",   position:"Instructor II",          dept:"College of Nursing",           email:"carlos.bautista@wmsu.edu.ph",   hrisStatus:"Active"   },
+    { id:"EMP-20241012", name:"Ms. Diana Suarez",      position:"Administrative Staff",   dept:"Registrar's Office",           email:"diana.suarez@wmsu.edu.ph",      hrisStatus:"Inactive" },
+    { id:"EMP-20241013", name:"Mr. Roberto Alcantara", position:"University Registrar",   dept:"Registrar's Office",           email:"roberto.alcantara@wmsu.edu.ph", hrisStatus:"Active"   },
+    { id:"EMP-20241014", name:"Ms. Felicia Uy",        position:"Deputy Registrar",       dept:"Registrar's Office",           email:"felicia.uy@wmsu.edu.ph",        hrisStatus:"Active"   },
+    { id:"EMP-20241015", name:"Mr. Dante Villanueva",  position:"Records Officer I",      dept:"Registrar's Office",           email:"dante.villanueva@wmsu.edu.ph",  hrisStatus:"Active"   },
+    { id:"EMP-20241016", name:"Ms. Grace Palma",       position:"Records Officer II",     dept:"Registrar's Office",           email:"grace.palma@wmsu.edu.ph",       hrisStatus:"Inactive" },
 ];
 
 const AUDIT_LOGS = [
@@ -489,15 +503,36 @@ function addAuditEntry(entry) {
 // ══ STUDENTS MODULE ══════════════════════════════
 // ─────────────────────────────────────────────────
 
-const STATUS_COLORS = {
-    'Enrolled':  'active',
-    'Irregular': 'info',
+// Enrollment status: Pending | Enlisted | On Leave
+// Academic status:   Regular | Irregular | Freshmen | Transferee
+// studentData.js uses old values — normalize on access
+function getEnrollmentStatus(s) {
+    if (s.enrollmentStatus) return s.enrollmentStatus;
+    // Map legacy status field
+    if (s.status === 'On Leave') return 'On Leave';
+    if (s.status === 'Enrolled') return 'Enlisted';
+    if (s.status === 'Irregular') return 'Enlisted'; // irregular is academic, not enrollment
+    return 'Pending';
+}
+
+function getAcademicStatus(s) {
+    if (s.academicStatus) return s.academicStatus;
+    // Map legacy fields
+    if (s.studentType === 'Freshmen')   return 'Freshmen';
+    if (s.studentType === 'Transferee') return 'Transferee';
+    if (s.status === 'Irregular')       return 'Irregular';
+    return 'Regular';
+}
+
+const ENROLL_STATUS_COLORS = {
+    'Enlisted':  'active',
+    'Pending':   'warning',
     'On Leave':  'inactive',
-    'Dropped':   'danger',
 };
 
-const TYPE_COLORS = {
+const ACAD_STATUS_COLORS = {
     'Regular':   'neutral',
+    'Irregular': 'info',
     'Freshmen':  'info',
     'Transferee':'active',
 };
@@ -557,10 +592,12 @@ function populateCourseSelectors() {
     const studentCourseFilter = document.getElementById('studentCourseFilter');
     const prospectusProgram = document.getElementById('prospectus-program');
     const nsCourse = document.getElementById('ns-course');
+    const batchCorProgram = document.getElementById('batch-cor-program');
     const courses = Object.keys(window.WMSU_COURSE_REQUIREMENTS).sort((a, b) => a.localeCompare(b));
     const options = courses.map(name => `<option value="${name}">${name}</option>`).join('');
     if (studentCourseFilter) studentCourseFilter.innerHTML = `<option value="">All Courses</option>${options}`;
-    if (nsCourse) nsCourse.innerHTML = `<option value="">— Select —</option>${options}`;
+    if (nsCourse)            nsCourse.innerHTML            = `<option value="">— Select —</option>${options}`;
+    if (batchCorProgram)     batchCorProgram.innerHTML     = `<option value="">— Select Program —</option>${options}`;
 
     const prospectusPrograms = getAvailableProspectusPrograms();
     const prospectusOptions = prospectusPrograms.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
@@ -578,17 +615,24 @@ function renderStudentsTable(data) {
         tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--text-muted);">No students found.</td></tr>`;
         return;
     }
-    tbody.innerHTML = data.map((s) => `
+    tbody.innerHTML = data.map((s) => {
+        const enrollSt = getEnrollmentStatus(s);
+        const acadSt   = getAcademicStatus(s);
+        return `
         <tr class="clickable" onclick="openStudentPanel(${STUDENTS.indexOf(s)})">
             <td class="mono-text">${s.studentId}</td>
             <td>
                 <div class="name-cell">${s.fullName}</div>
                 <div class="sub-cell mono-text" style="font-size:0.70rem;">${s.email}</div>
             </td>
-            <td><span class="badge neutral">${s.course}</span></td>
-            <td style="font-size:0.82rem;">${s.yearLevel}${s.section ? ' – Sec ' + s.section : ''}</td>
-            <td><span class="badge ${STATUS_COLORS[s.status] || 'neutral'}">${s.status}</span></td>
-            <td><span class="badge ${TYPE_COLORS[s.studentType] || 'neutral'}" style="font-size:0.62rem;">${s.studentType}</span></td>
+            <td><span class="badge neutral" style="font-size:0.62rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.course}</span></td>
+            <td style="font-size:0.82rem;">${s.yearLevel}${['st','nd','rd','th'][s.yearLevel-1]||'th'} – Sec ${s.section}</td>
+            <td>
+                <span class="badge ${ENROLL_STATUS_COLORS[enrollSt]||'neutral'}">${enrollSt}</span>
+            </td>
+            <td>
+                <span class="badge ${ACAD_STATUS_COLORS[acadSt]||'neutral'}" style="font-size:0.62rem;">${acadSt}</span>
+            </td>
             <td style="font-size:0.80rem;color:var(--text-secondary);">${s.adviserName}</td>
             <td style="font-size:0.80rem;font-family:var(--mono);">${s.units} u</td>
             <td onclick="event.stopPropagation()">
@@ -601,23 +645,30 @@ function renderStudentsTable(data) {
                     </button>
                 </div>
             </td>
-        </tr>`).join('');
+        </tr>`;
+    }).join('');
 }
 
 function filterStudentsTable() {
     const q        = document.getElementById('studentsSearch')?.value.toLowerCase() || '';
     const course   = document.getElementById('studentCourseFilter')?.value || '';
     const year     = document.getElementById('studentYearFilter')?.value || '';
-    const status   = document.getElementById('studentStatusFilter')?.value || '';
-    const type     = document.getElementById('studentTypeFilter')?.value || '';
+    const enroll   = document.getElementById('studentEnrollFilter')?.value || '';
+    const acad     = document.getElementById('studentAcadFilter')?.value || '';
+    const section  = document.getElementById('studentSectionFilter')?.value || '';
 
-    const res = STUDENTS.filter(s =>
-        (!q      || s.fullName.toLowerCase().includes(q) || s.studentId.toLowerCase().includes(q) || s.email.toLowerCase().includes(q)) &&
-        (!course || isCourseMatch(s.course, course)) &&
-        (!year   || s.yearLevel === parseInt(year)) &&
-        (!status || s.status === status) &&
-        (!type   || s.studentType === type)
-    );
+    const res = STUDENTS.filter(s => {
+        const enrollSt = getEnrollmentStatus(s);
+        const acadSt   = getAcademicStatus(s);
+        return (
+            (!q       || s.fullName.toLowerCase().includes(q) || s.studentId.toLowerCase().includes(q) || s.email.toLowerCase().includes(q)) &&
+            (!course  || isCourseMatch(s.course, course)) &&
+            (!year    || s.yearLevel === parseInt(year)) &&
+            (!enroll  || enrollSt === enroll) &&
+            (!acad    || acadSt === acad) &&
+            (!section || s.section === section)
+        );
+    });
     renderStudentsTable(res);
 }
 
@@ -627,8 +678,10 @@ function openStudentPanel(idx) {
     const panel = document.getElementById('studentDetailPanel');
     const body = document.getElementById('studentPanelBody');
 
-    const typeColor = TYPE_COLORS[s.studentType] || 'neutral';
-    const statusColor = STATUS_COLORS[s.status] || 'neutral';
+    const enrollSt   = getEnrollmentStatus(s);
+    const acadSt     = getAcademicStatus(s);
+    const enrollColor = ENROLL_STATUS_COLORS[enrollSt] || 'neutral';
+    const acadColor   = ACAD_STATUS_COLORS[acadSt]     || 'neutral';
 
     body.innerHTML = `
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
@@ -639,9 +692,9 @@ function openStudentPanel(idx) {
                 <div class="panel-name">${s.fullName}</div>
                 <div class="panel-position mono-text">${s.studentId}</div>
                 <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
-                    <span class="badge ${statusColor}">${s.status}</span>
-                    <span class="badge ${typeColor}">${s.studentType}</span>
-                    <span class="badge neutral">${s.course}</span>
+                    <span class="badge ${enrollColor}">${enrollSt}</span>
+                    <span class="badge ${acadColor}">${acadSt}</span>
+                    <span class="badge neutral" style="font-size:0.62rem;">${s.course}</span>
                 </div>
             </div>
         </div>
@@ -651,6 +704,8 @@ function openStudentPanel(idx) {
             <div class="detail-item"><span class="detail-item-key">Course</span><span class="detail-item-value">${s.course}</span></div>
             <div class="detail-item"><span class="detail-item-key">Year Level</span><span class="detail-item-value">${s.yearLevel}${['st','nd','rd','th'][s.yearLevel-1]||'th'} Year — Section ${s.section}</span></div>
             <div class="detail-item"><span class="detail-item-key">Semester</span><span class="detail-item-value">${s.semester}, AY ${s.ay}</span></div>
+            <div class="detail-item"><span class="detail-item-key">Enrollment Status</span><span class="detail-item-value"><span class="badge ${enrollColor}">${enrollSt}</span></span></div>
+            <div class="detail-item"><span class="detail-item-key">Academic Status</span><span class="detail-item-value"><span class="badge ${acadColor}">${acadSt}</span></span></div>
             <div class="detail-item"><span class="detail-item-key">Units Enrolled</span><span class="detail-item-value mono-text">${s.units}</span></div>
             <div class="detail-item"><span class="detail-item-key">Adviser</span><span class="detail-item-value">${s.adviserName}</span></div>
             <div class="detail-item"><span class="detail-item-key">Enrollment Date</span><span class="detail-item-value mono-text">${s.enrollmentDate}</span></div>
@@ -692,11 +747,23 @@ function openStudentPanel(idx) {
                             <td class="mono-text" style="text-align:right;font-weight:700;padding:8px 14px;">${s.units}</td>
                         </tr>
                     </tbody>
-                </table>`
+                </table>
+                <div style="margin-top:12px;">
+                    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="issueCOR(${idx})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+                        Issue COR for this Student
+                    </button>
+                </div>`
             }
         </div>
     `;
     panel.classList.add('open');
+}
+
+function issueCOR(idx) {
+    const s = STUDENTS[idx];
+    showToast(`COR issued for ${s.fullName} (${s.studentId}).`, 'success');
+    addAuditEntry({ type:'student', action:'COR Issued', detail:`COR generated for ${s.fullName} (${s.studentId}) by SA-001`, time:nowStamp(), admin:'SA-001' });
 }
 
 function closeStudentPanel() {
@@ -797,7 +864,7 @@ function nsStep(dir) {
             document.getElementById('ns-preview').innerHTML = `
                 <div style="padding:14px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);">
                     <div style="font-weight:700;font-size:1rem;">${fn} ${mn} ${ln}</div>
-                    <div class="mono-text" style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">${previewId} · ${course} · <span class="badge ${TYPE_COLORS[type]||'neutral'}" style="font-size:0.62rem;">${type}</span></div>
+                    <div class="mono-text" style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">${previewId} · ${course} · <span class="badge ${ACAD_STATUS_COLORS[type]||'neutral'}" style="font-size:0.62rem;">${type}</span></div>
                     <div style="font-size:0.76rem;color:var(--text-secondary);margin-top:6px;">Email will be auto-generated upon registration.</div>
                 </div>`;
         }
@@ -851,6 +918,130 @@ function toggleTransferFields() {
     const type = document.getElementById('ns-studentType')?.value;
     const tf = document.getElementById('ns-transferFields');
     if (tf) tf.style.display = type === 'Transferee' ? 'block' : 'none';
+}
+
+// ─── BATCH COR ────────────────────────────────────
+function openBatchCORModal() {
+    // Populate program selector from STUDENTS unique courses
+    const sel = document.getElementById('batch-cor-program');
+    if (!sel) return;
+    const courses = [...new Set(STUDENTS.map(s => s.course))].sort();
+    sel.innerHTML = `<option value="">— Select Program —</option>` +
+        courses.map(c => `<option value="${c}">${c}</option>`).join('');
+    // Reset other selectors
+    ['batch-cor-year','batch-cor-section','batch-cor-enroll','batch-cor-acad'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    updateBatchCORPreview();
+    document.getElementById('batchCORModal').classList.add('open');
+}
+
+function updateBatchCORPreview() {
+    const prog    = document.getElementById('batch-cor-program')?.value  || '';
+    const year    = document.getElementById('batch-cor-year')?.value     || '';
+    const section = document.getElementById('batch-cor-section')?.value  || '';
+    const enroll  = document.getElementById('batch-cor-enroll')?.value   || '';
+    const acad    = document.getElementById('batch-cor-acad')?.value     || '';
+
+    const matched = STUDENTS.filter(s => {
+        const enrollSt = getEnrollmentStatus(s);
+        const acadSt   = getAcademicStatus(s);
+        return (
+            (!prog    || isCourseMatch(s.course, prog)) &&
+            (!year    || s.yearLevel === parseInt(year)) &&
+            (!section || s.section === section) &&
+            (!enroll  || enrollSt === enroll) &&
+            (!acad    || acadSt === acad)
+        );
+    });
+
+    const preview = document.getElementById('batch-cor-preview');
+    if (!preview) return;
+
+    if (!prog) {
+        preview.innerHTML = `<span style="color:var(--text-muted);">Select a program to preview the student count.</span>`;
+        return;
+    }
+
+    const label = [
+        prog ? `<strong>${prog}</strong>` : 'All programs',
+        year ? `Year ${year}` : '',
+        section ? `Section ${section}` : '',
+        enroll || acad ? `[${[enroll, acad].filter(Boolean).join(' / ')}]` : '',
+    ].filter(Boolean).join(' · ');
+
+    preview.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>${label}</div>
+            <span class="badge ${matched.length === 0 ? 'inactive' : 'active'}" style="font-size:0.78rem;">${matched.length} student${matched.length !== 1 ? 's' : ''}</span>
+        </div>
+        ${matched.length === 0 ? `<div style="margin-top:6px;color:var(--text-muted);font-size:0.78rem;">No students match these filters.</div>` : ''}`;
+}
+
+function confirmBatchCOR() {
+    const prog    = document.getElementById('batch-cor-program')?.value || '';
+    const year    = document.getElementById('batch-cor-year')?.value    || '';
+    const section = document.getElementById('batch-cor-section')?.value || '';
+    const enroll  = document.getElementById('batch-cor-enroll')?.value  || '';
+    const acad    = document.getElementById('batch-cor-acad')?.value    || '';
+
+    if (!prog) {
+        showToast('Please select a program first.', 'error');
+        return;
+    }
+
+    const matched = STUDENTS.filter(s => {
+        const enrollSt = getEnrollmentStatus(s);
+        const acadSt   = getAcademicStatus(s);
+        return (
+            isCourseMatch(s.course, prog) &&
+            (!year    || s.yearLevel === parseInt(year)) &&
+            (!section || s.section === section) &&
+            (!enroll  || enrollSt === enroll) &&
+            (!acad    || acadSt === acad)
+        );
+    });
+
+    if (matched.length === 0) {
+        showToast('No students match the selected filters.', 'error');
+        return;
+    }
+
+    const desc = [
+        prog,
+        year ? `Year ${year}` : '',
+        section ? `Sec ${section}` : '',
+        enroll || acad ? `(${[enroll, acad].filter(Boolean).join('/')})` : '',
+    ].filter(Boolean).join(' · ');
+
+    showToast(`COR batch queued for ${matched.length} student${matched.length !== 1 ? 's' : ''} — ${desc}`, 'success');
+    addAuditEntry({
+        type: 'student', action: 'Batch COR Generated',
+        detail: `${matched.length} CORs queued for ${desc} by SA-001`,
+        time: nowStamp(), admin: 'SA-001',
+    });
+    closeModal('batchCORModal');
+}
+
+// ─── PULL RECORDS FROM REGISTRAR ─────────────────
+function pullStudentRecords() {
+    document.getElementById('pullRecordsModal').classList.add('open');
+}
+
+function confirmPullRecords() {
+    closeModal('pullRecordsModal');
+    showToast('Pulling student records from Registrar… this may take a moment.', 'info');
+    setTimeout(() => {
+        showToast('Student records successfully pulled from the Registrar\'s Office.', 'success');
+        addAuditEntry({
+            type: 'student', action: 'Student Records Pulled',
+            detail: `${STUDENTS.length} records pulled from Registrar by SA-001`,
+            time: nowStamp(), admin: 'SA-001',
+        });
+        renderStudentsTable(STUDENTS);
+        updateStudentStats();
+    }, 1800);
 }
 
 // ─────────────────────────────────────────────────
@@ -986,12 +1177,14 @@ function filterRolesByDept(deptValue) {
 // ACCOUNTS TAB
 // ─────────────────────────────────────────────────
 const ACCOUNT_PASSWORDS = {
-    'EMP-20241001': 'Ana@WMSU2024',   'EMP-20241002': 'Maria@WMSU2024',
-    'EMP-20241003': 'Jose@WMSU2024',  'EMP-20241004': 'Clara@WMSU2024',
-    'EMP-20241005': 'Ramon@WMSU2024', 'EMP-20241006': 'Luisa@WMSU2024',
-    'EMP-20241007': 'Ben@WMSU2024',   'EMP-20241008': 'Rosa@WMSU2024',
-    'EMP-20241009': 'Edgar@WMSU2024', 'EMP-20241010': 'Patricia@WMSU2024',
-    'EMP-20241011': 'Carlos@WMSU2024','EMP-20241012': 'Diana@WMSU2024',
+    'EMP-20241001': 'Ana@WMSU2024',     'EMP-20241002': 'Maria@WMSU2024',
+    'EMP-20241003': 'Jose@WMSU2024',    'EMP-20241004': 'Clara@WMSU2024',
+    'EMP-20241005': 'Ramon@WMSU2024',   'EMP-20241006': 'Luisa@WMSU2024',
+    'EMP-20241007': 'Ben@WMSU2024',     'EMP-20241008': 'Rosa@WMSU2024',
+    'EMP-20241009': 'Edgar@WMSU2024',   'EMP-20241010': 'Patricia@WMSU2024',
+    'EMP-20241011': 'Carlos@WMSU2024',  'EMP-20241012': 'Diana@WMSU2024',
+    'EMP-20241013': 'Roberto@WMSU2024', 'EMP-20241014': 'Felicia@WMSU2024',
+    'EMP-20241015': 'Dante@WMSU2024',   'EMP-20241016': 'Grace@WMSU2024',
 };
 
 let passwordVisibility = {};
@@ -1093,6 +1286,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     populateCourseSelectors();
     renderProspectusTab();
+
+    // Batch COR — live preview on any filter change
+    ['batch-cor-program','batch-cor-year','batch-cor-section','batch-cor-enroll','batch-cor-acad'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', updateBatchCORPreview);
+    });
 
     // Initial renders
     renderRolesTable(EMPLOYEES);
