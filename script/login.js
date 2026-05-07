@@ -46,6 +46,14 @@ const ICONS = {
     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
   </svg>`,
 
+  // Book-open — Adviser
+  ADVISER: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+  </svg>`,
+
   // Layers — Department Head
   DEPTHEAD: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
       fill="none" stroke="currentColor" stroke-width="1.8"
@@ -133,6 +141,7 @@ const ICONS_SM = {
   STUDENT:    `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
   REGISTRAR:  `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><polygon points="12 2 20 7 4 7"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/></svg>`,
   ADVISER:    `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+  FRESHMEN_ADVISER: `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
   DEPTHEAD:   `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
   ADMISSION:  `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>`,
   ASSESSMENT: `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>`,
@@ -144,21 +153,23 @@ const ICONS_SM = {
 
 // ─── EMAIL → ROLE MAP ─────────────────────────────────────────
 const EMAIL_ROLE_MAP = {
-  registrar:  'REGISTRAR',
-  adviser:    'ADVISER',
-  depthead:   'DEPTHEAD',
-  admission:  'ADMISSION',
-  assessment: 'ASSESSMENT',
-  misto:      'MISTO',
-  dean:       'DEAN',
-  secretary:  'SECRETARY',
-  shiftee:    'SHIFTEE',
+  registrar:        'REGISTRAR',
+  adviser:          'ADVISER',
+  freshmen_adviser: 'FRESHMEN_ADVISER', 
+  depthead:         'DEPTHEAD',
+  admission:        'ADMISSION',
+  assessment:       'ASSESSMENT',
+  misto:            'MISTO',
+  dean:             'DEAN',
+  secretary:        'SECRETARY',
+  shiftee:          'SHIFTEE',
 };
 
 // ─── ROLE CONFIG ──────────────────────────────────────────────
 const ROLES = {
   REGISTRAR:  { label: 'Registrar / Super Admin', title: 'Registrar Portal',     sub: 'Super Admin access.',             badge: 'Super Admin',    redirect: '../users/Admin/Registrar/registrar_dashboard.html' },
   ADVISER:    { label: 'Adviser',                 title: 'Adviser Portal',        sub: 'Advisory & student records.',     badge: 'Adviser',        redirect: '../users/Admin/adviser/adviser_dashboard.html' },
+  FRESHMEN_ADVISER: { label: 'Freshman Adviser',  title: 'Freshman Adviser Portal', sub: 'Freshman advisory & records.', badge: 'Freshman Adviser', redirect: '../users/Admin/adviser/freshmen_adviser.html' },
   DEPTHEAD:   { label: 'Department Head',         title: 'Department Head Portal',sub: 'Department management.',          badge: 'Dept. Head',     redirect: '../users/Admin/dept-admin/dept-head.html' },
   ADMISSION:  { label: 'Admission Office',        title: 'Admission Portal',      sub: 'Applicant & admission records.',  badge: 'Admission',      redirect: '../users/Admin/admission/admission.html' },
   ASSESSMENT: { label: 'Assessment Office',       title: 'Assessment Portal',     sub: 'Fees & assessment records.',      badge: 'Assessment',     redirect: '../users/Admin/assessment/assessment_dashboard.html' },

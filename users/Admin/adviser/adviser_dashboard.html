@@ -8,36 +8,7 @@
     <link rel="stylesheet" href="../../../style.css">
     <link rel="stylesheet" href="adviser.css">
     <link rel="stylesheet" href="../admin.css">
-    <style>
-        .filter-btn.active-filter {
-            background-color: #8b1a24;
-            color: white;
-            border-color: #8b1a24;
-        }
-        #student-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 16px;
-            margin-top: 16px;
-        }
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
-            color: #999;
-            background: #fff;
-            border: 1px dashed #ccc;
-            border-radius: 12px;
-            margin-top: 16px;
-        }
-        .empty-state i { font-size: 3rem; margin-bottom: 12px; color: #ccc; }
-        .search-container { position: relative; display: flex; align-items: center; }
-        .search-container i { position: absolute; left: 12px; color: #888; }
-        .search-input { padding: 8px 12px 8px 34px; border: 1px solid #ccc; border-radius: 8px; width: 250px; outline: none; }
-        .search-input:focus { border-color: #8b1a24; }
-    </style>
+
 </head>
 <body>
 
@@ -108,17 +79,17 @@
                             <input type="text" id="searchStudent" placeholder="Search name or ID..." class="search-input">
                         </div>
                     </div>
-                    <div class="header-right" style="display: flex; gap: 20px; align-items: center;">
+                    <div class="header-right">
     
-                        <div class="control-group" style="display: flex; align-items: center; gap: 8px;">
-                            <span class="label" style="font-weight: 600; color: #555; font-size: 13px;">Section:</span>
-                            <select id="sectionFilter" style="padding: 6px 12px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit; font-size: 13px; outline: none; cursor: pointer;">
+                        <div class="control-group">
+                            <span class="label">Section:</span>
+                            <select id="sectionFilter" class="section-select">
                                 <option value="all">All Sections</option>
                                 </select>
                         </div>
 
-                        <div class="control-group" style="display: flex; align-items: center; gap: 8px;">
-                            <span class="label" style="font-weight: 600; color: #555; font-size: 13px;">Status:</span>
+                        <div class="control-group">
+                            <span class="label">Status:</span>
                             <div class="pills">
                                 <label class="filter-btn active-filter" data-filter="all">All</label>
                                 <label class="filter-btn" data-filter="form_submitted">With Subjects</label>
@@ -142,7 +113,7 @@
                         <h2>Submission History</h2>
                     </div>
                 </div>
-                <div id="submitted-student-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;"></div>
+                <div id="submitted-student-list" class="card-grid"></div>
                 <div id="submittedEmptyState" class="empty-state" style="display:none;">
                     <i class="fas fa-check-circle"></i>
                     <p>No students have been submitted yet.</p>
@@ -155,7 +126,7 @@
                         <h2>For Correction</h2>
                     </div>
                 </div>
-                <div id="correction-student-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;"></div>
+                <div id="correction-student-list" class="card-grid"></div>
                 <div id="correctionEmptyState" class="empty-state" style="display:none;">
                     <i class="fas fa-rotate-left"></i>
                     <p>No students for correction.</p>
@@ -166,33 +137,38 @@
     </div>
 
     <div id="formViewModal" class="modal-overlay">
-        <div class="modal-card" style="max-width: 650px; width: 100%;">
+        <div class="modal-card modal-card--narrow">
             <div class="modal-header">
-                <h3><i class="fas fa-book" style="margin-right:8px; color:#8b1a24;"></i> Subject Enlistment</h3>
-                <a href="#" id="closeFvModal" class="close-btn" style="font-size:24px; text-decoration:none; color:#555;">&times;</a>
+                <h3><i class="fas fa-book modal-title-icon"></i> Subject Enlistment</h3>
+                <a href="#" id="closeFvModal" class="close-btn">&times;</a>
             </div>
-            <div class="modal-body" style="padding: 20px;">
-                <div style="background:#f9f9f9; padding:16px; border-radius:8px; margin-bottom:20px; border:1px solid #e6e6e6;">
-                    <strong id="fvName" style="font-size:1.2rem; display:block; color:#111; margin-bottom:4px;">Student Name</strong>
-                    <span id="fvAppNo" style="font-size:0.9rem; font-weight:bold; color:#8b1a24;">ID Number</span> • 
-                    <span id="fvCourse" style="font-size:0.9rem; color:#666;">Program</span>
+            <div class="modal-body">
+                <div class="fv-student-info">
+                    <strong id="fvName" class="fv-name">Student Name</strong>
+                    <span id="fvAppNo" class="fv-id">ID Number</span> • 
+                    <span id="fvCourse" class="fv-course">Program</span>
                 </div>
                 
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h4 style="margin:0; color:#333;">Enlisted Subjects</h4>
-                    <button id="btnAddSubject" class="btn btn-outline" style="padding:8px 14px; font-size:13px; font-weight:600; border:1px solid #ccc; background:#fff; border-radius:6px; cursor:pointer;">
-                        <i class="fas fa-plus" style="margin-right:4px;"></i> Add Subject
-                    </button>
+                <div class="fv-subjects-header">
+                    <h4 class="fv-subjects-title">Enlisted Subjects</h4>
+                    <div class="btn-group">
+                        <button id="btnAssignProspectus" class="btn btn-outline btn-sm">
+                            <i class="fas fa-list-check"></i> Assign from Prospectus
+                        </button>
+                        <button id="btnAddSubject" class="btn btn-add btn-sm">
+                            <i class="fas fa-plus"></i> Add Subject
+                        </button>
+                    </div>
                 </div>
                 
-                <div style="border:1px solid #e6e6e6; border-radius:8px; overflow:hidden;">
-                    <table class="edit-table" style="width:100%; border-collapse:collapse; background:#fff;">
+                <div class="fv-table-wrap">
+                    <table class="edit-table">
                         <thead>
-                            <tr style="background:#eeeeec; text-align:left;">
-                                <th style="padding:12px; font-size:12px; color:#555;">Code</th>
-                                <th style="padding:12px; font-size:12px; color:#555;">Description</th>
-                                <th style="padding:12px; font-size:12px; color:#555; text-align:center;">Units</th>
-                                <th style="padding:12px; font-size:12px; color:#555; text-align:center;">Action</th>
+                            <tr>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th class="text-center">Units</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody id="fvSubjectsTbody">
@@ -200,7 +176,7 @@
                     </table>
                 </div>
                 
-                <div style="margin-top:16px; text-align:right; font-size:16px; font-weight:800; color:#8b1a24;">
+                <div class="fv-total">
                     Total Units: <span id="fvTotalUnits">0</span>
                 </div>
             </div>
@@ -208,13 +184,13 @@
     </div>
 
     <div id="proceedModal" class="modal-overlay">
-        <div class="modal-card" style="max-width: 400px; text-align:center; padding:30px;">
-            <i class="fas fa-paper-plane" style="font-size:3.5rem; color:#1a7a42; margin-bottom:16px;"></i>
-            <h3 style="margin-bottom:8px;">Submit to Assessment?</h3>
-            <p style="color:#666; font-size:14px;">Are you sure you want to forward <strong id="proceedStudentName" style="color:#111;"></strong> to the Assessment Office?</p>
-            <div style="display:flex; gap:12px; justify-content:center; margin-top:24px;">
-                <button id="cancelProceedBtn" class="btn btn-outline" style="padding:10px 20px; border-radius:8px; border:1px solid #ccc; background:#fff; cursor:pointer; font-weight:600;">Cancel</button>
-                <button id="confirmProceedBtn" class="btn btn-primary" style="padding:10px 20px; border-radius:8px; border:none; background:#1a7a42; color:#fff; cursor:pointer; font-weight:600;">Yes, Submit</button>
+        <div class="modal-card modal-card--confirm">
+            <i class="fas fa-paper-plane proceed-icon"></i>
+            <h3 class="proceed-title">Submit to Assessment?</h3>
+            <p class="proceed-body">Are you sure you want to forward <strong id="proceedStudentName" class="proceed-name"></strong> to the Assessment Office?</p>
+            <div class="proceed-actions">
+                <button id="cancelProceedBtn" class="btn btn-outline">Cancel</button>
+                <button id="confirmProceedBtn" class="btn btn-proceed">Yes, Submit</button>
             </div>
         </div>
     </div>

@@ -20,8 +20,15 @@ let subjects = [
 function showTab(tabId, linkEl) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.s-link').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.m-link').forEach(l => l.classList.remove('active'));
+
     document.getElementById('tab-' + tabId)?.classList.add('active');
     if (linkEl) linkEl.classList.add('active');
+}
+
+function syncMobileNav(clickedMLink) {
+    document.querySelectorAll('.m-link').forEach(l => l.classList.remove('active'));
+    clickedMLink.classList.add('active');
 }
 
 // ── Render Subject Table ──────────────────────────
@@ -430,6 +437,32 @@ function _updateProfileCard(step, meta) {
         if (metaEl) metaEl.textContent = `2ND YEAR · ${meta.code}`;
     }
 }
+
+// ── Profile Edit Logic ─────────────────────────────────────────────
+document.getElementById('btnSave')?.addEventListener('click', () => {
+    const fields = ['LastName','FirstName','MiddleName','DOB','Gender','Contact','Email'];
+    fields.forEach(f => {
+        const editEl = document.getElementById('edit' + f);
+        const viewEl = document.getElementById('view' + f);
+        if (editEl && viewEl && editEl.value.trim()) {
+            viewEl.textContent = editEl.value.trim();
+        }
+    });
+    document.getElementById('edit-toggle').checked = false;
+    showToast('Profile updated successfully.');
+});
+
+// Pre-populate edit fields when Edit is clicked
+document.getElementById('edit-toggle')?.addEventListener('change', function() {
+    if (this.checked) {
+        const fields = ['LastName','FirstName','MiddleName','DOB','Gender','Contact','Email'];
+        fields.forEach(f => {
+            const editEl = document.getElementById('edit' + f);
+            const viewEl = document.getElementById('view' + f);
+            if (editEl && viewEl) editEl.value = viewEl.textContent.trim();
+        });
+    }
+});
 
 // ── 5. Enrollment Lock Banner ─────────────────────
 // Visible while application is active (steps 1–3).
