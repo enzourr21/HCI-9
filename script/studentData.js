@@ -1,4 +1,4 @@
-﻿/**
+/**
  * WMSU-Ease — studentData.js
  * Mock student dataset for MISTO system administration.
  * Generated with varied colleges, course programs, statuses, and student types.
@@ -173,7 +173,7 @@ function createStudent(index) {
         semester: randomChoice(['1st Semester', '2nd Semester']),
         ay: '2026–2027',
         units: randomInt(15, 24),
-        email: makeEmail(firstName, lastName, index),
+        email: (studentType === 'Freshmen' || studentType === 'Transferee') && randomInt(1, 100) <= 50 ? '' : makeEmail(firstName, lastName, index),
         contact: `09${randomInt(100000000, 999999999)}`,
         address: `${randomInt(100, 999)} ${randomChoice(['Maharlika', 'Rizal', 'Bonifacio', 'Mabini', 'Aguinaldo'])} St., Barangay ${randomChoice(['Poblacion','San Roque','Santa Cruz','Santo Niño','Bagong Lipunan'])}, Zamboanga City`,
         guardian: randomChoice(GUARDIANS),

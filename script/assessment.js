@@ -465,6 +465,66 @@ function escHtml(str) {
         .replace(/>/g, '&gt;');
 }
 
+// ---------------------------------------------------------------
+// FLAG MODAL LOGIC
+// ---------------------------------------------------------------
+const FLAG_REASONS = [
+    { id: "missing_docs", label: "Missing Documents", sub: "Student has incomplete submission requirements." },
+    { id: "residency", label: "Residency Issue", sub: "Account age exceeds 10 semesters — manual tuition required (RA 10931)." },
+    { id: "unit_mismatch", label: "Unit Count Mismatch", sub: "Subject unit count in the form conflicts with the official prospectus." },
+    { id: "shiftee_credits", label: "Shiftee Credit Review", sub: "Transferred subjects need credit evaluation before assessment can proceed." },
+    { id: "schedule_conflict", label: "Schedule Conflict", sub: "Overlapping subjects or unresolved room/time assignment." },
+    { id: "other", label: "Other", sub: "Requires manual review — see note for details." }
+];
+
+function openFlagModal() {
+    if (!currentStudent) return;
+    
+    document.getElementById("modalFlagStudentName").textContent = currentStudent.student_name;
+    document.getElementById("modalFlagStudentMeta").textContent = 
+        `${currentStudent.cet_id} · ${currentStudent.year_level} · ${currentStudent.program}`;
+
+    document.getElementById("reasonOptions").innerHTML = FLAG_REASONS.map(r => `
+        <label class="reason-option" id="opt-${r.id}">
+            <input type="checkbox" value="${r.id}" onchange="toggleReasonStyle('${r.id}', this.checked)">
+            <div class="reason-option-body">
+                <span class="reason-option-label">${escHtml(r.label)}</span>
+                <span class="reason-option-sub">${escHtml(r.sub)}</span>
+            </div>
+        </label>`).join("");
+
+    document.getElementById("flagNoteInput").value = "";
+    document.getElementById("flagModal").classList.add("active");
+}
+
+function toggleReasonStyle(id, isChecked) {
+    document.getElementById(`opt-${id}`)?.classList.toggle("selected", isChecked);
+}
+
+function closeFlagModal() {
+    document.getElementById("flagModal").classList.remove("active");
+}
+
+function submitFlag() {
+    const checked = [...document.querySelectorAll("#reasonOptions input[type='checkbox']:checked")].map(cb => cb.value);
+    
+    if (checked.length === 0) {
+        alert("Please select at least one reason before saving.");
+        return;
+    }
+    
+    // Simulate removing from queue and returning to Adviser
+    const idx = MOCK_STUDENTS.findIndex(s => s.queue_id === currentStudent.queue_id);
+    if (idx !== -1) {
+        MOCK_STUDENTS.splice(idx, 1);
+    }
+    
+    closeFlagModal();
+    closeModal();
+    loadQueue();
+    showToast('✓ Student returned to Adviser for correction.');
+}
+
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
