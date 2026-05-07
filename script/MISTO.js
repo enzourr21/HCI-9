@@ -719,7 +719,13 @@ function openStudentPanel(idx) {
             <div class="detail-item"><span class="detail-item-key">Gender</span><span class="detail-item-value">${s.gender}</span></div>
             <div class="detail-item"><span class="detail-item-key">Birthdate</span><span class="detail-item-value mono-text">${s.birthdate}</span></div>
             <div class="detail-item"><span class="detail-item-key">Address</span><span class="detail-item-value">${s.address}</span></div>
-            <div class="detail-item"><span class="detail-item-key">WMSU Email</span><span class="detail-item-value mono-text" style="font-size:0.76rem;">${s.email}</span></div>
+            <div class="detail-item">
+                <span class="detail-item-key">WMSU Email</span>
+                <span class="detail-item-value mono-text" style="font-size:0.76rem; display:flex; gap:10px; align-items:center;">
+                    ${s.email ? s.email : `<span style="color:var(--text-muted); font-style:italic;">No WMSU Account</span>
+                    ${(s.studentType === 'Freshmen' || s.studentType === 'Transferee') ? `<button class="btn btn-outline" style="padding: 2px 8px; font-size: 0.70rem;" onclick="generateWMSUAccount(${idx})">Generate WMSU Account</button>` : ''}`}
+                </span>
+            </div>
             <div class="detail-item"><span class="detail-item-key">Contact</span><span class="detail-item-value mono-text">${s.contact}</span></div>
         </div>
 
@@ -749,7 +755,7 @@ function openStudentPanel(idx) {
                     </tbody>
                 </table>
                 <div style="margin-top:12px;">
-                    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="issueCOR(${idx})">
+                    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="issueCOR(${idx})" ${!s.email ? 'disabled' : ''}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
                         Issue COR for this Student
                     </button>
@@ -764,6 +770,15 @@ function issueCOR(idx) {
     const s = STUDENTS[idx];
     showToast(`COR issued for ${s.fullName} (${s.studentId}).`, 'success');
     addAuditEntry({ type:'student', action:'COR Issued', detail:`COR generated for ${s.fullName} (${s.studentId}) by SA-001`, time:nowStamp(), admin:'SA-001' });
+}
+
+function generateWMSUAccount(idx) {
+    const s = STUDENTS[idx];
+    s.email = `${s.firstName.toLowerCase().replace(/\s+/g,'')}.${s.lastName.toLowerCase().replace(/\s+/g,'')}.${String(idx+1).padStart(3,'0')}@wmsu.edu.ph`;
+    showToast(`WMSU Account generated for ${s.fullName}`, 'success');
+    addAuditEntry({ type:'student', action:'Account Generated', detail:`WMSU Account generated for ${s.fullName} by SA-001`, time:nowStamp(), admin:'SA-001' });
+    openStudentPanel(idx);
+    filterAccounts();
 }
 
 function closeStudentPanel() {
@@ -1197,13 +1212,13 @@ function renderAccountsTable(data) {
         return;
     }
     tbody.innerHTML = data.map(e => {
-        const pw      = ACCOUNT_PASSWORDS[e.id] || '—';
+        const pw      = ACCOUNT_PASSWORDS[e.id] || (e.isStudent ? 'Default@123' : '—');
         const visible = passwordVisibility[e.id];
         return `
         <tr>
             <td class="mono-text">${e.id}</td>
             <td><div class="name-cell">${e.name}</div><div class="sub-cell">${e.dept}</div></td>
-            <td class="mono-text" style="font-size:0.78rem;">${e.email}</td>
+            <td class="mono-text" style="font-size:0.78rem;">${e.email ? e.email : '<span style="color:var(--text-muted); font-style:italic;">No Email</span>'}</td>
             <td>${e.roles.map(r => `<span class="badge info" style="margin-right:4px;">${r}</span>`).join('')}</td>
             <td>
                 <div style="display:flex;align-items:center;gap:8px;">
@@ -1217,7 +1232,7 @@ function renderAccountsTable(data) {
             </td>
             <td><span class="badge ${e.status === 'Active' ? 'active' : 'inactive'}">${e.status}</span></td>
             <td onclick="event.stopPropagation()">
-                <button class="btn-icon amber" onclick="openPasswordResetModal(${EMPLOYEES.indexOf(e)})">
+                <button class="btn-icon amber" onclick="openPasswordResetModal('${e.id}')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
                 </button>
             </td>
@@ -1233,29 +1248,49 @@ function togglePwVisibility(empId) {
 function filterAccounts() {
     const q  = document.getElementById('accountsSearch').value.toLowerCase();
     const st = document.getElementById('accountsStatusFilter').value;
-    renderAccountsTable(EMPLOYEES.filter(e =>
-        (!q  || e.name.toLowerCase().includes(q) || e.email.toLowerCase().includes(q) || e.id.toLowerCase().includes(q)) &&
+    
+    const studentAccounts = STUDENTS.map((s, index) => ({
+        id: s.studentId,
+        name: s.fullName,
+        dept: s.course,
+        email: s.email,
+        roles: ['Student'],
+        status: s.email ? 'Active' : 'Inactive',
+        isStudent: true,
+        studentIndex: index
+    }));
+    
+    const allAccounts = [...EMPLOYEES, ...studentAccounts];
+    
+    renderAccountsTable(allAccounts.filter(e =>
+        (!q  || e.name.toLowerCase().includes(q) || (e.email && e.email.toLowerCase().includes(q)) || e.id.toLowerCase().includes(q)) &&
         (!st || e.status === st)
     ));
 }
 
-let resetTargetIdx = null;
+let resetTargetId = null;
 
-function openPasswordResetModal(idx) {
-    resetTargetIdx = idx;
-    const e = EMPLOYEES[idx];
+function openPasswordResetModal(id) {
+    resetTargetId = id;
+    const e = EMPLOYEES.find(x => x.id === id) || STUDENTS.find(x => x.studentId === id);
+    if (!e) return;
+    const email = e.email || 'No email';
+    const name = e.name || e.fullName;
     document.getElementById('resetMsg').textContent =
-        `Send a forced password reset link to ${e.name} (${e.email})? They will be required to set a new password on next login.`;
+        `Send a forced password reset link to ${name} (${email})? They will be required to set a new password on next login.`;
     document.getElementById('passwordResetModal').classList.add('open');
 }
 
 function confirmPasswordReset() {
-    if (resetTargetIdx === null) return;
-    const e = EMPLOYEES[resetTargetIdx];
-    showToast(`Password reset link sent to ${e.email}.`, 'success');
-    addAuditEntry({ type:'sysevent', action:'Password Reset Forced', detail:`${e.name} (${e.id}) — reset link sent by SA-001`, time:nowStamp(), admin:'SA-001' });
+    if (!resetTargetId) return;
+    const e = EMPLOYEES.find(x => x.id === resetTargetId) || STUDENTS.find(x => x.studentId === resetTargetId);
+    if (!e) return;
+    const email = e.email || 'No email';
+    const name = e.name || e.fullName;
+    showToast(`Password reset link sent to ${email}.`, 'success');
+    addAuditEntry({ type:'sysevent', action:'Password Reset Forced', detail:`${name} (${e.id || e.studentId}) — reset link sent by SA-001`, time:nowStamp(), admin:'SA-001' });
     closeModal('passwordResetModal');
-    resetTargetIdx = null;
+    resetTargetId = null;
 }
 
 // ─────────────────────────────────────────────────
@@ -1299,6 +1334,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFaculty(FACULTY);
     renderAudit([...AUDIT_LOGS].reverse());
     renderRecentActivity();
-    renderAccountsTable(EMPLOYEES);
+    filterAccounts();
     updateStudentStats();
 });
