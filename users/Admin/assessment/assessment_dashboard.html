@@ -116,11 +116,41 @@
                         <!-- renderRightPanel() writes into this div -->
                         <div class="fee-list"></div>
                         <button class="btn-approve">Confirm Assessment</button>
-                        <button class="btn-hold" onclick="closeModal()">Flag / Put on Hold</button>
+                        <button class="btn-hold" onclick="openFlagModal()">Flag / Put on Hold</button>
                     </div>
                 </div>
 
             </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="flagModal" style="z-index: 9999;">
+        <div class="flag-modal-card">
+
+            <div class="flag-modal-header">
+                <h3>Flag / Return to Adviser</h3>
+                <button class="flag-modal-close" id="closeFlagModal" onclick="closeFlagModal()">&times;</button>
+            </div>
+
+            <div class="flag-target-info">
+                <strong id="modalFlagStudentName">—</strong>
+                <span id="modalFlagStudentMeta">—</span>
+            </div>
+
+            <div class="modal-section-label">Reason(s) for flagging</div>
+            <div class="reason-options" id="reasonOptions"></div>
+
+            <div class="note-group">
+                <label for="flagNoteInput">Note for Adviser</label>
+                <textarea class="note-textarea" id="flagNoteInput"
+                    placeholder="Describe what needs to be corrected or clarified by the adviser…"></textarea>
+            </div>
+
+            <div class="flag-modal-actions">
+                <button class="btn-cancel-flag" id="cancelFlagModal" onclick="closeFlagModal()">Cancel</button>
+                <button class="btn-save-flag" id="saveFlagBtn" onclick="submitFlag()">Return to Adviser</button>
+            </div>
+
         </div>
     </div>
 

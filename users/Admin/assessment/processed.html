@@ -90,30 +90,50 @@
 
         <!-- MAIN CONTENT -->
         <main class="content-area">
-            <div class="content-header">
-                <h2>On-Hold / Flags</h2>
-                <div class="search-container">
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"/>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                    <input type="text" id="flagSearch"
-                        placeholder="Search CET-ID or Name..." class="search-input">
+            <div class="content-area-inner processed-layout">
+                
+                <!-- Left: Active Flags -->
+                <div class="processed-main">
+                    <div class="content-header">
+                        <h2>On-Hold / Flags</h2>
+                        <div class="search-container">
+                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            <input type="text" id="flagSearch"
+                                placeholder="Search CET-ID or Name..." class="search-input">
+                        </div>
+                    </div>
+
+                    <div class="flag-list" id="flagList"></div>
+
+                    <div class="empty-flags" id="emptyFlags" style="display:none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <p>No flagged students at this time.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="flag-list" id="flagList"></div>
+                <!-- Right: Returned History -->
+                <div class="processed-sidebar">
+                    <div class="history-frame">
+                        <div class="history-frame-header">
+                            <span>Returned History</span>
+                            <span class="history-count" id="historyCount">0</span>
+                        </div>
+                        <div class="history-list" id="historyList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
 
-            <div class="empty-flags" id="emptyFlags" style="display:none;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="1.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                <p>No flagged students at this time.</p>
             </div>
         </main>
     </div>
@@ -219,6 +239,30 @@
             reasons:   ["residency"],
             note:      "Student has exceeded the 5-year free tuition window. Tuition must be assessed manually. Please confirm with the student and resubmit.",
             flaggedAt: "March 10, 2026 · 11:05 AM"
+        }
+    ];
+
+    const returnedHistory = [
+        {
+            id:        "2023-01122",
+            name:      "Mark Santos",
+            program:   "BSIT-2A",
+            returnedAt:"March 9, 2026 · 2:15 PM",
+            reason:    "Missing Documents"
+        },
+        {
+            id:        "2022-04433",
+            name:      "Ana Reyes",
+            program:   "BSCE-4A",
+            returnedAt:"March 8, 2026 · 10:05 AM",
+            reason:    "Unit Count Mismatch"
+        },
+        {
+            id:        "2024-08211",
+            name:      "Leo Fernandez",
+            program:   "BSCS-3A",
+            returnedAt:"March 7, 2026 · 4:30 PM",
+            reason:    "Schedule Conflict"
         }
     ];
 
@@ -388,10 +432,35 @@
     }
 
     // ─────────────────────────────────────────────────────────────
+    // HISTORY RENDER
+    // ─────────────────────────────────────────────────────────────
+    function renderHistory() {
+        const list = document.getElementById("historyList");
+        const count = document.getElementById("historyCount");
+        
+        count.textContent = returnedHistory.length;
+        
+        if (returnedHistory.length === 0) {
+            list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.82rem;">No history available.</div>`;
+            return;
+        }
+
+        list.innerHTML = returnedHistory.map(h => `
+            <div class="history-item">
+                <h4>${escHtml(h.name)}</h4>
+                <p>${escHtml(h.id)} &bull; ${escHtml(h.program)}</p>
+                <span class="reason-tag">${escHtml(h.reason)}</span>
+                <span class="date">Returned: ${escHtml(h.returnedAt)}</span>
+            </div>
+        `).join("");
+    }
+
+    // ─────────────────────────────────────────────────────────────
     // INIT
     // ─────────────────────────────────────────────────────────────
     document.addEventListener("DOMContentLoaded", () => {
         renderFlags(flaggedStudents);
+        renderHistory();
 
         document.getElementById("flagSearch")
             .addEventListener("input", applySearch);
