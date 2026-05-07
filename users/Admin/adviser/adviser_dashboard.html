@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="adviser.css">
     <link rel="stylesheet" href="../admin.css">
     <style>
-        /* Specific Styles para sa Bagong Dynamic Dashboard */
         .filter-btn.active-filter {
             background-color: #8b1a24;
             color: white;
@@ -143,6 +142,11 @@
                         <h2>Submission History</h2>
                     </div>
                 </div>
+                <div id="submitted-student-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;"></div>
+                <div id="submittedEmptyState" class="empty-state" style="display:none;">
+                    <i class="fas fa-check-circle"></i>
+                    <p>No students have been submitted yet.</p>
+                </div>
             </section>
 
             <section id="page-correction" class="page-section">
@@ -150,6 +154,11 @@
                     <div class="header-left">
                         <h2>For Correction</h2>
                     </div>
+                </div>
+                <div id="correction-student-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;"></div>
+                <div id="correctionEmptyState" class="empty-state" style="display:none;">
+                    <i class="fas fa-rotate-left"></i>
+                    <p>No students for correction.</p>
                 </div>
             </section>
 

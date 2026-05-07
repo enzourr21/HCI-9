@@ -65,12 +65,55 @@ function initializeStudents() {
             yearLevel: s.yearLevel,
             section: s.section,
             email: s.email,
-            // Magdadagdag tayo ng fields para sa F2F advising simulation
-            enrolledSubjects: [], 
+            enrolledSubjects: [
+                { code: "CS 101", title: "Introduction to Computing", units: 3 },
+                { code: "CS 102", title: "Programming 1", units: 3 },
+                { code: "GE 101", title: "Understanding the Self", units: 3 }
+            ], 
             adviserStatus: 'pending', // pending | submitted | for_correction
         }));
         localStorage.setItem('wmsu_student_db', JSON.stringify(localDB));
     }
+    
+    // Ensure that students have subjects and there are students in each status for the tabs
+    if (localDB) {
+        let modified = false;
+        localDB.forEach(s => {
+            if (!s.enrolledSubjects || s.enrolledSubjects.length === 0) {
+                s.enrolledSubjects = [
+                    { code: "CS 101", title: "Introduction to Computing", units: 3 },
+                    { code: "CS 102", title: "Programming 1", units: 3 },
+                    { code: "GE 101", title: "Understanding the Self", units: 3 }
+                ];
+                modified = true;
+            }
+            if (s.adviserStatus === 'for_correction' && !s.correctionNote) {
+                s.correctionNote = "Please review your prerequisite subjects.";
+                modified = true;
+            }
+        });
+        
+        let hasSubmitted = localDB.some(s => s.program === ADVISER_PROGRAM && s.adviserStatus === 'submitted');
+        let hasCorrection = localDB.some(s => s.program === ADVISER_PROGRAM && s.adviserStatus === 'for_correction');
+        
+        if (!hasSubmitted || !hasCorrection) {
+            let csCount = 0;
+            localDB.forEach(s => {
+                if (s.program === ADVISER_PROGRAM) {
+                    csCount++;
+                    if (!hasSubmitted && csCount <= 3) { s.adviserStatus = 'submitted'; modified = true; }
+                    else if (!hasCorrection && csCount > 3 && csCount <= 6) { s.adviserStatus = 'for_correction'; s.correctionNote = "Missing prerequisite for CS 211"; modified = true; }
+                    else if (s.adviserStatus !== 'submitted' && s.adviserStatus !== 'for_correction') {
+                        s.adviserStatus = 'pending'; modified = true;
+                    }
+                }
+            });
+        }
+        if (modified) {
+            localStorage.setItem('wmsu_student_db', JSON.stringify(localDB));
+        }
+    }
+    
     return localDB || [];
 }
 
@@ -88,11 +131,15 @@ function saveStudents(arr) {
 const ADVISER_PROGRAM = 'CS'; // Pwedeng baguhin to 'IT' depende sa department ng adviser
 
 function getMyStudents() {
-    return getStudents().filter(s => s.program === ADVISER_PROGRAM && s.adviserStatus !== 'submitted');
+    return getStudents().filter(s => s.program === ADVISER_PROGRAM && s.adviserStatus === 'pending');
 }
 
 function getSubmittedStudents() {
     return getStudents().filter(s => s.program === ADVISER_PROGRAM && s.adviserStatus === 'submitted');
+}
+
+function getCorrectionStudents() {
+    return getStudents().filter(s => s.program === ADVISER_PROGRAM && s.adviserStatus === 'for_correction');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -300,6 +347,8 @@ function initAdviserDashboard() {
         document.getElementById('proceedModal')?.classList.remove('active');
         proceedTarget = null;
         renderStudentList();
+        renderSubmittedList();
+        renderCorrectionList();
     }
 
     function updateQuickStats() {
@@ -314,11 +363,123 @@ function initAdviserDashboard() {
             stats[1].textContent = pending;
             stats[2].textContent = submitted;
         }
+
+        const badge = document.getElementById('sidebarBadge');
+        if (badge) {
+            const corr = getCorrectionStudents().length;
+            badge.textContent = corr > 0 ? corr : '';
+            badge.style.display = corr > 0 ? 'inline-block' : 'none';
+        }
+    }
+
+    function renderSubmittedList() {
+        const submittedContainer = document.getElementById("submitted-student-list");
+        const submittedEmptyState = document.getElementById("submittedEmptyState");
+        if (!submittedContainer) return;
+        
+        let students = getSubmittedStudents();
+        if (students.length === 0) {
+            submittedContainer.innerHTML = '';
+            if (submittedEmptyState) submittedEmptyState.style.display = 'flex';
+            return;
+        }
+        if (submittedEmptyState) submittedEmptyState.style.display = 'none';
+        
+        submittedContainer.innerHTML = students.map(s => {
+            const initials = getInitials(s.name);
+            return `
+            <div class="student-card" style="background:#fff; border:1px solid #e6e6e6; border-radius:12px; padding:18px; box-shadow:0 1px 3px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:14px;">
+                <div class="sc-header" style="display:flex; align-items:center; gap:12px;">
+                    <div class="sc-avatar" style="width:40px; height:40px; background:#1a7a42; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${initials}</div>
+                    <div class="sc-info">
+                        <div class="sc-name" style="font-weight:700; font-size:14px; color:#111;">${escHtml(s.name)}</div>
+                        <div class="sc-appno" style="font-size:12px; color:#666;">${escHtml(s.studentId)} • ${escHtml(s.section)}</div>
+                    </div>
+                </div>
+                <div class="sc-status-bar" style="background:#eaf7f0; color:#166035; border:1px solid rgba(26,122,66,0.2); padding:6px 10px; border-radius:6px; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-check-circle"></i> Submitted
+                </div>
+                <div class="sc-actions" style="margin-top:auto; display:flex; gap:8px;">
+                    <button class="btn-view-submitted-form btn-outline" data-id="${escHtml(s.studentId)}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #1a7a42; background:transparent; color:#1a7a42; font-size:12px; font-weight:600; cursor:pointer;">View Subjects</button>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Attach events for submitted buttons
+        submittedContainer.querySelectorAll('.btn-view-submitted-form').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const s = getStudents().find(a => a.studentId === btn.dataset.id);
+                if (s) openSubjectModal(s, true);
+            });
+        });
+    }
+
+    function renderCorrectionList() {
+        const correctionContainer = document.getElementById("correction-student-list");
+        const correctionEmptyState = document.getElementById("correctionEmptyState");
+        if (!correctionContainer) return;
+        
+        let students = getCorrectionStudents();
+        if (students.length === 0) {
+            correctionContainer.innerHTML = '';
+            if (correctionEmptyState) correctionEmptyState.style.display = 'flex';
+            return;
+        }
+        if (correctionEmptyState) correctionEmptyState.style.display = 'none';
+        
+        correctionContainer.innerHTML = students.map(s => {
+            const initials = getInitials(s.name);
+            return `
+            <div class="student-card" style="background:#fff; border:1px solid #e6e6e6; border-radius:12px; padding:18px; box-shadow:0 1px 3px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:14px;">
+                <div class="sc-header" style="display:flex; align-items:center; gap:12px;">
+                    <div class="sc-avatar" style="width:40px; height:40px; background:#b06d09; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${initials}</div>
+                    <div class="sc-info">
+                        <div class="sc-name" style="font-weight:700; font-size:14px; color:#111;">${escHtml(s.name)}</div>
+                        <div class="sc-appno" style="font-size:12px; color:#666;">${escHtml(s.studentId)} • ${escHtml(s.section)}</div>
+                    </div>
+                </div>
+                <div class="sc-status-bar" style="background:#fef8ec; color:#b06d09; border:1px solid rgba(176,109,9,0.2); padding:6px 10px; border-radius:6px; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-rotate-left"></i> Needs Correction
+                </div>
+                <div class="sc-correction-note" style="background:#fffcf8; border-left:3px solid #b06d09; padding:8px 12px; font-size:12px; color:#555; margin-top:8px;">
+                    <strong>Note:</strong> ${escHtml(s.correctionNote || "Please review subjects")}
+                </div>
+                <div class="sc-actions" style="margin-top:auto; display:flex; gap:8px;">
+                    <button class="btn-view-form btn-outline" data-id="${escHtml(s.studentId)}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #b06d09; background:transparent; color:#b06d09; font-size:12px; font-weight:600; cursor:pointer;">Update Subjects</button>
+                    <button class="btn-resubmit btn-primary" data-id="${escHtml(s.studentId)}" style="width:100%; padding:8px; border-radius:6px; border:none; background:#8b1a24; color:#fff; font-size:12px; font-weight:600; cursor:pointer;">Re-submit</button>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Attach events for correction buttons
+        correctionContainer.querySelectorAll('.btn-view-form').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const s = getStudents().find(a => a.studentId === btn.dataset.id);
+                if (s) openSubjectModal(s);
+            });
+        });
+        correctionContainer.querySelectorAll('.btn-resubmit').forEach(btn => {
+            btn.addEventListener('click', () => {
+                proceedTarget = btn.dataset.id;
+                const s = getStudents().find(a => a.studentId === proceedTarget);
+                if (!s) return;
+                const modal = document.getElementById('proceedModal');
+                if(modal) {
+                    document.getElementById('proceedStudentName').textContent = s.name || s.studentId;
+                    modal.classList.add('active');
+                } else {
+                    if(confirm(`Submit student ${s.name} to Assessment Office?`)) confirmProceed();
+                }
+            });
+        });
     }
 
     // ── VIEW/ADD SUBJECTS MODAL (F2F Enlistment Emulation) ──
-    function openSubjectModal(student) {
+    let isModalReadOnly = false;
+
+    function openSubjectModal(student, readonly = false) {
         currentViewStudent = student;
+        isModalReadOnly = readonly;
         const modal = document.getElementById('formViewModal');
         if(!modal) return;
 
@@ -326,6 +487,11 @@ function initAdviserDashboard() {
         document.getElementById('fvAppNo').textContent = student.studentId;
         document.getElementById('fvName').textContent = student.name;
         document.getElementById('fvCourse').textContent = student.programFull;
+
+        const btnAdd = document.getElementById('btnAddSubject');
+        if (btnAdd) {
+            btnAdd.style.display = readonly ? 'none' : 'inline-block';
+        }
 
         renderModalSubjects();
         modal.classList.add('active');
@@ -353,9 +519,11 @@ function initAdviserDashboard() {
                 <td style="padding:10px;">${escHtml(sub.title)}</td>
                 <td style="padding:10px; text-align:center;">${sub.units}</td>
                 <td style="padding:10px; text-align:center;">
+                    ${!isModalReadOnly ? `
                     <button style="border:none; background:#fdf2f3; color:#8b1a24; padding:6px 10px; border-radius:6px; cursor:pointer;" onclick="removeSubject(${idx})" title="Remove Subject">
                         <i class="fa-solid fa-trash"></i>
                     </button>
+                    ` : `<span style="color:#aaa; font-size:12px;">Read-only</span>`}
                 </td>
             </tr>
         `).join('');
@@ -403,6 +571,8 @@ function initAdviserDashboard() {
 
     // ── INITIAL LOAD ──
     renderStudentList();
+    renderSubmittedList();
+    renderCorrectionList();
 }
 
 // =============================================================
