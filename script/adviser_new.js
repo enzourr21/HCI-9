@@ -15,33 +15,14 @@ function getInitials(name) {
 
 function showToast(message, type = "success") {
     const toast = document.createElement("div");
-    toast.className   = "correction-toast";
+    toast.className = `correction-toast${type === "error" ? " error" : ""}`;
     toast.textContent = message;
-    
-    // Simpleng style para sa toast kung sakaling wala sa CSS
-    toast.style.position = "fixed";
-    toast.style.bottom = "20px";
-    toast.style.right = "20px";
-    toast.style.backgroundColor = type === "success" ? "#1a7a42" : "#8b1a24";
-    toast.style.color = "#fff";
-    toast.style.padding = "12px 24px";
-    toast.style.borderRadius = "8px";
-    toast.style.zIndex = "9999";
-    toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
-    toast.style.transition = "opacity 0.3s, transform 0.3s";
-    toast.style.opacity = "0";
-    toast.style.transform = "translateY(20px)";
 
     document.body.appendChild(toast);
-    
-    requestAnimationFrame(() => {
-        toast.style.opacity = "1";
-        toast.style.transform = "translateY(0)";
-    });
+    requestAnimationFrame(() => toast.classList.add("visible"));
 
     setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transform = "translateY(20px)";
+        toast.classList.remove("visible");
         setTimeout(() => toast.remove(), 300);
     }, 3200);
 }
@@ -50,70 +31,54 @@ function showToast(message, type = "success") {
 // LOCALSTORAGE & STUDENT_DB INTEGRATION
 // ─────────────────────────────────────────────────────────────
 
-// Kinukuha ang data sa STUDENT_DB at inililipat sa LocalStorage 
-// para ma-save ang mga "enrolledSubjects" at "adviserStatus".
+// Maps short program codes in STUDENT_DB to subject.js college/program IDs
+const PROGRAM_MAP = {
+    'CS':  { college: 'CCS', program: 'BSCS' },
+    'IT':  { college: 'CCS', program: 'BSIT' },
+    'IS':  { college: 'CCS', program: 'BSIS' },
+    'ACT': { college: 'CCS', program: 'BSCS' }, // fallback to BSCS
+    'BSN': { college: 'CON', program: 'BSN'  },
+    'CE':  { college: 'COE', program: 'BSCE' },
+    'BA':  { college: 'CBA', program: 'BSBA' },
+};
+
+// Pulls the correct subjects from subject.js for a given student
+function getSubjectsForStudent(s) {
+    if (typeof getProspectus !== 'function') return [];
+    const map = PROGRAM_MAP[s.program];
+    if (!map) return [];
+    const sem = s.currentSem === 1 ? '1st' : (s.currentSem === 2 ? '2nd' : 'summer');
+    const result = getProspectus(map.college, map.program, s.yearLevel, sem);
+    if (!result || result.error || !Array.isArray(result.subjects)) return [];
+    return result.subjects.map(sub => ({
+        code:  sub.code,
+        title: sub.title,
+        units: sub.units,
+    }));
+}
+
+// Loads STUDENT_DB into localStorage, seeding each student with their
+// prospectus subjects (via subject.js) and a default adviserStatus.
 function initializeStudents() {
     let localDB = JSON.parse(localStorage.getItem('wmsu_student_db') || 'null');
-    
-    // Kung wala pa sa local storage pero may STUDENT_DB na nakalink
+
+    // First run: seed from STUDENT_DB
     if (!localDB && typeof STUDENT_DB !== 'undefined') {
         localDB = STUDENT_DB.map(s => ({
-            studentId: s.studentId,
-            name: `${s.firstName} ${s.middleInitial ? s.middleInitial + '.' : ''} ${s.lastName}`,
-            program: s.program,
-            programFull: s.programFull,
-            yearLevel: s.yearLevel,
-            section: s.section,
-            email: s.email,
-            enrolledSubjects: [
-                { code: "CS 101", title: "Introduction to Computing", units: 3 },
-                { code: "CS 102", title: "Programming 1", units: 3 },
-                { code: "GE 101", title: "Understanding the Self", units: 3 }
-            ], 
+            studentId:    s.studentId,
+            name:         `${s.firstName} ${s.middleInitial ? s.middleInitial + '. ' : ''}${s.lastName}`,
+            program:      s.program,
+            programFull:  s.programFull,
+            yearLevel:    s.yearLevel,
+            currentSem:   s.currentSem,
+            section:      s.section,
+            email:        s.email,
+            enrolledSubjects: [], // adviser must approve before subjects are locked
             adviserStatus: 'pending', // pending | submitted | for_correction
         }));
         localStorage.setItem('wmsu_student_db', JSON.stringify(localDB));
     }
-    
-    // Ensure that students have subjects and there are students in each status for the tabs
-    if (localDB) {
-        let modified = false;
-        localDB.forEach(s => {
-            if (!s.enrolledSubjects || s.enrolledSubjects.length === 0) {
-                s.enrolledSubjects = [
-                    { code: "CS 101", title: "Introduction to Computing", units: 3 },
-                    { code: "CS 102", title: "Programming 1", units: 3 },
-                    { code: "GE 101", title: "Understanding the Self", units: 3 }
-                ];
-                modified = true;
-            }
-            if (s.adviserStatus === 'for_correction' && !s.correctionNote) {
-                s.correctionNote = "Please review your prerequisite subjects.";
-                modified = true;
-            }
-        });
-        
-        let hasSubmitted = localDB.some(s => s.program === ADVISER_PROGRAM && s.adviserStatus === 'submitted');
-        let hasCorrection = localDB.some(s => s.program === ADVISER_PROGRAM && s.adviserStatus === 'for_correction');
-        
-        if (!hasSubmitted || !hasCorrection) {
-            let csCount = 0;
-            localDB.forEach(s => {
-                if (s.program === ADVISER_PROGRAM) {
-                    csCount++;
-                    if (!hasSubmitted && csCount <= 3) { s.adviserStatus = 'submitted'; modified = true; }
-                    else if (!hasCorrection && csCount > 3 && csCount <= 6) { s.adviserStatus = 'for_correction'; s.correctionNote = "Missing prerequisite for CS 211"; modified = true; }
-                    else if (s.adviserStatus !== 'submitted' && s.adviserStatus !== 'for_correction') {
-                        s.adviserStatus = 'pending'; modified = true;
-                    }
-                }
-            });
-        }
-        if (modified) {
-            localStorage.setItem('wmsu_student_db', JSON.stringify(localDB));
-        }
-    }
-    
+
     return localDB || [];
 }
 
@@ -504,53 +469,111 @@ function initAdviserDashboard() {
 
         const subjects = currentViewStudent.enrolledSubjects || [];
         const totalUnits = subjects.reduce((sum, s) => sum + (Number(s.units) || 0), 0);
-        
+
         const fvTotalUnits = document.getElementById('fvTotalUnits');
         if(fvTotalUnits) fvTotalUnits.textContent = totalUnits;
 
         if (subjects.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;color:#888;">No subjects enlisted yet. Click 'Add Subject'.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="fv-empty-row">No subjects enlisted yet.<br><span>Click "Add Subject" or use "Assign from Prospectus".</span></td></tr>`;
             return;
         }
 
         tbody.innerHTML = subjects.map((sub, idx) => `
-            <tr style="border-bottom:1px solid #e6e6e6;">
-                <td style="padding:10px; font-weight:600; color:#8b1a24;">${escHtml(sub.code)}</td>
-                <td style="padding:10px;">${escHtml(sub.title)}</td>
-                <td style="padding:10px; text-align:center;">${sub.units}</td>
-                <td style="padding:10px; text-align:center;">
-                    ${!isModalReadOnly ? `
-                    <button style="border:none; background:#fdf2f3; color:#8b1a24; padding:6px 10px; border-radius:6px; cursor:pointer;" onclick="removeSubject(${idx})" title="Remove Subject">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                    ` : `<span style="color:#aaa; font-size:12px;">Read-only</span>`}
+            <tr class="fv-subject-row">
+                <td class="fv-code">${escHtml(sub.code)}</td>
+                <td>${escHtml(sub.title)}</td>
+                <td class="text-center">${sub.units}</td>
+                <td class="text-center">
+                    ${!isModalReadOnly
+                        ? `<button class="fv-del-btn icon-btn delete" onclick="removeSubject(${idx})" title="Remove Subject"><i class="fa-solid fa-trash"></i></button>`
+                        : `<span class="fv-readonly">Read-only</span>`
+                    }
                 </td>
             </tr>
         `).join('');
     }
 
-    // Global function para ma-trigger galing sa HTML onClick attribute
+    // Build the prospectus subject picker dropdown for a student
+    function buildSubjectPicker(student) {
+        const prospectusSubjects = getSubjectsForStudent(student);
+        const enrolled = (student.enrolledSubjects || []).map(s => s.code);
+        const available = prospectusSubjects.filter(s => !enrolled.includes(s.code));
+
+        if (available.length === 0) return null; // all already assigned
+
+        const wrap = document.createElement('div');
+        wrap.id = 'subjectPickerWrap';
+        wrap.className = 'subject-picker-wrap';
+        wrap.innerHTML = `
+            <select id="subjectPickerSelect" class="subject-picker-select">
+                <option value="">— Pick a subject to add —</option>
+                ${available.map(s =>
+                    `<option value="${escHtml(s.code)}" data-title="${escHtml(s.title)}" data-units="${s.units}">
+                        ${escHtml(s.code)} – ${escHtml(s.title)} (${s.units} units)
+                    </option>`
+                ).join('')}
+            </select>
+            <button id="subjectPickerConfirm" class="btn btn-primary" style="padding:8px 16px;font-size:.82rem;">Add</button>
+            <button id="subjectPickerCancel"  class="btn btn-outline"  style="padding:8px 14px;font-size:.82rem;">Cancel</button>
+        `;
+        return wrap;
+    }
+
+    // Show/hide the inline subject picker
+    function showSubjectPicker() {
+        const existing = document.getElementById('subjectPickerWrap');
+        if (existing) { existing.remove(); return; } // toggle off
+
+        const picker = buildSubjectPicker(currentViewStudent);
+        if (!picker) {
+            showToast('All prospectus subjects are already assigned.', 'error');
+            return;
+        }
+
+        // Insert below the subjects header
+        const header = document.querySelector('.fv-subjects-header');
+        if (header) header.insertAdjacentElement('afterend', picker);
+
+        document.getElementById('subjectPickerConfirm')?.addEventListener('click', () => {
+            const sel = document.getElementById('subjectPickerSelect');
+            const opt = sel?.selectedOptions[0];
+            if (!opt || !opt.value) return;
+            const newSub = { code: opt.value, title: opt.dataset.title, units: Number(opt.dataset.units) };
+            if (!currentViewStudent.enrolledSubjects) currentViewStudent.enrolledSubjects = [];
+            currentViewStudent.enrolledSubjects.push(newSub);
+            updateStudentInDB();
+            renderModalSubjects();
+            picker.remove();
+            showToast(`✓ ${newSub.code} added.`);
+        });
+        document.getElementById('subjectPickerCancel')?.addEventListener('click', () => picker.remove());
+    }
+
+    // Global: remove subject by index (called from inline onclick)
     window.removeSubject = function(index) {
-        if(!currentViewStudent) return;
-        currentViewStudent.enrolledSubjects.splice(index, 1);
+        if (!currentViewStudent) return;
+        const removed = currentViewStudent.enrolledSubjects.splice(index, 1)[0];
         updateStudentInDB();
         renderModalSubjects();
-        showToast("Subject removed.");
+        showToast(`${removed?.code ?? 'Subject'} removed.`);
     };
 
-    // Quick Add Subject Button sa loob ng Modal
-    document.getElementById('btnAddSubject')?.addEventListener('click', () => {
-        const code = prompt("Enter Subject Code (e.g., CS 101):");
-        if(!code) return;
-        const title = prompt("Enter Subject Description (e.g., Intro to Computing):");
-        const units = parseInt(prompt("Enter Units:")) || 3;
-        
-        if(!currentViewStudent.enrolledSubjects) currentViewStudent.enrolledSubjects = [];
-        
-        currentViewStudent.enrolledSubjects.push({ code, title: title||'', units: units });
+    // "Add Subject" button → show prospectus picker
+    document.getElementById('btnAddSubject')?.addEventListener('click', showSubjectPicker);
+
+    // "Assign from Prospectus" button → bulk-assign all prospectus subjects
+    document.getElementById('btnAssignProspectus')?.addEventListener('click', () => {
+        if (!currentViewStudent) return;
+        const subjects = getSubjectsForStudent(currentViewStudent);
+        if (!subjects.length) {
+            showToast('No prospectus subjects found for this student.', 'error');
+            return;
+        }
+        currentViewStudent.enrolledSubjects = subjects;
         updateStudentInDB();
         renderModalSubjects();
-        showToast(`Subject ${code} added successfully.`);
+        document.getElementById('subjectPickerWrap')?.remove();
+        showToast(`✓ ${subjects.length} subjects assigned from prospectus.`);
     });
 
     function updateStudentInDB() {

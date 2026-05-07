@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════
    WMSU-Ease — Adviser Dashboard Stylesheet
    adviser.css  (layered on top of admin.css)
    Fully responsive: mobile-first with sidebar drawer on mobile
@@ -367,13 +367,25 @@ body {
 .filter-btn.active-filter { background: var(--cr); color: var(--white); border-color: var(--cr); }
 
 
+/* ── Shared card grid (submitted, correction, etc.) ─────────── */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+/* ── Utility ─────────────────────────────────────────────────── */
+.text-center { text-align: center; }
+
 /* ══════════════════════════════════════════════════════════════
    STUDENT CARDS
 ══════════════════════════════════════════════════════════════ */
 #student-list {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
 }
 
 .student-card {
@@ -531,6 +543,92 @@ body {
 .btn-review   { background: transparent; color: var(--cr); border-color: var(--cr); }
 .btn-review:hover { background: var(--cr-pale); }
 
+/* Add-subject green button */
+.btn-add      { background: var(--green); color: var(--white); border-color: var(--green); gap: 5px; }
+.btn-add:hover { background: var(--green-dk); border-color: var(--green-dk); }
+
+/* Compact small button */
+.btn-sm { padding: 7px 13px; font-size: .78rem; }
+
+/* Inline button group */
+.btn-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* ── edit-table (subject modal table) ───────────────────────── */
+.edit-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+}
+.edit-table thead tr {
+    background: #eeeeec;
+    text-align: left;
+}
+.edit-table thead th {
+    padding: 11px 12px;
+    font-size: .75rem;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.edit-table thead th.text-center { text-align: center; }
+
+/* Subject row */
+.fv-subject-row { border-bottom: 1px solid var(--border); }
+.fv-subject-row td { padding: 10px 12px; font-size: .88rem; }
+.fv-code { font-weight: 700; color: var(--cr); }
+
+/* Delete subject button */
+.fv-del-btn {
+    border: none;
+    background: #fdf2f3;
+    color: var(--cr);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background .2s;
+}
+.fv-del-btn:hover { background: #fce4e6; }
+
+/* Read-only label in action column */
+.fv-readonly { font-size: .75rem; color: #bbb; }
+
+/* Empty-row message when no subjects */
+.fv-empty-row {
+    text-align: center;
+    padding: 28px 16px;
+    color: #888;
+    font-size: .88rem;
+}
+.fv-empty-row span { display: block; font-size: .8rem; color: #aaa; margin-top: 4px; }
+
+/* ── Subject picker inline dropdown ─────────────────────────── */
+.subject-picker-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+}
+.subject-picker-select {
+    flex: 1;
+    min-width: 200px;
+    padding: 7px 10px;
+    border: 1.5px solid #ccc;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: .84rem;
+    outline: none;
+    cursor: pointer;
+    background: var(--white);
+}
+.subject-picker-select:focus { border-color: var(--cr); }
+
+
 /* Make action bar buttons full-width on mobile */
 @media (max-width: 600px) {
     .action-bar {
@@ -573,6 +671,28 @@ body {
     animation: modalIn .22s ease;
     margin: auto;
 }
+
+.modal-card--narrow { max-width: 650px; width: 100%; }
+
+.modal-card--confirm { max-width: 400px; text-align: center; padding: 36px 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+.modal-title-icon { margin-right: 8px; color: var(--cr); }
+
+.fv-student-info { background: #f9f9f9; padding: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border); }
+.fv-name  { font-size: 1.1rem; display: block; color: var(--text); margin-bottom: 4px; }
+.fv-id    { font-size: .88rem; font-weight: 700; color: var(--cr); }
+.fv-course { font-size: .88rem; color: var(--muted); }
+
+.fv-subjects-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.fv-subjects-title { margin: 0; color: #333; font-size: .95rem; font-weight: 700; }
+.fv-table-wrap { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.fv-total { margin-top: 16px; text-align: right; font-size: 1rem; font-weight: 800; color: var(--cr); }
+
+.proceed-icon  { font-size: 3.2rem; color: var(--green); margin-bottom: 8px; }
+.proceed-title { margin: 0 0 6px; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+.proceed-body  { color: #666; font-size: .88rem; margin: 0; line-height: 1.6; }
+.proceed-name  { color: var(--text); font-weight: 700; }
+.proceed-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
 
 @keyframes modalIn {
     from { transform: scale(.95) translateY(10px); opacity: 0; }
@@ -941,17 +1061,26 @@ body {
 
 /* Empty states */
 .empty-state, .empty-correction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 60px 20px;
-    color: #ccc;
+    color: #999;
+    background: #fff;
+    border: 1px dashed #ccc;
+    border-radius: 12px;
+    margin-top: 16px;
 }
 .empty-state i, .empty-correction i {
     font-size: 3rem;
     margin-bottom: 12px;
     display: block;
+    color: #ccc;
 }
 .empty-correction i { color: #2e7d32; }
-.empty-state p, .empty-correction p { font-size: .95rem; font-weight: 500; }
+.empty-state p, .empty-correction p { font-size: .95rem; font-weight: 500; margin: 0; }
 
 
 /* ── Search ─────────────────────────────────────────────────── */
@@ -1219,9 +1348,10 @@ body {
     transition: opacity .3s ease, transform .3s ease;
     pointer-events: none;
 }
-.correction-toast { background: var(--green); color: var(--white); }
+.correction-toast          { background: var(--green);   color: var(--white); }
+.correction-toast.error    { background: #8b1a24;         color: var(--white); }
 .correction-toast.visible,
-.toast.visible { opacity: 1; transform: translateY(0); }
+.toast.visible             { opacity: 1; transform: translateY(0); }
 
 .toast { background: #e8f5e9; color: #2e7d32; border-left: 4px solid #2e7d32; }
 .toast-error { background: #ffebee; color: #c62828; border-left: 4px solid #c62828; }
