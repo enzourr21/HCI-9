@@ -46,25 +46,25 @@ const PROSPECTUS_DATA = [
 
 // Dept submissions (used by renderDeptSubmissions)
 const SUBMISSIONS_DATA = [
-  { id:1, dept:'Computer Science',      college:'CCS', type:'Faculty Loading', submittedBy:'Ms. Clara Santos',  submittedRole:'Secretary', at:'Jan 14, 10:30 AM', items:18, status:'pending'  },
-  { id:2, dept:'Information Technology',college:'CCS', type:'Faculty Loading', submittedBy:'Prof. Maria Reyes', submittedRole:'Secretary', at:'Jan 14, 11:00 AM', items:15, status:'pending'  },
-  { id:3, dept:'Civil Engineering',     college:'COE', type:'Schedule',        submittedBy:'Engr. Paulo Dizon', submittedRole:'Secretary', at:'Jan 12, 09:00 AM', items:22, status:'approved' },
-  { id:4, dept:'Business Administration',college:'CBA',type:'Faculty Loading', submittedBy:'Ms. Rosa Cruz',     submittedRole:'Secretary', at:'Jan 11, 02:15 PM', items:12, status:'approved' },
-  { id:5, dept:'Education',             college:'CED', type:'Schedule',        submittedBy:'Mr. Aldo Santos',   submittedRole:'Secretary', at:'Jan 10, 08:45 AM', items:20, status:'returned' },
+  { id:1, dept:'Computer Science',      college:'CCS', type:'faculty_loading', submittedBy:'Ms. Clara Santos',  submittedRole:'Secretary', at:'Jan 14, 10:30 AM', items:18, status:'pending', data: [ { faculty: 'John Doe', subjects: ['CS 101', 'CS 102'], units: 6, adminLoad: 'Department Chair', status: 'optimal' }, { faculty: 'Jane Smith', subjects: ['CS 211', 'CS 311', 'IT 101'], units: 9, adminLoad: '', status: 'optimal' }, { faculty: 'Mark Cruz', subjects: ['CS 401', 'CS Elec 1', 'CS Elec 2', 'CS 101', 'CS 102', 'CS 211'], units: 18, adminLoad: '', status: 'overloaded' } ]  },
+  { id:2, dept:'Information Technology',college:'CCS', type:'faculty_loading', submittedBy:'Prof. Maria Reyes', submittedRole:'Secretary', at:'Jan 14, 11:00 AM', items:15, status:'pending', data: [ { faculty: 'Jane Smith', subjects: ['IT 101', 'IT 102', 'IT 201'], units: 9, adminLoad: '', status: 'optimal' }, { faculty: 'Carlos Tan', subjects: ['IT 301'], units: 3, adminLoad: '', status: 'underload' }, { faculty: 'Linda Diaz', subjects: ['IT Elec 1', 'IT 401', 'IT 402', 'IT 311'], units: 12, adminLoad: '', status: 'optimal' } ]  },
+  { id:3, dept:'Civil Engineering',     college:'COE', type:'schedule',        submittedBy:'Engr. Paulo Dizon', submittedRole:'Secretary', at:'Jan 12, 09:00 AM', items:22, status:'approved', data: [ { section: 'CE-1A', subject: 'CE 101', instructor: 'P. Dizon', days: 'MWF', time: '8:00–9:30 AM', room: 'Eng-201', units: 3 }, { section: 'CE-1B', subject: 'CE 101', instructor: 'M. Santos', days: 'TTh', time: '10:00–11:30 AM', room: 'Eng-201', units: 3 }, { section: 'CE-2A', subject: 'CE 201', instructor: 'J. Reyes', days: 'MWF', time: '1:00–2:30 PM', room: 'Eng-202', units: 3 } ] },
+  { id:4, dept:'Business Administration',college:'CBA',type:'faculty_loading', submittedBy:'Ms. Rosa Cruz',     submittedRole:'Secretary', at:'Jan 11, 02:15 PM', items:12, status:'approved', data: [ { faculty: 'R. Cruz', subjects: ['BA 101', 'BA 102'], units: 6, adminLoad: 'Coordinator', status: 'optimal' }, { faculty: 'A. Villanueva', subjects: ['MKT 101', 'MKT 102', 'FIN 201'], units: 9, adminLoad: '', status: 'optimal' } ] },
+  { id:5, dept:'Education',             college:'CED', type:'schedule',        submittedBy:'Mr. Aldo Santos',   submittedRole:'Secretary', at:'Jan 10, 08:45 AM', items:20, status:'returned', data: [ { section: 'ED-1A', subject: 'ED 101', instructor: 'A. Santos', days: 'TTh', time: '9:00–10:30 AM', room: 'Main-101', units: 3 }, { section: 'ED-1B', subject: 'ED 102', instructor: 'L. Gomez', days: 'MWF', time: '10:00–11:30 AM', room: 'Main-101', units: 3 }, { section: 'ED-2A', subject: 'ED 201', instructor: 'C. Ramos', days: 'MWF', time: '2:00–3:30 PM', room: 'Main-102', units: 3 } ] },
 ];
 
 // Students (used by renderStudentRecords + openStudentPanel)
 const STUDENTS_DATA = [
-  { id:'2021-00001', name:'Juan Dela Cruz',   college:'CCS', year:4, program:'BSCS', units:21, status:'enrolled'  },
-  { id:'2022-00145', name:'Maria Santos',     college:'CCS', year:3, program:'BSIT', units:18, status:'enrolled'  },
-  { id:'2023-00312', name:'Pedro Reyes',      college:'COE', year:2, program:'BSCE', units:15, status:'pending'   },
-  { id:'2021-00087', name:'Ana Gonzales',     college:'CBA', year:4, program:'BSBA', units:21, status:'enrolled'  },
-  { id:'2022-00200', name:'Carlo Fernandez',  college:'CED', year:3, program:'BSEd', units:18, status:'irregular' },
-  { id:'2023-00450', name:'Liza Mercado',     college:'CCS', year:2, program:'BSCS', units:0,  status:'hold'      },
-  { id:'2020-00009', name:'Rodrigo Tan',      college:'CCS', year:5, program:'BSIT', units:12, status:'irregular' },
-  { id:'2023-00501', name:'Sofia Villanueva', college:'CAS', year:2, program:'BSED', units:21, status:'enrolled'  },
-  { id:'2024-00032', name:'Miguel Torres',    college:'COE', year:1, program:'BSEE', units:24, status:'pending'   },
-  { id:'2022-00388', name:'Rachel Aquino',    college:'CBA', year:3, program:'BSA',  units:21, status:'enrolled'  },
+  { id:'2021-00001', name:'Juan Dela Cruz',   college:'CCS', year:4, program:'BSCS', units:21, status:'Enrolled', type:'regular', tag:''  },
+  { id:'2022-00145', name:'Maria Santos',     college:'CCS', year:3, program:'BSIT', units:18, status:'Enrolled', type:'irregular', tag:'Shiftee'  },
+  { id:'2023-00312', name:'Pedro Reyes',      college:'COE', year:2, program:'BSCE', units:15, status:'Pending', type:'regular', tag:''   },
+  { id:'2021-00087', name:'Ana Gonzales',     college:'CBA', year:4, program:'BSBA', units:21, status:'Enrolled', type:'regular', tag:''  },
+  { id:'2022-00200', name:'Carlo Fernandez',  college:'CED', year:3, program:'BSEd', units:18, status:'Enrolled', type:'irregular', tag:'Transferee' },
+  { id:'2023-00450', name:'Liza Mercado',     college:'CCS', year:2, program:'BSCS', units:0,  status:'Pending', type:'regular', tag:''      },
+  { id:'2020-00009', name:'Rodrigo Tan',      college:'CCS', year:5, program:'BSIT', units:12, status:'Enrolled', type:'irregular', tag:'Continuing' },
+  { id:'2023-00501', name:'Sofia Villanueva', college:'CAS', year:2, program:'BSED', units:21, status:'Enrolled', type:'regular', tag:''  },
+  { id:'2024-00032', name:'Miguel Torres',    college:'COE', year:1, program:'BSEE', units:24, status:'Pending', type:'regular', tag:'Freshman'   },
+  { id:'2022-00388', name:'Rachel Aquino',    college:'CBA', year:3, program:'BSA',  units:21, status:'Enrolled', type:'regular', tag:''  },
 ];
 
 // Holds (used by openStudentPanel)
@@ -229,6 +229,65 @@ const ROOM_SCHEDULE = {
     'Wed-13-0': { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#7c3aed' },
     'Wed-13-1': { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#7c3aed' },
     'Wed-14-0': { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#7c3aed' },
+  },
+  'CAS-301': {
+    'Mon-10-0':  { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#c0192b' },
+    'Mon-10-1':  { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#c0192b' },
+    'Mon-11-0':  { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#c0192b' },
+    'Wed-10-0':  { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#c0192b' },
+    'Wed-10-1':  { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#c0192b' },
+    'Wed-11-0':  { subject:'CS 201', instructor:'Santos, L.', section:'CS-2A', color:'#c0192b' },
+  },
+  'CAS-302': {
+    'Tue-8-0':  { subject:'IT 101', instructor:'Cruz, E.', section:'IT-1A', color:'#15803d' },
+    'Tue-8-1':  { subject:'IT 101', instructor:'Cruz, E.', section:'IT-1A', color:'#15803d' },
+    'Tue-9-0':  { subject:'IT 101', instructor:'Cruz, E.', section:'IT-1A', color:'#15803d' },
+    'Thu-8-0':  { subject:'IT 101', instructor:'Cruz, E.', section:'IT-1A', color:'#15803d' },
+    'Thu-8-1':  { subject:'IT 101', instructor:'Cruz, E.', section:'IT-1A', color:'#15803d' },
+    'Thu-9-0':  { subject:'IT 101', instructor:'Cruz, E.', section:'IT-1A', color:'#15803d' },
+  },
+  'Main-101': {
+    'Mon-13-0': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Mon-13-1': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Mon-14-0': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Wed-13-0': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Wed-13-1': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Wed-14-0': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Fri-13-0': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Fri-13-1': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+    'Fri-14-0': { subject:'Math 102', instructor:'Alcantara, N.', section:'ENG-1A', color:'#1d4ed8' },
+  },
+  'Aud-1': {
+    'Mon-7-1': { subject:'GE 101', instructor:'Lopez, C.', section:'ALL', color:'#d97706' },
+    'Mon-8-0': { subject:'GE 101', instructor:'Lopez, C.', section:'ALL', color:'#d97706' },
+    'Wed-7-1': { subject:'GE 101', instructor:'Lopez, C.', section:'ALL', color:'#d97706' },
+    'Wed-8-0': { subject:'GE 101', instructor:'Lopez, C.', section:'ALL', color:'#d97706' },
+    'Fri-7-1': { subject:'GE 101', instructor:'Lopez, C.', section:'ALL', color:'#d97706' },
+    'Fri-8-0': { subject:'GE 101', instructor:'Lopez, C.', section:'ALL', color:'#d97706' },
+  },
+  'CCS-101': {
+    'Tue-10-0':  { subject:'CS 301', instructor:'Reyes, M.', section:'CS-3A', color:'#7c3aed' },
+    'Tue-10-1':  { subject:'CS 301', instructor:'Reyes, M.', section:'CS-3A', color:'#7c3aed' },
+    'Tue-11-0':  { subject:'CS 301', instructor:'Reyes, M.', section:'CS-3A', color:'#7c3aed' },
+    'Thu-10-0':  { subject:'CS 301', instructor:'Reyes, M.', section:'CS-3A', color:'#7c3aed' },
+    'Thu-10-1':  { subject:'CS 301', instructor:'Reyes, M.', section:'CS-3A', color:'#7c3aed' },
+    'Thu-11-0':  { subject:'CS 301', instructor:'Reyes, M.', section:'CS-3A', color:'#7c3aed' },
+  },
+  'CCS-102': {
+    'Mon-15-0': { subject:'CS 401', instructor:'Garcia, P.', section:'CS-4A', color:'#059669' },
+    'Mon-15-1': { subject:'CS 401', instructor:'Garcia, P.', section:'CS-4A', color:'#059669' },
+    'Mon-16-0': { subject:'CS 401', instructor:'Garcia, P.', section:'CS-4A', color:'#059669' },
+    'Wed-15-0': { subject:'CS 401', instructor:'Garcia, P.', section:'CS-4A', color:'#059669' },
+    'Wed-15-1': { subject:'CS 401', instructor:'Garcia, P.', section:'CS-4A', color:'#059669' },
+    'Wed-16-0': { subject:'CS 401', instructor:'Garcia, P.', section:'CS-4A', color:'#059669' },
+  },
+  'Lab-201': {
+    'Tue-13-0': { subject:'IT Elec 2', instructor:'Marquez, F.', section:'IT-3A', color:'#ea580c' },
+    'Tue-13-1': { subject:'IT Elec 2', instructor:'Marquez, F.', section:'IT-3A', color:'#ea580c' },
+    'Tue-14-0': { subject:'IT Elec 2', instructor:'Marquez, F.', section:'IT-3A', color:'#ea580c' },
+    'Thu-13-0': { subject:'IT Elec 2', instructor:'Marquez, F.', section:'IT-3A', color:'#ea580c' },
+    'Thu-13-1': { subject:'IT Elec 2', instructor:'Marquez, F.', section:'IT-3A', color:'#ea580c' },
+    'Thu-14-0': { subject:'IT Elec 2', instructor:'Marquez, F.', section:'IT-3A', color:'#ea580c' },
   }
 };
 
@@ -262,7 +321,8 @@ function showPage(pageId, el) {
   if (pageId === 'audit')           renderAuditLog();
   if (pageId === 'prospectus-review') renderProspectusQueue();
   if (pageId === 'dept-submissions')  renderDeptSubmissions();
-  if (pageId === 'student-records')   renderStudentRecords(STUDENT_RECORDS);
+  if (pageId === 'student-records')   renderStudentRecords(STUDENTS_DATA);
+  if (pageId === 'enrollment-monitor') renderEnrollMonitor();
   if (pageId === 'dashboard')         renderDashboard();
 }
 
@@ -543,24 +603,26 @@ function renderProspectusQueue(filter = 'all') {
 
   container.innerHTML = data.map(p => `
     <div class="prospectus-item" id="prosp-${p.id}">
-      <div class="prosp-item-hd">
+      <div class="prospectus-item-header">
         <input type="checkbox" class="prosp-checkbox" data-id="${p.id}" onchange="onProspCheckChange()">
-        <div class="prosp-item-info">
-          <div class="prosp-item-title">${p.program}</div>
-          <div class="prosp-item-meta">
+        <div style="flex:1">
+          <div class="prospectus-item-title">${p.program}</div>
+          <div class="prospectus-item-sub">
             Version ${p.version} &nbsp;·&nbsp; Submitted by ${p.submittedBy} &nbsp;·&nbsp; ${p.submittedAt}
             &nbsp;·&nbsp; Effectivity: <strong>${p.effectivity}</strong>
           </div>
         </div>
-        <span class="badge ${p.status === 'pending' ? 'badge-amber' : p.status === 'endorsed' ? 'badge-green' : 'badge-gray'}">
-          ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}
-        </span>
-        <button class="btn btn-ghost btn-xs" onclick="toggleProspDetail('${p.id}')">
-          <i class="fas fa-chevron-down" id="prosp-chevron-${p.id}"></i> Details
-        </button>
+        <div class="prospectus-item-actions">
+          <span class="badge ${p.status === 'pending' ? 'badge-amber' : p.status === 'endorsed' ? 'badge-green' : 'badge-gray'}">
+            ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}
+          </span>
+          <button class="btn btn-ghost btn-xs" onclick="toggleProspDetail('${p.id}')">
+            <i class="fas fa-chevron-down" id="prosp-chevron-${p.id}"></i> Details
+          </button>
+        </div>
       </div>
 
-      <div class="prosp-item-detail" id="prosp-detail-${p.id}" style="display:none;">
+      <div class="prospectus-item-body" id="prosp-detail-${p.id}" style="display:none;">
         <!-- Diff viewer -->
         <div style="margin-bottom:12px;">
           <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted-lt);margin-bottom:8px;">
@@ -704,15 +766,18 @@ function renderDeptSubmissions(query = '') {
   const container = document.getElementById('deptSubmissionsBody');
   if (!container) return;
 
-  const data = query
-    ? DEPT_SUBMISSIONS.filter(d => d.dept.toLowerCase().includes(query.toLowerCase()) || d.program.toLowerCase().includes(query.toLowerCase()))
-    : DEPT_SUBMISSIONS;
+  const searchStr = typeof query === 'string' ? query.toLowerCase() : '';
+  const data = searchStr
+    ? SUBMISSIONS_DATA.filter(d => d.dept.toLowerCase().includes(searchStr))
+    : SUBMISSIONS_DATA;
 
-  container.innerHTML = data.map(d => `
+  const filterSelect = document.getElementById('submissionFilter')?.value;
+  const filteredData = filterSelect ? data.filter(d => d.status === filterSelect) : data;
+
+  container.innerHTML = filteredData.map(d => `
     <tr>
       <td>
         <div style="font-weight:600;font-size:13px">${d.dept}</div>
-        <div style="font-size:11.5px;color:var(--muted)">${d.program}</div>
       </td>
       <td>
         <span class="badge ${d.type === 'faculty_loading' ? 'badge-blue' : 'badge-crimson'}">
@@ -720,32 +785,30 @@ function renderDeptSubmissions(query = '') {
         </span>
       </td>
       <td>
-        <span class="badge ${d.status === 'submitted' ? 'badge-green' : 'badge-gray'}">
-          ${d.status === 'submitted' ? 'Submitted' : 'Pending'}
+        <span class="badge ${d.status === 'approved' ? 'badge-green' : d.status === 'returned' ? 'badge-amber' : 'badge-gray'}">
+          ${d.status.charAt(0).toUpperCase() + d.status.slice(1)}
         </span>
       </td>
       <td style="font-size:12px;color:var(--muted)">${d.submittedBy}</td>
-      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${d.submittedAt}</td>
+      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${d.at}</td>
       <td>
-        ${d.status === 'submitted'
-          ? `<button class="btn btn-ghost btn-xs" onclick="viewSubmission('${d.id}')">
-               <i class="fas fa-eye"></i> View
-             </button>`
-          : `<span style="font-size:12px;color:var(--muted-lt)">—</span>`
-        }
+        <button class="btn btn-ghost btn-xs" onclick="viewSubmission('${d.id}')">
+          <i class="fas fa-eye"></i> View
+        </button>
       </td>
     </tr>`).join('');
 }
 
 function viewSubmission(id) {
-  const sub = DEPT_SUBMISSIONS.find(d => d.id === id);
-  if (!sub || !sub.data.length) { showToast('No data available for this submission.', 'info'); return; }
+  const sub = SUBMISSIONS_DATA.find(d => d.id == id);
+  if (!sub || !sub.data || !sub.data.length) { showToast('No data available for this submission.', 'info'); return; }
 
   const modal = document.getElementById('submissionViewModal');
+  if (!modal) return;
   const title = document.getElementById('submissionViewTitle');
   const body  = document.getElementById('submissionViewBody');
 
-  title.textContent = `${sub.dept} — ${sub.type === 'faculty_loading' ? 'Faculty Loading Sheet' : 'Schedule'} (${sub.program})`;
+  title.textContent = `${sub.dept} — ${sub.type === 'faculty_loading' ? 'Faculty Loading Sheet' : 'Schedule'}`;
 
   if (sub.type === 'faculty_loading') {
     body.innerHTML = `
@@ -832,7 +895,9 @@ function renderStudentRecords(data) {
         <span class="badge ${s.type === 'regular' ? 'badge-gray' : 'badge-amber'}">
           ${s.type === 'regular' ? 'Regular' : 'Irregular'}
         </span>
-        ${s.tag ? `<span class="badge ${s.tag === 'Freshman' ? 'badge-blue' : s.tag === 'Shiftee' ? 'badge-crimson' : 'badge-purple'}" style="margin-left:4px">${s.tag}</span>` : ''}
+      </td>
+      <td>
+        ${s.tag ? `<span class="badge ${s.tag === 'Freshman' ? 'badge-blue' : s.tag === 'Shiftee' ? 'badge-crimson' : 'badge-purple'}">${s.tag}</span>` : '<span style="color:var(--muted-lt);font-size:12px">—</span>'}
       </td>
     </tr>`).join('');
 
@@ -845,7 +910,7 @@ function filterStudentRecords() {
   const status  = document.getElementById('studentStatusFilter')?.value || '';
   const tag     = document.getElementById('studentTagFilter')?.value || '';
 
-  const filtered = STUDENT_RECORDS.filter(s => {
+  const filtered = STUDENTS_DATA.filter(s => {
     const matchQ = !q || s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q);
     const matchP = !program || s.program === program;
     const matchS = !status  || s.status  === status;
@@ -854,6 +919,70 @@ function filterStudentRecords() {
   });
 
   renderStudentRecords(filtered);
+}
+
+// ─── ENROLLMENT MONITOR ──────────────────────────────────────
+function renderEnrollMonitor() {
+  const oversubBody = document.getElementById('oversubBody');
+  if (oversubBody) {
+    oversubBody.innerHTML = OVERSUBSCRIBED.map(o => `
+      <tr>
+        <td><strong>${o.code}</strong></td>
+        <td>${o.desc}</td>
+        <td style="text-align:center">${o.section}</td>
+        <td style="text-align:center;font-weight:700;color:var(--danger)">${o.enrolled}</td>
+        <td style="text-align:center;color:var(--muted)">${o.cap}</td>
+        <td style="text-align:center;color:var(--danger)">+${o.enrolled - o.cap}</td>
+        <td>${o.dept}</td>
+      </tr>
+    `).join('');
+  }
+
+  const enrollChart = document.getElementById('enrollByCollegeChart');
+  if (enrollChart) {
+    const colleges = [
+      { label:'CCS', val:500, max:900 }, { label:'COE', val:423, max:900 },
+      { label:'CBA', val:287, max:900 }, { label:'CED', val:519, max:900 },
+      { label:'CAS', val:181, max:900 }, { label:'CON', val:340, max:900 },
+    ];
+    enrollChart.innerHTML = colleges.map(c => `
+      <div class="bar-row">
+        <span class="bar-label">${c.label}</span>
+        <div class="bar-track"><div class="bar-fill blue" style="width:${Math.round(c.val/c.max*100)}%"></div></div>
+        <span class="bar-val">${c.val}</span>
+      </div>`).join('');
+  }
+
+  const sectionCapOverview = document.getElementById('sectionCapOverview');
+  if (sectionCapOverview) {
+    sectionCapOverview.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:12px;color:var(--muted)">Under 50% Capacity</span>
+          <span style="font-size:12.5px;font-weight:700;">45 sections</span>
+        </div>
+        <div class="prog-wrap" style="margin-bottom:0"><div class="prog-bar"><div class="prog-fill green" style="width:15%"></div></div></div>
+        
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+          <span style="font-size:12px;color:var(--muted)">50% - 90% Capacity</span>
+          <span style="font-size:12.5px;font-weight:700;">215 sections</span>
+        </div>
+        <div class="prog-wrap" style="margin-bottom:0"><div class="prog-bar"><div class="prog-fill blue" style="width:65%"></div></div></div>
+        
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+          <span style="font-size:12px;color:var(--muted)">90% - 100% Capacity</span>
+          <span style="font-size:12.5px;font-weight:700;">52 sections</span>
+        </div>
+        <div class="prog-wrap" style="margin-bottom:0"><div class="prog-bar"><div class="prog-fill amber" style="width:18%"></div></div></div>
+        
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+          <span style="font-size:12px;color:var(--muted)">Over Capacity</span>
+          <span style="font-size:12.5px;font-weight:700;color:var(--danger)">5 sections</span>
+        </div>
+        <div class="prog-wrap" style="margin-bottom:0"><div class="prog-bar"><div class="prog-fill" style="width:2%;background:var(--danger)"></div></div></div>
+      </div>
+    `;
+  }
 }
 
 // ─── REPORTS ─────────────────────────────────────────────────
@@ -1076,7 +1205,6 @@ function closePanel(id) {
 
 function approveAllSubmissions() {
   SUBMISSIONS_DATA.filter(s => s.status === 'pending').forEach(s => s.status = 'approved');
-  DEPT_SUBMISSIONS.filter(s => s.status === 'submitted').forEach(s => s.status = 'approved');
   showToast('All pending submissions approved.', 'success');
   renderDeptSubmissions();
 }
