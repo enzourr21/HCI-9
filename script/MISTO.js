@@ -1248,6 +1248,7 @@ function togglePwVisibility(empId) {
 function filterAccounts() {
     const q  = document.getElementById('accountsSearch').value.toLowerCase();
     const st = document.getElementById('accountsStatusFilter').value;
+    const typeFilter = document.getElementById('accountsTypeFilter').value;
     
     const studentAccounts = STUDENTS.map((s, index) => ({
         id: s.studentId,
@@ -1262,10 +1263,12 @@ function filterAccounts() {
     
     const allAccounts = [...EMPLOYEES, ...studentAccounts];
     
-    renderAccountsTable(allAccounts.filter(e =>
-        (!q  || e.name.toLowerCase().includes(q) || (e.email && e.email.toLowerCase().includes(q)) || e.id.toLowerCase().includes(q)) &&
-        (!st || e.status === st)
-    ));
+    renderAccountsTable(allAccounts.filter(e => {
+        const matchesQ = (!q || e.name.toLowerCase().includes(q) || (e.email && e.email.toLowerCase().includes(q)) || e.id.toLowerCase().includes(q));
+        const matchesSt = (!st || e.status === st);
+        const matchesType = (!typeFilter || (typeFilter === 'Employee' && !e.isStudent) || (typeFilter === 'Student' && e.isStudent));
+        return matchesQ && matchesSt && matchesType;
+    }));
 }
 
 let resetTargetId = null;
