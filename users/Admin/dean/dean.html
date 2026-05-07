@@ -6,8 +6,814 @@
     <title>WMSU-Ease | College Dean — CCS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="dean.css" />
-    <link rel="stylesheet" href="../admin.css" />
+    <style>
+    /* ═══════════════════════════════════════════
+       CSS VARIABLES
+    ═══════════════════════════════════════════ */
+    :root {
+        --cr:           #c0192b;
+        --cr-dk:        #9b1422;
+        --cr-deep:      #6b1218;
+        --cr-pale:      #fff0f1;
+        --cr-border:    rgba(192,25,43,.18);
+        --green:        #16a34a;
+        --green-dk:     #15803d;
+        --green-pale:   #f0fdf4;
+        --green-b:      #bbf7d0;
+        --amber:        #d97706;
+        --amber-pale:   #fffbeb;
+        --amber-b:      #fde68a;
+        --red:          #dc2626;
+        --red-pale:     #fef2f2;
+        --red-b:        #fecaca;
+        --blue:         #1d4ed8;
+        --blue-lt:      #3b82f6;
+        --blue-pale:    #eff6ff;
+        --blue-b:       #bfdbfe;
+        --purple:       #7c3aed;
+        --purple-pale:  #f5f3ff;
+        --purple-b:     #ddd6fe;
+        --text:         #111827;
+        --text-soft:    #374151;
+        --muted:        #6b7280;
+        --muted-lt:     #9ca3af;
+        --border:       #e5e7eb;
+        --bg:           #f9fafb;
+        --bg-dk:        #f3f4f6;
+        --white:        #ffffff;
+        --nav-h:        60px;
+        --sidebar-w:    240px;
+        --shadow-sm:    0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+        --shadow-md:    0 4px 12px rgba(0,0,0,.08);
+        --shadow-lg:    0 12px 36px rgba(0,0,0,.14);
+        --radius:       10px;
+        --radius-sm:    7px;
+        --tr:           .15s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    input, select, textarea { font-family: inherit; }
+
+    /* ═══════════════════════════════════════════
+       TOPBAR — white
+    ═══════════════════════════════════════════ */
+    .topbar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+        height: var(--nav-h);
+        background: var(--white);
+        display: flex; align-items: center;
+        padding: 0 20px; gap: 14px;
+        box-shadow: 0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,.05);
+    }
+
+    .topbar-brand {
+        display: flex; align-items: center; gap: 8px;
+        text-decoration: none; flex-shrink: 0;
+    }
+    .topbar-logo  { width: 26px; height: 26px; color: var(--cr); }
+    .topbar-name  { font-size: 16px; font-weight: 800; color: var(--text); letter-spacing: -.4px; }
+
+    .topbar-divider {
+        width: 1px; height: 20px;
+        background: var(--border); flex-shrink: 0;
+    }
+
+    /* college badge */
+    .college-badge {
+        display: flex; align-items: center; gap: 7px; flex-shrink: 0;
+    }
+    .college-badge-icon {
+        width: 26px; height: 26px; border-radius: 7px;
+        background: var(--cr-pale); border: 1px solid var(--cr-border);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px;
+    }
+    .college-badge-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .college-badge-label {
+        font-size: 9px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: var(--muted-lt);
+    }
+    .college-badge-name { font-size: 12.5px; font-weight: 700; color: var(--text); }
+
+    /* term status */
+    .term-status {
+        display: flex; align-items: center; gap: 6px;
+        padding: 4px 10px; border-radius: 20px;
+        font-size: 11px; font-weight: 600;
+        border: 1px solid var(--border);
+        color: var(--muted); flex-shrink: 0;
+    }
+    .term-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .term-status.open { border-color: rgba(22,163,74,.25); color: var(--green-dk); background: var(--green-pale); }
+    .term-status.open .term-dot { background: #16a34a; box-shadow: 0 0 5px #4ade80; }
+
+    /* guardrail pill */
+    .guardrail-pill {
+        display: flex; align-items: center; gap: 5px;
+        padding: 3px 10px; border-radius: 20px;
+        font-size: 11px; font-weight: 700;
+        background: var(--amber-pale); border: 1px solid rgba(217,119,6,.3);
+        color: var(--amber); flex-shrink: 0;
+    }
+    .guardrail-pill svg { width: 11px; height: 11px; }
+    .guardrail-pill.hidden { display: none; }
+
+    /* submission progress */
+    .submission-progress {
+        display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .sub-prog-label { font-size: 11px; color: var(--muted-lt); font-weight: 600; white-space: nowrap; }
+    .sub-prog-track { width: 90px; height: 5px; background: var(--bg-dk); border-radius: 99px; overflow: hidden; }
+    .sub-prog-fill  { height: 100%; border-radius: 99px; background: var(--green); transition: width .5s; }
+    .sub-prog-count { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+
+    /* global search */
+    .topbar-search {
+        display: flex; align-items: center; gap: 7px;
+        background: var(--bg); border: 1px solid var(--border);
+        border-radius: 8px; padding: 5px 11px;
+        transition: border-color var(--tr), box-shadow var(--tr);
+        width: 190px;
+    }
+    .topbar-search:focus-within {
+        background: var(--white); border-color: var(--cr);
+        box-shadow: 0 0 0 3px rgba(192,25,43,.07);
+    }
+    .topbar-search input {
+        background: none; border: none; outline: none;
+        font-size: 12px; color: var(--text); width: 100%;
+    }
+    .topbar-search input::placeholder { color: var(--muted-lt); }
+    .topbar-search svg { color: var(--muted-lt); flex-shrink: 0; }
+
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .topbar-user  { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-soft); }
+    .topbar-avatar {
+        width: 30px; height: 30px; border-radius: 50%;
+        background: var(--cr-pale); border: 2px solid var(--cr-border);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10px; font-weight: 800; color: var(--cr-dk);
+        flex-shrink: 0;
+    }
+    .topbar-user-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .topbar-logout {
+        display: flex; align-items: center; gap: 5px;
+        padding: 5px 10px; border-radius: 7px;
+        background: var(--bg-dk); border: 1px solid var(--border);
+        color: var(--muted); font-size: 12px; font-weight: 600;
+        cursor: pointer; transition: background var(--tr), color var(--tr);
+    }
+    .topbar-logout:hover { background: var(--red-pale); color: var(--red); border-color: var(--red-b); }
+
+    /* hamburger button for mobile */
+    .hamburger {
+        display: none; flex-direction: column; gap: 4px;
+        width: 30px; height: 30px; border: 1px solid var(--border);
+        border-radius: 6px; background: var(--bg-dk);
+        align-items: center; justify-content: center;
+        cursor: pointer; flex-shrink: 0;
+    }
+    .hamburger span {
+        display: block; width: 16px; height: 2px;
+        background: var(--muted); border-radius: 2px;
+        transition: transform var(--tr), opacity var(--tr);
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════ */
+    .layout {
+        display: grid;
+        grid-template-columns: var(--sidebar-w) 1fr;
+        height: calc(100vh - var(--nav-h));
+        margin-top: var(--nav-h);
+        overflow: hidden;
+    }
+
+    /* sidebar overlay for mobile */
+    .sidebar-overlay {
+        display: none; position: fixed; inset: 0; z-index: 250;
+        background: rgba(0,0,0,.4); backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.open { display: block; }
+
+    /* ═══════════════════════════════════════════
+       SIDEBAR
+    ═══════════════════════════════════════════ */
+    .sidebar {
+        background: var(--white);
+        border-right: 1px solid var(--border);
+        overflow-y: auto; padding: 14px 10px 32px;
+        display: flex; flex-direction: column; gap: 1px;
+        scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+        height: 100%;
+    }
+
+    .sidebar-section {
+        padding: 14px 10px 4px;
+        font-size: 9.5px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; color: var(--muted-lt);
+    }
+    .sidebar-section:first-child { padding-top: 4px; }
+
+    .sidebar-link {
+        display: flex; align-items: center; gap: 10px;
+        padding: 9px 12px; border-radius: var(--radius-sm);
+        font-size: 13px; font-weight: 500; color: var(--muted);
+        cursor: pointer; user-select: none;
+        border-left: 3px solid transparent;
+        transition: background var(--tr), color var(--tr), border-color var(--tr);
+    }
+    .sidebar-link svg { flex-shrink: 0; opacity: .6; }
+    .sidebar-link:hover { background: var(--bg-dk); color: var(--text); }
+    .sidebar-link.active {
+        background: var(--cr-pale); color: var(--cr);
+        border-left-color: var(--cr); font-weight: 700;
+    }
+    .sidebar-link.active svg { opacity: 1; }
+
+    .sidebar-badge {
+        margin-left: auto; padding: 2px 8px;
+        border-radius: 10px; font-size: 11px; font-weight: 700;
+        background: var(--bg-dk); color: var(--muted);
+    }
+    .sidebar-badge.amber { background: var(--amber-pale); color: var(--amber); }
+    .sidebar-badge.red   { background: var(--red-pale);   color: var(--red); }
+    .sidebar-badge.green { background: var(--green-pale);  color: var(--green-dk); }
+    .sidebar-badge.blue  { background: var(--blue-pale);   color: var(--blue); }
+
+    .sidebar-divider { height: 1px; background: var(--border); margin: 8px 10px; }
+
+    /* progress mini-bars in sidebar */
+    .prog-wrap  { margin-bottom: 10px; }
+    .prog-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; color: var(--text-soft); }
+    .prog-bar   { height: 5px; background: var(--bg-dk); border-radius: 99px; overflow: hidden; }
+    .prog-fill  { height: 100%; border-radius: 99px; background: var(--cr); transition: width .5s; }
+    .prog-fill.green { background: var(--green); }
+    .prog-fill.amber { background: var(--amber); }
+
+    /* ═══════════════════════════════════════════
+       MAIN CONTENT
+    ═══════════════════════════════════════════ */
+    .main {
+        overflow-y: auto; overflow-x: hidden;
+        background: var(--bg);
+        padding-bottom: 40px;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fade-up .18s ease both; }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+    /* PAGE HEADER */
+    .page-hd {
+        display: flex; align-items: flex-start; justify-content: space-between;
+        gap: 16px; padding: 22px 22px 18px; flex-wrap: wrap;
+    }
+    .page-hd-left h1 { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .page-hd-left p  { font-size: 12.5px; color: var(--muted); }
+    .page-hd-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* ═══════════════════════════════════════════
+       KPI CARDS
+    ═══════════════════════════════════════════ */
+    .kpi-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px; padding: 0 22px; margin-bottom: 20px;
+    }
+    .kpi-card {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 14px 16px;
+        box-shadow: var(--shadow-sm);
+        display: flex; align-items: center; gap: 12px;
+        position: relative; overflow: hidden;
+        transition: box-shadow var(--tr), transform var(--tr);
+    }
+    .kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    .kpi-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: var(--cr);
+    }
+    .kpi-card.green::before  { background: var(--green); }
+    .kpi-card.amber::before  { background: var(--amber); }
+    .kpi-card.blue::before   { background: var(--blue-lt); }
+    .kpi-card.purple::before { background: var(--purple); }
+    .kpi-icon {
+        width: 38px; height: 38px; border-radius: 9px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; flex-shrink: 0; background: var(--cr-pale);
+    }
+    .kpi-icon.cr     { background: var(--cr-pale); }
+    .kpi-icon.green  { background: var(--green-pale); }
+    .kpi-icon.amber  { background: var(--amber-pale); }
+    .kpi-icon.blue   { background: var(--blue-pale); }
+    .kpi-icon.purple { background: var(--purple-pale); }
+    .kpi-num { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; }
+    .kpi-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ═══════════════════════════════════════════
+       CARDS
+    ═══════════════════════════════════════════ */
+    .card {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: var(--radius); box-shadow: var(--shadow-sm);
+        overflow: hidden; margin: 0 22px 18px;
+    }
+    .card-header {
+        padding: 14px 18px; border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .card-title {
+        font-size: 13.5px; font-weight: 700; color: var(--text);
+        display: flex; align-items: center; gap: 8px;
+    }
+    .card-title-icon {
+        width: 26px; height: 26px; border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px; flex-shrink: 0; background: var(--cr-pale);
+    }
+    .card-body { padding: 18px; }
+
+    /* ═══════════════════════════════════════════
+       GRID UTILITIES
+    ═══════════════════════════════════════════ */
+    .grid-2 {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 0; padding: 0 22px; margin-bottom: 18px;
+    }
+    .grid-2 > .card { margin: 0; }
+    .grid-2 > .card:first-child { margin-right: 9px; }
+    .grid-2 > .card:last-child  { margin-left: 9px; }
+    .mb-6 { margin-bottom: 24px; }
+
+    /* ═══════════════════════════════════════════
+       BADGES
+    ═══════════════════════════════════════════ */
+    .badge {
+        display: inline-flex; align-items: center; gap: 4px;
+        padding: 2px 8px; border-radius: 20px;
+        font-size: 11px; font-weight: 700; white-space: nowrap;
+    }
+    .badge-green  { background: var(--green-pale); color: var(--green-dk);  border: 1px solid var(--green-b); }
+    .badge-amber  { background: var(--amber-pale); color: var(--amber);     border: 1px solid var(--amber-b); }
+    .badge-red    { background: var(--red-pale);   color: var(--red);       border: 1px solid var(--red-b); }
+    .badge-blue   { background: var(--blue-pale);  color: var(--blue);      border: 1px solid var(--blue-b); }
+    .badge-purple { background: var(--purple-pale);color: var(--purple);    border: 1px solid var(--purple-b); }
+    .badge-gray   { background: var(--bg-dk);      color: var(--muted);     border: 1px solid var(--border); }
+    .load-optimal    { background: var(--green-pale); color: var(--green-dk); border: 1px solid var(--green-b); }
+    .load-overloaded { background: var(--red-pale);   color: var(--red);      border: 1px solid var(--red-b); }
+    .load-under      { background: var(--amber-pale); color: var(--amber);    border: 1px solid var(--amber-b); }
+    .load-approved   { background: var(--blue-pale);  color: var(--blue);     border: 1px solid var(--blue-b); }
+
+    /* ═══════════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════════ */
+    .btn {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 7px 14px; border-radius: var(--radius-sm);
+        border: none; font-size: 12.5px; font-weight: 700;
+        font-family: inherit; cursor: pointer;
+        transition: background var(--tr), box-shadow var(--tr), transform .1s;
+        white-space: nowrap;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled, .btn.disabled { opacity: .38; cursor: not-allowed; pointer-events: none; }
+    .btn svg { width: 13px; height: 13px; }
+    .btn-primary { background: var(--cr); color: #fff; box-shadow: 0 2px 8px rgba(192,25,43,.25); }
+    .btn-primary:hover { background: var(--cr-dk); }
+    .btn-ghost   { background: var(--white); color: var(--muted); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg-dk); color: var(--text); }
+    .btn-success { background: var(--green); color: #fff; }
+    .btn-success:hover { background: var(--green-dk); }
+    .btn-amber   { background: var(--amber); color: #fff; }
+    .btn-amber:hover { background: #b45309; }
+    .btn-danger  { background: var(--red); color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-sm { padding: 5px 11px; font-size: 12px; border-radius: 6px; gap: 5px; }
+    .btn-xs { padding: 3px 8px;  font-size: 11px; border-radius: 5px; gap: 4px; }
+
+    /* ═══════════════════════════════════════════
+       TOOLBAR & SEARCH
+    ═══════════════════════════════════════════ */
+    .toolbar {
+        display: flex; align-items: center; gap: 10px;
+        padding: 0 22px; margin-bottom: 14px; flex-wrap: wrap;
+    }
+    .toolbar-spacer { flex: 1; }
+    .search-box {
+        display: flex; align-items: center; gap: 7px;
+        background: var(--white); border: 1.5px solid var(--border);
+        border-radius: 8px; padding: 6px 12px;
+        transition: border-color var(--tr), box-shadow var(--tr);
+    }
+    .search-box:focus-within { border-color: var(--cr); box-shadow: 0 0 0 3px rgba(192,25,43,.07); }
+    .search-box input { border: none; outline: none; font-size: 13px; background: none; color: var(--text); width: 180px; }
+    .search-box input::placeholder { color: var(--muted-lt); }
+    .search-box svg { color: var(--muted-lt); flex-shrink: 0; }
+    .filter-select {
+        padding: 7px 28px 7px 10px; border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm); background: var(--white);
+        font-size: 13px; font-family: inherit; color: var(--text);
+        outline: none; cursor: pointer; appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 8px center;
+        transition: border-color var(--tr);
+    }
+    .filter-select:focus { border-color: var(--cr); }
+
+    /* ═══════════════════════════════════════════
+       DATA TABLE
+    ═══════════════════════════════════════════ */
+    .table-wrap { overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table thead tr { background: var(--cr-deep); }
+    .data-table thead th {
+        padding: 10px 14px; text-align: left;
+        font-size: 10.5px; font-weight: 700; letter-spacing: .8px;
+        text-transform: uppercase; color: rgba(255,255,255,.85); white-space: nowrap;
+    }
+    .data-table thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+    .data-table thead th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
+    .data-table tbody tr { border-bottom: 1px solid var(--border); transition: background var(--tr); }
+    .data-table tbody tr:last-child { border-bottom: none; }
+    .data-table tbody tr:hover { background: #fff5f6; }
+    .data-table tbody td { padding: 10px 14px; vertical-align: middle; color: var(--text-soft); }
+
+    .faculty-name-btn {
+        background: none; border: none; font-family: inherit;
+        font-size: 13px; font-weight: 600; color: var(--cr);
+        cursor: pointer; padding: 0; text-align: left;
+        text-decoration: underline; text-underline-offset: 3px;
+        text-decoration-color: transparent;
+        transition: text-decoration-color var(--tr);
+    }
+    .faculty-name-btn:hover { text-decoration-color: var(--cr); }
+    .faculty-sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+
+    /* ═══════════════════════════════════════════
+       ALERT
+    ═══════════════════════════════════════════ */
+    .alert {
+        display: flex; gap: 9px; padding: 10px 13px;
+        border-radius: var(--radius-sm); font-size: 12.5px;
+        margin: 0 22px 14px; align-items: flex-start;
+    }
+    .alert svg { flex-shrink: 0; margin-top: 1px; }
+    .alert-blue  { background: var(--blue-pale);  color: var(--blue);     border: 1px solid var(--blue-b); }
+    .alert-red   { background: var(--red-pale);   color: var(--red);      border: 1px solid var(--red-b); }
+    .alert-amber { background: var(--amber-pale); color: #92400e;         border: 1px solid var(--amber-b); }
+    .alert-green { background: var(--green-pale); color: var(--green-dk); border: 1px solid var(--green-b); }
+
+    /* ═══════════════════════════════════════════
+       BAR CHART
+    ═══════════════════════════════════════════ */
+    .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: grid; grid-template-columns: 120px 1fr 48px; align-items: center; gap: 10px; font-size: 12.5px; }
+    .bar-label { color: var(--text-soft); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { height: 7px; background: var(--bg-dk); border-radius: 99px; overflow: hidden; }
+    .bar-fill  { height: 100%; border-radius: 99px; background: var(--cr); transition: width .5s; }
+    .bar-fill.green { background: var(--green); }
+    .bar-fill.amber { background: var(--amber); }
+    .bar-fill.blue  { background: var(--blue-lt); }
+    .bar-val { font-weight: 700; color: var(--text); text-align: right; }
+
+    /* ═══════════════════════════════════════════
+       EMPTY STATE
+    ═══════════════════════════════════════════ */
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--muted-lt); }
+    .empty-state svg { margin: 0 auto 12px; display: block; opacity: .18; }
+    .empty-state p { font-size: 13px; color: var(--muted); }
+
+    /* ═══════════════════════════════════════════
+       GUARDRAIL NOTE
+    ═══════════════════════════════════════════ */
+    .guardrail-note {
+        font-size: 11.5px; color: var(--amber); font-weight: 600;
+        display: flex; align-items: center; gap: 5px;
+        margin: 0 22px 14px; padding: 8px 12px;
+        background: var(--amber-pale); border: 1px solid var(--amber-b);
+        border-radius: var(--radius-sm);
+    }
+    .guardrail-note svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .guardrail-note.hidden { display: none; }
+
+    /* ═══════════════════════════════════════════
+       DETAIL PANEL (slide-in)
+    ═══════════════════════════════════════════ */
+    .detail-panel {
+        position: fixed; top: var(--nav-h); right: 0; bottom: 0;
+        width: 380px; background: var(--white);
+        border-left: 1px solid var(--border);
+        box-shadow: var(--shadow-lg);
+        display: flex; flex-direction: column;
+        transform: translateX(100%);
+        transition: transform .25s ease;
+        z-index: 200;
+    }
+    .detail-panel.open { transform: translateX(0); }
+    .panel-hd {
+        padding: 16px 18px; border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between;
+        background: var(--cr-pale);
+    }
+    .panel-hd h3 { font-size: 14px; font-weight: 800; color: var(--text); }
+    .panel-close {
+        width: 28px; height: 28px; border-radius: 6px;
+        background: none; border: 1px solid var(--border);
+        font-size: 16px; color: var(--muted); cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: background var(--tr), color var(--tr);
+    }
+    .panel-close:hover { background: var(--red-pale); color: var(--red); }
+    .panel-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .panel-section { margin-bottom: 20px; }
+    .panel-sec-title {
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: var(--muted-lt);
+        margin-bottom: 10px; padding-bottom: 6px;
+        border-bottom: 1px solid var(--border);
+    }
+    .panel-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 6px 0; border-bottom: 1px solid var(--bg-dk); font-size: 12.5px;
+    }
+    .panel-row:last-child { border-bottom: none; }
+    .panel-key { color: var(--muted); font-weight: 500; }
+    .panel-val { color: var(--text); font-weight: 600; text-align: right; }
+
+    .sched-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; }
+    .sched-table th {
+        font-size: 9.5px; text-transform: uppercase; letter-spacing: .6px;
+        color: var(--muted-lt); font-weight: 700;
+        padding: 4px 6px; border-bottom: 1px solid var(--border); text-align: left;
+    }
+    .sched-table td { padding: 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .sched-table tr:last-child td { border-bottom: none; }
+
+    /* ═══════════════════════════════════════════
+       MODALS
+    ═══════════════════════════════════════════ */
+    .modal-overlay {
+        display: none; position: fixed; inset: 0; z-index: 400;
+        background: rgba(0,0,0,.45); backdrop-filter: blur(3px);
+        align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+        background: var(--white); border-radius: var(--radius);
+        box-shadow: var(--shadow-lg); width: 100%; max-width: 480px;
+        max-height: 90vh; overflow-y: auto;
+        animation: modal-in .2s ease;
+    }
+    @keyframes modal-in { from { opacity: 0; transform: scale(.96) translateY(6px); } to { opacity: 1; transform: none; } }
+    .modal-hd {
+        padding: 16px 18px; border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-hd h3 { font-size: 14px; font-weight: 800; color: var(--text); }
+    .modal-x {
+        width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border);
+        background: none; font-size: 16px; color: var(--muted); cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: background var(--tr), color var(--tr);
+    }
+    .modal-x:hover { background: var(--red-pale); color: var(--red); }
+    .modal-body { padding: 18px; }
+    .modal-footer {
+        padding: 12px 18px; border-top: 1px solid var(--border);
+        display: flex; justify-content: flex-end; gap: 8px;
+    }
+
+    /* FORM */
+    .form-field { margin-bottom: 14px; }
+    .form-field label {
+        display: block; font-size: 12px; font-weight: 700;
+        color: var(--text); margin-bottom: 5px;
+    }
+    .form-input, .form-select, .form-textarea {
+        width: 100%; padding: 9px 11px;
+        border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+        font-size: 13px; font-family: inherit; color: var(--text);
+        background: var(--white); outline: none;
+        transition: border-color var(--tr), box-shadow var(--tr);
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+        border-color: var(--cr); box-shadow: 0 0 0 3px rgba(192,25,43,.08);
+    }
+    .form-textarea { resize: vertical; min-height: 80px; }
+
+    /* ═══════════════════════════════════════════
+       DIFF VIEWER
+    ═══════════════════════════════════════════ */
+    .diff-viewer {
+        background: #0d1117; border-radius: 8px;
+        overflow: hidden; font-size: 12.5px; margin-bottom: 14px;
+    }
+    .diff-header {
+        background: #161b22; padding: 8px 14px;
+        display: flex; align-items: center; justify-content: space-between;
+        border-bottom: 1px solid rgba(255,255,255,.08); gap: 10px; flex-wrap: wrap;
+    }
+    .diff-header-label { font-size: 11px; color: rgba(255,255,255,.4); font-weight: 600; }
+    .diff-header-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+    .diff-badge-add { background: rgba(74,222,128,.15); color: #4ade80; }
+    .diff-badge-rem { background: rgba(248,113,113,.15); color: #f87171; }
+    .diff-badge-chg { background: rgba(251,191,36,.15);  color: #fbbf24; }
+    .diff-row {
+        display: grid; grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid rgba(255,255,255,.04);
+        font-family: 'Menlo', 'Consolas', monospace;
+    }
+    .diff-row:last-child { border-bottom: none; }
+    .diff-cell {
+        padding: 7px 14px; display: flex; align-items: center; gap: 8px;
+        word-break: break-word;
+    }
+    .diff-cell.old       { background: rgba(248,113,113,.08); color: #fca5a5; }
+    .diff-cell.new       { background: rgba(74,222,128,.08);  color: #86efac; }
+    .diff-cell.unchanged { color: rgba(255,255,255,.4); }
+    .diff-sign           { font-weight: 800; width: 10px; flex-shrink: 0; }
+    .diff-sign.minus     { color: #f87171; }
+    .diff-sign.plus      { color: #4ade80; }
+    .diff-col-labels {
+        display: grid; grid-template-columns: 1fr 1fr;
+        padding: 6px 14px 4px; border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .diff-col-labels span {
+        font-size: 10px; color: rgba(255,255,255,.3);
+        font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROSPECTUS ITEM
+    ═══════════════════════════════════════════ */
+    .prospectus-item {
+        border: 1px solid var(--border); border-radius: var(--radius);
+        overflow: hidden; margin-bottom: 16px;
+        background: var(--white); box-shadow: var(--shadow-sm);
+    }
+    .prospectus-item-header {
+        padding: 14px 18px;
+        display: flex; align-items: flex-start; gap: 12px;
+        border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    }
+    .prospectus-item-title { font-size: 14px; font-weight: 700; color: var(--text); }
+    .prospectus-item-sub   { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .prospectus-item-actions { margin-left: auto; display: flex; gap: 7px; flex-wrap: wrap; }
+    .prospectus-item-body { padding: 16px 18px; }
+
+    /* Secretary history */
+    .sec-history {
+        background: var(--bg); border: 1px solid var(--border);
+        border-radius: 7px; padding: 12px 14px; margin-top: 12px;
+    }
+    .sec-history-title {
+        font-size: 11px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: .8px; color: var(--muted-lt); margin-bottom: 10px;
+        display: flex; align-items: center; gap: 6px;
+    }
+    .sec-history-entry {
+        display: flex; gap: 10px; padding: 6px 0;
+        border-bottom: 1px solid var(--border); font-size: 12px;
+    }
+    .sec-history-entry:last-child { border-bottom: none; padding-bottom: 0; }
+    .sec-history-dot    { width: 7px; height: 7px; border-radius: 50%; background: var(--cr); flex-shrink: 0; margin-top: 4px; }
+    .sec-history-action { color: var(--text); font-weight: 500; }
+    .sec-history-meta   { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    /* ═══════════════════════════════════════════
+       ANALYTICS — HEATMAP
+    ═══════════════════════════════════════════ */
+    .heatmap-grid {
+        display: grid;
+        grid-template-columns: 80px repeat(5, 1fr);
+        gap: 3px; margin-top: 8px;
+    }
+    .heatmap-label {
+        font-size: 10.5px; color: var(--muted); font-weight: 600;
+        display: flex; align-items: center; justify-content: flex-end;
+        padding-right: 6px; text-align: right;
+    }
+    .heatmap-col-label {
+        font-size: 9.5px; color: var(--muted-lt); font-weight: 700;
+        text-align: center; padding-bottom: 4px;
+        text-transform: uppercase; letter-spacing: .4px;
+    }
+    .heatmap-cell {
+        height: 32px; border-radius: 5px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10.5px; font-weight: 700; color: rgba(255,255,255,.9);
+        transition: transform .15s, box-shadow .15s; cursor: default;
+    }
+    .heatmap-cell:hover { transform: scale(1.06); box-shadow: 0 3px 10px rgba(0,0,0,.15); }
+    .hm-0 { background: #f3f4f6; color: var(--muted); }
+    .hm-1 { background: #dcfce7; color: #15803d; }
+    .hm-2 { background: #bbf7d0; color: #166534; }
+    .hm-3 { background: #86efac; color: #14532d; }
+    .hm-4 { background: #4ade80; color: #14532d; }
+    .hm-5 { background: #22c55e; color: #fff; }
+    .hm-6 { background: #16a34a; color: #fff; }
+    .hm-7 { background: #ef4444; color: #fff; }
+
+    /* ═══════════════════════════════════════════
+       TOAST
+    ═══════════════════════════════════════════ */
+    .toast-container {
+        position: fixed; bottom: 20px; right: 20px; z-index: 500;
+        display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+        padding: 11px 18px; border-radius: 8px;
+        font-size: 13px; font-weight: 600; color: #fff;
+        box-shadow: 0 4px 14px rgba(0,0,0,.18);
+        display: flex; align-items: center; gap: 8px;
+        animation: slide-in .25s ease; max-width: 340px;
+    }
+    .toast.success { background: var(--green); }
+    .toast.warn    { background: var(--amber); }
+    .toast.error   { background: var(--red); }
+    .toast.info    { background: var(--blue); }
+    @keyframes slide-in { from { transform: translateX(110%); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+
+    /* Tablet: 768–1024px */
+    @media (max-width: 1024px) {
+        :root { --sidebar-w: 200px; }
+        .kpi-row { grid-template-columns: repeat(3, 1fr); }
+        .submission-progress { display: none; }
+        .college-badge-name { font-size: 11.5px; }
+        .topbar-search { width: 150px; }
+    }
+
+    /* Mobile: <768px */
+    @media (max-width: 768px) {
+        :root { --sidebar-w: 240px; }
+
+        /* hamburger visible */
+        .hamburger { display: flex; }
+        .term-status, .topbar-search, .topbar-divider { display: none; }
+        .topbar-user-name { display: none; }
+        .college-badge { display: none; }
+
+        /* sidebar becomes off-canvas */
+        .layout { grid-template-columns: 1fr; }
+        .sidebar {
+            position: fixed;
+            top: var(--nav-h); left: 0; bottom: 0;
+            width: var(--sidebar-w); z-index: 260;
+            transform: translateX(-100%);
+            transition: transform .25s ease;
+            box-shadow: var(--shadow-lg);
+        }
+        .sidebar.open { transform: translateX(0); }
+
+        /* main area takes full width */
+        .main { width: 100%; }
+
+        .kpi-row { grid-template-columns: 1fr 1fr; padding: 0 14px; }
+        .grid-2 { grid-template-columns: 1fr; padding: 0 14px; }
+        .grid-2 > .card { margin: 0 0 14px; }
+        .grid-2 > .card:first-child, .grid-2 > .card:last-child { margin: 0 0 14px; }
+
+        .card { margin: 0 14px 14px; }
+        .alert { margin: 0 14px 12px; }
+        .guardrail-note { margin: 0 14px 12px; }
+        .toolbar { padding: 0 14px; }
+        .page-hd { padding: 16px 14px 14px; }
+
+        .detail-panel { width: 100%; top: var(--nav-h); }
+
+        .diff-row { grid-template-columns: 1fr; }
+        .diff-col-labels { grid-template-columns: 1fr; }
+
+        .prospectus-item-header { flex-direction: column; }
+        .prospectus-item-actions { margin-left: 0; }
+
+        .bar-row { grid-template-columns: 90px 1fr 40px; }
+    }
+
+    /* Small mobile: <480px */
+    @media (max-width: 480px) {
+        .kpi-row { grid-template-columns: 1fr; }
+        .heatmap-grid { grid-template-columns: 60px repeat(5, 1fr); }
+        .page-hd-actions { flex-direction: column; width: 100%; }
+        .page-hd-actions .btn { justify-content: center; }
+    }
+    </style>
 </head>
 <body>
 
@@ -16,7 +822,11 @@
 ══════════════════════════════════════════════════ -->
 <header class="topbar">
 
-    <!-- Brand -->
+    <!-- Mobile hamburger -->
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span></span><span></span><span></span>
+    </button>
+
     <a href="../../index.html" class="topbar-brand">
         <svg class="topbar-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -28,34 +838,19 @@
 
     <div class="topbar-divider"></div>
 
-    <!-- College badge -->
-    <div class="college-badge">
-        <div class="college-badge-icon">🎓</div>
-        <div class="college-badge-text">
-            <span class="college-badge-label">College</span>
-            <span class="college-badge-name">College of Computing Studies</span>
-        </div>
-    </div>
-
-    <div class="topbar-divider"></div>
-
-    <!-- Active term status -->
     <div class="term-status open" id="termStatusPill">
         <div class="term-dot"></div>
-        <span id="termStatusText">2nd Sem, AY 2024–2025 · Registration Open</span>
+        <span>1st Sem, AY 2026–2025 · Open</span>
     </div>
 
-    <!-- Guardrail warning (shown when Registrar submissions toggle is OFF) -->
     <div class="guardrail-pill hidden" id="guardrailPill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
             <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
             <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
-        Submissions Locked by Registrar
+        Submissions Locked
     </div>
 
-    <!-- Submission progress bar -->
     <div class="submission-progress">
         <span class="sub-prog-label">Dept. Progress</span>
         <div class="sub-prog-track">
@@ -64,13 +859,12 @@
         <span class="sub-prog-count" id="subProgCount">2/3 finalized</span>
     </div>
 
-    <!-- Global search -->
     <div class="topbar-search">
         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2.5">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <input type="text" id="globalSearch" placeholder="Search faculty or subject ID…"
+        <input type="text" id="globalSearch" placeholder="Search faculty or subject…"
                oninput="handleGlobalSearch(this.value)" />
     </div>
 
@@ -79,7 +873,7 @@
             <div class="topbar-avatar">DN</div>
             <span class="topbar-user-name">Dr. Norma Santos</span>
         </div>
-        <a href="../../login-pages/login.html" class="topbar-logout">
+        <a href="../../../login-pages/login.html" class="topbar-logout">
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -88,8 +882,10 @@
             Log Out
         </a>
     </div>
-
 </header>
+
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <!-- ══════════════════════════════════════════════════
      LAYOUT
@@ -97,7 +893,8 @@
 <div class="layout">
 
 <!-- SIDEBAR -->
-<nav class="sidebar">
+<nav class="sidebar" id="mainSidebar">
+
     <span class="sidebar-section">Navigation</span>
 
     <a class="sidebar-link active" id="nav-dashboard" onclick="switchTab('dashboard',this)">
@@ -137,26 +934,25 @@
     </a>
 
     <div class="sidebar-divider"></div>
-    <span class="sidebar-section">Term Info</span>
+    <span class="sidebar-section">Dept. Submissions</span>
 
-    <div style="padding:10px 12px;">
-        <div style="font-size:11px;color:var(--muted-lt);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px;">Submissions</div>
-        <div class="prog-wrap" style="margin-bottom:8px;">
-            <div class="prog-label" style="font-size:11px;">
+    <div style="padding:8px 12px 4px;">
+        <div class="prog-wrap">
+            <div class="prog-label">
                 <span>CS Program</span>
                 <span style="font-weight:700;color:var(--green);">Done</span>
             </div>
             <div class="prog-bar"><div class="prog-fill green" style="width:100%"></div></div>
         </div>
-        <div class="prog-wrap" style="margin-bottom:8px;">
-            <div class="prog-label" style="font-size:11px;">
+        <div class="prog-wrap">
+            <div class="prog-label">
                 <span>IT Program</span>
                 <span style="font-weight:700;color:var(--green);">Done</span>
             </div>
             <div class="prog-bar"><div class="prog-fill green" style="width:100%"></div></div>
         </div>
         <div class="prog-wrap" style="margin-bottom:0;">
-            <div class="prog-label" style="font-size:11px;">
+            <div class="prog-label">
                 <span>ACT Program</span>
                 <span style="font-weight:700;color:var(--amber);">Draft</span>
             </div>
@@ -164,28 +960,44 @@
         </div>
     </div>
 
+    <div class="sidebar-divider"></div>
+    <span class="sidebar-section">Quick Actions</span>
+
+    <a class="sidebar-link" onclick="downloadLoadReport()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download Report
+    </a>
+
+    <a class="sidebar-link" onclick="switchTab('faculty',document.getElementById('nav-faculty'));authorizeAll()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Authorize All Loads
+    </a>
+
 </nav>
 
 <!-- MAIN -->
-<main class="main">
+<main class="main" id="mainContent">
 
 <!-- ══════════════════════════════════
      TAB: DASHBOARD
 ══════════════════════════════════ -->
 <div class="tab-panel active" id="tab-dashboard">
-
     <div class="page-hd">
         <div class="page-hd-left">
             <h1>College Dashboard</h1>
-            <p>High-level overview of CCS enrollment and faculty loading for 2nd Semester, AY 2024–2025.</p>
+            <p>High-level overview — 2nd Semester, AY 2026–2027 · College of Computing Studies</p>
         </div>
     </div>
 
-    <!-- KPI row -->
     <div class="kpi-row">
         <div class="kpi-card">
             <div class="kpi-icon cr">🎓</div>
-            <div><div class="kpi-num">500</div><div class="kpi-lbl">Total Enrolled (CCS)</div></div>
+            <div><div class="kpi-num">500</div><div class="kpi-lbl">Total Enrolled</div></div>
         </div>
         <div class="kpi-card green">
             <div class="kpi-icon green">✅</div>
@@ -201,18 +1013,14 @@
         </div>
         <div class="kpi-card purple">
             <div class="kpi-icon purple">📋</div>
-            <div><div class="kpi-num">3</div><div class="kpi-lbl">Pending Approvals</div></div>
+            <div><div class="kpi-num" id="kpi-pending">3</div><div class="kpi-lbl">Pending Approvals</div></div>
         </div>
     </div>
 
     <div class="grid-2 mb-6">
-        <!-- Enrollment by program -->
         <div class="card">
             <div class="card-header">
-                <div class="card-title">
-                    <div class="card-title-icon">📊</div>
-                    Enrollment by Program
-                </div>
+                <div class="card-title"><div class="card-title-icon">📊</div>Enrollment by Program</div>
             </div>
             <div class="card-body">
                 <div class="bar-chart">
@@ -235,16 +1043,10 @@
             </div>
         </div>
 
-        <!-- Faculty load summary -->
         <div class="card">
             <div class="card-header">
-                <div class="card-title">
-                    <div class="card-title-icon">👨‍🏫</div>
-                    Faculty Load Summary
-                </div>
-                <button class="btn btn-ghost btn-sm" onclick="switchTab('faculty', document.getElementById('nav-faculty'))">
-                    View All →
-                </button>
+                <div class="card-title"><div class="card-title-icon">👨‍🏫</div>Faculty Load Summary</div>
+                <button class="btn btn-ghost btn-sm" onclick="switchTab('faculty',document.getElementById('nav-faculty'))">View All →</button>
             </div>
             <div class="card-body">
                 <div class="bar-chart" style="margin-bottom:16px;">
@@ -266,39 +1068,33 @@
                 </div>
                 <div class="prog-wrap" style="margin-bottom:0;">
                     <div class="prog-label">
-                        <span style="font-size:12px;">Approved Loads</span>
-                        <span style="font-weight:700;">8 / 18</span>
+                        <span>Approved Loads</span>
+                        <span style="font-weight:700;" id="dashApprovedLabel">8 / 18</span>
                     </div>
-                    <div class="prog-bar"><div class="prog-fill green" style="width:44%"></div></div>
+                    <div class="prog-bar"><div class="prog-fill green" id="dashApprovedBar" style="width:44%"></div></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Recent activity -->
     <div class="card">
         <div class="card-header">
-            <div class="card-title">
-                <div class="card-title-icon">🕐</div>
-                Recent Activity
-            </div>
+            <div class="card-title"><div class="card-title-icon">🕐</div>Recent Activity</div>
         </div>
         <div class="card-body" style="padding:0;">
             <div id="recentActivityFeed"></div>
         </div>
     </div>
-
 </div><!-- /tab-dashboard -->
 
 <!-- ══════════════════════════════════
      TAB: FACULTY LOADING
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-faculty">
-
     <div class="page-hd">
         <div class="page-hd-left">
             <h1>Faculty Loading</h1>
-            <p>Review and approve instructor assignments. Approve Load and Authorize All are disabled while Registrar submissions are locked.</p>
+            <p>Review and approve instructor assignments submitted by the Secretary.</p>
         </div>
         <div class="page-hd-actions">
             <button class="btn btn-ghost btn-sm" onclick="downloadLoadReport()">
@@ -307,7 +1103,7 @@
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-                Download Load Report
+                Download Report
             </button>
             <button class="btn btn-primary" id="btnAuthorizeAll" onclick="authorizeAll()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
@@ -319,23 +1115,21 @@
         </div>
     </div>
 
-    <!-- Guardrail note -->
     <div class="guardrail-note hidden" id="facultyGuardrailNote">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
             <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
             <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
-        Approve Load and Authorize All are disabled — Registrar's "Department Submissions" toggle is currently OFF.
+        Approve Load and Authorize All are disabled — Registrar's submissions toggle is currently OFF.
     </div>
 
-    <div class="alert alert-blue" style="margin-bottom:14px;">
+    <div class="alert alert-blue">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
             <line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
-        <span><strong>Authorize All</strong> applies to all loads regardless of status. Resolve overloaded or underloaded assignments with the Secretary or faculty before batch-approving.</span>
+        <span><strong>Authorize All</strong> applies to all loads. Resolve overloaded or underloaded assignments with the Secretary before batch-approving.</span>
     </div>
 
     <div class="toolbar">
@@ -362,10 +1156,10 @@
                 <thead>
                     <tr>
                         <th>Faculty Name</th>
-                        <th>Department</th>
-                        <th>Total Units</th>
-                        <th># Subjects</th>
-                        <th>Load Status</th>
+                        <th>Dept.</th>
+                        <th>Units</th>
+                        <th>Subjects</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -373,61 +1167,56 @@
             </table>
         </div>
     </div>
-
 </div><!-- /tab-faculty -->
 
 <!-- ══════════════════════════════════
      TAB: PROSPECTUS REVIEW
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-prospectus">
-
     <div class="page-hd">
         <div class="page-hd-left">
             <h1>Prospectus Review</h1>
-            <p>Curriculum drafts submitted by the Secretary. Review changes, leave correction notes, or endorse to the Registrar.</p>
+            <p>Curriculum drafts submitted by the Secretary. Review, return, or endorse to the Registrar.</p>
         </div>
     </div>
 
-    <!-- Guardrail note -->
     <div class="guardrail-note hidden" id="prospecGuardrailNote">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
             <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
             <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
-        Endorse to Registrar is disabled — Registrar's "Department Submissions" toggle is currently OFF.
+        Endorse to Registrar is disabled — submissions toggle is currently OFF.
     </div>
 
-    <div id="prospectusList"></div>
-
+    <div id="prospectusList" style="padding:0 22px;"></div>
 </div><!-- /tab-prospectus -->
 
 <!-- ══════════════════════════════════
      TAB: ANALYTICS
 ══════════════════════════════════ -->
 <div class="tab-panel" id="tab-analytics">
-
     <div class="page-hd">
         <div class="page-hd-left">
             <h1>Analytics</h1>
-            <p>Grade distribution heatmap and student attrition patterns for CCS. Mock data — replace with real API when backend is ready.</p>
+            <p>Grade distribution, attrition patterns, and enrollment trends for CCS. (Mock data)</p>
         </div>
     </div>
 
     <div class="grid-2 mb-6">
-        <!-- Grade distribution heatmap -->
         <div class="card">
             <div class="card-header">
-                <div class="card-title"><div class="card-title-icon">🌡️</div> Grade Distribution Heatmap</div>
+                <div class="card-title"><div class="card-title-icon">🌡️</div>Grade Distribution Heatmap</div>
             </div>
             <div class="card-body">
                 <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">
-                    Percentage of students per grade range per subject. Darker green = more passes. Red = failed/dropped.
+                    Percentage of students per grade range per subject. Darker green = more passes.
                 </p>
-                <div class="heatmap-grid" id="heatmapGrid"></div>
+                <div style="overflow-x:auto;">
+                    <div class="heatmap-grid" id="heatmapGrid"></div>
+                </div>
                 <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
                     <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);">
-                        <div style="width:12px;height:12px;border-radius:3px;background:#22c55e;"></div> High pass rate
+                        <div style="width:12px;height:12px;border-radius:3px;background:#22c55e;"></div> High pass
                     </div>
                     <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);">
                         <div style="width:12px;height:12px;border-radius:3px;background:#86efac;"></div> Moderate
@@ -439,20 +1228,19 @@
             </div>
         </div>
 
-        <!-- Attrition / EPIC drops -->
         <div class="card">
             <div class="card-header">
-                <div class="card-title"><div class="card-title-icon">📉</div> Student Attrition Patterns</div>
+                <div class="card-title"><div class="card-title-icon">📉</div>Student Attrition Patterns</div>
             </div>
             <div class="card-body">
                 <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">
-                    EPIC-style drop patterns — students who withdrew mid-semester by year level.
+                    Students who withdrew mid-semester by year level.
                 </p>
                 <div class="bar-chart" id="attritionChart"></div>
                 <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-                    <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;">Top Drop Triggers (mock)</div>
+                    <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;">Top Drop Triggers</div>
                     <div style="display:flex;flex-wrap:wrap;gap:6px;">
-                        <span class="badge badge-red">Financial difficulty (34%)</span>
+                        <span class="badge badge-red">Financial (34%)</span>
                         <span class="badge badge-amber">Academic failure (28%)</span>
                         <span class="badge badge-gray">Transfer (18%)</span>
                         <span class="badge badge-gray">Personal (20%)</span>
@@ -462,23 +1250,21 @@
         </div>
     </div>
 
-    <!-- Enrollment trend (bar) -->
     <div class="card">
         <div class="card-header">
-            <div class="card-title"><div class="card-title-icon">📈</div> Enrollment Trend — Last 4 Semesters (CCS)</div>
+            <div class="card-title"><div class="card-title-icon">📈</div>Enrollment Trend — Last 4 Semesters</div>
         </div>
         <div class="card-body">
             <div class="bar-chart" id="enrollTrendChart"></div>
         </div>
     </div>
-
 </div><!-- /tab-analytics -->
 
-</main><!-- /main -->
+</main>
 </div><!-- /layout -->
 
 <!-- ══════════════════════════════════════════════════
-     FACULTY DETAIL PANEL
+     DETAIL PANEL
 ══════════════════════════════════════════════════ -->
 <div class="detail-panel" id="detailPanel">
     <div class="panel-hd">
@@ -499,10 +1285,10 @@
         </div>
         <div class="modal-body">
             <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">
-                Describe the correction needed. This note will be visible to the Secretary who submitted this draft.
+                Describe the correction needed. This note will be visible to the Secretary.
             </p>
             <div class="form-field">
-                <label>Correction Note</label>
+                <label>Correction Note <span style="color:var(--cr);">*</span></label>
                 <textarea class="form-textarea" id="correctionNote" rows="4"
                     placeholder="e.g. CC 101 units should remain at 3, not 4. Please revert and resubmit."></textarea>
             </div>
@@ -525,7 +1311,7 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     MODAL: Confirm Endorse to Registrar
+     MODAL: Endorse to Registrar
 ══════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="endorseModal">
     <div class="modal-box">
@@ -534,13 +1320,13 @@
             <button class="modal-x" onclick="closeModal('endorseModal')">×</button>
         </div>
         <div class="modal-body">
-            <div class="alert alert-blue" style="margin-bottom:14px;">
+            <div class="alert alert-blue" style="margin:0 0 14px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                     <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
                     <line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
-                <span>This endorses the prospectus to the Registrar for final activation. The draft will move to <strong>Pending Activation</strong> status.</span>
+                <span>This endorses the prospectus to the Registrar for final activation. Status will move to <strong>Pending Activation</strong>.</span>
             </div>
             <div class="form-field" style="margin-bottom:0;">
                 <label>Prospectus</label>
@@ -561,16 +1347,16 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     MODAL: Confirm Archive
+     MODAL: Archive
 ══════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="archiveModal">
-    <div class="modal-box modal-sm" style="max-width:420px;">
+    <div class="modal-box" style="max-width:420px;">
         <div class="modal-hd">
             <h3>Archive Draft</h3>
             <button class="modal-x" onclick="closeModal('archiveModal')">×</button>
         </div>
         <div class="modal-body">
-            <p style="font-size:13px;color:var(--muted);">Move <strong id="archiveLabel"></strong> to the Legacy archive? It will no longer appear in the active queue but can be retrieved by the Registrar.</p>
+            <p style="font-size:13px;color:var(--muted);">Move <strong id="archiveLabel"></strong> to the Legacy archive? It will no longer appear in the active queue.</p>
         </div>
         <div class="modal-footer">
             <button class="btn btn-ghost" onclick="closeModal('archiveModal')">Cancel</button>
@@ -581,17 +1367,10 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- ══════════════════════════════════════════════════
-     SCRIPT
-══════════════════════════════════════════════════ -->
 <script>
 // ─────────────────────────────────────────────────
 // MOCK DATA
-// Replace with real API fetches when the backend is ready.
 // ─────────────────────────────────────────────────
-
-// Registrar toggle state — controls guardrail
-// Replace with real API fetch when the backend is ready.
 let REGISTRAR_SUBMISSIONS_OPEN = true;
 
 const FACULTY = [
@@ -608,17 +1387,22 @@ const FACULTY = [
 ];
 
 const FACULTY_SCHEDULES = {
-    1: [ { code:"CS 401", desc:"Software Engineering",      units:3, days:"MWF", time:"08:00–09:00", room:"CS-301" },
-         { code:"CC 103", desc:"Data Structures & Algo.",   units:3, days:"TTh", time:"09:00–10:30", room:"CS-Lab1" },
-         { code:"CS 106", desc:"Cyber Security",            units:3, days:"MWF", time:"13:00–14:00", room:"CS-302" } ],
-    4: [ { code:"DB 201", desc:"Database Management",       units:3, days:"MWF", time:"07:30–08:30", room:"CS-Lab2" },
-         { code:"DB 202", desc:"Advanced Database Systems", units:3, days:"TTh", time:"10:30–12:00", room:"CS-Lab2" },
-         { code:"AI 301", desc:"Artificial Intelligence",   units:3, days:"MWF", time:"10:30–11:30", room:"CS-303" } ],
-    8: [ { code:"OOP 112",desc:"Object-Oriented Programming",units:3, days:"MWF", time:"09:30–10:30", room:"CS-Lab1" },
-         { code:"CC 105", desc:"Operating Systems",          units:3, days:"TTh", time:"13:00–14:30", room:"CS-Lab3" } ],
+    1: [
+        { code:"CS 401", desc:"Software Engineering",     units:3, days:"MWF", time:"08:00–09:00", room:"CS-301" },
+        { code:"CC 103", desc:"Data Structures & Algo.",  units:3, days:"TTh", time:"09:00–10:30", room:"CS-Lab1" },
+        { code:"CS 106", desc:"Cyber Security",           units:3, days:"MWF", time:"13:00–14:00", room:"CS-302" },
+    ],
+    4: [
+        { code:"DB 201", desc:"Database Management",      units:3, days:"MWF", time:"07:30–08:30", room:"CS-Lab2" },
+        { code:"DB 202", desc:"Advanced Database Sys.",   units:3, days:"TTh", time:"10:30–12:00", room:"CS-Lab2" },
+        { code:"AI 301", desc:"Artificial Intelligence",  units:3, days:"MWF", time:"10:30–11:30", room:"CS-303" },
+    ],
+    8: [
+        { code:"OOP 112",desc:"Object-Oriented Prog.",    units:3, days:"MWF", time:"09:30–10:30", room:"CS-Lab1" },
+        { code:"CC 105", desc:"Operating Systems",        units:3, days:"TTh", time:"13:00–14:30", room:"CS-Lab3" },
+    ],
 };
 
-// Replace with real API fetch when the backend is ready.
 const PROSPECTUS = [
     {
         id:1, title:"BSCS Curriculum v2025.2",
@@ -626,12 +1410,12 @@ const PROSPECTUS = [
         submittedAt:"2025-01-10 09:24", status:"pending",
         changes:[
             { field:"CC 101 — Units",        old:"3",    new:"4",    type:"change" },
-            { field:"CC 101L — Units",       old:"1",    new:"0",    type:"remove" },
-            { field:"DS 111 — Description",  old:"Discrete Structures 1", new:"Discrete Math 1", type:"change" },
-            { field:"MATH 101 — Added",      old:"—",    new:"Linear Algebra (3 units)", type:"add" },
+            { field:"CC 101L — Units",        old:"1",    new:"0",    type:"remove" },
+            { field:"DS 111 — Description",   old:"Discrete Structures 1", new:"Discrete Math 1", type:"change" },
+            { field:"MATH 101 — Added",        old:"—",    new:"Linear Algebra (3 units)", type:"add" },
         ],
         history:[
-            { action:"Draft created",      by:"Ms. Clara Santos",  at:"2025-01-08 14:00" },
+            { action:"Draft created",              by:"Ms. Clara Santos", at:"2025-01-08 14:00" },
             { action:"Revised — removed lab unit", by:"Ms. Clara Santos", at:"2025-01-09 16:42" },
             { action:"Submitted for Dean review",  by:"Ms. Clara Santos", at:"2025-01-10 09:24" },
         ]
@@ -645,40 +1429,38 @@ const PROSPECTUS = [
             { field:"NET 101L — Added", old:"—", new:"Networks Lab (1 unit)", type:"add" },
         ],
         history:[
-            { action:"Draft created",             by:"Prof. Maria Reyes", at:"2025-01-10 08:00" },
-            { action:"Submitted for Dean review",  by:"Prof. Maria Reyes", at:"2025-01-11 11:05" },
+            { action:"Draft created",            by:"Prof. Maria Reyes", at:"2025-01-10 08:00" },
+            { action:"Submitted for Dean review", by:"Prof. Maria Reyes", at:"2025-01-11 11:05" },
         ]
     },
 ];
 
-// Replace with real API fetch when the backend is ready.
 const RECENT_ACTIVITY = [
-    { action:"Prof. Jose Rizal load approved",         detail:"Approved by Dean Norma Santos",          time:"Today 09:14",    type:"approve" },
-    { action:"BSCS Curriculum v2025.2 submitted",      detail:"Submitted by Ms. Clara Santos",           time:"Today 09:24",    type:"submit"  },
-    { action:"Dr. Ramon Dela Cruz marked Overloaded",  detail:"Units: 24 — exceeds 21-unit maximum",     time:"Yesterday 15:30",type:"warn"    },
-    { action:"BSIT Curriculum v2025.1 submitted",      detail:"Submitted by Prof. Maria Reyes",          time:"Yesterday 11:05",type:"submit"  },
-    { action:"Ms. Clara Santos load approved",         detail:"Approved by Dean Norma Santos",           time:"Jan 10 08:45",   type:"approve" },
+    { action:"Prof. Jose Rizal load approved",        detail:"Approved by Dean Norma Santos",      time:"Today 09:14",    type:"approve" },
+    { action:"BSCS Curriculum v2025.2 submitted",     detail:"Submitted by Ms. Clara Santos",       time:"Today 09:24",    type:"submit"  },
+    { action:"Dr. Ramon Dela Cruz marked Overloaded", detail:"Units: 24 — exceeds 21-unit maximum", time:"Yesterday 15:30",type:"warn"    },
+    { action:"BSIT Curriculum v2025.1 submitted",     detail:"Submitted by Prof. Maria Reyes",      time:"Yesterday 11:05",type:"submit"  },
+    { action:"Ms. Clara Santos load approved",        detail:"Approved by Dean Norma Santos",       time:"Jan 10 08:45",   type:"approve" },
 ];
 
-// Analytics mock data
 const HEATMAP_DATA = {
     subjects: ["CC 101","CC 102","CC 103","OOP 112","DB 201","CS 401"],
     grades:   ["1.0–1.5","1.75–2.5","2.75–3.0","5.0","INC/UW"],
     cells: [
-        [6,5,4,1,0],  // CC 101
-        [5,5,3,2,1],  // CC 102
-        [4,4,3,3,2],  // CC 103
-        [5,4,4,2,1],  // OOP 112
-        [3,5,4,3,2],  // DB 201
-        [4,3,4,2,3],  // CS 401 — higher fail (capstone)
+        [6,5,4,1,0],
+        [5,5,3,2,1],
+        [4,4,3,3,2],
+        [5,4,4,2,1],
+        [3,5,4,3,2],
+        [4,3,4,2,3],
     ]
 };
 
 const ATTRITION_DATA = [
-    { label:"Year 1",  val:12, max:30 },
-    { label:"Year 2",  val:8,  max:30 },
-    { label:"Year 3",  val:5,  max:30 },
-    { label:"Year 4",  val:3,  max:30 },
+    { label:"Year 1", val:12, max:30 },
+    { label:"Year 2", val:8,  max:30 },
+    { label:"Year 3", val:5,  max:30 },
+    { label:"Year 4", val:3,  max:30 },
 ];
 
 const ENROLL_TREND = [
@@ -696,27 +1478,33 @@ let activeEndorseId = null;
 let activeArchiveId = null;
 
 // ─────────────────────────────────────────────────
+// SIDEBAR TOGGLE (mobile)
+// ─────────────────────────────────────────────────
+function toggleSidebar() {
+    const sidebar  = document.getElementById('mainSidebar');
+    const overlay  = document.getElementById('sidebarOverlay');
+    const isOpen   = sidebar.classList.toggle('open');
+    overlay.classList.toggle('open', isOpen);
+}
+
+function closeSidebarOnMobile() {
+    if (window.innerWidth <= 768) {
+        document.getElementById('mainSidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+}
+
+// ─────────────────────────────────────────────────
 // GUARDRAIL
 // ─────────────────────────────────────────────────
 function applyGuardrail() {
     const locked = !REGISTRAR_SUBMISSIONS_OPEN;
-
-    // Topbar pill
-    const pill = document.getElementById('guardrailPill');
-    pill.classList.toggle('hidden', !locked);
-
-    // Faculty tab
-    const authBtn  = document.getElementById('btnAuthorizeAll');
-    const fNote    = document.getElementById('facultyGuardrailNote');
+    document.getElementById('guardrailPill').classList.toggle('hidden', !locked);
+    const authBtn = document.getElementById('btnAuthorizeAll');
     authBtn.classList.toggle('disabled', locked);
     authBtn.disabled = locked;
-    fNote.classList.toggle('hidden', !locked);
-
-    // Prospectus tab
-    const pNote = document.getElementById('prospecGuardrailNote');
-    pNote.classList.toggle('hidden', !locked);
-
-    // All "Approve Load" and "Endorse to Registrar" buttons rendered in tables
+    document.getElementById('facultyGuardrailNote').classList.toggle('hidden', !locked);
+    document.getElementById('prospecGuardrailNote').classList.toggle('hidden', !locked);
     document.querySelectorAll('.btn-approve-load, .btn-endorse').forEach(btn => {
         btn.classList.toggle('disabled', locked);
         btn.disabled = locked;
@@ -731,6 +1519,7 @@ function switchTab(tab, btn) {
     document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
     if (btn) btn.classList.add('active');
+    closeSidebarOnMobile();
 }
 
 // ─────────────────────────────────────────────────
@@ -741,7 +1530,6 @@ function loadStatusBadge(status) {
         Optimal:    'badge load-optimal',
         Overloaded: 'badge load-overloaded',
         Underloaded:'badge load-under',
-        Approved:   'badge load-approved',
     };
     return `<span class="${map[status] || 'badge badge-gray'}">${status}</span>`;
 }
@@ -753,12 +1541,16 @@ function renderFacultyTable() {
         (!q  || f.name.toLowerCase().includes(q) || f.dept.toLowerCase().includes(q)) &&
         (!st || f.status === st || (st === 'Approved' && f.approved))
     );
-
     document.getElementById('facultyCount').textContent = `${filtered.length} faculty`;
     const locked = !REGISTRAR_SUBMISSIONS_OPEN;
 
     document.getElementById('facultyTableBody').innerHTML = filtered.length === 0
-        ? `<tr><td colspan="6"><div class="empty-state"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>No faculty match your filters.</p></div></td></tr>`
+        ? `<tr><td colspan="6"><div class="empty-state">
+               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                   <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+               </svg>
+               <p>No faculty match your filters.</p>
+           </div></td></tr>`
         : filtered.map(f => `
             <tr>
                 <td>
@@ -766,19 +1558,14 @@ function renderFacultyTable() {
                     <div class="faculty-sub">${f.position}</div>
                 </td>
                 <td><span class="badge badge-gray">${f.dept}</span></td>
-                <td style="font-weight:700;">${f.units} <span style="font-weight:400;color:var(--muted);font-size:12px;">units</span></td>
-                <td>${f.subjects}</td>
-                <td>
-                    ${f.approved
-                        ? '<span class="badge load-approved">Approved</span>'
-                        : loadStatusBadge(f.status)}
-                </td>
+                <td style="font-weight:700;">${f.units} <span style="font-weight:400;color:var(--muted);font-size:12px;">u</span></td>
+                <td style="text-align:center;">${f.subjects}</td>
+                <td>${f.approved ? '<span class="badge load-approved">Approved</span>' : loadStatusBadge(f.status)}</td>
                 <td>
                     ${f.approved
                         ? `<span style="font-size:12px;color:var(--green);font-weight:600;">✓ Approved</span>`
-                        : `<button class="btn btn-success btn-xs btn-approve-load ${locked ? 'disabled' : ''}"
-                                ${locked ? 'disabled' : ''}
-                                onclick="approveLoad(${f.id})">
+                        : `<button class="btn btn-success btn-xs btn-approve-load ${locked?'disabled':''}"
+                                ${locked?'disabled':''} onclick="approveLoad(${f.id})">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                                     <polyline points="20 6 9 17 4 12"/>
@@ -823,31 +1610,32 @@ function openFacultyPanel(id) {
             <div class="panel-row"><span class="panel-key">Department</span><span class="panel-val">${f.dept}</span></div>
             <div class="panel-row"><span class="panel-key">Total Units</span><span class="panel-val">${f.units}</span></div>
             <div class="panel-row"><span class="panel-key">Subjects</span><span class="panel-val">${f.subjects}</span></div>
-            <div class="panel-row"><span class="panel-key">Load Status</span>
+            <div class="panel-row"><span class="panel-key">Status</span>
                 <span class="panel-val">${f.approved ? '<span class="badge load-approved">Approved</span>' : loadStatusBadge(f.status)}</span>
             </div>
         </div>
         <div class="panel-section">
-            <div class="panel-sec-title">Schedule (${sched.length > 0 ? sched.length + ' subjects shown' : 'no schedule on file'})</div>
+            <div class="panel-sec-title">Schedule (${sched.length > 0 ? sched.length + ' subjects' : 'none on file'})</div>
             ${sched.length
-                ? `<table class="sched-table">
+                ? `<div style="overflow-x:auto;">
+                   <table class="sched-table">
                     <thead><tr><th>Code</th><th>Description</th><th>Units</th><th>Days</th><th>Time</th><th>Room</th></tr></thead>
                     <tbody>${sched.map(s=>`<tr>
                         <td><strong>${s.code}</strong></td>
-                        <td style="max-width:120px;font-size:11.5px;">${s.desc}</td>
+                        <td style="font-size:11.5px;">${s.desc}</td>
                         <td style="text-align:center;">${s.units}</td>
                         <td>${s.days}</td>
-                        <td style="white-space:nowrap;">${s.time}</td>
+                        <td style="white-space:nowrap;font-size:11.5px;">${s.time}</td>
                         <td>${s.room}</td>
                     </tr>`).join('')}</tbody>
-                  </table>`
+                   </table></div>`
                 : `<p style="font-size:12.5px;color:var(--muted);">Full schedule not yet encoded by Secretary.</p>`}
         </div>`;
     document.getElementById('detailPanel').classList.add('open');
 }
 
 function downloadLoadReport() {
-    showToast('Load Report generation queued. This feature will produce a PDF for the VPAA.', 'info');
+    showToast('Load Report queued — will generate PDF for VPAA.', 'info');
 }
 
 // ─────────────────────────────────────────────────
@@ -859,17 +1647,24 @@ function renderProspectus() {
     const list    = document.getElementById('prospectusList');
 
     if (!pending.length) {
-        list.innerHTML = `<div class="empty-state"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>No prospectus drafts pending review.</p></div>`;
+        list.innerHTML = `<div class="empty-state" style="margin:0;">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            <p>No prospectus drafts pending review.</p>
+        </div>`;
         return;
     }
 
     list.innerHTML = pending.map(p => {
-        const typeBadge = (t) => ({ add:'badge-green', remove:'badge-red', change:'badge-amber' })[t] || 'badge-gray';
-        const typeLabel = (t) => ({ add:'+Added', remove:'−Removed', change:'~Changed' })[t] || t;
+        const addCount = p.changes.filter(c=>c.type==='add').length;
+        const remCount = p.changes.filter(c=>c.type==='remove').length;
+        const chgCount = p.changes.filter(c=>c.type==='change').length;
 
         const diffRows = p.changes.map(c => `
             <div class="diff-row">
-                <div class="diff-cell ${c.type === 'add' ? 'unchanged' : c.type === 'remove' ? 'old' : 'old'}">
+                <div class="diff-cell ${c.type === 'add' ? 'unchanged' : 'old'}">
                     <span class="diff-sign ${c.type === 'add' ? '' : 'minus'}">${c.type === 'add' ? ' ' : '−'}</span>
                     <span>${c.field}: ${c.old}</span>
                 </div>
@@ -888,38 +1683,33 @@ function renderProspectus() {
                 </div>
             </div>`).join('');
 
-        const addBadges = p.changes.filter(c=>c.type==='add').length;
-        const remBadges = p.changes.filter(c=>c.type==='remove').length;
-        const chgBadges = p.changes.filter(c=>c.type==='change').length;
-
         return `
         <div class="prospectus-item" id="prosp-${p.id}">
             <div class="prospectus-item-header">
-                <div>
+                <div style="flex:1;min-width:0;">
                     <div class="prospectus-item-title">${p.title}</div>
-                    <div class="prospectus-item-sub">Submitted by ${p.submittedBy} (${p.submittedRole}) on ${p.submittedAt}</div>
+                    <div class="prospectus-item-sub">
+                        Submitted by ${p.submittedBy} (${p.submittedRole}) — ${p.submittedAt}
+                    </div>
                 </div>
                 <div class="prospectus-item-actions">
-                    <button class="btn btn-ghost btn-sm"
-                            onclick="openArchiveModal(${p.id}, '${p.title}')">
+                    <button class="btn btn-ghost btn-sm" onclick="openArchiveModal(${p.id},'${p.title}')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                             <polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/>
                             <line x1="10" y1="12" x2="14" y2="12"/>
                         </svg>
-                        Archive Draft
+                        Archive
                     </button>
-                    <button class="btn btn-amber btn-sm"
-                            onclick="openReturnModal(${p.id}, '${p.title}')">
+                    <button class="btn btn-amber btn-sm" onclick="openReturnModal(${p.id},'${p.title}')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                             <polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
                         </svg>
-                        Return to Secretary
+                        Return
                     </button>
-                    <button class="btn btn-success btn-sm btn-endorse ${locked ? 'disabled' : ''}"
-                            ${locked ? 'disabled' : ''}
-                            onclick="openEndorseModal(${p.id}, '${p.title}')">
+                    <button class="btn btn-success btn-sm btn-endorse ${locked?'disabled':''}"
+                            ${locked?'disabled':''} onclick="openEndorseModal(${p.id},'${p.title}')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                             <polyline points="20 6 9 17 4 12"/>
@@ -929,24 +1719,21 @@ function renderProspectus() {
                 </div>
             </div>
             <div class="prospectus-item-body">
-                <!-- Diff viewer -->
                 <div class="diff-viewer">
                     <div class="diff-header">
                         <span class="diff-header-label">Changes vs. Previous Version</span>
-                        <div style="display:flex;gap:6px;">
-                            ${addBadges ? `<span class="diff-header-badge diff-badge-add">+${addBadges} added</span>` : ''}
-                            ${remBadges ? `<span class="diff-header-badge diff-badge-rem">−${remBadges} removed</span>` : ''}
-                            ${chgBadges ? `<span class="diff-header-badge diff-badge-chg">~${chgBadges} changed</span>` : ''}
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            ${addCount ? `<span class="diff-header-badge diff-badge-add">+${addCount} added</span>` : ''}
+                            ${remCount ? `<span class="diff-header-badge diff-badge-rem">−${remCount} removed</span>` : ''}
+                            ${chgCount ? `<span class="diff-header-badge diff-badge-chg">~${chgCount} changed</span>` : ''}
                         </div>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;padding:6px 14px 4px;border-bottom:1px solid rgba(255,255,255,.06);">
-                        <span style="font-size:10px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Previous</span>
-                        <span style="font-size:10px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;">Proposed</span>
+                    <div class="diff-col-labels">
+                        <span>Previous</span>
+                        <span>Proposed</span>
                     </div>
                     ${diffRows}
                 </div>
-
-                <!-- Secretary History -->
                 <div class="sec-history">
                     <div class="sec-history-title">
                         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
@@ -973,8 +1760,8 @@ function confirmReturn() {
     if (!note) { showToast('Please enter a correction note.', 'error'); return; }
     const p = PROSPECTUS.find(x => x.id === activeReturnId);
     if (p) p.status = 'returned';
-    showToast(`"${p.title}" returned to Secretary with correction note.`, 'warn');
-    addActivity(`${p.title} returned`, `Correction note sent by Dean Norma Santos`, 'warn');
+    showToast(`"${p.title}" returned to Secretary.`, 'warn');
+    addActivity(`${p.title} returned`, 'Correction note sent by Dean Norma Santos', 'warn');
     closeModal('returnModal');
     renderProspectus();
     updateProspectusBadge();
@@ -989,7 +1776,7 @@ function openEndorseModal(id, title) {
 function confirmEndorse() {
     const p = PROSPECTUS.find(x => x.id === activeEndorseId);
     if (p) p.status = 'endorsed';
-    showToast(`"${p.title}" endorsed to the Registrar. Status: Pending Activation.`, 'success');
+    showToast(`"${p.title}" endorsed to Registrar.`, 'success');
     addActivity(`${p.title} endorsed to Registrar`, 'By Dean Norma Santos', 'approve');
     closeModal('endorseModal');
     renderProspectus();
@@ -1004,7 +1791,7 @@ function openArchiveModal(id, title) {
 function confirmArchive() {
     const p = PROSPECTUS.find(x => x.id === activeArchiveId);
     if (p) p.status = 'archived';
-    showToast(`"${p.title}" archived to Legacy.`, 'info');
+    showToast(`"${p.title}" archived.`, 'info');
     closeModal('archiveModal');
     renderProspectus();
     updateProspectusBadge();
@@ -1019,24 +1806,19 @@ function updateProspectusBadge() {
 // ANALYTICS
 // ─────────────────────────────────────────────────
 function renderHeatmap() {
-    const grid = document.getElementById('heatmapGrid');
-    let html = '';
-
-    // Column headers row (blank first cell + grade labels)
-    html += `<div></div>`;  // empty top-left corner
+    let html = `<div></div>`;
     HEATMAP_DATA.grades.forEach(g => {
-        html += `<div class="heatmap-col-label" style="font-size:9px;">${g}</div>`;
+        html += `<div class="heatmap-col-label">${g}</div>`;
     });
-
-    // Data rows
     HEATMAP_DATA.subjects.forEach((subj, si) => {
         html += `<div class="heatmap-label">${subj}</div>`;
         HEATMAP_DATA.cells[si].forEach((val, gi) => {
-            const cls = HEATMAP_DATA.grades[gi].includes('5.0') || HEATMAP_DATA.grades[gi].includes('INC') ? (val >= 3 ? 'hm-7' : 'hm-1') : `hm-${val}`;
+            const isFail = HEATMAP_DATA.grades[gi].includes('5.0') || HEATMAP_DATA.grades[gi].includes('INC');
+            const cls    = isFail ? (val >= 3 ? 'hm-7' : 'hm-1') : `hm-${val}`;
             html += `<div class="heatmap-cell ${cls}" title="${subj} · ${HEATMAP_DATA.grades[gi]}: level ${val}">${val}</div>`;
         });
     });
-    grid.innerHTML = html;
+    document.getElementById('heatmapGrid').innerHTML = html;
 }
 
 function renderAttrition() {
@@ -1045,7 +1827,7 @@ function renderAttrition() {
             <div class="bar-row">
                 <span class="bar-label">${d.label}</span>
                 <div class="bar-track"><div class="bar-fill" style="width:${Math.round(d.val/d.max*100)}%"></div></div>
-                <span class="bar-val">${d.val} dropped</span>
+                <span class="bar-val">${d.val}</span>
             </div>`).join('');
 }
 
@@ -1060,7 +1842,7 @@ function renderEnrollTrend() {
 }
 
 // ─────────────────────────────────────────────────
-// DASHBOARD STATS
+// DASHBOARD
 // ─────────────────────────────────────────────────
 function renderRecentActivity() {
     document.getElementById('recentActivityFeed').innerHTML =
@@ -1068,20 +1850,24 @@ function renderRecentActivity() {
             <div style="display:flex;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);align-items:flex-start;">
                 <div style="width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;background:${
                     a.type === 'approve' ? 'var(--green)' :
-                    a.type === 'warn'    ? 'var(--red)' :
-                    'var(--blue-lt)'}"></div>
-                <div style="flex:1;">
+                    a.type === 'warn'    ? 'var(--red)' : 'var(--blue-lt)'}"></div>
+                <div style="flex:1;min-width:0;">
                     <div style="font-size:13px;font-weight:600;color:var(--text);">${a.action}</div>
                     <div style="font-size:11.5px;color:var(--muted);margin-top:1px;">${a.detail}</div>
                 </div>
-                <div style="font-size:11px;color:var(--muted-lt);white-space:nowrap;">${a.time}</div>
+                <div style="font-size:11px;color:var(--muted-lt);white-space:nowrap;flex-shrink:0;">${a.time}</div>
             </div>`).join('');
 }
 
 function updateDashboardStats() {
-    const approved  = FACULTY.filter(f => f.approved).length;
-    const total     = FACULTY.length;
-    document.querySelectorAll('.kpi-num')[4].textContent =
+    const approved = FACULTY.filter(f => f.approved).length;
+    const total    = FACULTY.length;
+    if (document.getElementById('dashApprovedLabel')) {
+        document.getElementById('dashApprovedLabel').textContent = `${approved} / ${total}`;
+        document.getElementById('dashApprovedBar').style.width = `${Math.round(approved/total*100)}%`;
+    }
+    const kpiEl = document.getElementById('kpi-pending');
+    if (kpiEl) kpiEl.textContent =
         FACULTY.filter(f => !f.approved).length + PROSPECTUS.filter(p => p.status === 'pending').length;
 }
 
@@ -1128,7 +1914,7 @@ function showToast(msg, type = 'success') {
     const icons = { success:'✓', warn:'⚠', error:'✕', info:'ℹ' };
     const el = document.createElement('div');
     el.className = `toast ${type}`;
-    el.innerHTML = `<span style="font-weight:800;">${icons[type]||'•'}</span> ${msg}`;
+    el.innerHTML = `<span style="font-weight:800;font-size:14px;">${icons[type]||'•'}</span> ${msg}`;
     document.getElementById('toastContainer').appendChild(el);
     setTimeout(() => el.remove(), 3500);
 }
@@ -1144,16 +1930,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderEnrollTrend();
     renderRecentActivity();
     applyGuardrail();
-
-    // Demo: toggle guardrail after 6 seconds to show it working
-    // Remove this in production — guardrail state should come from Registrar API.
-    // setTimeout(() => {
-    //     REGISTRAR_SUBMISSIONS_OPEN = false;
-    //     applyGuardrail();
-    //     showToast('Registrar locked Department Submissions.', 'warn');
-    // }, 6000);
 });
 </script>
-
 </body>
 </html>

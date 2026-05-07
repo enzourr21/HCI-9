@@ -620,38 +620,134 @@ function renderSectionsTable() {
 }
 
 // ─────────────────────────────────────────────────
-// ROOMS TABLE
+// ROOMS CARDS + SCHEDULE
 // ─────────────────────────────────────────────────
-function renderRoomsTable() {
-    const q   = (document.getElementById('roomSearch')?.value || '').toLowerCase();
-    const day = document.getElementById('roomDayFilter')?.value || '';
+function renderRoomsTable() { renderRoomsCards(); } // alias for legacy calls
+
+function renderRoomsCards() {
+    const q    = (document.getElementById('roomSearch')?.value || '').toLowerCase();
+    const type = document.getElementById('roomTypeFilter')?.value || '';
     const { roomConflicts } = detectConflicts();
 
-    const filtered = ASSIGNMENTS.filter(a =>
-        (!q   || a.room?.toLowerCase().includes(q) || a.section?.toLowerCase().includes(q) || a.code?.toLowerCase().includes(q)) &&
-        (!day || a.days === day)
+    const conflictRooms = new Set(
+        ASSIGNMENTS.filter(a => roomConflicts.has(a.id)).map(a => a.room)
     );
 
-    document.getElementById('roomCount').textContent = `${filtered.length} entries`;
-    document.getElementById('roomsTableBody').innerHTML = filtered.length === 0
-        ? `<tr><td colspan="7"><div class="empty-state"><p>No schedule entries found.</p></div></td></tr>`
-        : filtered.map(a => {
-            const f    = FACULTY_LIST.find(x => x.id === a.facultyId);
-            const hasC = roomConflicts.has(a.id);
-            return `
-            <tr class="${hasC ? 'conflict-row' : ''}">
-                <td><strong>${a.room || '—'}</strong></td>
-                <td><span class="badge badge-gray">${a.section}</span></td>
-                <td class="mono">${a.code} — ${a.title}</td>
-                <td style="font-size:12.5px;">${f?.name || '—'}</td>
-                <td>${a.days}</td>
-                <td class="mono" style="white-space:nowrap;">${a.time}</td>
-                <td>${hasC
-                    ? '<span class="conflict-badge">⚠ Room conflict</span>'
-                    : '<span class="badge badge-green">✓ Clear</span>'}
-                </td>
-            </tr>`;
-        }).join('');
+    const filtered = ROOMS_LIST.filter(r =>
+        (!q    || r.code.toLowerCase().includes(q) || r.type.toLowerCase().includes(q)) &&
+        (!type || r.type === type)
+    );
+
+    document.getElementById('roomCount').textContent = `${filtered.length} rooms`;
+
+    const typeIcon = { 'Computer Lab':'🖥️', 'Classroom':'🏫', 'Gym':'🏃' };
+
+    document.getElementById('roomCardsGrid').innerHTML =
+        `<div class="room-cards-grid">` +
+        (filtered.length === 0
+            ? `<div class="empty-state" style="grid-column:1/-1;"><p>No rooms match your filters.</p></div>`
+            : filtered.map(r => {
+                const sessions = ASSIGNMENTS.filter(a => a.room === r.code).length;
+                const hasC = conflictRooms.has(r.code);
+                return `
+                <div class="room-card${hasC?' has-conflict':''}" onclick="openRoomSchedule('${r.code}')">
+                    <div class="room-card-name">${r.code}</div>
+                    <div class="room-card-type">${typeIcon[r.type]||'📍'} ${r.type}</div>
+                    <div class="room-card-meta">
+                        <span>Capacity: <strong>${r.cap}</strong></span>
+                        <span class="room-card-sessions">${sessions} session${sessions!==1?'s':''}</span>
+                    </div>
+                    ${hasC ? `<div class="room-card-conflict">⚠ Conflict</div>` : ''}
+                </div>`;
+            }).join('')) +
+        `</div>`;
+}
+
+function openRoomSchedule(roomCode) {
+    const room = ROOMS_LIST.find(r => r.code === roomCode);
+    if (!room) return;
+
+    document.getElementById('roomSchedModalTitle').textContent = roomCode + ' — Weekly Schedule';
+    document.getElementById('roomSchedModalMeta').textContent =
+        `${room.type} · Capacity ${room.cap} · Dept: ${room.dept}`;
+
+    // Build time slots: 7:00 AM to 7:00 PM in 30-min increments
+    const slots = [];
+    for (let h = 7; h < 19; h++) {
+        slots.push({ label: fmt12(h, 0), startMin: h*60 });
+        slots.push({ label: fmt12(h, 30), startMin: h*60+30 });
+    }
+
+    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    const dayKeys = { Monday:['M','MWF','Daily'], Tuesday:['T','TTh','Daily'],
+        Wednesday:['W','MWF','Daily'], Thursday:['Th','TTh','Daily'],
+        Friday:['F','MWF','Daily'], Saturday:['Sat'], Sunday:[] };
+
+    // Build schedule map: for each day, list of assignments
+    const roomAssignments = ASSIGNMENTS.filter(a => a.room === roomCode);
+    const { roomConflicts } = detectConflicts();
+
+    function assignmentCoversSlot(a, dayKey, slotStart) {
+        const expanded = expandDays(a.days);
+        if (!expanded.includes(dayKey)) return false;
+        const t = parseTime(a.time);
+        if (!t) return false;
+        return slotStart >= t.start && slotStart < t.end;
+    }
+
+    function expandDays(d) {
+        if (d === 'MWF') return ['M','W','F'];
+        if (d === 'TTh') return ['T','Th'];
+        if (d === 'Daily') return ['M','T','W','Th','F'];
+        if (d === 'Sat') return ['Sat'];
+        return [d];
+    }
+
+    // Map day names to day key abbreviations
+    const dayAbbr = {
+        Monday:'M', Tuesday:'T', Wednesday:'W', Thursday:'Th',
+        Friday:'F', Saturday:'Sat', Sunday:'Sun'
+    };
+
+    // Build table HTML
+    let html = '<thead><tr><th>Time</th>';
+    days.forEach(d => { html += `<th>${d}</th>`; });
+    html += '</tr></thead><tbody>';
+
+    slots.forEach(slot => {
+        html += `<tr><td>${slot.label}</td>`;
+        days.forEach(day => {
+            const abbr = dayAbbr[day];
+            const match = roomAssignments.find(a => assignmentCoversSlot(a, abbr, slot.startMin));
+            if (match) {
+                const hasC = roomConflicts.has(match.id);
+                const t = parseTime(match.time);
+                // Only show at the start slot
+                const isStart = t && slot.startMin === t.start;
+                if (isStart) {
+                    html += `<td><div class="sched-cell${hasC?' conflict':''}">
+                        <span class="sched-cell-code">${match.code}</span>
+                        <span class="sched-cell-sec">${match.section}</span>
+                    </div></td>`;
+                } else {
+                    html += `<td style="background:var(--cr-pale);opacity:.35;"></td>`;
+                }
+            } else {
+                html += `<td></td>`;
+            }
+        });
+        html += '</tr>';
+    });
+
+    html += '</tbody>';
+    document.getElementById('roomSchedTable').innerHTML = html;
+    openModal('roomScheduleModal');
+}
+
+function fmt12(h, m) {
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hh   = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+    return `${hh}:${String(m).padStart(2,'0')} ${ampm}`;
 }
 
 // ─────────────────────────────────────────────────
@@ -675,32 +771,63 @@ function renderApprovals() {
     document.getElementById('approvalsList').innerHTML = filtered.length === 0
         ? `<div class="empty-state" style="margin:0;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>No requests match your filters.</p></div>`
         : filtered.map(r => `
-        <div class="approval-item" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;">
-            <div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                    <span class="badge ${typeBadgeMap[r.type]||'badge-gray'}">${typeLabelMap[r.type]||r.type}</span>
-                    <strong style="font-size:13.5px;">${r.student}</strong>
-                    <span style="font-size:11.5px;color:var(--muted);">${r.studentId}</span>
+        <div class="approval-item" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;flex-direction:column;">
+            <div style="display:flex;align-items:flex-start;gap:12px;width:100%;">
+                <div style="flex:1;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+                        <span class="badge ${typeBadgeMap[r.type]||'badge-gray'}">${typeLabelMap[r.type]||r.type}</span>
+                        <strong style="font-size:13.5px;">${r.student}</strong>
+                        <span style="font-size:11.5px;color:var(--muted);">${r.studentId}</span>
+                    </div>
+                    <div style="font-size:13px;color:var(--text-soft);margin-bottom:4px;">${r.detail}</div>
+                    <div style="font-size:11.5px;color:var(--muted-lt);">Submitted ${r.submitted}</div>
                 </div>
-                <div style="font-size:13px;color:var(--text-soft);margin-bottom:4px;">${r.detail}</div>
-                <div style="font-size:11.5px;color:var(--muted-lt);">Submitted ${r.submitted}</div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+                    <span class="badge ${statusBadge[r.status]||'badge-gray'}">${r.status}</span>
+                    ${r.status === 'pending' ? `
+                    <div style="display:flex;gap:6px;">
+                        <button class="btn btn-ghost btn-xs" onclick="toggleApprovalFeedback(${r.id},'reject')">Reject</button>
+                        <button class="btn btn-cr btn-xs" onclick="approvalAction(${r.id},'forwarded')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Accept &amp; Forward
+                        </button>
+                    </div>` : ''}
+                </div>
             </div>
-            <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
-                <span class="badge ${statusBadge[r.status]||'badge-gray'}">${r.status}</span>
-                ${r.status === 'pending' ? `
-                <div style="display:flex;gap:6px;">
-                    <button class="btn btn-ghost btn-xs" onclick="approvalAction(${r.id},'rejected')">Reject</button>
-                    <button class="btn btn-cr btn-xs" onclick="approvalAction(${r.id},'forwarded')">Forward to Registrar</button>
-                </div>` : ''}
-            </div>
+            ${r.status === 'pending' ? `
+            <div class="approval-feedback-area" id="feedback-area-${r.id}">
+                <div class="approval-feedback-label">Rejection Reason / Feedback</div>
+                <textarea id="feedback-text-${r.id}" placeholder="Enter reason for rejection or adjustment note…"></textarea>
+                <div class="approval-feedback-btns">
+                    <button class="btn btn-ghost btn-xs" onclick="toggleApprovalFeedback(${r.id},'reject')">Cancel</button>
+                    <button class="btn btn-danger btn-xs" onclick="approvalAction(${r.id},'rejected')">
+                        Confirm Rejection
+                    </button>
+                </div>
+            </div>` : r.feedback ? `
+            <div style="margin-top:8px;padding:8px 10px;background:var(--red-pale);border:1px solid var(--red-b);border-radius:6px;font-size:12px;color:var(--red);">
+                <strong>Rejection reason:</strong> ${r.feedback}
+            </div>` : ''}
         </div>`).join('');
+}
+
+function toggleApprovalFeedback(id, action) {
+    const area = document.getElementById(`feedback-area-${id}`);
+    if (!area) return;
+    area.classList.toggle('open');
 }
 
 function approvalAction(id, action) {
     const r = APPROVAL_REQUESTS.find(x => x.id === id);
     if (!r) return;
+    if (action === 'rejected') {
+        const feedbackEl = document.getElementById(`feedback-text-${id}`);
+        r.feedback = feedbackEl?.value.trim() || '';
+    }
     r.status = action;
-    const msg = action === 'forwarded' ? `${r.student}'s request forwarded to Registrar.` : `${r.student}'s request rejected.`;
+    const msg = action === 'forwarded'
+        ? `✓ ${r.student}'s request accepted and forwarded to Registrar.`
+        : `${r.student}'s request rejected.${r.feedback ? ' Feedback recorded.' : ''}`;
     showToast(msg, action === 'forwarded' ? 'success' : 'warning');
     addChangeLog(`${typeLabelMap[r.type]||r.type} request ${action} — ${r.student}`, action === 'forwarded' ? 'blue' : 'cr');
     renderApprovals();
@@ -1491,7 +1618,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDashboard();
     renderFacultyTable();
     renderSectionsTable();
-    renderRoomsTable();
+    renderRoomsCards();
     renderApprovals();
     renderProspectus();
     renderReports();
