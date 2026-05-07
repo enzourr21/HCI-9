@@ -461,10 +461,6 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
     <i class="fas fa-chart-line"></i> Enrollment Monitor
     <span class="sidebar-badge green" id="badge-enroll">Live</span>
   </a>
-  <a class="sidebar-link" onclick="showPage('holds',this)">
-    <i class="fas fa-lock"></i> Registration Holds
-    <span class="sidebar-badge amber" id="badge-holds">4</span>
-  </a>
 
   <div class="sidebar-divider"></div>
   <span class="sidebar-section-label">Control</span>
@@ -529,10 +525,6 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
     <div class="kpi-card blue">
       <div class="kpi-icon" style="background:var(--blue-pale)">📋</div>
       <div><div class="kpi-num" id="kpi-prospectus">3</div><div class="kpi-lbl">Pending Prospectus</div></div>
-    </div>
-    <div class="kpi-card" style="">
-      <div class="kpi-icon" style="background:#f5f3ff">🔒</div>
-      <div><div class="kpi-num">4</div><div class="kpi-lbl">Active Holds</div></div>
     </div>
   </div>
 
@@ -638,42 +630,100 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
 ══════════════════════════════════ -->
 <div class="page" id="page-room-assignment">
   <div class="page-hd">
-    <div class="page-hd-left"><h1>Room Assignment</h1><p>University-managed rooms and utilization.</p></div>
-    <div class="page-hd-actions">
-      <button class="btn btn-primary btn-sm" onclick="openModal('addRoomModal')"><i class="fas fa-plus"></i> Add Room</button>
+    <div class="page-hd-left"><h1>Room Assignment</h1><p>University buildings, rooms, and weekly timetables.</p></div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div id="roomBreadcrumb" style="display:none;align-items:center;gap:6px;margin-bottom:16px;font-size:13px;font-weight:600;color:var(--muted)">
+    <button class="btn btn-ghost btn-xs" onclick="renderBuildings()"><i class="fas fa-building"></i> Buildings</button>
+    <span style="color:var(--border)">›</span>
+    <span id="breadcrumbBuilding" style="color:var(--text)"></span>
+    <span id="breadcrumbArrow2" style="color:var(--border);display:none">›</span>
+    <span id="breadcrumbRoom" style="color:var(--cr);display:none"></span>
+  </div>
+
+  <!-- Search toolbar — only shown in building view -->
+  <div class="toolbar" id="buildingSearchBar">
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search building or college…" oninput="renderBuildings(this.value)"></div>
+  </div>
+
+  <!-- Building grid -->
+  <div id="buildingGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px"></div>
+
+  <!-- Room list view -->
+  <div id="roomListView" style="display:none;">
+    <div class="card">
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Code</th><th>Room Name</th><th>Type</th><th>Department</th><th style="text-align:center">Cap.</th><th style="text-align:center">Classes</th><th style="text-align:center">Schedule</th></tr></thead>
+          <tbody id="roomListBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <div class="toolbar">
-    <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search room…" oninput="filterRooms(this.value)"></div>
-    <select class="filter-select">
-      <option>All Buildings</option>
-      <option>CAS Building</option>
-      <option>Engineering Hall</option>
-      <option>Main Building</option>
-      <option>Science Complex</option>
-    </select>
+
+  <!-- Timetable view -->
+  <div id="timetableView" style="display:none;">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-calendar-week" style="color:var(--cr)"></i> <span id="timetableRoomTitle"></span></div>
+        <button class="btn btn-ghost btn-xs" onclick="goBackToRooms()"><i class="fas fa-arrow-left"></i> Back to rooms</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="timetable-table">
+          <thead id="timetableThead"></thead>
+          <tbody id="timetableTbody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  <div class="room-grid" id="roomGrid"></div>
 </div>
 
 
 <!-- ══════════════════════════════════
-     PROSPECTUS REVIEW  ← NEW
+     PROSPECTUS REVIEW
 ══════════════════════════════════ -->
 <div class="page" id="page-prospectus-review">
   <div class="page-hd">
     <div class="page-hd-left">
       <h1>Prospectus Review</h1>
-      <p>Curriculum drafts endorsed by College Deans. Activate, return for revision, or archive.</p>
+      <p>Curriculum drafts submitted by College Secretaries for endorsement.</p>
+    </div>
+    <div class="page-hd-actions">
+      <button class="btn btn-ghost btn-sm" onclick="selectAllProspectus()"><i class="fas fa-check-square"></i> Select All</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearProspectusSelection()"><i class="fas fa-square"></i> Clear</button>
     </div>
   </div>
 
   <div class="alert alert-blue" style="margin-bottom:18px">
     <i class="fas fa-circle-info"></i>
-    <span>These prospectus drafts have been <strong>endorsed by a College Dean</strong> and are awaiting your final activation. Activating a prospectus makes it the official curriculum for the current term.</span>
+    <span>Select one or more prospectus entries to batch endorse or return them with a shared correction note.</span>
   </div>
 
-  <div id="prospectusList"></div>
+  <!-- Batch action bar — shown when any selected -->
+  <div id="prospBatchBar" style="display:none;align-items:center;gap:10px;background:var(--cr-deep);color:#fff;padding:10px 16px;border-radius:var(--radius-sm);margin-bottom:16px;flex-wrap:wrap;">
+    <i class="fas fa-check-square"></i>
+    <span id="batchCount" style="font-weight:700;font-size:13px;">0 selected</span>
+    <div style="margin-left:auto;display:flex;gap:8px;">
+      <button class="btn btn-ghost btn-sm" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2)" onclick="batchReturn()">
+        <i class="fas fa-rotate-left"></i> Return Selected
+      </button>
+      <button class="btn btn-success btn-sm" onclick="batchEndorse()">
+        <i class="fas fa-check-circle"></i> Endorse Selected
+      </button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <select class="filter-select" onchange="filterProspectus(this.value)">
+      <option value="all">All Status</option>
+      <option value="pending">Pending</option>
+      <option value="endorsed">Endorsed</option>
+      <option value="returned">Returned</option>
+    </select>
+  </div>
+
+  <div id="prospectusQueue"></div>
 </div>
 
 
@@ -692,7 +742,7 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
   </div>
   <div class="toolbar">
     <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search department…" oninput="filterSubmissions(this.value)"></div>
-    <select class="filter-select" id="submissionFilter" onchange="renderSubmissionsTable()">
+    <select class="filter-select" id="submissionFilter" onchange="renderDeptSubmissions()">
       <option value="">All</option>
       <option value="pending">Pending</option>
       <option value="approved">Approved</option>
@@ -705,10 +755,10 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
     <div class="table-wrap">
       <table class="data-table">
         <thead><tr>
-          <th>Department</th><th>Type</th><th>Submitted By</th><th>Submitted</th>
-          <th>Items</th><th>Status</th><th>Actions</th>
+          <th>Department / Program</th><th>Type</th><th>Status</th>
+          <th>Submitted By</th><th>Date</th><th style="text-align:center">View</th>
         </tr></thead>
-        <tbody id="submissionsBody"></tbody>
+        <tbody id="deptSubmissionsBody"></tbody>
       </table>
     </div>
   </div>
@@ -716,43 +766,57 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
 
 
 <!-- ══════════════════════════════════
-     STUDENT RECORDS  ← NEW
+     STUDENT RECORDS
 ══════════════════════════════════ -->
 <div class="page" id="page-student-records">
   <div class="page-hd">
-    <div class="page-hd-left"><h1>Student Records</h1><p>Search, view, and manage student enrollment records and transcripts.</p></div>
+    <div class="page-hd-left"><h1>Student Records</h1><p>Read-only view of enrolled students this term.</p></div>
     <div class="page-hd-actions">
       <button class="btn btn-ghost btn-sm" onclick="showToast('Export as CSV queued.','info')"><i class="fas fa-download"></i> Export</button>
     </div>
   </div>
   <div class="toolbar">
-    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="studentSearch" placeholder="Search name or student ID…" oninput="renderStudentTable()"></div>
-    <select class="filter-select" id="studentStatusFilter" onchange="renderStudentTable()">
-      <option value="">All Status</option>
-      <option value="enrolled">Enrolled</option>
-      <option value="pending">Pending</option>
-      <option value="hold">On Hold</option>
-      <option value="irregular">Irregular</option>
+    <div class="search-box"><i class="fas fa-search"></i>
+      <input type="text" id="studentSearch" placeholder="Search name or student ID…" oninput="filterStudentRecords()">
+    </div>
+    <select class="filter-select" id="studentProgramFilter" onchange="filterStudentRecords()">
+      <option value="">All Programs</option>
+      <option value="BSCS">BSCS</option>
+      <option value="BSIT">BSIT</option>
+      <option value="BSCpE">BSCpE</option>
     </select>
-    <select class="filter-select" id="studentCollegeFilter" onchange="renderStudentTable()">
-      <option value="">All Colleges</option>
-      <option value="CCS">CCS</option>
-      <option value="CAS">CAS</option>
-      <option value="COE">COE</option>
-      <option value="CBA">CBA</option>
-      <option value="CED">CED</option>
+    <select class="filter-select" id="studentYearFilter" onchange="filterStudentRecords()">
+      <option value="">All Years</option>
+      <option value="1st">1st Year</option>
+      <option value="2nd">2nd Year</option>
+      <option value="3rd">3rd Year</option>
+      <option value="4th">4th Year</option>
+    </select>
+    <select class="filter-select" id="studentStatusFilter" onchange="filterStudentRecords()">
+      <option value="">All Status</option>
+      <option value="Enrolled">Enrolled</option>
+      <option value="Pending">Pending</option>
+    </select>
+    <select class="filter-select" id="studentTagFilter" onchange="filterStudentRecords()">
+      <option value="">All Types</option>
+      <option value="regular">Regular</option>
+      <option value="irregular">Irregular</option>
+      <option value="Freshman">Freshman</option>
+      <option value="Shiftee">Shiftee</option>
+      <option value="Transferee">Transferee</option>
     </select>
     <span class="toolbar-spacer"></span>
-    <span style="font-size:12px;color:var(--muted)" id="studentCount"></span>
+    <span style="font-size:12px;color:var(--muted)" id="studentRecordCount"></span>
   </div>
   <div class="card">
     <div class="table-wrap">
       <table class="data-table">
         <thead><tr>
-          <th>Student</th><th>College</th><th>Year</th><th>Program</th>
-          <th>Units Enrolled</th><th>Status</th><th>Actions</th>
+          <th>#</th><th>Student ID</th><th>Name</th><th>Program</th>
+          <th>Year</th><th>Section</th><th>Status</th>
+          <th>Academic</th><th>Entry Type</th>
         </tr></thead>
-        <tbody id="studentTableBody"></tbody>
+        <tbody id="studentRecordsBody"></tbody>
       </table>
     </div>
   </div>
@@ -800,37 +864,6 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
 </div>
 
 
-<!-- ══════════════════════════════════
-     REGISTRATION HOLDS  ← NEW
-══════════════════════════════════ -->
-<div class="page" id="page-holds">
-  <div class="page-hd">
-    <div class="page-hd-left"><h1>Registration Holds</h1><p>Manage holds placed on student accounts that block enrollment.</p></div>
-    <div class="page-hd-actions">
-      <button class="btn btn-danger btn-sm" onclick="openModal('addHoldModal')"><i class="fas fa-lock"></i> Place New Hold</button>
-    </div>
-  </div>
-  <div class="toolbar">
-    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="holdSearch" placeholder="Search student or ID…" oninput="renderHoldsTable()"></div>
-    <select class="filter-select" id="holdTypeFilter" onchange="renderHoldsTable()">
-      <option value="">All Types</option>
-      <option value="Financial">Financial</option>
-      <option value="Library">Library</option>
-      <option value="Academic">Academic</option>
-      <option value="Administrative">Administrative</option>
-    </select>
-    <span class="toolbar-spacer"></span>
-    <span style="font-size:12px;color:var(--muted)" id="holdCount"></span>
-  </div>
-  <div class="card">
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead><tr><th>Student</th><th>Hold Type</th><th>Reason</th><th>Placed By</th><th>Date Placed</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody id="holdsBody"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
 
 
 <!-- ══════════════════════════════════
@@ -1071,6 +1104,35 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
   </div>
 </div>
 
+<!-- Return Prospectus (batch) — used by registrar.js -->
+<div class="modal-overlay" id="returnModal">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Return to Secretary</h3><button class="modal-x" onclick="closeModal('returnModal')">×</button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">This correction note will be sent to the Secretary for all selected prospectus entries.</p>
+      <div class="form-field"><label>Returning</label><div id="returnTargetNames" style="font-size:13px;font-weight:600;color:var(--cr);padding:6px 0;"></div></div>
+      <div class="form-field" style="margin-bottom:0"><label>Correction Note <span style="color:var(--red)">*</span></label>
+        <textarea class="form-textarea" id="returnNote" placeholder="Describe what needs to be corrected before re-endorsement…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('returnModal')">Cancel</button>
+      <button class="btn btn-amber" onclick="confirmReturn()"><i class="fas fa-rotate-left"></i> Send Return</button>
+    </div>
+  </div>
+</div>
+
+<!-- Submission View Modal (faculty loading / schedule) -->
+<div class="modal-overlay" id="submissionViewModal">
+  <div class="modal-box modal-box wide" style="max-width:820px;">
+    <div class="modal-hd"><h3 id="submissionViewTitle">Submission</h3><button class="modal-x" onclick="closeModal('submissionViewModal')">×</button></div>
+    <div class="modal-body" id="submissionViewBody" style="max-height:70vh;overflow-y:auto;padding:0;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('submissionViewModal')">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Add Term -->
 <div class="modal-overlay" id="addTermModal">
   <div class="modal-box">
@@ -1186,692 +1248,149 @@ mark{background:#fef9c3;color:inherit;border-radius:2px;padding:0 2px}
 <div class="toast-container" id="toastContainer"></div>
 
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="../../../script/registrar.js"></script>
 <script>
-// ── MOCK DATA ────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
 
-const PROSPECTUS_DATA = [
-  {
-    id:1, title:'BSCS Curriculum v2025.2', college:'CCS',
-    endorsedBy:'Dr. Norma Santos', endorsedRole:'Dean, College of Computing Studies',
-    endorsedAt:'2025-01-15 10:42', status:'pending',
-    changes:[
-      { field:'CC 101 — Units', old:'3', new:'4', type:'change' },
-      { field:'CC 101L — Units', old:'1', new:'0', type:'remove' },
-      { field:'DS 111 — Description', old:'Discrete Structures 1', new:'Discrete Math 1', type:'change' },
-      { field:'MATH 101 — Added', old:'—', new:'Linear Algebra (3 units)', type:'add' },
-    ],
-    history:[
-      { action:'Draft created by Secretary', by:'Ms. Clara Santos', at:'2025-01-08 14:00' },
-      { action:'Reviewed and endorsed by Dean', by:'Dr. Norma Santos', at:'2025-01-15 10:42' },
-    ]
-  },
-  {
-    id:2, title:'BSIT Curriculum v2025.1', college:'CCS',
-    endorsedBy:'Dr. Norma Santos', endorsedRole:'Dean, College of Computing Studies',
-    endorsedAt:'2025-01-16 09:10', status:'pending',
-    changes:[
-      { field:'IT 401 — Title', old:'Systems Integration', new:'Systems Integration & Architecture', type:'change' },
-      { field:'NET 101L — Added', old:'—', new:'Networks Lab (1 unit)', type:'add' },
-    ],
-    history:[
-      { action:'Draft created by Secretary', by:'Prof. Maria Reyes', at:'2025-01-14 08:00' },
-      { action:'Reviewed and endorsed by Dean', by:'Dr. Norma Santos', at:'2025-01-16 09:10' },
-    ]
-  },
-  {
-    id:3, title:'BSEd-Math Curriculum v2025.1', college:'CED',
-    endorsedBy:'Dr. Ricardo Gomez', endorsedRole:'Dean, College of Education',
-    endorsedAt:'2025-01-17 14:30', status:'pending',
-    changes:[
-      { field:'EDUC 305 — Units', old:'2', new:'3', type:'change' },
-      { field:'MATH 201 — Added', old:'—', new:'Differential Equations (3 units)', type:'add' },
-      { field:'EDUC 201L — Removed', old:'Teaching Lab 1 (1 unit)', new:'—', type:'remove' },
-    ],
-    history:[
-      { action:'Draft created by Secretary', by:'Ms. Luisa Tan', at:'2025-01-12 11:00' },
-      { action:'Revised — unit adjustment', by:'Ms. Luisa Tan', at:'2025-01-13 15:30' },
-      { action:'Reviewed and endorsed by Dean', by:'Dr. Ricardo Gomez', at:'2025-01-17 14:30' },
-    ]
-  },
-];
+  // ── Building cards CSS (injected so no separate file needed) ──
+  const style = document.createElement('style');
+  style.textContent = `
+    .building-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all .15s;
+      box-shadow: var(--shadow-sm);
+    }
+    .building-card:hover {
+      border-color: var(--cr);
+      box-shadow: 0 4px 16px rgba(192,25,43,.12);
+      transform: translateY(-1px);
+    }
+    .building-card-icon { font-size: 2rem; flex-shrink: 0; }
+    .building-card-body { flex: 1; min-width: 0; }
+    .building-name   { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .building-college{ font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .building-meta   { font-size: 11.5px; color: var(--muted-lt); display: flex; gap: 6px; }
+    .building-card-arrow { font-size: 1.4rem; color: var(--muted-lt); flex-shrink: 0; }
+    .timetable-table { width:100%; border-collapse:collapse; font-size:12px; min-width:700px; }
+    .timetable-table thead th {
+      padding: 9px 10px; text-align: center;
+      background: var(--cr-deep); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: .6px;
+      text-transform: uppercase; position: sticky; top: 0; z-index: 3;
+    }
+    .timetable-table tbody td {
+      border: 1px solid var(--border); height: 24px;
+      padding: 0; vertical-align: top;
+    }
+    .time-label {
+      padding: 3px 8px; font-size: 11px; color: var(--muted);
+      font-weight: 600; text-align: right;
+      background: var(--bg-dk); white-space: nowrap;
+    }
+    .timetable-booked { padding: 3px 5px; vertical-align: top; }
+    .timetable-subject { font-size: 10.5px; font-weight: 700; line-height: 1.2; }
+    .timetable-instr  { font-size: 10px; opacity: .75; line-height: 1.2; }
+    .timetable-section{ font-size: 9.5px; opacity: .6; }
+  `;
+  document.head.appendChild(style);
 
-const SUBMISSIONS_DATA = [
-  { id:1, dept:'Computer Science', college:'CCS', type:'Faculty Loading', submittedBy:'Ms. Clara Santos', submittedRole:'Secretary', at:'Jan 14, 10:30 AM', items:18, status:'pending' },
-  { id:2, dept:'Information Technology', college:'CCS', type:'Faculty Loading', submittedBy:'Prof. Maria Reyes', submittedRole:'Secretary', at:'Jan 14, 11:00 AM', items:15, status:'pending' },
-  { id:3, dept:'Civil Engineering', college:'COE', type:'Schedule', submittedBy:'Engr. Paulo Dizon', submittedRole:'Secretary', at:'Jan 12, 09:00 AM', items:22, status:'approved' },
-  { id:4, dept:'Business Administration', college:'CBA', type:'Faculty Loading', submittedBy:'Ms. Rosa Cruz', submittedRole:'Secretary', at:'Jan 11, 02:15 PM', items:12, status:'approved' },
-  { id:5, dept:'Education', college:'CED', type:'Schedule', submittedBy:'Mr. Aldo Santos', submittedRole:'Secretary', at:'Jan 10, 08:45 AM', items:20, status:'returned' },
-];
+  // ── Initial renders ──
+  if (typeof renderDashboard === 'function')       renderDashboard();
+  if (typeof renderDeptGrid === 'function')        renderDeptGrid();
+  if (typeof renderBuildings === 'function')       renderBuildings();
+  if (typeof renderProspectusQueue === 'function') renderProspectusQueue();
+  if (typeof renderDeptSubmissions === 'function') renderDeptSubmissions();
+  if (typeof renderStudentRecords === 'function' && typeof STUDENT_RECORDS !== 'undefined')
+    renderStudentRecords(STUDENT_RECORDS);
+  if (typeof renderAuditLog === 'function')        renderAuditLog();
+  if (typeof updateTermLabel === 'function')       updateTermLabel();
+  if (typeof initEditableDates === 'function')     initEditableDates();
 
-const STUDENTS_DATA = [
-  { id:'2021-00001', name:'Juan Dela Cruz',    college:'CCS', year:4, program:'BSCS', units:21, status:'enrolled'  },
-  { id:'2022-00145', name:'Maria Santos',       college:'CCS', year:3, program:'BSIT', units:18, status:'enrolled'  },
-  { id:'2023-00312', name:'Pedro Reyes',        college:'COE', year:2, program:'BSCE', units:15, status:'pending'   },
-  { id:'2021-00087', name:'Ana Gonzales',       college:'CBA', year:4, program:'BSBA', units:21, status:'enrolled'  },
-  { id:'2022-00200', name:'Carlo Fernandez',    college:'CED', year:3, program:'BSEd', units:18, status:'irregular' },
-  { id:'2023-00450', name:'Liza Mercado',       college:'CCS', year:2, program:'BSCS', units:0,  status:'hold'      },
-  { id:'2020-00009', name:'Rodrigo Tan',        college:'CCS', year:5, program:'BSIT', units:12, status:'irregular' },
-  { id:'2023-00501', name:'Sofia Villanueva',   college:'CAS', year:2, program:'BSED', units:21, status:'enrolled'  },
-  { id:'2024-00032', name:'Miguel Torres',      college:'COE', year:1, program:'BSEE', units:24, status:'pending'   },
-  { id:'2022-00388', name:'Rachel Aquino',      college:'CBA', year:3, program:'BSA',  units:21, status:'enrolled'  },
-];
-
-const HOLDS_DATA = [
-  { id:1, student:'Liza Mercado',    sid:'2023-00450', type:'Financial', reason:'Unpaid balance ₱12,450', placedBy:'Registrar', date:'Jan 10, 2025', status:'active'   },
-  { id:2, student:'Carlo Fernandez', sid:'2022-00200', type:'Library',   reason:'Unreturned books (3 titles)', placedBy:'Library', date:'Jan 8, 2025',  status:'active'   },
-  { id:3, student:'Rodrigo Tan',     sid:'2020-00009', type:'Academic',  reason:'GPA below 2.0 threshold', placedBy:'Registrar', date:'Jan 5, 2025',  status:'active'   },
-  { id:4, student:'Pedro Reyes',     sid:'2023-00312', type:'Administrative', reason:'Missing graduation clearance docs', placedBy:'Registrar', date:'Jan 3, 2025', status:'active' },
-  { id:5, student:'Ana Gonzales',    sid:'2021-00087', type:'Financial', reason:'Cleared — receipt submitted', placedBy:'Registrar', date:'Dec 20, 2024', status:'lifted' },
-];
-
-const AUDIT_DATA = [
-  { ts:'Jan 16, 9:14 AM', action:'Received', entity:'BSIT Curriculum v2025.1 (endorsed)', user:'Registrar', role:'Super Admin', detail:'Endorsed by Dean Norma Santos' },
-  { ts:'Jan 15, 10:42 AM',action:'Received', entity:'BSCS Curriculum v2025.2 (endorsed)', user:'Registrar', role:'Super Admin', detail:'Endorsed by Dean Norma Santos' },
-  { ts:'Jan 14, 4:02 PM', action:'Published', entity:'CCS Dept. Schedule', user:'Registrar', role:'Super Admin', detail:'24 sections published' },
-  { ts:'Jan 12, 2:45 PM', action:'Approved', entity:'Civil Eng. Faculty Loading', user:'Registrar', role:'Super Admin', detail:'22 items approved' },
-  { ts:'Jan 10, 11:00 AM',action:'Hold Placed', entity:'Liza Mercado (2023-00450)', user:'Registrar', role:'Super Admin', detail:'Financial hold — unpaid balance' },
-  { ts:'Jan 8, 9:00 AM',  action:'Returned', entity:'Education Schedule Submission', user:'Registrar', role:'Super Admin', detail:'Missing room assignments for 5 sections' },
-  { ts:'Jan 5, 3:15 PM',  action:'Activated', entity:'BSBA Curriculum v2024.3', user:'Registrar', role:'Super Admin', detail:'Effective Jan 6, 2025' },
-];
-
-const DEPT_DATA = [
-  { name:'Computer Science', college:'CCS', status:'modified', subjects:48, modifiedBy:'Ms. Clara Santos', lastPublished:'Jan 10, 2025' },
-  { name:'Information Technology', college:'CCS', status:'published', subjects:42, modifiedBy:'—', lastPublished:'Jan 10, 2025' },
-  { name:'Civil Engineering', college:'COE', status:'published', subjects:55, modifiedBy:'—', lastPublished:'Jan 8, 2025' },
-  { name:'Electrical Engineering', college:'COE', status:'draft', subjects:50, modifiedBy:'—', lastPublished:'Dec 20, 2024' },
-  { name:'Business Administration', college:'CBA', status:'published', subjects:38, modifiedBy:'—', lastPublished:'Jan 9, 2025' },
-  { name:'Accountancy', college:'CBA', status:'unpublished', subjects:40, modifiedBy:'—', lastPublished:'—' },
-  { name:'Education (Math)', college:'CED', status:'modified', subjects:45, modifiedBy:'Ms. Luisa Tan', lastPublished:'Jan 7, 2025' },
-  { name:'Nursing', college:'CON', status:'published', subjects:60, modifiedBy:'—', lastPublished:'Jan 10, 2025' },
-  { name:'Arts & Sciences', college:'CAS', status:'draft', subjects:35, modifiedBy:'—', lastPublished:'Dec 15, 2024' },
-];
-
-const RECENT_ACTIVITY = [
-  { action:'BSIT Curriculum v2025.1 received from CCS Dean', detail:'Endorsed by Dr. Norma Santos', time:'Today 09:10', type:'submit' },
-  { action:'BSCS Curriculum v2025.2 received from CCS Dean', detail:'Endorsed by Dr. Norma Santos', time:'Today 08:42', type:'submit' },
-  { action:'Civil Engineering schedule approved', detail:'22 sections approved', time:'Jan 14 16:02', type:'approve' },
-  { action:'Financial hold placed — Liza Mercado', detail:'Unpaid balance ₱12,450', time:'Jan 10 11:00', type:'warn' },
-  { action:'Education schedule returned for revision', detail:'Missing room assignments', time:'Jan 8 09:00', type:'warn' },
-];
-
-const OVERSUBSCRIBED = [
-  { code:'CS 101', desc:'Introduction to Computing', section:'A', enrolled:58, cap:45, dept:'CCS' },
-  { code:'CS Elec 3', desc:'Machine Learning', section:'A', enrolled:41, cap:35, dept:'CCS' },
-  { code:'IT 101', desc:'Fundamentals of IT', section:'B', enrolled:52, cap:45, dept:'CCS' },
-  { code:'GE 101', desc:'Understanding the Self', section:'C', enrolled:67, cap:60, dept:'CAS' },
-  { code:'Math 102', desc:'Calculus 2', section:'A', enrolled:55, cap:50, dept:'COE' },
-];
-
-const ROOMS_DATA = [
-  { name:'CAS-201', building:'CAS Building', type:'Lecture', cap:55, util:95, booked:18, total:20 },
-  { name:'CAS-301', building:'CAS Building', type:'Lecture', cap:45, util:80, booked:16, total:20 },
-  { name:'CAS-302', building:'CAS Building', type:'Lecture', cap:40, util:70, booked:14, total:20 },
-  { name:'Lab-101', building:'CAS Building', type:'Computer Lab', cap:45, util:60, booked:12, total:20 },
-  { name:'Lab-202', building:'CAS Building', type:'Computer Lab', cap:40, util:55, booked:11, total:20 },
-  { name:'Aud-1',   building:'Main Building', type:'Auditorium', cap:200, util:30, booked:6, total:20 },
-  { name:'Sci-101', building:'Science Complex', type:'Science Lab', cap:35, util:50, booked:10, total:20 },
-  { name:'Eng-201', building:'Engineering Hall', type:'Lecture', cap:50, util:85, booked:17, total:20 },
-];
-
-// ── STATE ──
-let activeActivateId = null;
-let activeReturnId = null;
-
-// ── PAGE NAV ──
-function showPage(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-  const pg = document.getElementById('page-' + id);
-  if (pg) pg.classList.add('active');
-  if (el) el.classList.add('active');
-  else {
-    document.querySelectorAll('.sidebar-link').forEach(l => {
-      const h = l.getAttribute('onclick') || '';
-      if (h.includes("'" + id + "'")) l.classList.add('active');
-    });
-  }
-  // Render on demand
-  if (id === 'room-assignment') renderRoomGrid();
-  if (id === 'prospectus-review') renderProspectus();
-  if (id === 'dept-submissions') renderSubmissionsTable();
-  if (id === 'student-records') renderStudentTable();
-  if (id === 'enrollment-monitor') renderEnrollMonitor();
-  if (id === 'holds') renderHoldsTable();
-  if (id === 'reports') renderReports();
-  if (id === 'audit') renderAuditLog();
-  if (id === 'course-offerings') renderDeptGrid();
-}
-
-// ── MODAL ──
-function openModal(id) { document.getElementById(id).classList.add('active'); }
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-function closePanel(id) { document.getElementById(id).classList.remove('open'); }
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay.active').forEach(o => o.classList.remove('active'));
-    document.querySelectorAll('.detail-panel.open').forEach(p => p.classList.remove('open'));
-  }
+  // ── Modal backdrop close ──
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); });
+  });
 });
+</script>
+<script>
+// ── VARIABLE ALIAS FIXES ──────────────────────────────────────────
+// registrar.js render functions reference these names but the data
+// was declared under different names. These aliases bridge the gap
+// without touching registrar.js at all.
 
-// ── TOAST ──
-function showToast(msg, type='success') {
-  const icons = { success:'✓', warn:'⚠', error:'✕', info:'ℹ' };
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `<span style="font-weight:800">${icons[type]||'•'}</span> ${msg}`;
-  document.getElementById('toastContainer').appendChild(el);
-  setTimeout(() => el.remove(), 3500);
-}
+// 1. Dept Submissions: SUBMISSIONS_DATA → DEPT_SUBMISSIONS
+//    Also normalise field shapes to match what renderDeptSubmissions expects.
+const DEPT_SUBMISSIONS = (typeof SUBMISSIONS_DATA !== 'undefined')
+  ? SUBMISSIONS_DATA.map(d => ({
+      id:          d.id,
+      dept:        d.dept,
+      program:     d.college || d.dept,       // renderDeptSubmissions uses d.program
+      type:        d.type === 'Faculty Loading' ? 'faculty_loading' : 'schedule',
+      status:      d.status === 'approved' ? 'submitted'           // eye button shows for 'submitted'
+                 : d.status === 'returned' ? 'returned'
+                 : 'submitted',               // pending → treat as submitted so eye shows
+      submittedBy: d.submittedBy,
+      submittedAt: d.at || d.submittedAt,
+      data:        d.data || [],              // viewSubmission needs this (empty = toast)
+    }))
+  : [];
 
-// ── DASHBOARD ──
-function renderDashboard() {
-  // Quick prospectus list
-  const pending = PROSPECTUS_DATA.filter(p => p.status === 'pending');
-  document.getElementById('dashProspectusList').innerHTML = pending.length
-    ? pending.map(p => `
-      <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);align-items:flex-start">
-        <div style="width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;background:var(--amber)"></div>
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:600;color:var(--text)">${p.title}</div>
-          <div style="font-size:11.5px;color:var(--muted)">Endorsed by ${p.endorsedBy} · ${p.endorsedAt}</div>
-        </div>
-        <button class="btn btn-success btn-xs" onclick="openActivateModal(${p.id},'${p.title}')"><i class="fas fa-circle-check"></i> Activate</button>
-      </div>`).join('')
-    : `<div class="empty-state"><i class="fas fa-inbox"></i><p>No pending prospectus endorsements.</p></div>`;
+// 2. Student Records: STUDENTS_DATA → STUDENT_RECORDS
+//    Map old flat fields to the richer shape renderStudentRecords + filterStudentRecords expect.
+const STUDENT_RECORDS = (typeof STUDENTS_DATA !== 'undefined')
+  ? STUDENTS_DATA.map(s => ({
+      id:      s.id,
+      name:    s.name,
+      program: s.program,
+      year:    s.year ? s.year + (s.year === 1 ? 'st' : s.year === 2 ? 'nd' : s.year === 3 ? 'rd' : 'th') : '—',
+      section: s.section || (s.program + '-' + s.year + 'A'),
+      status:  s.status === 'enrolled'  ? 'Enrolled'
+             : s.status === 'pending'   ? 'Pending'
+             : s.status === 'irregular' ? 'Enrolled'
+             : s.status === 'hold'      ? 'Enrolled'
+             : s.status,
+      type:    (s.status === 'irregular') ? 'irregular' : 'regular',
+      tag:     s.tag || '',
+    }))
+  : [];
 
-  // Enroll by college chart
-  const colleges = [
-    { label:'CCS', val:500, max:900 }, { label:'COE', val:423, max:900 },
-    { label:'CBA', val:287, max:900 }, { label:'CED', val:519, max:900 },
-    { label:'CAS', val:181, max:900 }, { label:'CON', val:340, max:900 },
-  ];
-  document.getElementById('dashEnrollChart').innerHTML = colleges.map(c => `
-    <div class="bar-row">
-      <span class="bar-label">${c.label}</span>
-      <div class="bar-track"><div class="bar-fill green" style="width:${Math.round(c.val/c.max*100)}%"></div></div>
-      <span class="bar-val">${c.val}</span>
-    </div>`).join('');
+// 3. Audit Log: RECENT_ACTIVITY → mockAuditLog
+//    renderAuditLog expects {ts, action, entity, user, role, detail}
+const mockAuditLog = (typeof RECENT_ACTIVITY !== 'undefined')
+  ? RECENT_ACTIVITY.map(r => ({
+      ts:     r.time,
+      action: r.type === 'approve' ? 'Approved'
+            : r.type === 'submit'  ? 'Endorsed'
+            : r.type === 'warn'    ? 'Returned'
+            : 'Edited',
+      entity: r.action,
+      user:   'Registrar',
+      role:   'Super Admin',
+      detail: r.detail || '',
+    }))
+  : [];
 
-  // Activity feed
-  document.getElementById('dashActivityFeed').innerHTML = RECENT_ACTIVITY.map(a => `
-    <div style="display:flex;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);align-items:flex-start">
-      <div style="width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;background:${a.type==='approve'?'var(--green)':a.type==='warn'?'var(--red)':'var(--blue-lt)'}"></div>
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:600;color:var(--text)">${a.action}</div>
-        <div style="font-size:11.5px;color:var(--muted);margin-top:1px">${a.detail}</div>
-      </div>
-      <div style="font-size:11px;color:var(--muted-lt);white-space:nowrap">${a.time}</div>
-    </div>`).join('');
-}
+// ── RE-INIT after aliases are ready ──────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof renderDashboard === 'function')        renderDashboard();
+  if (typeof renderDeptGrid === 'function')         renderDeptGrid();
+  if (typeof renderBuildings === 'function')        renderBuildings();
+  if (typeof renderProspectusQueue === 'function')  renderProspectusQueue();
+  if (typeof renderDeptSubmissions === 'function')  renderDeptSubmissions();
+  if (typeof renderStudentRecords === 'function')   renderStudentRecords(STUDENT_RECORDS);
+  if (typeof renderAuditLog === 'function')         renderAuditLog();
+  if (typeof updateTermLabel === 'function')        updateTermLabel();
+  if (typeof initEditableDates === 'function')      initEditableDates();
 
-// ── PROSPECTUS REVIEW ──
-function renderProspectus() {
-  const pending = PROSPECTUS_DATA.filter(p => p.status === 'pending');
-  const list = document.getElementById('prospectusList');
-  if (!list) return;
-
-  if (!pending.length) {
-    list.innerHTML = `<div class="empty-state"><i class="fas fa-file-circle-check"></i><p>No prospectus drafts pending review.</p></div>`;
-    return;
-  }
-
-  list.innerHTML = pending.map(p => {
-    const adds = p.changes.filter(c=>c.type==='add').length;
-    const rems = p.changes.filter(c=>c.type==='remove').length;
-    const chgs = p.changes.filter(c=>c.type==='change').length;
-
-    const diffRows = p.changes.map(c => `
-      <div class="diff-row">
-        <div class="diff-cell ${c.type==='add'?'unchanged':'old'}">
-          <span class="diff-sign ${c.type==='add'?'':'minus'}">${c.type==='add'?' ':'−'}</span>
-          <span>${c.field}: ${c.old}</span>
-        </div>
-        <div class="diff-cell ${c.type==='remove'?'unchanged':'new'}">
-          <span class="diff-sign ${c.type==='remove'?'':'plus'}">${c.type==='remove'?' ':'+'}</span>
-          <span>${c.field}: ${c.new}</span>
-        </div>
-      </div>`).join('');
-
-    const history = p.history.map(h => `
-      <div class="history-entry">
-        <div class="history-dot"></div>
-        <div>
-          <div class="history-action">${h.action}</div>
-          <div class="history-meta">${h.by} · ${h.at}</div>
-        </div>
-      </div>`).join('');
-
-    return `
-    <div class="prospectus-item" id="prosp-${p.id}">
-      <div class="prospectus-item-header">
-        <div>
-          <div class="prospectus-item-title">${p.title} <span class="badge badge-cr" style="margin-left:6px">${p.college}</span></div>
-          <div class="prospectus-item-sub">Endorsed by ${p.endorsedBy} (${p.endorsedRole}) on ${p.endorsedAt}</div>
-        </div>
-        <div class="prospectus-item-actions">
-          <button class="btn btn-amber btn-sm" onclick="openReturnModal(${p.id},'${p.title}')">
-            <i class="fas fa-rotate-left"></i> Return to Dean
-          </button>
-          <button class="btn btn-success btn-sm" onclick="openActivateModal(${p.id},'${p.title}')">
-            <i class="fas fa-circle-check"></i> Activate
-          </button>
-        </div>
-      </div>
-      <div class="prospectus-item-body">
-        <div class="diff-viewer">
-          <div class="diff-header">
-            <span class="diff-header-label">Changes vs. Previous Version</span>
-            <div style="display:flex;gap:6px">
-              ${adds?`<span class="diff-header-badge diff-badge-add">+${adds} added</span>`:''}
-              ${rems?`<span class="diff-header-badge diff-badge-rem">−${rems} removed</span>`:''}
-              ${chgs?`<span class="diff-header-badge diff-badge-chg">~${chgs} changed</span>`:''}
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;padding:6px 14px 4px;border-bottom:1px solid rgba(255,255,255,.06)">
-            <span style="font-size:10px;color:rgba(255,255,255,.3);font-weight:700;text-transform:uppercase;letter-spacing:.5px">Previous</span>
-            <span style="font-size:10px;color:rgba(255,255,255,.3);font-weight:700;text-transform:uppercase;letter-spacing:.5px">Proposed</span>
-          </div>
-          ${diffRows}
-        </div>
-        <div class="history-block">
-          <div class="history-title"><i class="fas fa-clock" style="font-size:10px"></i> Document History</div>
-          ${history}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function openActivateModal(id, title) {
-  activeActivateId = id;
-  document.getElementById('activateLabel').value = title;
-  openModal('activateModal');
-}
-function confirmActivate() {
-  const p = PROSPECTUS_DATA.find(x => x.id === activeActivateId);
-  if (p) p.status = 'activated';
-  showToast(`"${p.title}" activated as official curriculum.`, 'success');
-  closeModal('activateModal');
-  renderProspectus();
-  updateBadges();
-}
-
-function openReturnModal(id, title) {
-  activeReturnId = id;
-  document.getElementById('returnDeanLabel').value = title;
-  document.getElementById('returnDeanNote').value = '';
-  openModal('returnToDeanModal');
-}
-function confirmReturnToDean() {
-  const note = document.getElementById('returnDeanNote').value.trim();
-  if (!note) { showToast('Please enter a correction note.', 'error'); return; }
-  const p = PROSPECTUS_DATA.find(x => x.id === activeReturnId);
-  if (p) p.status = 'returned';
-  showToast(`"${p.title}" returned to Dean with correction note.`, 'warn');
-  closeModal('returnToDeanModal');
-  renderProspectus();
-  updateBadges();
-}
-
-function updateBadges() {
-  const n = PROSPECTUS_DATA.filter(p => p.status === 'pending').length;
-  document.getElementById('badge-prospectus').textContent = n || '0';
-  document.getElementById('kpi-prospectus').textContent = n;
-}
-
-// ── DEPT SUBMISSIONS ──
-function renderSubmissionsTable() {
-  const q = (document.getElementById('holdSearch')?.value || '').toLowerCase();
-  const st = document.getElementById('submissionFilter')?.value || '';
-  const filtered = SUBMISSIONS_DATA.filter(s =>
-    (!st || s.status === st) &&
-    (!q || s.dept.toLowerCase().includes(q))
-  );
-  document.getElementById('submissionCount').textContent = `${filtered.length} submissions`;
-
-  const statusBadge = s => ({
-    pending:  `<span class="badge badge-amber">Pending</span>`,
-    approved: `<span class="badge badge-green">Approved</span>`,
-    returned: `<span class="badge badge-red">Returned</span>`,
-  }[s] || `<span class="badge badge-gray">${s}</span>`);
-
-  document.getElementById('submissionsBody').innerHTML = filtered.map(s => `
-    <tr>
-      <td>
-        <div style="font-weight:600">${s.dept}</div>
-        <div style="font-size:11.5px;color:var(--muted)">${s.college}</div>
-      </td>
-      <td><span class="badge badge-blue">${s.type}</span></td>
-      <td>
-        <div style="font-weight:600">${s.submittedBy}</div>
-        <div style="font-size:11.5px;color:var(--muted)">${s.submittedRole}</div>
-      </td>
-      <td style="font-size:12px;color:var(--muted)">${s.at}</td>
-      <td style="font-weight:700">${s.items}</td>
-      <td>${statusBadge(s.status)}</td>
-      <td>
-        ${s.status === 'pending' ? `
-        <div style="display:flex;gap:5px">
-          <button class="btn btn-success btn-xs" onclick="approveSubmission(${s.id})"><i class="fas fa-check"></i> Approve</button>
-          <button class="btn btn-amber btn-xs" onclick="returnSubmission(${s.id})"><i class="fas fa-rotate-left"></i> Return</button>
-        </div>` : `<span style="font-size:12px;color:var(--muted)">${s.status === 'approved' ? '✓ Done' : 'Returned'}</span>`}
-      </td>
-    </tr>`).join('');
-}
-
-function approveSubmission(id) {
-  const s = SUBMISSIONS_DATA.find(x => x.id === id);
-  if (s) s.status = 'approved';
-  showToast(`${s.dept} ${s.type} approved.`, 'success');
-  renderSubmissionsTable();
-  document.getElementById('badge-submissions').textContent =
-    SUBMISSIONS_DATA.filter(x => x.status === 'pending').length;
-}
-function returnSubmission(id) {
-  const s = SUBMISSIONS_DATA.find(x => x.id === id);
-  if (s) s.status = 'returned';
-  showToast(`${s.dept} submission returned for revision.`, 'warn');
-  renderSubmissionsTable();
-}
-function approveAllSubmissions() {
-  SUBMISSIONS_DATA.filter(s => s.status === 'pending').forEach(s => s.status = 'approved');
-  showToast('All pending submissions approved.', 'success');
-  renderSubmissionsTable();
-  document.getElementById('badge-submissions').textContent = '0';
-}
-function filterSubmissions(q) { renderSubmissionsTable(); }
-
-// ── STUDENT RECORDS ──
-function renderStudentTable() {
-  const q = (document.getElementById('studentSearch')?.value || '').toLowerCase();
-  const st = document.getElementById('studentStatusFilter')?.value || '';
-  const col = document.getElementById('studentCollegeFilter')?.value || '';
-  const filtered = STUDENTS_DATA.filter(s =>
-    (!q || s.name.toLowerCase().includes(q) || s.id.includes(q)) &&
-    (!st || s.status === st) &&
-    (!col || s.college === col)
-  );
-  document.getElementById('studentCount').textContent = `${filtered.length} students`;
-
-  const statusBadge = s => ({
-    enrolled:  `<span class="badge badge-green">Enrolled</span>`,
-    pending:   `<span class="badge badge-amber">Pending</span>`,
-    hold:      `<span class="badge badge-red">On Hold</span>`,
-    irregular: `<span class="badge badge-blue">Irregular</span>`,
-  }[s] || `<span class="badge badge-gray">${s}</span>`);
-
-  document.getElementById('studentTableBody').innerHTML = filtered.map(s => `
-    <tr>
-      <td>
-        <button class="student-name-btn" onclick="openStudentPanel('${s.id}')">${s.name}</button>
-        <div class="student-sub">${s.id}</div>
-      </td>
-      <td><span class="badge badge-gray">${s.college}</span></td>
-      <td>Year ${s.year}</td>
-      <td>${s.program}</td>
-      <td style="font-weight:700">${s.units} <span style="font-weight:400;color:var(--muted);font-size:12px">units</span></td>
-      <td>${statusBadge(s.status)}</td>
-      <td>
-        <div style="display:flex;gap:5px">
-          <button class="btn btn-ghost btn-xs" onclick="openStudentPanel('${s.id}')"><i class="fas fa-eye"></i></button>
-          ${s.status !== 'hold' ? `<button class="btn btn-danger btn-xs" onclick="showToast('Hold placed on ${s.name}.','warn')"><i class="fas fa-lock"></i></button>` : `<button class="btn btn-success btn-xs" onclick="showToast('Hold lifted for ${s.name}.','success')"><i class="fas fa-lock-open"></i></button>`}
-        </div>
-      </td>
-    </tr>`).join('');
-}
-
-function openStudentPanel(id) {
-  const s = STUDENTS_DATA.find(x => x.id === id);
-  document.getElementById('panelStudentName').textContent = s.name;
-  const hold = HOLDS_DATA.find(h => h.sid === id && h.status === 'active');
-  document.getElementById('panelStudentBody').innerHTML = `
-    <div class="panel-section">
-      <div class="panel-sec-title">Student Info</div>
-      <div class="panel-row"><span class="panel-key">Student ID</span><span class="panel-val">${s.id}</span></div>
-      <div class="panel-row"><span class="panel-key">Program</span><span class="panel-val">${s.program}</span></div>
-      <div class="panel-row"><span class="panel-key">College</span><span class="panel-val">${s.college}</span></div>
-      <div class="panel-row"><span class="panel-key">Year Level</span><span class="panel-val">Year ${s.year}</span></div>
-      <div class="panel-row"><span class="panel-key">Units Enrolled</span><span class="panel-val">${s.units}</span></div>
-      <div class="panel-row"><span class="panel-key">Status</span><span class="panel-val">${s.status.charAt(0).toUpperCase()+s.status.slice(1)}</span></div>
-    </div>
-    ${hold ? `
-    <div class="panel-section">
-      <div class="panel-sec-title">Active Hold</div>
-      <div class="alert alert-red"><i class="fas fa-lock"></i><div>
-        <strong>${hold.type} Hold</strong><br>
-        <span style="font-size:12px">${hold.reason}</span><br>
-        <span style="font-size:11px;color:var(--muted)">Placed by ${hold.placedBy} · ${hold.date}</span>
-      </div></div>
-      <button class="btn btn-success btn-sm" style="width:100%" onclick="showToast('Hold lifted for ${s.name}.','success');closePanel('studentPanel')"><i class="fas fa-lock-open"></i> Lift Hold</button>
-    </div>` : ''}
-    <div class="panel-section">
-      <div class="panel-sec-title">Quick Actions</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn btn-ghost btn-sm" onclick="showToast('Transcript generated.','info')"><i class="fas fa-file-alt"></i> Generate Transcript</button>
-        <button class="btn btn-ghost btn-sm" onclick="showToast('Enrollment form printed.','info')"><i class="fas fa-print"></i> Print Enrollment Form</button>
-        <button class="btn btn-ghost btn-sm" onclick="showToast('Certificate of Registration queued.','info')"><i class="fas fa-certificate"></i> Issue COR</button>
-      </div>
-    </div>`;
-  document.getElementById('studentPanel').classList.add('open');
-}
-
-// ── ENROLLMENT MONITOR ──
-function renderEnrollMonitor() {
-  const colleges = [
-    { label:'CCS', val:500 }, { label:'COE', val:423 }, { label:'CBA', val:287 },
-    { label:'CED', val:519 }, { label:'CAS', val:181 }, { label:'CON', val:340 },
-  ];
-  const max = Math.max(...colleges.map(c=>c.val));
-  document.getElementById('enrollByCollegeChart').innerHTML = colleges.map(c => `
-    <div class="bar-row">
-      <span class="bar-label">${c.label}</span>
-      <div class="bar-track"><div class="bar-fill green" style="width:${Math.round(c.val/max*100)}%"></div></div>
-      <span class="bar-val">${c.val}</span>
-    </div>`).join('');
-
-  document.getElementById('sectionCapOverview').innerHTML = `
-    <div class="prog-wrap">
-      <div class="prog-label"><span>Sections Published</span><span style="font-weight:700">247 / 317</span></div>
-      <div class="prog-bar"><div class="prog-fill" style="width:78%"></div></div>
-    </div>
-    <div class="prog-wrap">
-      <div class="prog-label"><span>Sections with Conflicts</span><span style="font-weight:700;color:var(--red)">12</span></div>
-      <div class="prog-bar"><div class="prog-fill" style="width:4%;background:var(--red)"></div></div>
-    </div>
-    <div class="prog-wrap">
-      <div class="prog-label"><span>Oversubscribed</span><span style="font-weight:700;color:var(--amber)">5</span></div>
-      <div class="prog-bar"><div class="prog-fill amber" style="width:2%"></div></div>
-    </div>
-    <div class="prog-wrap" style="margin-bottom:0">
-      <div class="prog-label"><span>Under-enrolled (&lt;50%)</span><span style="font-weight:700">28</span></div>
-      <div class="prog-bar"><div class="prog-fill blue" style="width:9%"></div></div>
-    </div>`;
-
-  document.getElementById('oversubBody').innerHTML = OVERSUBSCRIBED.map(s => `
-    <tr>
-      <td><strong>${s.code}</strong></td>
-      <td>${s.desc}</td>
-      <td>${s.section}</td>
-      <td style="font-weight:700;color:var(--red)">${s.enrolled}</td>
-      <td>${s.cap}</td>
-      <td><span class="badge badge-red">+${s.enrolled - s.cap}</span></td>
-      <td><span class="badge badge-gray">${s.dept}</span></td>
-    </tr>`).join('');
-}
-
-// ── HOLDS ──
-function renderHoldsTable() {
-  const q = (document.getElementById('holdSearch')?.value || '').toLowerCase();
-  const t = document.getElementById('holdTypeFilter')?.value || '';
-  const filtered = HOLDS_DATA.filter(h =>
-    (!q || h.student.toLowerCase().includes(q) || h.sid.includes(q)) &&
-    (!t || h.type === t)
-  );
-  document.getElementById('holdCount').textContent = `${filtered.length} holds`;
-  document.getElementById('holdsBody').innerHTML = filtered.map(h => `
-    <tr>
-      <td>
-        <div style="font-weight:600">${h.student}</div>
-        <div style="font-size:11.5px;color:var(--muted)">${h.sid}</div>
-      </td>
-      <td><span class="badge ${h.type==='Financial'?'badge-red':h.type==='Library'?'badge-amber':h.type==='Academic'?'badge-blue':'badge-gray'}">${h.type}</span></td>
-      <td style="font-size:12.5px">${h.reason}</td>
-      <td style="font-size:12px;color:var(--muted)">${h.placedBy}</td>
-      <td style="font-size:12px;color:var(--muted)">${h.date}</td>
-      <td>${h.status==='active'?'<span class="badge badge-red">Active</span>':'<span class="badge badge-green">Lifted</span>'}</td>
-      <td>
-        ${h.status==='active'
-          ? `<button class="btn btn-success btn-xs" onclick="liftHold(${h.id})"><i class="fas fa-lock-open"></i> Lift</button>`
-          : `<span style="font-size:12px;color:var(--muted)">—</span>`}
-      </td>
-    </tr>`).join('');
-}
-
-function liftHold(id) {
-  const h = HOLDS_DATA.find(x => x.id === id);
-  if (h) h.status = 'lifted';
-  showToast(`Hold lifted for ${h.student}.`, 'success');
-  renderHoldsTable();
-  document.getElementById('badge-holds').textContent =
-    HOLDS_DATA.filter(x => x.status === 'active').length;
-}
-
-// ── ROOM GRID ──
-function renderRoomGrid() {
-  document.getElementById('roomGrid').innerHTML = ROOMS_DATA.map(r => {
-    const c = r.util >= 90 ? 'var(--red)' : r.util >= 70 ? 'var(--amber)' : 'var(--green)';
-    return `
-      <div class="room-card ${r.util>=90?'high-util':''}" onclick="showToast('${r.name} schedule view — coming soon.','info')">
-        <div class="room-name">${r.name}</div>
-        <div class="room-type">${r.type} · ${r.building}</div>
-        <div style="font-size:12px">Capacity: <strong>${r.cap}</strong></div>
-        <div class="progress-bar-wrap" style="margin-top:8px">
-          <div class="progress-bar" style="width:${r.util}%;background:${c}"></div>
-        </div>
-        <div class="room-util" style="color:${c}">${r.util}% · ${r.booked}/${r.total} slots booked</div>
-      </div>`;
-  }).join('');
-}
-function filterRooms(q) { /* filter rooms by name */ }
-
-// ── DEPT GRID ──
-function renderDeptGrid() {
-  const statusBadge = s => ({
-    published:   `<span class="badge badge-green">Published</span>`,
-    draft:       `<span class="badge badge-gray">Draft</span>`,
-    modified:    `<span class="badge badge-amber">Secretary Modified</span>`,
-    unpublished: `<span class="badge badge-red">Not Published</span>`,
-  }[s] || `<span class="badge badge-gray">${s}</span>`);
-
-  document.getElementById('deptCurriculumGrid').innerHTML = DEPT_DATA.map(d => `
-    <div class="card">
-      <div style="padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-        <div>
-          <div style="font-size:13.5px;font-weight:700;color:var(--text)">${d.name}</div>
-          <div style="font-size:11.5px;color:var(--muted)">${d.college}</div>
-        </div>
-        ${statusBadge(d.status)}
-      </div>
-      ${d.status==='modified'?`<div style="margin:8px 16px;padding:8px 12px;background:var(--amber-pale);border:1px solid #fde68a;border-left:3px solid var(--amber);border-radius:0 6px 6px 0;font-size:11.5px;color:#78350f;display:flex;align-items:center;gap:6px"><i class="fas fa-triangle-exclamation" style="color:var(--amber);flex-shrink:0"></i> Modified by ${d.modifiedBy}</div>`:''}
-      <div style="padding:12px 16px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px"><span>Subjects</span><span style="font-weight:700;color:var(--text)">${d.subjects}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>Last Published</span><span>${d.lastPublished}</span></div>
-      </div>
-      <div style="padding:10px 16px;border-top:1px solid var(--border);background:#fafafa;display:flex;gap:6px;justify-content:flex-end">
-        <button class="btn btn-ghost btn-xs" onclick="showToast('Opening ${d.name} curriculum…','info')"><i class="fas fa-eye"></i> View</button>
-        <button class="btn btn-ghost btn-xs" onclick="showToast('Opening editor for ${d.name}…','info')"><i class="fas fa-pen"></i> Edit</button>
-        <button class="btn btn-primary btn-xs" onclick="showToast('${d.name} published to department.','success')"><i class="fas fa-bullhorn"></i> Publish</button>
-      </div>
-    </div>`).join('');
-}
-function filterCourseOfferings(q) {}
-function filterCourseOfferingsByStatus(v) {}
-
-// ── REPORTS ──
-function renderReports() {
-  const depts = [
-    { label:'Computer Science', val:612 }, { label:'Information Tech.', val:748 },
-    { label:'Engineering', val:423 }, { label:'Education', val:519 },
-    { label:'Business Admin.', val:287 }, { label:'Natural Sciences', val:181 },
-  ];
-  const max = Math.max(...depts.map(d=>d.val));
-  document.getElementById('deptEnrollChart').innerHTML = depts.map(d=>`
-    <div class="bar-row">
-      <span class="bar-label">${d.label}</span>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(d.val/max*100)}%"></div></div>
-      <span class="bar-val">${d.val}</span>
-    </div>`).join('');
-
-  const rooms = [...ROOMS_DATA].sort((a,b)=>b.util-a.util).slice(0,6);
-  document.getElementById('roomUtilChart').innerHTML = rooms.map(r=>{
-    const c = r.util>=90?'var(--red)':r.util>=70?'var(--amber)':'var(--green)';
-    return `<div class="bar-row">
-      <span class="bar-label">${r.name}</span>
-      <div class="bar-track"><div class="bar-fill" style="width:${r.util}%;background:${c}"></div></div>
-      <span class="bar-val" style="color:${c}">${r.util}%</span>
-    </div>`;}).join('');
-
-  const trend = [
-    { label:'2023-24 2S', val:2711 }, { label:'2024-25 1S', val:2987 },
-    { label:'2024-25 2S', val:3102 }, { label:'2025-26 1S', val:3241 },
-  ];
-  const tmax = Math.max(...trend.map(t=>t.val));
-  document.getElementById('enrollTrendChart').innerHTML = trend.map(t=>`
-    <div class="bar-row">
-      <span class="bar-label">${t.label}</span>
-      <div class="bar-track"><div class="bar-fill green" style="width:${Math.round(t.val/tmax*100)}%"></div></div>
-      <span class="bar-val">${t.val}</span>
-    </div>`).join('');
-}
-
-// ── AUDIT LOG ──
-function renderAuditLog(q='') {
-  const colors = { Received:'badge-blue', Approved:'badge-green', Activated:'badge-cr', Published:'badge-cr', Returned:'badge-amber', 'Hold Placed':'badge-amber', Denied:'badge-red' };
-  const filtered = q ? AUDIT_DATA.filter(l =>
-    l.action.toLowerCase().includes(q) || l.entity.toLowerCase().includes(q) || l.user.toLowerCase().includes(q)
-  ) : AUDIT_DATA;
-  document.getElementById('auditLogBody').innerHTML = filtered.map(l=>`
-    <tr>
-      <td style="white-space:nowrap;color:var(--muted);font-size:11.5px">${l.ts}</td>
-      <td><span class="badge ${colors[l.action]||'badge-gray'}">${l.action}</span></td>
-      <td style="font-size:13px">${l.entity}</td>
-      <td>${l.user}</td>
-      <td><span class="badge badge-gray">${l.role}</span></td>
-      <td style="font-size:12px;color:var(--muted)">${l.detail}</td>
-    </tr>`).join('');
-}
-function filterAuditLog(q) { renderAuditLog(q.toLowerCase()); }
-
-// ── REG RULES LOGIC ──
-function onToggleChange(key, val) {
-  showToast(`${key.replace(/-/g,' ')} ${val?'enabled':'disabled'}.`, val?'success':'warn');
-}
-function onPublishDeptChange(val) {
-  const notice = document.getElementById('studentPublishLockNotice');
-  const studentToggle = document.getElementById('toggle-publish-student');
-  if (!val) {
-    if (studentToggle) { studentToggle.checked = false; studentToggle.disabled = true; }
-    if (notice) notice.style.display = 'flex';
-  } else {
-    if (studentToggle) studentToggle.disabled = false;
-    if (notice) notice.style.display = 'none';
-  }
-  onToggleChange('publish-dept', val);
-}
-
-// ── TERM LABEL ──
-function updateTermLabel() {
-  const sel = document.getElementById('termSelect');
-  if (sel) {
-    document.getElementById('dashSubtitle').innerHTML =
-      sel.options[sel.selectedIndex].text + ' &nbsp;·&nbsp; Registration: <strong style="color:var(--green)">Open</strong>';
-  }
-}
-
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  renderDashboard();
   document.querySelectorAll('.modal-overlay').forEach(o => {
     o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); });
   });
