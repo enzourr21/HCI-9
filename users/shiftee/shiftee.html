@@ -6,7 +6,7 @@
     <title>WMSU-Ease | Shiftee Enrollment</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="shiftee.css" >
     <style>
         :root {
             /* WMSU CRIMSON BRANDING */
@@ -251,12 +251,10 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
                 Subject
             </a>
-
-            <a class="s-link active" onclick="showTab('schedule', this)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+            <a class="s-link" onclick="showTab('schedule', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 Schedule
             </a>
-
             <a class="s-link" onclick="showTab('assessment', this)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
                 Payment
@@ -267,44 +265,148 @@
     <main class="main">
 
         <div id="tab-profile" class="tab-content">
-            <div class="page-hd">
-                <h1>Profile</h1>
-                <p>Your personal details and program information.</p>
-            </div>
+    <div class="page-hd">
+        <h1>Profile</h1>
+        <p>Your personal details and program information.</p>
+    </div>
 
-            <div class="card">
-                <div class="card-hd">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    Program Status
-                    <span class="chip-brand ml-auto">Approved Shiftee</span>
-                </div>
-                <div class="shift-route">
-                    <div class="shift-prog">
-                        <div class="shift-prog-tag">Current Program</div>
-                        <div class="shift-prog-code">BSCS</div>
-                        <div class="shift-prog-name">BS Computer Science</div>
-                        <div style="font-size:12px; color:var(--muted); margin-top:2px;">College of Computing Studies</div>
-                    </div>
-                </div>
-                <div class="remark-box brand" style="margin-top: 15px;">
-                    <p><strong>Shifting Finalized:</strong> Your previous records have been evaluated and your curriculum has been updated to BSCS. You may now proceed with your enrollment.</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-hd">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Personal Information
-                </div>
-                <div class="info-grid">
-                    <div class="info-item"><div class="info-label">Full Name</div><div class="info-val">Santos, Maria Reyes</div></div>
-                    <div class="info-item"><div class="info-label">Student ID</div><div class="info-val">2023-005678</div></div>
-                    <div class="info-item"><div class="info-label">Year Level</div><div class="info-val">2nd Year</div></div>
-                    <div class="info-item"><div class="info-label">Semester</div><div class="info-val">1st Sem · A.Y. 2026–2027</div></div>
-                </div>
+    <!-- PROFILE HEADER -->
+    <div class="card">
+        <div class="profile-header">
+            <div class="profile-avatar">MS</div>
+            <div class="profile-meta">
+                <h2 class="profile-name">Santos, Maria Reyes</h2>
+                <p class="profile-sub">2023-005678 &bull; 2nd Year &bull; College of Computing Studies</p>
+                <span class="chip-brand" style="margin-top:2px;">Approved Shiftee</span>
             </div>
         </div>
+    </div>
 
+    <!-- PROGRAM STATUS (shifting info — retained) -->
+    <div class="card">
+        <div class="card-hd">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            Program Shift
+            <span class="chip-brand ml-auto">Approved</span>
+        </div>
+        <div class="shift-route">
+            <!-- FROM -->
+            <div class="shift-prog" style="background: var(--bg); border-color: var(--border); border-left-color: var(--muted-lt);">
+                <div class="shift-prog-tag" style="color: var(--muted);">Previous Program</div>
+                <div class="shift-prog-code" style="color: var(--muted);">BSIT</div>
+                <div class="shift-prog-name">BS Information Technology</div>
+                <div style="font-size:12px; color:var(--muted); margin-top:2px;">College of Computing Studies</div>
+            </div>
+            <!-- ARROW -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--cr)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+            </svg>
+            <!-- TO -->
+            <div class="shift-prog">
+                <div class="shift-prog-tag">Current Program</div>
+                <div class="shift-prog-code">BSCS</div>
+                <div class="shift-prog-name">BS Computer Science</div>
+                <div style="font-size:12px; color:var(--muted); margin-top:2px;">College of Computing Studies</div>
+            </div>
+        </div>
+        <div class="remark-box brand" style="margin-top:15px;">
+            <p><strong>Shifting Finalized:</strong> Your previous records have been evaluated and your curriculum has been updated to BSCS. You may now proceed with your enrollment.</p>
+        </div>
+    </div>
+
+    <!-- PERSONAL INFORMATION -->
+    <div class="card">
+        <div class="card-hd">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Personal Information
+        </div>
+
+        <input type="checkbox" id="edit-toggle">
+
+        <!-- VIEW MODE -->
+        <div class="profile-view">
+            <div class="profile-grid">
+                <div class="profile-field">
+                    <p class="field-label">Last Name</p>
+                    <p class="field-value" id="viewLastName">Santos</p>
+                </div>
+                <div class="profile-field">
+                    <p class="field-label">First Name</p>
+                    <p class="field-value" id="viewFirstName">Maria</p>
+                </div>
+                <div class="profile-field">
+                    <p class="field-label">Middle Name</p>
+                    <p class="field-value" id="viewMiddleName">Reyes</p>
+                </div>
+                <div class="profile-field">
+                    <p class="field-label">Date of Birth</p>
+                    <p class="field-value" id="viewDOB">March 22, 2003</p>
+                </div>
+                <div class="profile-field">
+                    <p class="field-label">Sex</p>
+                    <p class="field-value" id="viewGender">Female</p>
+                </div>
+                <div class="profile-field">
+                    <p class="field-label">Contact Number</p>
+                    <p class="field-value" id="viewContact">09198765432</p>
+                </div>
+                <div class="profile-field">
+                    <p class="field-label">Email Address</p>
+                    <p class="field-value" id="viewEmail">ms2023-005678@wmsu.edu.ph</p>
+                </div>
+            </div>
+            <label for="edit-toggle" class="btn-edit">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit Profile
+            </label>
+        </div>
+
+        <!-- EDIT MODE -->
+        <div class="profile-edit">
+            <div class="profile-grid">
+                <div class="form-group">
+                    <label class="field-label">Last Name</label>
+                    <input type="text" id="editLastName">
+                </div>
+                <div class="form-group">
+                    <label class="field-label">First Name</label>
+                    <input type="text" id="editFirstName">
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Middle Name</label>
+                    <input type="text" id="editMiddleName">
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Date of Birth</label>
+                    <input type="date" id="editDOB">
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Sex</label>
+                    <select id="editGender">
+                        <option>Female</option>
+                        <option>Male</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Contact Number</label>
+                    <input type="text" id="editContact">
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Email Address</label>
+                    <input type="email" id="editEmail">
+                </div>
+            </div>
+            <div class="edit-actions">
+                <button type="button" id="btnSave" class="btn-save">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    Save Changes
+                </button>
+                <label for="edit-toggle" class="btn-cancel">Cancel</label>
+            </div>
+        </div>
+    </div>
+</div>
         <div id="tab-enrollment" class="tab-content active">
             <div class="page-hd">
                 <h1>Enrollment</h1>
@@ -312,34 +414,60 @@
             </div>
 
             <div class="card">
-                <div class="card-hd">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                    Enrollment Workflow
-                </div>
-                
-                <div class="progress-track" style="margin-top: 10px;">
-                    <div class="progress-step done">
-                        <div class="ps-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                        <div class="ps-label">Crediting<br><span style="font-size:10px; font-weight:normal;">Done F2F</span></div>
+    <div class="card-hd">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Enrollment Progress
+    </div>
+    <div class="progress-track">
+
+        <!-- Step 1: Crediting — DONE -->
+        <div class="progress-step done" id="step-crediting">
+                        <div class="progress-circle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="step-line done"></div>
+                        <p class="step-label">Crediting</p>
+                        <span class="badge green">Done F2F</span>
                     </div>
-                    <div class="progress-connector done"></div>
-                    <div class="progress-step active" id="step-enlistment">
-                        <div class="ps-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                        <div class="ps-label">Enlistment</div>
+
+                    <!-- Step 2: Enlistment — ACTIVE -->
+                    <div class="progress-step" id="step-enlistment">
+                        <div class="progress-circle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <div class="step-line" id="line-assessment"></div>
+                        <p class="step-label">Enlistment</p>
+                        <span class="badge yellow" id="badge-enlistment">In Progress</span>
                     </div>
-                    <div class="progress-connector" id="conn-assessment"></div>
-                    <div class="progress-step pending" id="step-assessment">
-                        <div class="ps-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-                        <div class="ps-label">Assessment</div>
+
+                    <!-- Step 3: Assessment — PENDING -->
+                    <div class="progress-step gray" id="step-assessment">
+                        <div class="progress-circle gray">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        </div>
+                        <div class="step-line gray" id="line-payment"></div>
+                        <p class="step-label">Assessment</p>
                     </div>
-                    <div class="progress-connector" id="conn-enrolled"></div>
-                    <div class="progress-step pending" id="step-enrolled">
-                        <div class="ps-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-                        <div class="ps-label">Enrolled</div>
+
+                    <!-- Step 4: Payment — PENDING -->
+                    <div class="progress-step gray" id="step-payment">
+                        <div class="progress-circle gray">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
+                        <div class="step-line gray" id="line-enrolled"></div>
+                        <p class="step-label">Payment</p>
                     </div>
+
+                    <!-- Step 5: Enrolled — PENDING -->
+                    <div class="progress-step gray" id="step-enrolled">
+                        <div class="progress-circle gray">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <p class="step-label">Enrolled</p>
+                    </div>
+
                 </div>
             </div>
-
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-label">Total Units</div>
@@ -411,101 +539,240 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                    <button class="btn-outline" id="add-subj-btn" onclick="alert('Subject scheduling module opening...')">Add/Change Subjects</button>
-                    <button class="btn-primary" id="proceed-assess-btn" onclick="proceedToAssessment()">Proceed to Assessment →</button>
+                <!-- replace yung div na may margin-top: 20px at buttons -->
+                <div style="margin-top: 20px;">
+                    <div class="remark-box" style="flex-direction: row; align-items: flex-start; gap: 14px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;">
+                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <div>
+                            <p style="font-weight:700; margin:0 0 4px;">Subject Enlistment is Managed by Your Adviser</p>
+                            <p style="margin:0; font-size:13px; color:var(--muted);">
+                                Your subjects will be assigned by your assigned adviser based on your credited units and new curriculum. Please coordinate with your adviser if you have concerns regarding your subject load.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="tab-assessment" class="tab-content">
-            <div class="page-hd">
-                <h1>Assessment</h1>
-                <p>Official breakdown of your tuition and fees for the semester.</p>
+    <div class="page-hd">
+        <h1>Payment</h1>
+        <p>Official breakdown of your fees for the semester.</p>
+    </div>
+
+    <!-- FEE BREAKDOWN -->
+    <div class="card">
+        <div class="card-hd">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+            Fee Breakdown — 1st Semester 2026-2027
+        </div>
+        <div class="table-scroll">
+            <table class="subj-table">
+                <thead>
+                    <tr>
+                        <th>Fee</th>
+                        <th>Amount</th>
+                        <th>Frequency</th>
+                        <th>Where to Pay</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CSC Fee</td>
+                        <td>&#8369;200</td>
+                        <td>Per Semester</td>
+                        <td>CSC Office</td>
+                        <td><span class="chip-amber">Unpaid</span></td>
+                    </tr>
+                    <tr>
+                        <td>Gender Fee</td>
+                        <td>&#8369;50</td>
+                        <td>Per School Year</td>
+                        <td>CSC Office</td>
+                        <td><span class="chip-brand">Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td>Insurance</td>
+                        <td>&#8369;50</td>
+                        <td>Per School Year</td>
+                        <td>CSC Office</td>
+                        <td><span class="chip-brand">Paid</span></td>
+                    </tr>
+                    <tr style="opacity: .55;">
+                        <td>MSA Fee <span style="font-size:11px; color:var(--muted);">(Muslim Students Only)</span></td>
+                        <td>&#8369;50</td>
+                        <td>Per School Year</td>
+                        <td>CSC Office</td>
+                        <td><span style="font-size:11px; font-weight:600; color:var(--muted);">Not Applicable</span></td>
+                    </tr>
+                    <tr>
+                        <td>Booklet</td>
+                        <td>&#8369;60</td>
+                        <td>Per Semester</td>
+                        <td>Dean's Office</td>
+                        <td><span class="chip-amber">Unpaid</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PAYMENT STATUS -->
+    <div class="card">
+        <div class="card-hd">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Payment Status
+        </div>
+        <div class="remark-box" style="flex-direction: row; align-items: center; gap: 16px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b06d09" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div style="flex:1;">
+                <p style="font-weight:700; margin:0 0 3px;">Payment Pending</p>
+                <p style="font-size:13px; color:var(--muted); margin:0;">You still have unpaid fees. Please proceed to the respective offices to complete your payment.</p>
             </div>
+            <span class="chip-amber">Partial</span>
+        </div>
+    </div>
 
-            <div class="card">
-                <div class="card-hd">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    Official Assessment: 1st Semester, 2026-2027
-                    <span class="chip-amber ml-auto" id="assessment-status-chip">Pending Finalization</span>
+    <!-- HOW TO PAY -->
+    <div class="card">
+        <div class="card-hd">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            How to Pay
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="remark-box" style="flex-direction: row; align-items: flex-start; gap: 14px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <div>
+                    <p style="font-weight:700; margin:0 0 4px;">CSC Fee, Gender Fee, Insurance & MSA Fee — CSC Office</p>
+                    <p style="margin:0 0 6px;">Pay at the <strong>CSC Office, Old HS Building, 2nd Floor, Last Room</strong>. Bring your enrollment form and a valid school ID.</p>
+                    <p style="font-size:12px; color:var(--muted); margin:0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:3px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Mon – Fri, 8:00 AM – 5:00 PM
+                    </p>
                 </div>
-                
-                <table class="assess-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Units/Type</th>
-                            <th style="text-align: right;">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Tuition Fee (Lecture)</td>
-                            <td>18 Units</td>
-                            <td class="amount">₱ 3,600.00</td>
-                        </tr>
-                        <tr>
-                            <td>Tuition Fee (Laboratory)</td>
-                            <td>3 Units</td>
-                            <td class="amount">₱ 900.00</td>
-                        </tr>
-                        <tr>
-                            <td>Registration Fee</td>
-                            <td>Miscellaneous</td>
-                            <td class="amount">₱ 100.00</td>
-                        </tr>
-                        <tr>
-                            <td>Library Fee</td>
-                            <td>Miscellaneous</td>
-                            <td class="amount">₱ 150.00</td>
-                        </tr>
-                        <tr>
-                            <td>Medical / Dental Fee</td>
-                            <td>Miscellaneous</td>
-                            <td class="amount">₱ 200.00</td>
-                        </tr>
-                        <tr>
-                            <td>IT / Computer Fee</td>
-                            <td>Other Fees</td>
-                            <td class="amount">₱ 500.00</td>
-                        </tr>
-                        <tr class="assess-total-row">
-                            <td colspan="2">GROSS TOTAL</td>
-                            <td class="amount">₱ 5,450.00</td>
-                        </tr>
-                        <tr><td colspan="3" style="border:none; padding: 5px;"></td></tr>
-                        
-                        <tr style="background: var(--cr-pale);">
-                            <td colspan="3" style="font-weight: 700; color: var(--cr); font-size: 12px; text-transform: uppercase;">Grants & Deductions</td>
-                        </tr>
-                        <tr class="deduction-row">
-                            <td>Free Higher Education (RA 10931)</td>
-                            <td>CHED Grant</td>
-                            <td class="amount">- ₱ 5,450.00</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="net-due-box" id="net-due-container">
-                    <div>
-                        <div class="net-due-label" id="net-due-label">NET AMOUNT DUE</div>
-                        <div style="font-size: 12px; color: var(--cr); margin-top: 2px;" id="net-due-subtitle">Fully covered by Free Tuition Law</div>
-                    </div>
-                    <div class="net-due-amount" id="net-due-amount">₱ 0.00</div>
-                </div>
-
-                <div style="margin-top: 20px; text-align: center;" id="finalize-action-container">
-                    <p style="font-size: 13px; color: var(--muted); margin-bottom: 15px;" id="finalize-note">By clicking below, you finalize your enrollment for this semester.</p>
-                    <button class="btn-primary" id="finalize-btn" style="padding: 12px 30px; font-size: 15px;" onclick="finalizeEnrollment()">
-                        Finalize Enrollment & Print COR
-                    </button>
+            </div>
+            <div class="remark-box" style="flex-direction: row; align-items: flex-start; gap: 14px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <div>
+                    <p style="font-weight:700; margin:0 0 4px;">Booklet — Dean's Office</p>
+                    <p style="margin:0 0 6px;">Purchase your booklet (&#8369;60) at the <strong>Dean's Office, College of Computing Studies</strong>.</p>
+                    <p style="font-size:12px; color:var(--muted); margin:0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:3px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Mon – Fri, 8:00 AM – 5:00 PM
+                    </p>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="tab-schedule" class="tab-content">
+    <div class="page-hd">
+        <h1>Schedule</h1>
+        <p>Your class schedule for the current semester.</p>
+    </div>
+    <div class="card">
+        <div class="card-hd">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Class Schedule — 1st Semester 2026-2027
+        </div>
+        <div class="table-scroll">
+            <table class="subj-table">
+                <thead>
+                    <tr>
+                        <th>Subject Code</th>
+                        <th>Description</th>
+                        <th>Section</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Room</th>
+                        <th>Instructor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>CS 101</strong></td>
+                        <td>Intro to Computing</td>
+                        <td>CS-2A</td>
+                        <td>Mon / Wed</td>
+                        <td>8:00 – 9:30 AM</td>
+                        <td>CCS Lab 1</td>
+                        <td style="color:var(--muted);">Prof. Reyes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CS 102</strong></td>
+                        <td>Computer Programming 1</td>
+                        <td>CS-2A</td>
+                        <td>Tue / Thu</td>
+                        <td>10:00 – 11:30 AM</td>
+                        <td>CCS Lab 2</td>
+                        <td style="color:var(--muted);">Prof. Santos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MATH 111</strong></td>
+                        <td>Calculus 1</td>
+                        <td>CS-2A</td>
+                        <td>Mon / Wed</td>
+                        <td>1:00 – 2:30 PM</td>
+                        <td>Room 301</td>
+                        <td style="color:var(--muted);">Prof. Mendoza</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GE 4</strong></td>
+                        <td>Math in the Modern World</td>
+                        <td>—</td>
+                        <td colspan="3" style="color:var(--muted); font-style:italic;">Credited — No class required</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>GE 5</strong></td>
+                        <td>Purposive Communication</td>
+                        <td>—</td>
+                        <td colspan="3" style="color:var(--muted); font-style:italic;">Credited — No class required</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top:16px;">
+            <div class="remark-box" style="flex-direction:row; align-items:flex-start; gap:14px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <p>Your schedule is finalized by your adviser. For any conflicts or concerns, coordinate directly with your assigned adviser or the department secretary.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<nav class="mobile-nav">...</nav>
 
     </main>
 </div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+        <button class="m-link" onclick="showTab('profile', this); syncMobileNav(this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+        </button>
+        <button class="m-link active" onclick="showTab('enrollment', this); syncMobileNav(this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+            Subject
+        </button>
+        <button class="m-link" onclick="showTab('schedule', this); syncMobileNav(this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Schedule
+        </button>
+        <button class="m-link" onclick="showTab('assessment', this); syncMobileNav(this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Payment
+        </button>
+    </div>
+</nav>
 
 <div id="toast-container"></div>
 
